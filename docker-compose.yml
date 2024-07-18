@@ -53,18 +53,6 @@ services:
     context: ./src/
     dockerfile: ./Background.Live/dockerfile.aspnet
 
-  room:
-    image: ghcr.io/programador-tv/dev-room
-    container_name: room
-    restart: always
-    build: 
-      context: ./src/APP.Room
-      dockerfile: ./Dockerfile
-      args:
-        - ENVIROMENT=Develop
-    ports:
-      - 9004:3000
-
   platform:
    image: ghcr.io/programador-tv/dev-platform
    container_name: platform
