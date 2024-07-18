@@ -14,6 +14,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+var connectionString =
+    Environment.GetEnvironmentVariable("APP_CONNECTIONSTRING")
+    ?? builder.Configuration["ConnectionStrings:APP_CONNECTIONSTRING"]
+    ?? string.Empty;
+
+var identityConnection =
+    Environment.GetEnvironmentVariable("IDENTITY_CONNECTIONSTRING")
+    ?? builder.Configuration["ConnectionStrings:IDENTITY_CONNECTIONSTRING"]
+    ?? string.Empty;
+
+var PerfilConnectionString =
+    Environment.GetEnvironmentVariable("PERFIL_CONNECTIONSTRING")
+    ?? builder.Configuration["ConnectionStrings:PERFIL_CONNECTIONSTRING"]
+    ?? string.Empty;
+
 var ProducaoConnectionString =
     Environment.GetEnvironmentVariable("PRODUCAO_CONNECTIONSTRING")
     ?? builder.Configuration["ConnectionStrings:PRODUCAO_CONNECTIONSTRING"]
@@ -172,7 +187,6 @@ builder
 var app = builder.Build();
 
 //ISSO TEM A VER COM O FATO DE SE USAR DOCKER+PROXY NGINX E PRECISAR RECEBER O IP DO CLIENTE
-// HOUVE A NECESSIDADE DE UMA CONFIGURAÇÃO ADICIONAL NO AMBIENTE K8S
 var forwardedHeadersOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
@@ -208,5 +222,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+// app.MapHub<ChatHub>("/chat");
 
 app.Run();

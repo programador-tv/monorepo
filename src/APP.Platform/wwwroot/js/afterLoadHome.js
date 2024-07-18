@@ -1,3 +1,4 @@
+
 const mesesAbrev = ["Janeiro", "Fevereiro", "Março", "Abril",
     "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 let isUserLogged = false;
@@ -9,6 +10,11 @@ function diferencaEmMinutos(data1, data2) {
 
 const result = []
 
+let containsMoreEvents = 0;
+
+const countHelp = $("#count-help");
+const countOneToOne = $("#count-one");
+const countCursos = $("#count-cursos");
 function afterLoad(isAuth) {
     const pedidosLoading = document.querySelector("#pedidosLoading");
     const videosLoading = document.querySelector("#videosLoading");
@@ -83,6 +89,38 @@ function afterLoad(isAuth) {
     //         $("#mentoriaBoard").html("Nenhuma mentoria encontrada no momento :/")
     //     })
 
+    fetch("/ScheduleActions?handler=AfterLoadRequestedHelp")
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error("Erro ao enviar a solicita??o POST.");
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            isUserLogged = data.isLogged;
+            loadPedidosAjudaParaTag(data.pedidos)
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+
+    fetch("?handler=AfterLoadSavedVideos")
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error("Erro ao enviar a solicitação POST.");
+            }
+            return response.json();
+        })
+        .then(function (data) {
+
+            videosLoading.remove();
+            savedvideos.style.justifyContent = "start";
+            if (data.saved) {
+                savedvideos.innerHTML += data.saved;
+
+            }
+        })
+
     fetch("/ScheduleActions?handler=AfterLoadMentores"
     )
         .then(function (response) {
@@ -117,37 +155,7 @@ function afterLoad(isAuth) {
     //         console.log(error)
     //     })
 
-    fetch("/ScheduleActions?handler=AfterLoadRequestedHelp")
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error("Erro ao enviar a solicita??o POST.");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            isUserLogged = data.isLogged;
-            loadPedidosAjudaParaTag(data.pedidos)
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
-
-        fetch("?handler=AfterLoadSavedVideos")
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error("Erro ao enviar a solicitação POST.");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-
-            videosLoading.remove();
-            savedvideos.style.justifyContent = "start";
-            if (data.saved) {
-                savedvideos.innerHTML += data.saved;
-
-            }
-        })
+    
 }
 
 function loadMentoresParaTag(data) {
@@ -170,17 +178,17 @@ function loadMentoresParaTag(data) {
                 ...groupOneToOne,
                 ...
                 profileWithTimeSelections.timeSelections.filter(x => x.variacao == 1 || x.variacao == 0)
-                .map(e => {
-                    return {ts : e, perfil: profileWithTimeSelections.perfils}
-                })
+                    .map(e => {
+                        return { ts: e, perfil: profileWithTimeSelections.perfils }
+                    })
             ]
             groupCursos = [
                 ...groupCursos,
                 ...
                 profileWithTimeSelections.timeSelections.filter(x => x.variacao == 3)
-                .map(e => {
-                    return {ts : e, perfil: profileWithTimeSelections.perfils}
-                })
+                    .map(e => {
+                        return { ts: e, perfil: profileWithTimeSelections.perfils }
+                    })
             ]
 
         }
@@ -190,13 +198,30 @@ function loadMentoresParaTag(data) {
 
 
 
-        for(let item in groupOneToOne)
+        for (let item in groupOneToOne)
             preparedOneToOne += JoinTimeForMentorias(groupOneToOne[item].ts, groupOneToOne[item].perfil, "groupOneToOne", item)
-        for(let item in groupCursos)
+        for (let item in groupCursos)
             preparedCursos += JoinTimeForMentorias(groupCursos[item].ts, groupCursos[item].perfil, "groupCursos", item)
 
         $("#OneToOneMatch").html(preparedOneToOne)
+        if (groupOneToOne.length > 0) {
+            countOneToOne.html(groupOneToOne.length).addClass("count-tab-events")
+        }
+
+
         $("#CursosMatch").html(preparedCursos)
+        if (groupCursos.length > 0) { countCursos.html(groupCursos.length).addClass("count-tab-events") }
+
+        if (groupOneToOne.length > containsMoreEvents) {
+            containsMoreEvents = groupOneToOne.length;
+            countOneToOne.parent().addClass("active");
+        }
+
+        if (groupCursos.length > containsMoreEvents) {
+            containsMoreEvents = groupCursos.length;
+            countCursos.parent().addClass("active");
+        }
+
         activePaginationFor("groupOneToOne", groupOneToOne.length)
         activePaginationFor("groupCursos", groupCursos.length)
     }
@@ -211,29 +236,38 @@ function loadPedidosAjudaParaTag(data) {
         $("#pedidosPanel").html(prepared)
     } else {
         let pedidosDeAjuda = ""
-        let groupHelp= []
+        let groupHelp = []
         for (const profileWithTimeSelections of data) {
             result.push(profileWithTimeSelections)
             groupHelp = [
                 ...groupHelp,
                 ...
                 profileWithTimeSelections.timeSelections.filter(x => x.variation == 5)
-                .map(e => {
-                    return {ts : e, perfil: profileWithTimeSelections.perfils}
-                })
+                    .map(e => {
+                        return { ts: e, perfil: profileWithTimeSelections.perfils }
+                    })
             ]
         }
 
+
+
         groupHelp.sort(compararPorDataDecrescente);
 
-
-        for(let item in groupHelp)
+        for (let item in groupHelp)
             pedidosDeAjuda += JoinTimeForRequestedHelp(groupHelp[item].ts, groupHelp[item].perfil, "groupHelp", item)
 
         $("#pedidosPanel").html(pedidosDeAjuda)
         activePaginationFor("groupHelp", groupHelp.length)
+        if (groupHelp.length > 0) { countHelp.html(groupHelp.length).addClass("count-tab-events") }
+
+        if (groupHelp.length > containsMoreEvents) {
+            containsMoreEvents = groupHelp.length;
+            countHelp.parent().addClass("active");
+        }
     }
+
 }
+
 
 function loadMentores(data) {
     let prepared = ""

@@ -1215,10 +1215,9 @@ namespace APP.Platform.Pages.ScheduleActions
             }
             else if (ScheduleTimeSelection.Variacao == Variacao.CursoOuEvento)
             {
-
                 TimeSelectionBackstage = ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage;
             }
-            
+
             TimeSelectionBackstage.TimeSelectionId = TimeSelection.Id;
 
             ApplyCustomFieldsByType(TimeSelection.Tipo);

@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+.h1About {
+  color: #373737;
+  font-weight: 600;
+  font-family: "League Spartan";
+
+  @media (max-width: 1080px) {
+    font-size: 40px;
+  }
+}
+
+.h2About {
+  color: #373737;
+  font-weight: 400;
+  font-family: "League Spartan";
+  font-size: 40px;
+  font-weight: 500;
+  @media (max-width: 1080px) {
+    font-size: 40px;
+  }
+}
+
+.pAbout {
+  font-weight: 400;
+  font-family: "League Spartan";
+  size: 20px;
+  color: #1c1c1c;
+
+  @media (max-width: 1080px) {
+    font-size: 20px;
+  }
+}
+.accordionHeaderAbout {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "League Spartan";
+  color: #1c1c1c;
+
+  @media (max-width: 1080px) {
+    font-size: 18px;
+  }
+}
+.accordionPAbout {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "League Spartan";
+  color: #1c1c1c;
+}
+
+.accordionButton {
+  background: linear-gradient(180deg, #d8c1ec 0%, #cbace7 100%);
+  box-shadow: 0px 2px 6px 0px #00000033;
+  padding-block: 0.568rem;
+}
+
+.accordionButton:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.accordionPadding {
+  margin-bottom: 20px;
+  margin-top: 0px;
+  padding: 0px;
+}
+
+.accordionBody {
+  background: #f2f2f2;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.aboutBg {
+  border: 4px solid;
+  background: linear-gradient(180deg, #e5d5f3 0%, #b098c5 100%) !important;
+}
+
+.fundoRoxoHeader {
+  margin-left: 24px;
+  font-weight: 500;
+  font-size: 40px;
+  font-family: "League Spartan";
+  color: #674486;
+}
+
+.fundoRoxoP {
+  margin-left: 24px;
+  font-weight: 400;
+  font-size: 20px;
+  color: #1c1c1c;
+  font-family: "League Spartan";
+}
+
+.card-team {
+  width: 100%;
+  max-width: 190px !important;
+  margin: 0px 20px 32px 20px;
+  background: transparent;
+  border: none;
+}
+
+.cardTeamImage {
+  height: 150px;
+}
+
+.imageContainer {
+  border: 4px solid #734b95;
+  overflow: hidden;
+  border-radius: 50%;
+  height: 140px;
+  width: 140px;
+  background-size: 110%;
+  margin: auto;
+}
+
+.imageContainerInativo {
+  border: 4px solid #99b6ee;
+
+  overflow: hidden;
+  border-radius: 50%;
+  height: 140px;
+  width: 140px;
+  background-size: 110%;
+  margin: auto;
+}
+
+.imageContainer:hover {
+  transform: scale(1.05);
+}
+
+.imageContainerInativo:hover {
+  transform: scale(1.05);
+}
+
+.pTeamName {
+  font-weight: 500;
+  font-family: "League Spartan";
+  color: #1c1c1c;
+  font-size: 20px;
+  margin-bottom: auto;
+}
+
+.pTeamCargo {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.preFooterTitle {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "League Spartan";
+  color: black;
+}
+
+.preFooterText {
+  color: #1c1c1c;
+}
+
+.inativo {
+  filter: grayscale(100%);
+}
+
+.purpleHeading {
+  width: 50%;
+}
+
+#footerTelaPequena {
+  background: #734b95;
+  height: 381px;
+  display: none;
+}
+
+#footerTelaGrande {
+  display: block;
+}
+
+@media (max-width: 1000px) {
+  #footerTelaGrande {
+    display: none;
+  }
+
+  #footerTelaPequena {
+    display: block;
+  }
+}
+
+.containerWidth {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 576px) {
+  .imageContainer {
+    width: 90px;
+    height: 90px;
+  }
+
+  .purpleHeading {
+    width: 100%;
+  }
+
+  .imageContainerInativo {
+    width: 90px;
+    height: 90px;
+  }
+  .card-team {
+    width: 110px;
+    /* Ajusta a largura máxima em telas menores */
+    margin: 14px 2px 22px 0px;
+  }
+  .cardTeamImage {
+    height: 90px;
+  }
+
+  .pTeamName {
+    font-size: 14px;
+  }
+  .pTeamCargo {
+    line-height: 5px;
+    font-size: 12px;
+  }
+}

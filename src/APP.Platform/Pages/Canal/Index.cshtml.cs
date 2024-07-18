@@ -416,14 +416,17 @@ public sealed class CanalIndexModel : CustomPageModel
         }
 
         JoinTime.PerfilId = UserProfile.Id;
-        
+
         var freeTimeBackstage = _context
             .FreeTimeBackstages.AsNoTracking()
             .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
 
-        if(freeTimeBackstage?.Ilimitado ?? false){
+        if (freeTimeBackstage?.Ilimitado ?? false)
+        {
             JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
-        }else{
+        }
+        else
+        {
             JoinTime.StatusJoinTime = StatusJoinTime.Pendente;
         }
 
