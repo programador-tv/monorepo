@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500&family=Open+Sans:wght@300&display=swap");
 
 body {
-  background-color: #f3f2ef;
+  background-color: #fff;
   font-family: "League Spartan", sans-serif;
   color: #575757;
 }
@@ -102,16 +102,16 @@ body {
 }
 
 .count-tab-events {
-    border-radius: 50%;
-    background-color: navy;
-    color: white;
-    font-size: 11px;
-    height: 17px;
-    width: 17px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 2px;
+  border-radius: 50%;
+  background-color: navy;
+  color: white;
+  font-size: 11px;
+  height: 17px;
+  width: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2px;
 }
 
 .tag {
@@ -740,6 +740,14 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+#asideBelow {
+  max-width: 100%;
+  display: none;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
 .tree-points {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -767,13 +775,16 @@ body {
 }
 
 #theGreatContent {
-  width: 73%;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-inline: 30px;
 }
 
 #theLeftFakeAside {
   width: 250px;
 }
 #theGreatLeftAside {
+  box-shadow: 0px 0px 10px -4px rgba(189, 187, 189);
   position: fixed;
   top: 0;
   left: 0;
@@ -1122,6 +1133,11 @@ body {
   opacity: 1;
 }
 
+.container {
+  width: 100%;
+  max-width: 1700px;
+}
+
 .channel-user-perfil-data {
   height: 166px;
   display: flex;
@@ -1156,9 +1172,9 @@ body {
 }
 /* ponto medio */
 @media (min-width: 1485px) {
-  #theGreatContent {
+  /* #theGreatContent {
     width: 55%;
-  }
+  } */
   /* #theGreatContent.studio {
         width: 60%;
     } */
@@ -1186,9 +1202,9 @@ body {
   #theLeftFakeAside {
     width: 10% !important;
   }
-  #theGreatContent {
+  /* #theGreatContent {
     width: 80% !important;
-  }
+  } */
 }
 @media (max-width: 1485px) {
   .card-sm.canal {
@@ -1209,7 +1225,7 @@ body {
 }
 @media (max-width: 1400px) {
   #theGreatAside {
-    width: 82%;
+    /* width: 82%; */
     display: flex;
     flex-wrap: wrap;
     justify-content: end;
@@ -1245,7 +1261,7 @@ body {
   .card-right {
     width: 95%;
   }
-  #theGreatContent,
+  /* #theGreatContent, */
   #theGreatAside {
     width: 100% !important;
   }
@@ -1307,16 +1323,16 @@ body {
   }
 }
 
-@media (min-width: 1480px) {
+@media (min-width: 1486px) {
   .card-sm.canal {
     width: 31%;
   }
   #theLeftFakeAside {
     width: 220px;
   }
-  #theGreatContent {
+  /* #theGreatContent {
     width: 62%;
-  }
+  } */
 
   #theGreatContentAbout {
     width: 100%;
