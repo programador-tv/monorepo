@@ -1,0 +1,199 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav left-menu-nav">
+@{
+        var route = @Context.GetRouteValue("page")!.ToString();
+    }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="show logged-user-menu">
+
+                @if (Model.UserProfile != null)
+                {
+
+                    <div>
+                        <a asp-page="/Canal/Index" asp-route-usr="@Model.UserProfile.UserName">
+                            @await Html.PartialAsync("Components/_PerfilAvatar",
+                                new _PerfilAvatar{
+                                    Perfil = Model.UserProfile,
+                                    WithLink = false,
+                                    Size = "avatar-lg"
+                                })
+                        </a>
+                    </div>
+                    <div class="contentIconsAvatar">
+                        <div class="menuIcons">
+                            <a asp-page="/Notificacoes/Index" class="material-symbols-outlined disable-anchor-decoration text-dark" style="position: relative;">
+                                notifications
+                                <span style="font-size: 12px;font-family: League Spartan;" class="notification-alert" @(Model.CountNotifications == 0 ? "hidden" : "")>
+                                    @{
+                                        var displayValue = Model.CountNotifications > 9 ? "+9" : Model.CountNotifications.ToString();
+                                    }
+                                    @displayValue
+                                </span>
+                            </a>
+                        </div>
+                        <div class="menuIcons">
+                            <a class="btn" data-bs-toggle="dropdown" role="button" id="dropdownMenuLink">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <div class="dropdown-menu menu-drop" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item text-dark" asp-page="/Perfil/Index" style="display: flex;align-items: flex-start; margin-left: 5px;">
+                                    <img alt="icone editar perfil" src="/Pictures/Icons/edit_profile_icon.svg" style="margin-right: 8px;">
+                                    <span> Editar Perfil</span>
+                                </a>
+                                <hr style="width: 117px; display: inline-block; margin-left: 20px;">
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl='@Url.Page("/", new { area = "" })' method="post" >
+                                    <button type="submit" class="dropdown-item btn btn-link text-dark" style="display: flex;align-items: flex-start; margin-left: 5px;">
+                                    <img alt="icone logout" src="/Pictures/Icons/logout.svg" style="margin-right: 8px;">
+                                    <span>Sair</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="word-break: break-word;" id="userName">
+                        @{
+                            var nome = Model.UserProfile.Nome ?? "";
+                            var nomeFormatado = nome.Length > 20 ? $"{nome.Substring(0, 20)}" : nome;
+                        }
+                        @nomeFormatado
+                    </p>
+                    <p id="userTitle" style="word-break: break-word;">
+                        @{
+                            var bio = Model.UserProfile.Bio ?? "";
+                        }
+                        @bio
+                    </p>
+                }
+                else
+                {
+                    <div>
+                        <img alt="avatar nao logado" id="avatar-sm" src="/no-user.svg" style="width: 32px;height: 32px; border-radius:50%; border:2px solid grey">
+                    </div>
+                }
+        </div>
+        <hr style="color: #D7D7D7; opacity: 0.5;">
+
+        <div style="display:flex;gap: 5px; flex-direction: column;padding-top: 15px;">
+            <li class="nav-item left-item-menu">
+                <a class="nav-link text-dark nav-link-text"
+                    style="gap:10px; padding-left: 28px; cursor:pointer; display: flex; align-items: center; flex-direction: row"
+                    asp-area="" asp-page="/Canal/Index" asp-route-usr="@Model.UserProfile.UserName">
+                     @if(route == "/Canal/Index")
+                    {
+                        <img alt="profile" src="/Pictures/Icons/profile_ativo.svg"></img>
+                        <span  style="color: #4C80E2;">Meu Canal</span>
+                    }else {
+                        <img alt="profile" src="/Pictures/Icons/profile.svg"></img>
+                        <span>Meu Canal</span>
+                    }
+
+
+                </a>
+            </li>
+
+            <li class="nav-item left-item-menu">
+                <a class="nav-link text-dark nav-link-text"
+                    style="gap:10px;padding-left: 28px; cursor:pointer; display: flex; align-items: center; flex-direction: row"
+                    asp-area="" asp-page="/Index">
+                    @if(route == "/Index")
+                    {
+                        <img alt="inicio" src="/Pictures/Icons/home_ativo.svg"></img>
+                        <span  style="color: #4C80E2;">Início</span>
+                    }else {
+                        <img alt="inicio" src="/Pictures/Icons/home.svg"></img>
+                        <span>Início</span>
+                    }
+
+                </a>
+            </li>
+            @* @if (route == "/Aprender/Index")
+            {
+                <li class="nav-item left-item-menu letf-menu-aprender hover-purple">
+                    <a class="nav-link text-dark nav-link-text"
+                    style="padding-left: 28px;"
+                    asp-area="" asp-page="/Aprender/Index">
+                        Aprender
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item left-item-menu hover-purple">
+                    <a class="nav-link text-dark nav-link-text"
+                    style="padding-left: 28px;"
+                    asp-area="" asp-page="/Aprender/Index">
+                        Aprender
+                    </a>
+                </li>
+            }
+            @if (route == "/Ensinar/Index")
+            {
+                <li class="nav-item letf-menu-ensinar left-item-menu hover-blue">
+                    <a class="nav-link text-dark nav-link-text"
+                    style="padding-left: 28px;"
+                    asp-area="" asp-page="/Ensinar/Index">
+                        Ensinar
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item left-item-menu hover-blue">
+                    <a class="nav-link text-dark nav-link-text"
+                    style="padding-left: 28px;"
+                    asp-area="" asp-page="/Ensinar/Index">
+                        Ensinar
+                    </a>
+                </li>
+            } *@
+
+            <li class="nav-item left-item-menu">
+                <a class="nav-link text-dark nav-link-text"
+                    id="openCalendar"
+                    data-bs-toggle="modal" data-bs-target="#calendarModal"
+                    style="gap:10px;padding-left: 31px; cursor:pointer; display: flex; align-items: center; flex-direction: row">
+                    <img alt="agenda" src="/Pictures/Icons/calendar.svg"></img>
+                    <span>
+                        Agenda
+                    </span>
+                </a>
+            </li>
+        </div>
+    }
+    else
+    {
+        <li class="nav-item">
+            <div>
+                    <img id="avatar-sm" alt="" src="/no-user.svg" style="width: 160px;height: 160px;border-radius: 50%;border: 1px solid lightgray;">
+                    <p id="userName">
+                        Anônimo
+                    </p>
+            </div>
+            <div class="py-2 px-1">
+                <hr class="mb-4 mx-1" />
+                <a class="btn py-3" style="background-color: #1E53B7; color:white; font-weight: 500; letter-spacing: 0.0125em; font-size: 18px; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);"
+                id="dropdownMenuLink"
+                        asp-area="Identity" asp-page="/Account/Login">
+                    <span class="font-weight-bold">Fazer Login</span>
+                </a>
+            </div>
+        </li>
+    }
+</ul>
+<style>
+    #openLogout_icon {
+        color: #1E53B7;
+        transition: color 0.2s;
+    }
+    #openLogout_icon:hover {
+        color: #1B4BA5;
+    }
+    #openLogout_icon:active {
+        color: #4C80E2;
+    }
+</style>

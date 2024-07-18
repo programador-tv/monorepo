@@ -1,0 +1,401 @@
+@using Domain.Enums;
+@using Domain.Entities;
+@using Domain.Utils;
+
+@model _ModalJoinHelpEvent
+@foreach(var data in Model.JoinEvent){
+<div class="modal fade" id="eventModal-@data.Value?.Id" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">@data.Value?.TituloTemporario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @if (data.Value?.Tipo == EnumTipoTimeSelection.RequestHelp)
+                {
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="time-tab"
+                                    data-bs-target="#timeSelection-@data.Key.Id"
+                                    data-bs-toggle="tab"
+                                    type="button" role="tab"
+                                    aria-controls="timeSelection-@data.Key.Id" aria-selected="true">
+                                Geral
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+
+                            <button class="nav-link " id="sala-tab"
+                                    data-bs-target="#sala-@data.Key.Id"
+                                    type="button" role="tab"
+                                    aria-controls="sala-@data.Key.Id"
+                                    aria-selected="true"
+                                    data-bs-toggle="tab">
+                                Sala
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+
+                            <button class="nav-link " id="consideracoes-tab"
+                                    data-bs-target="#consideracoes-@data.Key.Id"
+                                    type="button" role="tab"
+                                    aria-controls="consideracoes-@data.Key.Id"
+                                    aria-selected="true"
+                                    data-bs-toggle="tab">
+                                Considerações finais
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+
+                            <button class="nav-link " id="cancelar-tab"
+                                    data-bs-target="#cancelar-@data.Key.Id"
+                                    type="button" role="tab"
+                                    aria-controls="cancelar-@data.Key.Id"
+                                    aria-selected="true"
+                                    data-bs-toggle="tab">
+                                Cancelar
+                            </button>
+                        </li>
+                    </ul>
+                }
+                <div class="tab-content">
+                    <div class="tab-pane active" id="timeSelection-@data.Key.Id" role="tabpanel" aria-labelledby="home-tab">
+
+                        <br>
+                        <h4>Mentoria</h4>
+                        <h4>
+                            @await Html.PartialAsync("Components/_PerfilAvatar",
+                                new _PerfilAvatar{
+                                    Perfil = data.Value?.Perfil ?? new(),
+                                    WithLink = true
+                                })
+
+
+                            @data.Value?.Perfil?.Nome
+                            @if (!string.IsNullOrEmpty(data.Value?.Perfil?.Linkedin))
+                            {
+                                <a style="text-decoration:none"
+                                   href="https://www.linkedin.com/in/@data.Value.Perfil.Linkedin/" rel="noopener" target="_blank">
+                                    <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png" alt="linkeind">
+                                </a>
+                            }
+                            @if (!string.IsNullOrEmpty(data.Value?.Perfil?.GitHub))
+                            {
+                                <a href="https://github.com/@data.Value.Perfil.GitHub/"
+                                   style="text-decoration:none" rel="noopener" target="_blank">
+                                    <img style="width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png" alt="github">
+                                </a>
+                            }
+                        </h4>
+                        <strong style="margin-left: 20px;"> @data.Value?.Perfil?.Bio</strong>
+                        <br>
+                        Início: <strong> @data.Value?.StartTime</strong><br>
+                        Término: <strong> @data.Value?.EndTime</strong>
+                        <br>
+
+                        @{
+                            var itemValor = data.Value?.Tags;
+                        }
+                        @if (itemValor != null)
+                        {
+                            @foreach (var tags in itemValor)
+                            {
+                                <span class="badge bg-primary">@tags.Titulo</span>
+                            }
+                        }
+
+                        <br>
+                    </div>
+
+                    <div class="tab-pane" id="sala-@data.Key.Id" role="tabpanel">
+                        <br>
+                        <h4>Mentoria agendada</h4>
+                        @if (data.Key.StatusJoinTime == StatusJoinTime.Concluído)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <strong>Parabéns!</strong> Você concluiu esta sessão de mentoria.
+                            </div>
+
+                        }
+                        else if (
+                        data.Key.StatusJoinTime == StatusJoinTime.Marcado
+                        || data.Key.StatusJoinTime == StatusJoinTime.ConclusaoPendente
+                        )
+                        {
+                            <div class="alert alert-info" role="alert">
+
+
+                                @if (@data.Value?.TempoRestante == "1"
+                               || @data.Value?.TempoRestante == "0")
+                                {
+                                    <span>
+                                        Começa em pouco tempo
+                                    </span>
+
+                                }
+                                else
+                                {
+                                    <span>
+                                        <strong class='decrazy-@data.Key.Id'>
+                                            @data.Value?.TempoRestante horas
+                                        </strong>
+                                        para iniciar a mentoria.
+                                    </span>
+                                }
+
+                            </div>
+                            @if (@data.Value != null && data.Value.Status == StatusTimeSelection.Marcado)
+                            {
+                                <button class="action-purple button button-right"
+                                        onclick="window.open('@data.Value?.LinkSala', '_blank');">
+                                    Entrar na sala
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="button-disabled button button-right" style="cursor: default;">
+                                    Entrar na sala
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                Disponível quando o mentor lhe aceitar.
+                            </div>
+                            <button class="button-disabled button button-right" style='cursor: default;'>Entrar na sala</button>
+
+                        }
+                    </div>
+
+                    <div class="tab-pane" id="consideracoes-@data.Key.Id" role="tabpanel">
+                        <br>
+                        <h4>Considerações finais</h4>
+
+                        @if (data.Key.StatusJoinTime == StatusJoinTime.Concluído)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <strong>Parabéns!</strong> Você concluiu esta sessão de mentoria.
+                            </div>
+
+                        }
+                        else if (data.Value?.ActionNeeded == true)
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <strong>Atenção!</strong> Você deve enviar suas considerações finais.
+                            </div>
+                            <button class="action-purple button button-right"
+                                    onclick="window.location.href = '/Feedback/Aluno?id=@data.Key.Id';">
+                                FINALIZAR
+                            </button>
+
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                Disponível após a conclusão.
+                            </div>
+                            <button class="button button-disabled button-right" style='cursor: default;'>Finalizar</button>
+                        }
+                    </div>
+                    <div class="tab-pane" id="cancelar-@data.Key.Id" role="tabpanel">
+                        <br>
+                        <h4>Cancelar sessão de mentoria</h4>
+                        @if (@data.Key.StatusJoinTime == StatusJoinTime.Concluído)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <ul>
+                                    <li><b>Esta sessão já foi concluída</b></li>
+                                </ul>
+                            </div>
+                        }
+                        else if (@data.Value?.ActionNeeded == true)
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <ul>
+                                    <li><b>Esta sessão já foi concluída</b></li>
+                                    <li><b>Aguardando considerações finais</b></li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                <ul>
+                                    <li><b>Esta ação é irreversível</b></li>
+                                    <li><b>Esta sessão será cancelada</b></li>
+                                </ul>
+                            </div>
+
+                            <form id="CancelTime-@data.Key?.Id" method="post">
+                                <br>
+                                <div class="d-grid gap-2">
+                                    <div onclick="cancelMyInvitation('@data.Key?.Id'); removeTimeSelection('@data.Value?.Id')"
+                                    class="btn btn-danger btn-block">Cancelar</div>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+}
+@* @{
+    var conclusaoPendente = new Dictionary<JoinTime, TimeSelection>();
+    var proximos = new Dictionary<JoinTime, TimeSelection>();
+    var marcado = new Dictionary<JoinTime, TimeSelection>();
+    var pendente = new Dictionary<JoinTime, TimeSelection>();
+    var concluido = new Dictionary<JoinTime, TimeSelection>();
+    @foreach(var data in Model.JoinEvent)
+    {
+        @if (data.Key.StatusJoinTime == StatusJoinTime.ConclusaoPendente)
+        {
+            conclusaoPendente.Add(data.Key,data.Value);
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Marcado)
+        {
+            var timeDelta = data.Value.StartTime - DateTime.Now;
+            @if (timeDelta.TotalMinutes <= 30 && timeDelta.TotalMinutes > 0){
+                proximos.Add(data.Key,data.Value);
+            }else{
+                marcado.Add(data.Key,data.Value);
+            }
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Pendente)
+        {
+            pendente.Add(data.Key,data.Value);
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Concluído)
+        {
+            concluido.Add(data.Key,data.Value);
+        }
+    }
+}
+@if(conclusaoPendente.Count > 0){
+    <div id="conclusao-pendente-card" class="default-card card-right" >
+    <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Conclusões Pendentes</strong>
+    <div id="conclusao-pendente-card-events"class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+        @foreach(var data in conclusaoPendente)
+        {
+            if(data.Value != null){
+                @await Html.PartialAsync( "Components/TimeSelections/_ConsideracoesPendentesCard",
+                new Models.ConsideracoesPendentesCardPageModel
+                {
+                    Id = data.Value.Id,
+                    Titulo = data.Value.TituloTemporario ?? string.Empty,
+                    FotoEnvolvido = data.Value?.Perfil?.Foto ?? string.Empty,
+                    NomeEnvolvido = data.Value?.Perfil?.Nome ?? string.Empty,
+                })
+            }
+        }
+      </div>
+    </div>
+}
+@if(proximos.Count > 0){
+    <div id="eventos-proximos-card" class="default-card card-right" >
+      <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Próximos</strong>
+      <div id="eventos-proximos-card-events"class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @foreach(var data in proximos)
+            {
+                if(data.Value != null){
+                    var timeDelta = data.Value.StartTime - DateTime.Now;
+                    string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                    @await Html.PartialAsync( "Components/TimeSelections/_EventosProximosCard",
+                    new Models.EventosProximosCardPageModel
+                    {
+                        Id = data.Value.Id,
+                        Titulo = data.Value.TituloTemporario ?? string.Empty,
+                        FotoEnvolvido = data.Value?.Perfil!.Foto ?? string.Empty,
+                        NomeEnvolvido = data.Value?.Perfil!.Nome ?? string.Empty,
+                        TempoRestante = tempoRestante
+                    })
+                }
+            }
+       </div>
+    </div>
+}
+@if(marcado.Count > 0){
+    <div id="eventos-marcados-card" class="default-card card-right" >
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Marcados</strong>
+        <div id="eventos-marcados-card-events"class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+            @foreach(var data in marcado)
+            {
+                if(data.Value != null){
+                    var timeDelta = data.Value.StartTime - DateTime.Now;
+                    string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                    @await Html.PartialAsync( "Components/TimeSelections/_EventosMarcadosCard",
+                    new Models.EventosMarcadosCardPageModel
+                    {
+                        Id = data.Value.Id,
+                        Titulo = data.Value.TituloTemporario ?? string.Empty,
+                        FotoEnvolvido = data.Value?.Perfil!.Foto ?? string.Empty,
+                        NomeEnvolvido = data.Value?.Perfil!.Nome ?? string.Empty,
+                        TempoRestante = tempoRestante
+                    })
+                }
+
+            }
+        </div>
+    </div>
+}
+
+      <div id="eventos-pendentes-card" class="default-card card-right" >
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos em Aberto</strong>
+        <div id="eventos-pendentes-card-events"class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+            @foreach(var data in pendente)
+            {
+                var timeDelta = data.Value.StartTime - DateTime.Now;
+                string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+                @await Html.PartialAsync("Components/TimeSelections/_PendentesCard", new
+                Models.PendentesCardPageModel
+                {
+                    Id = data.Value.Id,
+                    Titulo = data.Value.TituloTemporario ?? string.Empty,
+                    TempoRestante = tempoRestante,
+                })
+            }
+            @if(pendente.Count == 0){
+             <div id="semAbertos" style="text-align: center;">
+                <small style="color:grey;">Nenhum evento em aberto.</small>
+             </div>
+            }
+        </div>
+    </div>
+@if (concluido.Count > 0)
+{
+    <div id="eventos-concluidos-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Concluidos</strong>
+        <div id="eventos-concluidos-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @foreach (var data in concluido)
+            {
+                if(data.Value != null){
+                     <partial name="Components/TimeSelections/_ConcluidosCard"
+                         model="new Models.ConcluidosCardPageModel
+                         {
+                             Id = data.Value.Id,
+                             Titulo = data.Value.TituloTemporario ?? string.Empty,
+                             FotoEnvolvido = data.Value?.Perfil!.Foto ?? string.Empty,
+                             NomeEnvolvido = data.Value?.Perfil!.Nome ?? string.Empty,
+                        }" />
+                }
+
+            }
+        </div>
+    </div>
+} *@

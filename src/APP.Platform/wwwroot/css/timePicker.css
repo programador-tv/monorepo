@@ -1,0 +1,153 @@
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-0.4em);
+  }
+  50% {
+    transform: translateX(0.4em);
+  }
+  75% {
+    transform: translateX(-0.4em);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.btn-container {
+  width: min-content;
+  height: fit-content;
+}
+.time-picker {
+  background: #f3f2ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hours-picker {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.numberMentees-picker {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.minutes-picker {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.numberMaxMentees{
+  display: flex;
+  flex-direction: row;
+}
+.arrowContainer i {
+  background-color: transparent;
+  border: none;
+  font-size: 2em;
+  font-weight: bold;
+  cursor: pointer;
+  color: #939393;
+}
+
+.separation {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.arrowContainer {
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arrowContainer:hover > :only-child {
+  color: black;
+}
+.time-picker-inputs {
+  width: 2em;
+  text-align: center;
+  border: none;
+  font-size: 3em;
+  background-color: #f3f2ef;
+  border-radius: 4%;
+}
+.time-picker-inputs:focus {
+  outline: none;
+}
+.time-picker-input {
+  width: fit-content;
+  text-align: center;
+  border: none;
+  font-size: 1em;
+  background-color: #f3f2ef;
+}
+.time-picker-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.TPContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 0.5em;
+}
+.time-picker-text {
+  font-size: 1.2em;
+  margin: 0.5em 0;
+  font-weight: bold;
+}
+.date-picker {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.dateTime-picker-input {
+  background-color: #f3f2ef;
+  border: none;
+  font-size: 3em;
+  border-radius: 4%;
+  text-align: center;
+}
+.dateTime-picker-input:focus {
+  outline: none;
+}
+.shake {
+  animation: shake 0.5s infinite;
+}
+.timePickerAlert {
+  margin-top: 0.5em;
+  align-self: center;
+  text-align: center;
+  width: 85%;
+  visibility: hidden;
+  margin: 0;
+}
+.displayTimeAlert {
+  font-size: 1em;
+  align-self: center;
+  text-align: center;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 0;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+}

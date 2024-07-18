@@ -1,0 +1,41 @@
+@model _FormNewRoomModel
+<br>
+<h4>
+    Abrir uma sala nova
+</h4>
+<hr>
+<form method="post" action="/Sala?handler=GeneralRoom">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+    <div class="form-group">
+        <label asp-for="@Model.Room.Titulo" class="control-label">Título</label>
+        <input asp-for="@Model.Room.Titulo" class="form-control" placeholder="Título da sala" />
+        <span asp-validation-for="@Model.Room.Titulo" class="text-danger"></span>
+    </div>
+        <br>
+        <div class="form-group modalTags">
+        <label >Tags</label><br>
+        <select multiple="multiple" 
+        asp-for="TagsSelected" 
+            class=" form-control "
+            id="TagsSelectedMentoria">
+            @foreach (var item in Model.RelatioTags)
+            {
+                <optgroup label="@item.Key">
+                    @foreach (var subItem in  Model.RelatioTags[item.Key])
+                    {
+                        <option value="@subItem">@subItem</option>
+                    }
+                </optgroup>
+            }
+        </select>
+        <span asp-validation-for="TagsSelected" class="text-danger"></span>
+
+    </div>
+
+    <br>            
+    <button type="submit"
+        class="button action button-right">
+     <span class="text-button-align-icon">IR PARA SALA</span>
+    </button>
+</form>

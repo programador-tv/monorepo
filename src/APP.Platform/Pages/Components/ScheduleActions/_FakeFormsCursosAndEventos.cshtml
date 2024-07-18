@@ -1,0 +1,74 @@
+﻿<div class="modal fade eventModal" id="eventModalCustosAndEventos" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">Cursos & Eventos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
+
+                    <br>
+
+                    <div class="numberMaxMentees" style="flex-direction:row;">
+                        <label for="maxParticipants" style="display: flex; align-items: center; justify-content: center; margin-right:5%;" title="Número de alunos para mentoria: 2 a 25">
+                            <strong>Selecione o número máximo de participantes:</strong>
+                        </label>
+
+                        <div class="numberMentees-picker">
+
+                            <div class="arrowContainer upHHContainer">
+                                <i class="material-icons mdc-button__icon numberMenteesUp">
+                                    expand_less
+                                </i>
+                            </div>
+                            <input type="number" class="time-picker-inputs" id="maxParticipants"
+                                   max="25"
+                                   min="2"
+                                   maxlength="1"
+                                   placeholder="1"
+                                   value="2"
+                                   disabled />
+                            <div class="arrowContainer downHHContainer">
+                                <i class="material-icons mdc-button__icon numberMenteesDown">
+                                    keyboard_arrow_down
+                                </i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="form-group">
+                        <strong>
+                            Escolha quais áreas de conhecimento voce está disposto
+                            a ensinar ou falar sobre neste tempo disponível
+                        </strong><span style='color:firebrick'>*</span>
+                        <br>
+                        <select multiple="multiple"
+                                class=" form-control isSelect2"
+                                disabled
+                                id="TagsSelectedCursosAndEventos">
+                        </select>
+                    </div>
+
+
+                    <div class="pt-2" id="TituloMentoria">
+                        <label class="control-label">Título<span style='color:firebrick'>*</span></label>
+                        <input id="TimeSelectionMentoriaTitulo" disabled class="form-control" />
+                    </div>
+
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button onclick="loginCallback('cursos')" class="btn button action">Realizar login</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>

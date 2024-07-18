@@ -1,0 +1,72 @@
+<br>
+<h4>
+    Iniciar uma live.
+</h4>
+<hr>
+<div >
+    <div  class="form-group">
+        <label id="platform-opt-label">Escolha uma plataforma<span style="color:firebrick">*</span></label>
+        <div  class="stream-platform">
+            <div  id="browser-opt" class="stream-chosen">
+                <img alt="progTv-logo" src="~/Pictures/_programador-tv.png"
+                     style="width: 30px; height: 30px">
+                <span>Navegador</span>
+            </div>
+            <div id="obs-opt" class="stream-chosen">
+                <img alt="obs-logo" src="~/Pictures/_obs-logo.png"
+                     style="width: 30px; height: 30px">
+                <span>OBS Studio</span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label>Áreas relacionadas</label><br>
+        <select disabled multiple="multiple"
+                class="form-control"
+                id="TagsForLive">
+        </select>
+    </div>
+    <br>
+    <button id="btnPrepararChatGPT"
+            class="button action button-disabled"
+            title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
+             disabled>
+        <i class="material-icons mdc-button__icon" aria-hidden="true">lightbulb</i>
+        <span class="text-button-align-icon">Sugerir contúdo com GPT</span>
+    </button>
+    <hr>
+    
+    <div class="form-group" id="TituloTitulo">
+        <label class="control-label">Título</label>
+        <input id="LiveTitulo" class="form-control " disabled placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+    </div>
+    <br>
+    <div class="form-group" id="TituloDescricao">
+        <label class="control-label"> Descrição</label>
+        <textarea id="LiveDescricao" disabled class="form-control " placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas" ></textarea>
+    </div>
+   
+    <br>
+    <input type="hidden" id="stream-opt">
+    <div class="form-group" id="thumbnailUploadContainer">
+        <label id="thumb-label" class="control-label">Pré-Vizualização<span style='color:firebrick'>*</span></label>
+        <br>
+        <input type="file" id="Live_Thumbnail" accept="image/*" disabled />
+        <br>
+        <br>
+        <div style="text-align: center;">
+
+            (1280x720)
+            <img alt="" id="preview" style="
+                width: 300px;
+                height: 150px;">
+        </div>
+    </div>
+    <br>
+
+    <button onclick="loginCallbackForLive()"
+        class="button action button-right">
+     <span class="text-button-align-icon">FAZER LOGIN PARA CRIAR SALA</span>
+    </button>
+</div>

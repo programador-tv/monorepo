@@ -1,0 +1,28 @@
+@model _NewLiveModalModel
+@using tags
+<div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                @await Html.PartialAsync("Components/Live/_FormNewLive",
+                         new _FormNewLiveModel
+                {
+                    Live = new Domain.Models.ViewModels.PreLiveViewModel(),
+                    TagsSelected = new List<string>(),
+                    RelatioTags = DataTags.GetTags(),
+
+                })
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer src="~/js/liveFlow.js"></script>
+<script defer src="~/js/liveOriginVerification.js"></script>
+<script defer src="~/js/timePickerFlow.js"></script>
+<script defer src="~/js/ScheduleLiveFlowOnChannel.js"></script>

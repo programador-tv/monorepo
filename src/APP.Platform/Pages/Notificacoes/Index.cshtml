@@ -1,0 +1,70 @@
+@page
+@model NotificacoesModel
+
+@using Domain.Enums
+@{
+    ViewData["Title"] = " | Notificações";
+}
+<div class="row">
+    <section 
+            class="default-card card-lg" style="padding:20px">
+        <h2>
+            <i 
+            style="font-size:1em"
+            class="material-icons mdc-button__icon" aria-hidden="true">notifications</i>     
+            Notificações
+        </h2>
+        
+    <hr>
+        <div id="notificacoes">
+            @{var extra = string.Empty;}
+            @foreach(var item in Model.Notifications!)
+            {
+            
+                    <div class="">
+                        @if(!item.Vizualizado)
+                        {
+                            <h5 style="display: flex; justify-content:space-between;
+                            background-color: aliceblue;border-radius: 15px;
+                            padding: 10px;">
+                            
+                            @await Html.PartialAsync("Components/_PerfilAvatar",
+                                new _PerfilAvatar{
+                                    Perfil = item.PerfilGerador ?? new(),
+                                    WithLink = true
+                                })
+                                    <p style="flex-grow: 1;"><strong>@item?.PerfilGerador?.Nome:</strong> @item?.Conteudo</p>
+                                
+                                    <button class="button action" 
+                                        onclick="location.href= '@item?.ActionLink'"
+                                            style="float:right">
+                                        <span>VER</span>
+                                    </button>
+                            </h5>
+                        }else{
+                            <h5 style="display: flex; justify-content:space-between;
+                                padding: 10px;">
+                            
+                                @await Html.PartialAsync("Components/_PerfilAvatar",
+                                    new _PerfilAvatar{
+                                        Perfil = item.PerfilGerador ?? new(),
+                                        WithLink = true
+                                    })
+                                    
+                                <p style="flex-grow: 1;"><strong>@item?.PerfilGerador?.Nome:</strong> @item?.Conteudo</p>
+                            
+                                <button class="button action" 
+                                    onclick="location.href= '@item?.ActionLink'"
+                                        style="float:right">
+                                    <span>VER</span>
+                                </button>
+                            </h5>
+                        }
+                    </div>
+                
+                <hr>
+            }
+        </div>
+
+    </section>
+</div>

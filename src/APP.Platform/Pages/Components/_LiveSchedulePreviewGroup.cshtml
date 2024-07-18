@@ -1,0 +1,30 @@
+@using Domain.Models.ViewModels
+@using Domain.Enums
+@model List<LiveSchedulePreviewViewModel>
+
+@foreach(var item in Model){
+
+    if (item.StatusLive == StatusLive.Preparando)
+    {        
+        @await Html.PartialAsync("Components/_LiveSchedulePreview",
+            new LiveSchedulePreviewViewModel{
+                CodigoLive = item.CodigoLive,
+                DataCriacao = item.DataCriacao,
+                FormatedDuration = item.FormatedDuration,
+                Titulo = item.Titulo,
+                Descricao = item.Descricao,
+                Thumbnail = item.Thumbnail,
+                NomeCriador = item.NomeCriador,
+                UserNameCriador = item.UserNameCriador,
+                FotoCriador = item.FotoCriador,
+                QuantidadeDeVisualizacoes = item.QuantidadeDeVisualizacoes,
+                Visibility = item.Visibility, 
+                LiveEstaAberta = item.LiveEstaAberta,
+                IsUsrCanal = item.IsUsrCanal,
+                StatusLive = item.StatusLive,
+                IsTimeSelection = item.IsTimeSelection
+            })
+    }
+}
+
+

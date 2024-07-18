@@ -1,0 +1,64 @@
+<div class="default-card card-right" >
+    <strong class="tittle-newDesign">📰 Notícias</strong>
+    
+        
+    <h1 class="subTitle-newDesign">Tab News</h1>
+    <ul class="font-tabnewsAndDevTo" id="tabnews" >
+
+    </ul>
+
+    <hr />
+
+    <h1 class="subTitle-newDesign" >Dev. to</h1>
+
+
+    <ul class="font-tabnewsAndDevTo" id="devto">
+
+    </ul>
+</div>
+<script>
+    const TABBASEURL = "https://www.tabnews.com.br/";
+    const tabnews = document.querySelector("#tabnews");
+    const icon = 
+    `
+    <svg id='img-svg-tamanho'viewBox='0 0 4 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <path id='img-svg' d='M3.53796 0.106445H0V29.1064H3.53796V0.106445Z' fill='#F3F2EF'/> </svg>
+    `
+    
+    fetch("https://www.tabnews.com.br/api/v1/contents?page=1&per_page=5&strategy=relevant")
+        .then(e => e.json())
+        .then(data => {
+            data = data.slice().reverse();
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.classList.add("news-line")
+                const a = document.createElement("a");
+                a.target = "_blank"
+                a.classList.add("news-anchor")
+                a.href = TABBASEURL + item.owner_username + "/" + item.slug
+                a.innerHTML = icon + item.title;
+
+                li.prepend(a)
+                tabnews.prepend(li)
+            })
+        })
+
+    const devto = document.querySelector("#devto");
+    fetch("https://dev.to/api/articles")
+        .then(e => e.json())
+        .then(data => {
+            data.length = 5
+            data = data.slice().reverse();
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.classList.add("news-line")
+                const a = document.createElement("a");
+                a.classList.add("news-anchor")
+                a.href = item.url
+                a.target = "_blank"
+                a.innerHTML = icon + item.title;
+                li.prepend(a)
+                devto.prepend(li)
+            })
+        })
+</script>

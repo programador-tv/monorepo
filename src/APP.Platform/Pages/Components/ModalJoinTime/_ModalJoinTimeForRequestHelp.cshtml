@@ -1,0 +1,63 @@
+﻿@model _ModalJoinTimeForRequestHelp
+@{
+    var requestProfileId = Model.requestProfileId;
+}
+<div class="modal fade" id="matcHelphModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="alunoMatch">
+                Carregando...
+            </div>
+            <form asp-page-handler="TrySetMentor" class="form-button-solicitar-mentoria">
+                <input id="perfilJoinTime" type="hidden" asp-for="JoinTime.PerfilId">
+                <input id="timeSelectionJoinTime" type="hidden" asp-for="JoinTime.TimeSelectionId">
+                <input id="requestProfileId" type="hidden" value="@requestProfileId" />
+                <br>
+                <div id="solicitarBtnDiv">
+                    <button type="submit" id="solicitarBtn" class="button button-capacitacao">
+                        @if (Model.IsLogedUser)
+                        {
+                            <text>
+                                Oferecer orientação
+                            </text>
+                        }
+                        else
+                        {
+                            <text>
+                                Realizar login
+                            </text>
+                        }
+                    </button>
+                </div>
+
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#matcHelphModal").on("show.bs.modal", function (event) {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+            let modal = $(this);
+            let btn = modal.find("#solicitarBtn")
+            let requestProfileId = document.getElementById('requestProfileId').value;
+            const profileIdFromFormRequest = $("#perfilJoinTime").val();
+            const tooltipPhrase = "Você não pode se oferecer para orientar a si mesmo";
+            let isProfileMatched = profileIdFromFormRequest == requestProfileId;
+            btn.attr("disabled", isProfileMatched);
+            btn.attr("class", isProfileMatched ? "button disabled" : "button button-capacitacao");
+            btn.attr("style", isProfileMatched ? "cursor: not-allowed;" : "cursor: pointer;");
+            btn.attr("data-toggle", isProfileMatched ? "tooltip" : "");
+            btn.attr("data-original-title", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("data-bs-original-title", isProfileMatched ? "true" : "");
+            btn.attr("data-placement", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("title", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("data-bs-container", isProfileMatched ? "#solicitarBtnDiv" : "");
+            btn.attr("data-bs-placement", isProfileMatched ? "left" : "");
+        });
+    });
+</script>

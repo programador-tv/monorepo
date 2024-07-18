@@ -1,0 +1,148 @@
+﻿@page
+@using APP.Platform.Pages
+@using Domain.Enums
+@model BuscaIndexModel
+@{
+    ViewData["Title"] = " | Busca";
+    bool findCheck = false;
+    Guid UserId = Model.UserProfile.Id;
+    bool isAuth = User.Identity.IsAuthenticated;
+}
+@if (Model.Perfil?.Count() > 0)
+{
+    findCheck = true;
+    <hr>
+    <h4>Canais</h4>
+    <div style="display:flex; flex-wrap: wrap; gap: 8px">
+        @foreach (var item in Model.Perfil)
+        {
+            if(item.Id != UserId)
+            {
+                <div class="d-flex flex-column align-items-center busca-card" style="position: relative">
+                    <div style="width: 100%;padding: 10px;">
+                        <a href="/Canal/?usr=@item.UserName" style="text-decoration: none; color: black;display: flex;
+                        flex-direction: column; align-items: center;">
+
+                            <img onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
+                                 class="avatar-busca link-avatar"
+                                 alt="@(item.UserName)"
+                                 src="/@item.Foto">
+                            <span class="w-100 d-flex flex-column justify-content-center mb-1 align-items-center text-center name-card-busca">
+                                @item.Nome
+                            </span>
+                            <p style="font-size: 14px; margin-bottom: 0;">
+                                @item.Bio
+                            </p>
+                        </a>
+                    </div>
+                    @if(!isAuth)
+                    {
+                        <div class="button-card-busca-no-auth">
+                            <span style="font-size: 14px; font-weight: 700; color: #437AE2;">
+                                @item.Followers
+                            </span>
+                            <span style="font-size: 14px; font-weight: 500;">
+                                @(item.Followers == 1 ? "Seguidor" : "Seguidores")
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="button-card-busca follower-div" style="cursor: pointer;" onclick="FollowEventButton('@item.Id')">
+                            <span id="followerCount_@item.Id" style="font-size: 14px; font-weight: 700; color: #437AE2;">
+                                @item.Followers
+                            </span>
+                            <span class="follower-span" id="followerSpan_@item.Id" data-original="@(item.Followers == 1 ? "Seguidor" : "Seguidores")" data-hover="@(item.isFollowing ? "Deixar de seguir" : "Seguir Perfil")" style="font-size: 14px; font-weight: 500;">
+                                @(item.Followers == 1 ? "Seguidor" : "Seguidores")
+                            </span>
+                        </div>
+                    }
+                    
+                </div>
+            }
+            
+        }
+
+    </div>
+}
+@if(Model.Lives?.Count() > 0)
+{
+    findCheck = true;
+    <hr/>
+    <h4>Lives</h4>
+            
+    <div class="videos-group">
+        @foreach (var item in Model.Lives) {
+            @await Html.PartialAsync("Components/_Video", item)
+        }
+    </div>
+}
+@if (!findCheck)
+{
+    <div id="searchNotFound">Nenhum resultado encontrado durante a busca.</div>
+}
+
+<script>
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    if (isMobileDevice()) {
+        const emptySearchResultText = document.getElementById("searchNotFound");
+        emptySearchResultText.style.marginBottom = "5px";
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const followerDivs = document.querySelectorAll('.follower-div');
+
+        followerDivs.forEach(div => {
+            div.addEventListener('mouseenter', function () {
+                const span = div.querySelector('.follower-span');
+                span.innerText = span.getAttribute('data-hover');
+            });
+
+            div.addEventListener('mouseleave', function () {
+                const span = div.querySelector('.follower-span');
+                span.innerText = span.getAttribute('data-original');
+
+            });
+        });
+    });
+
+    function FollowEventButton(entityKey) {
+        const followerCount = document.querySelector(`#followerCount_${entityKey}`);
+        const followerSpan = document.querySelector(`#followerSpan_${entityKey}`);
+        const url = `?handler=Follow&entityKey=${entityKey}`;
+
+        fetch(url)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao enviar a solicitação GET.");
+                }
+               
+                return response.json();
+            })
+            .then(function (data) {
+                const auxCount = parseInt(followerCount.innerHTML);
+
+                if (data.isFollowing) {
+                    followerCount.innerHTML = auxCount + 1;
+                    followerSpan.setAttribute('data-original', auxCount + 1 === 1 ? "Seguidor" : "Seguidores");
+                    followerSpan.innerHTML = auxCount + 1 === 1 ? "Seguidor" : "Seguidores";
+                    followerSpan.setAttribute('data-hover', "Deixar de seguir");
+
+                } else {
+                    if (auxCount > 0) {
+                        followerCount.innerHTML = auxCount - 1;
+                    }
+                        followerSpan.setAttribute('data-original', auxCount - 1 === 1 ? "Seguidor" : "Seguidores");
+                        followerSpan.setAttribute('data-original', auxCount - 1 === 1 ? "Seguidor" : "Seguidores");
+                        followerSpan.innerHTML = auxCount - 1 === 1 ? "Seguidor" : "Seguidores";
+                        followerSpan.setAttribute('data-hover', "Seguir Perfil");
+                }
+            })
+            .catch(function (error) {
+                console.error("Erro na solicitação fetch:", error);
+            });
+    }
+</script>

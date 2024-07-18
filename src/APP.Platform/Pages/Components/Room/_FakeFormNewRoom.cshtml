@@ -1,0 +1,29 @@
+<br>
+<h4>
+    Abrir uma sala nova
+</h4>
+<hr>
+<div>
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+    <div class="form-group">
+        <label class="control-label">Título</label>
+        <input disabled class="form-control" placeholder="Título da sala" />
+    </div>
+        <br>
+        <div class="form-group modalTags">
+        <label >Tags</label><br>
+        <select multiple="multiple" disabled
+            class=" form-control "
+            id="TagsSelectedMentoria">
+        </select>
+
+    </div>
+
+    <br>            
+    <button
+         onclick="window.location.href = '/Identity/Account/Login'"
+        class="button action button-right">
+     <span class="text-button-align-icon">FAZER LOGIN PARA CRIAR SALA</span>
+    </button>
+</div>

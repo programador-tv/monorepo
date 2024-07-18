@@ -1,0 +1,76 @@
+version: '3.1'
+
+services:
+  core-api:
+   image: ghcr.io/programador-tv/dev-core-api
+   container_name: core-api
+   restart: always
+   ports:
+    - 9002:80
+   build:
+    context: ./src/
+    dockerfile: ./WebApi/dockerfile.aspnet
+
+  core-websocket:
+   image: ghcr.io/programador-tv/dev-core-websocket
+   container_name: core-websocket
+   restart: always
+   ports:
+    - 9003:80
+   build:
+    context: ./src/
+    dockerfile: ./WebSocket/dockerfile.aspnet
+
+  core-background:
+   image: ghcr.io/programador-tv/dev-core-background
+   container_name: core-background
+   restart: always
+   build:
+    context: ./src/
+    dockerfile: ./Background/dockerfile.aspnet
+
+  core-background-live:
+   image: ghcr.io/programador-tv/dev-core-background-live
+   container_name: core-background-live
+   restart: always
+   build:
+    context: ./src/
+    dockerfile: ./Background.Live/dockerfile.aspnet
+
+  core-background-browser:
+   image: ghcr.io/programador-tv/dev-core-background-browser
+   container_name: core-background-browser
+   restart: always
+   build:
+    context: ./src/
+    dockerfile: ./Background.Browser/dockerfile.aspnet
+
+  core-rtmp-live:
+   image: ghcr.io/programador-tv/dev-core-rtmp-live
+   container_name: core-rtmp-live
+   restart: always
+   build:
+    context: ./src/
+    dockerfile: ./Background.Live/dockerfile.aspnet
+
+  room:
+    image: ghcr.io/programador-tv/dev-room
+    container_name: room
+    restart: always
+    build: 
+      context: ./src/APP.Room
+      dockerfile: ./Dockerfile
+      args:
+        - ENVIROMENT=Develop
+    ports:
+      - 9004:3000
+
+  platform:
+   image: ghcr.io/programador-tv/dev-platform
+   container_name: platform
+   restart: always
+   build: 
+    context: ./src/
+    dockerfile: ./APP.Platform/dockerfile.aspnet
+   ports:
+    - 9003:80

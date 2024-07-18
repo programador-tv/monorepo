@@ -1,0 +1,271 @@
+@page
+@model PerfilModel
+
+@using Domain.Entities;
+
+
+@{
+    ViewData["Title"] = " | Perfil";
+}
+<div class="row">
+    <section class="default-card card-content">
+
+        <h4 style="margin- bottom:25px; font-weight:400; font-size: 30px; color:black;"> EDITAR PERFIL</h4>
+        <form id="formulario" method="post" enctype="multipart/form-data" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (!Model.hasPefil)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Finalize seu perfil para utilizar os serviços
+                </div>
+            }
+            <br>
+            <div class="form-card">
+
+                <div class="form-group form-section">
+                    <label asp-for="Perfil.Nome" class="control-label">Nome<span
+                            style='color:firebrick'>*</span></label>
+                    <input asp-for="Perfil.Nome" maxlength="60" class="campo form-control"
+                        placeholder="Digite seu nome" />
+                    <div class="erro-msg" style="color: red;  margin-top: 5px;"></div>
+                    <span asp-validation-for="Perfil.Nome" class="text-danger"></span>
+                </div>
+
+                <div class="form-group perfil-group form-section">
+                    <label asp-for="Perfil.UserName" class="control-label">UserName<span
+                            style='color:firebrick'>*</span></label>
+                    <input asp-for="Perfil.UserName" maxlength="60" class="campo form-control"
+                        placeholder="Digite seu Username" />
+                    <div class="erro-msg" style="color: red; margin-top: 5px;"></div>
+                    <span asp-validation-for="Perfil.UserName" class="text-danger" invalid="????"></span>
+                    @if (Model.UsernameExist)
+                    {
+                        <div class="text-danger" role="alert">
+                            Nome de Usuario já em uso
+                        </div>
+                    }
+                </div>
+
+
+                <div class="form-group form-section">
+                    <label>Titulo<span style='color:firebrick'>*</span></label>
+                    <input asp-for="Perfil.Bio" maxlength="100" class="campo form-control"
+                        placeholder="Digite seu titulo" />
+                    <div class="erro-msg" style="color: red; margin-top: 5px;"></div>
+                    <span asp-validation-for="Perfil.Bio" class="text-danger"></span>
+                </div>
+
+                <div id="Perfil-email" class="form-section form-group perfil-group">
+                    <label class="control-label">E-mail</label>
+                    <input disabled="disabled" value="@User.Claims.ToArray()[1].Value" class="form-control" />
+                </div>
+
+
+
+                <div class="form-group form-section">
+                    <label for="basic-url" class="form-label">Linkedin</label>
+                    <div class=" linkedin_field input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">https://www.linkedin.com/in/</span>
+                        <input id="perfil-linkedln" type="text" class="form-control " asp-for="Perfil.Linkedin">
+                        <span asp-validation-for="Perfil.Linkedin" class="text-danger"></span>
+
+                    </div>
+                </div>
+
+                <br>
+                <div class="form-group form-section">
+                    <label for="basic-url" class="form-label">Github</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">https://github.com/</span>
+                        <input id="perfil-github" type="text" class="form-control github_field" asp-for="Perfil.GitHub">
+                        <span asp-validation-for="Perfil.GitHub" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <br>
+
+
+                <div class="form-group form-section">
+                    <label>Bio</label>
+                    <textarea asp-for="Perfil.Descricao" maxlength="1000" class="form-control"
+                        placeholder="Conte-nos um pouco sobre você"></textarea>
+                    <span asp-validation-for="Perfil.Descricao" class="text-danger"></span>
+                </div>
+                <br>
+
+                <div class="form-section form-group perfil-group" style="margin: 0;">
+                    <div>
+                        <label style="margin: 17px;">Editar Foto</label>
+                        <div style="display: flex;justify-content: center;">
+                            <label style="display: flex;
+                                text-align: center;
+                                position: absolute;" for="imagemselecionada" class="control-label">
+                                <div class="editProfileIcon" style="width: 36px;
+                                    height: 36px;
+                                    background-color: #F3F2EF;
+                                    border-radius: 20px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    position: absolute;
+                                    right: -5px;
+                                    top: -5px;">
+                                    <img id="editProfilePhotoIcon" src="/pencil.svg" style="cursor:pointer; position: relative;" />
+                                </div>
+                                <div>
+                                    <img src="/@Model.UserProfile.Foto" id="imagemExibida"
+                                         style="object-fit: cover;
+                                        width: 150px;
+                                        height: 150px;
+                                        border-radius: 50%;
+                                        box-shadow: 0px 0px 1px gray;" onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
+                                         alt="@(Model.UserProfile.Foto)" />
+                                </div>
+                            </label>
+                    </div>
+                        </div>
+
+                    <input type="file" id="imagemInput" accept="image/*" asp-for="Perfil.Foto" class="form-control"
+                        style="display:none;" />
+                    <span asp-validation-for="Perfil.Foto" class="text-danger"></span>
+
+                </div>
+            </div>
+
+
+            <div class="form-section form-group ">
+                <label for="experiencia">Nível de Experiência:</label>
+                <select id="experiencia" asp-for="Perfil.Experiencia" class="form-control">
+                    <option value="">Selecione um nível de experiência</option>
+                    <option value="MenosDe1Ano">Menos de 1 ano</option>
+                    <option value="Entre1E3Anos">Entre 1 e 3 anos</option>
+                    <option value="Entre3E5Anos">Entre 3 e 5 anos</option>
+                    <option value="Entre5E7Anos">Entre 5 e 7 anos</option>
+                    <option value="MaisDe8Anos">Mais de 8 anos</option>
+                </select>
+                <span asp-validation-for="Perfil.Experiencia" class="text-danger"></span>
+            </div>
+
+            <br>
+
+            @if (!Model.hasPefil)
+            {
+
+                <div class="form-group" style="text-align: right;">
+                    <input type="submit" value="Finalizar cadastro" id="sumbmitBtn" class="button-capacitacao action" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group" style="text-align: right;">
+                    <input type="submit" value="Atualizar meus dados" id="sumbmitBtn" class="button-capacitacao action update" />
+                </div>
+            }
+        </form>
+
+</div>
+</section>
+</div>
+
+    <style>
+        .editProfileIcon:hover {
+            box-shadow: 0px 0px 5px gray;
+        }
+    </style>
+
+
+@section Scripts {
+    <script>
+        const formulario = document.getElementById('formulario');
+        const button = document.getElementById('sumbmitBtn');
+
+        formulario.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const camposInputs = formulario.querySelectorAll('.campo');
+            const errosCampos = document.querySelectorAll('.erro-msg');
+            const mensagens = [
+                'Nome é um campo obrigatório',
+                'Titulo é um campo obrigatório',
+                'UserName é um campo obrigatório',
+            ];
+            let camposValidos = true;
+
+            camposInputs.forEach((campoInput, index) => {
+                const valorCampo = campoInput.value.trim();
+                const mensagemElemento = errosCampos[index];
+
+                if (valorCampo === '') {
+                    mostrarErro(campoInput, mensagemElemento, mensagens[index]);
+                    camposValidos = false;
+                } else {
+                    removerErro(campoInput, mensagemElemento);
+                }
+            });
+            var formData = new FormData(formulario);
+            if (camposValidos && button.value === 'Atualizar meus dados') {
+                Swal.fire({
+                    text: 'Perfil atualizado com sucesso!'
+                });
+                submitFomrs(formData);
+            } else if (camposValidos && button.value === 'Finalizar cadastro') {
+                Swal.fire({
+                    text: 'Cadastro finalizado com sucesso!',
+                });
+                submitFomrs(formData);
+            }
+        });
+
+        function submitFomrs(formData) {
+            fetch('@Url.Page("Perfil")', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        console.log('Formulário enviado com sucesso!');
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Erro de rede ao enviar formulário:', error);
+                });
+        }
+
+        function mostrarErro (campo, mensagemElemento, mensagem) {
+            campo.style.border = '1px solid red';
+            mensagemElemento.textContent = mensagem;
+        }
+
+        function removerErro (campo, mensagemElemento) {
+            campo.style.border = '';
+            mensagemElemento.textContent = '';
+        }
+
+        let editPhoto = document.getElementById('editProfilePhotoIcon');
+        let foto = document.getElementById('imagemExibida');
+        let file = document.getElementById('imagemInput');
+
+        editPhoto.addEventListener('click', () => {
+            file.click();
+        });
+
+        file.addEventListener('change', () => {
+            if (file.files.length <= 0) {
+                return;
+            }
+
+            let reader = new FileReader();
+
+            reader.onload = () => {
+                foto.src = reader.result;
+            }
+
+            reader.readAsDataURL(file.files[0]);
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

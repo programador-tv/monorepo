@@ -1,0 +1,658 @@
+﻿@using tags
+@using Microsoft.Extensions.Options
+@using Domain.Entities
+@inject SignInManager<IdentityUser> SignInManager
+@inject IOptions<Settings> Settings
+
+@{
+
+var enviroment  =
+    Environment.GetEnvironmentVariable("ENVIROMENT")
+    ?? Settings.Value.ENVIROMENT
+    ?? string.Empty;
+
+var liveapi_url =
+    Environment.GetEnvironmentVariable("LIVEAPI_URL")
+    ?? Settings.Value.LIVEAPI_URL
+    ?? string.Empty;
+
+var ActualPage = @Context.GetRouteValue("page").ToString();
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="language" content="Portuguese">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="programador, aprenda programação grátis, desenvolvimento de software, Brasil, transmissões ao vivo, Twitch, salas de reunião, Google Meets, mentorias agendadas, Cambly, Omegle, aprendizagem, tecnologia da informação, desenvolvedor junior">
+    @{
+
+        if (ActualPage == "/Canal/Index")
+        {
+            var freeTimeId = Context.Request.Query["freetime"];
+
+            if (!string.IsNullOrEmpty(freeTimeId))
+            {
+                <meta name="author" content="@Html.Raw(Model.PerfilOwner.Nome)">
+                <meta name="description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
+                <meta property="og:title" content="Programador.TV">
+                <meta property="og:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
+                <meta property="og:image" content="@(liveapi_url)/Room/GetImageFreetime?id=@freeTimeId">
+
+                <meta name="twitter:title" content="Programador.TV">
+                <meta name="twitter:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
+                <meta name="twitter:image" content="@(liveapi_url)/Room/GetImageFreetime?id=@freeTimeId">
+            }else{
+                // TODO: Gerar preview do perfil do usuario
+            }
+
+        }
+        else if (ActualPage == "/Watch/Index")
+        {
+            <meta name="author" content="@Html.Raw(Model.PerfilOwner.Nome)">
+            <meta name="description" content="@Html.Raw(Model.Live.Descricao)">
+            <meta property="og:title" content="@Html.Raw(Model.Live.Titulo)">
+            <meta property="og:description" content="@Html.Raw(Model.Live.Descricao)">
+            <meta property="og:image" content="@(liveapi_url)/Room/GetImageLive?id=@Model.Live.Id">
+
+            <meta name="twitter:title" content="@Html.Raw(Model.Live.Titulo)">
+            <meta name="twitter:description" content="@Html.Raw(Model.Live.Descricao)">
+            <meta name="twitter:image" content="@(liveapi_url)/Room/GetImageLive?id=@Model.Live.Id">
+        }
+        else
+        {
+            <meta name="author" content="Programador.tv">
+            <meta name="description" content="Sua aplicação de transmissões ao vivo estilo Twitch, salas de reunião estilo Google Meets e mentorias agendadas estilo Cambly e Omegle. Desenvolvida para solucionar problemas de aprendizagem e compartilhamento de conhecimento no campo da tecnologia da informação para desenvolvedores de software no Brasil.">
+
+            <meta property="og:title" content="Programador.TV">
+            <meta property="og:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
+            <meta property="og:image" content="/logo.png">
+
+            <meta name="twitter:title" content="Programador.TV">
+            <meta name="twitter:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
+            <meta name="twitter:image" content="/logo.png">
+        }
+    }
+    <meta name="robots" content="index, follow">
+
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    @if (ActualPage == "/Account/Login")
+    {
+            <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    }
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/codewithme.general.css" asp-append-version="true" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="~/js/feedback.js"></script>
+
+</head>
+<body>
+    @{
+        var route = @Context.GetRouteValue("page").ToString();
+        if(route != "/Account/Login")
+        {
+    @await Html.PartialAsync("Components/_Agenda")
+    @await Html.PartialAsync("Components/_Logout")
+
+            <header id="header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3" style="margin-bottom: 0!important">
+                    <div class="container">
+                        <a asp-area="" asp-page="/Index">
+                            <img width="220" src="~/logo.png" alt="">
+                        </a>
+                        <form action="~/busca" style="display:flex; margin-left:20px">
+                            <input name="key" required style="border: none;
+                                border-radius: 9px;
+                                background: rgb(222, 222, 222);
+                                color: black;
+                                padding: 0px 20px;"
+                                placeholder="Pesquisar" id="searchBar" />
+                            <button type="submit" class="mdc-button"
+                                    style="color: black; padding-left: 0; margin-left: -.5%;">
+                                <i class="material-icons mdc-button__icon"
+                                aria-hidden="true">search</i>
+                            </button>
+                        </form>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse ">
+                            <ul class="navbar-nav flex-grow-1">
+                            </ul>
+                            <partial name="_LoginPartial" />
+
+                        </div>
+                    </div>
+                </nav>
+            </header>
+    @* <div style="background: #00B4D8;color: #ffffff;padding: 10px;text-align:center;font-size:18px">
+        <strong>Atenção</strong> esta plataforma ainda está em desenvolvimento e sujeita a mudanças <strong>constantes</strong>.
+        <a href="/Sobre">Saiba mais</a>
+    </div> *@
+
+    <div class="container" style="display: flex; flex-wrap: wrap;">
+        <aside id="theGreatLeftAside" style="aria-label="User Menu">
+            <div class="leftPanel">
+                <a asp-area="" asp-page="/Index">
+                    <img width="182" src="~/logo.png" alt="" style="
+                        margin-top: 25px;
+                        margin-left: -14px;
+                        margin-bottom: 25px;">
+                </a>
+                <br />
+                <form action="~/busca" style="display:flex;justify-content: center;
+                align-items: center;">
+                    <div style="position: relative">
+                        <input name="key" required style="
+                            border: 1px solid #CACACA;
+                            border-radius: 4px;
+                            background: #F2F2F2;
+                            color: black;
+                            padding: 10px;
+                            width: 260px;
+                            height: 44px;"
+                            placeholder="Buscar" id="searchBar" />
+                        <button type="submit" class="btn" style="color: black; position:absolute; right: 0; cursor:pointer;margin: 5px 0px;">
+                            <img src="~/Pictures/Icons/lupa.svg" alt="search" style="width: 19.53px;height: 18.52px">
+                        </button>
+                    </div>
+                </form>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between left-menu">
+                    @* <ul class="navbar-nav flex-grow-1">
+                    </ul>*@
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </aside>
+        <aside id="theLeftFakeAside"></aside>
+        <main role="main" id="theGreatContent">
+            @RenderBody()
+            @{
+
+                var routesWithoutFooterAd = new string[]{
+                    "/Account/Login",
+                    "/Perfil/Index",
+                    "/Studio/Index",
+                };
+            }
+
+        </main>
+
+          @{
+                var routesWithoutAside = new string[]{
+                    "/Sobre/Index",
+                    "/Ensinar/Index",
+                    "/Account/Login",
+                    "/Perfil/Index",
+                    "/Studio/Index",
+                    "/Studio/OBS",
+                    "/Watch/Index",
+                    "/Canal/Editor",
+                    "/Canal/Index",
+                    "/Aprender/Index",
+                };
+
+            }
+            @if(routesWithoutAside.Any(e=> route.Contains(e)))
+            {
+              @if(route == "/Ensinar/Index"){
+                <aside aria-label="Seus eventos" id="theGreatAside">
+
+                </aside>
+              }
+              @if(route == "/Aprender/Index"){
+                <aside aria-label="Seus eventos" id="theGreatAside">
+
+                </aside>
+              }
+              @if(route == "/Sobre/Index"){
+                <aside id="theGreatAside" aria-label="Para você">
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">Parceiros</strong>
+                        <img src="/Pictures/msfs.png" style="width: 300px;">
+                        <br>
+                    </div>
+
+                @if(enviroment == "Production"){
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">Doação</strong>
+                    <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+
+                                    <script async
+                                    src="https://js.stripe.com/v3/buy-button.js">
+                                    </script>
+
+                                    <stripe-buy-button
+                                    buy-button-id="buy_btn_1NQAK8Bu4SWvbh9BLRsaRFWh"
+                                    publishable-key="pk_live_51NPvLsBu4SWvbh9B2ebkdnPXgq4It1YqQLYgPqnbEvg29lqJIPgetZyiusKATZo4a2xjmhhc1R4mTDMx3KuDV8u300AJLhmE3i"
+                                    >
+                                    </stripe-buy-button>
+                    </section>
+                    </div>
+                    }
+
+
+
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">Onde estamos</strong>
+                        <br>
+                        <br>
+                        <div style="display: flex; justify-content: space-evenly">
+                         <a href="https://github.com/programador-tv/" style="text-decoration:none" target="_blank">
+                            <img style="margin-left:15px;width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+                        </a>
+                        <a style="text-decoration:none" href="https://www.linkedin.com/company/programador-tv" target="_blank">
+                            <img style="margin-left:15px;width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                        </a>
+                      
+                        </div>
+                        <br>
+
+                    </div>
+                </aside>
+              }
+            @if (route == "/Canal/Index" ){
+                <aside id="theGreatAside">
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🧑‍🏫 Tempo disponível</strong>
+                        <section id="eventos-usuario"></section>
+                    </div>
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🎒 Dúvidas</strong><section id="pedidos-usuario"></section>
+                    </div>
+                </aside>
+              }
+            }else
+            {
+                <aside id="theGreatAside" aria-label="Para você">
+                @if(route == "/Index")
+                {
+                    @* <div id="NextMentoria" class="default-card card-right" style=" flex-direction: column">
+                        <strong class="tittle-newDesign">🛠️ Capacitação</strong>
+                        <div id="mentoriaBoard" class="scrollable-board scrollable-list" style="padding: 7px"></div>
+                         <section>
+                            <button class='action-purple button'style="margin: 0 auto;"
+                                data-bs-toggle="modal" data-bs-target="#capacitacaoModal"
+                                >
+                                    VER MAIS
+                            </button>
+                            <br>
+                            <button class='action-purple button'style="margin: 0 auto;"
+                                data-bs-toggle="modal" data-bs-target="#ajudarModal"
+                                >
+                                    DISPONIBILIZAR AJUDA
+                            </button>
+                        </section>
+                    </div> *@
+                    @* <div id="NextQuestion" class="default-card card-right" style=" flex-direction: column">
+
+                        <strong class="tittle-newDesign">🤝 Tira dúvidas</strong>
+                        <div id="ajudaPedidaBoard" class="scrollable-learn-board scrollable-list" style="padding: 7px"></div>
+                        <section>
+                                <button class='action-blue button' style="margin: 0 auto;" onclick="openTimePickerForHelp()">
+                                    PEDIR AJUDA
+                                </button>
+                            <br>
+                            <button class='action-blue button' style="margin: 0 auto;"
+                                    data-bs-toggle="modal" data-bs-target="#pedidosModal">
+                                OUTROS PEDIDOS
+                            </button>
+
+                        </section>
+                    </div> *@
+                }
+                @* <div class="default-card card-right" style=" flex-direction: column">
+                    <strong class="tittle-newDesign">🧪 Experimentos</strong>
+                    <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 80px;"
+                                src="https://hubs.mozilla.com/_next/static/media/hubs_logo_light.c58bb120.svg">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 80%">
+                                    Mundos Imersivos 3D
+                                </p>
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://91906bbe89.us2.myhubs.net">
+                                    <button class="button" style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> Programador.TV Hub
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                        <br>
+                </div> *@
+                @* <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🤖 I.A.</strong>
+
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 42px; border-radius: 33px;"
+                                src="https://pbs.twimg.com/profile_images/1526251266862505985/KlWqqTp1_400x400.png">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 80%">
+                                    Fale com o ChatGPT em tempo real (Inglês, Francês, Alemão e Espanhol)
+                                </p>
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://kitt.livekit.io/">
+                                    <button class="button" style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> KITT
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                         <hr/>
+
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 42px; border-radius: 33px;"
+                                src="https://avatars.githubusercontent.com/u/120154269?s=48&v=4">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 80%">
+                                    Agentes de IA autônomos no seu navegador
+                                </p>
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://agentgpt.reworkd.ai/pt">
+                                    <button class="button"  style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> AgentGPT
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                       @* <hr/>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 42px; border-radius: 33px;"
+                                src="https://avatars.githubusercontent.com/u/130738209?s=48&v=4">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 80%">
+                                    Agente de IA autônomo na sua máquina
+                                </p>
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://github.com/Significant-Gravitas/Auto-GPT">
+                                    <button class="button"  style="margin-top:0; ">
+                                        <img b-d6e5j4zdua="" src="https://eduardoworrel.com/imgs/social/github%20(1).png" width="20px" style="margin-right: 5px;"> Auto-GPT
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                        <hr>
+                         <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <div style="width: 42px;height:42px; border-radius: 33px; background: #139fb3"></div>
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 80%">
+                                    Especifique o que você quer construir, a IA pede esclarecimentos e depois o constrói.
+                                </p>
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://github.com/AntonOsika/gpt-engineer">
+                                    <button class="button"  style="margin-top:0; ">
+                                        <img b-d6e5j4zdua="" src="https://eduardoworrel.com/imgs/social/github%20(1).png" width="20px" style="margin-right: 5px;"> gpt-engineer
+                                    </button>
+                                </a>
+                            </div>
+                        </section> 
+                    </div> *@
+                    <div class="default-card card-right" >
+                            <strong class="tittle-newDesign">💼 Jobs</strong>
+                            <br>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 48px;"
+                                src="https://mandajobs.tech/manda_jobs_logo.svg">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 90%">
+                                    Filtro inteligente para o Linkedin
+                                </p>
+
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://mandajobs.tech">
+                                      <button class="button"  style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> Manda Jobs
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                        <hr/>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 72px; border-radius: 33px;"
+                                src="https://trampardecasa.com.br/images/logo.svg">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 90%">
+                                    Vagas remotas no seu e-mail
+                                </p>
+
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://trampardecasa.com.br/">
+                                      <button class="button"  style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> Trampar de Casa
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                     @await Html.PartialAsync("_News")
+
+            @if(enviroment == "Production"){
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🛟 Doação</strong>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+
+                                        <script async
+                                        src="https://js.stripe.com/v3/buy-button.js">
+                                        </script>
+
+                                        <stripe-buy-button
+                                        buy-button-id="buy_btn_1NQAK8Bu4SWvbh9BLRsaRFWh"
+                                        publishable-key="pk_live_51NPvLsBu4SWvbh9B2ebkdnPXgq4It1YqQLYgPqnbEvg29lqJIPgetZyiusKATZo4a2xjmhhc1R4mTDMx3KuDV8u300AJLhmE3i"
+                                        >
+                                        </stripe-buy-button>
+                        </section>
+                    </div>
+                }
+
+
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">Onde estamos</strong>
+                        <br>
+                        <br>
+                        <div style="display: flex; justify-content: space-evenly">
+                         <a href="https://github.com/programador-tv/" style="text-decoration:none" target="_blank">
+                            <img style="margin-left:15px;width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+                        </a>
+                        <a style="text-decoration:none" href="https://www.linkedin.com/company/programador-tv" target="_blank">
+                            <img style="margin-left:15px;width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                        </a>
+                    
+                        </div>
+                        <br>
+                    </div>
+                </aside>
+            }
+    </div>
+    <br>
+        } else {
+            @RenderBody()
+        }
+    }
+    <footer class="border-top footer text-muted" id="footer">
+        <div class="container">
+            &copy; 2024 - Programador.TV
+            - <a asp-area="" asp-page="/Sobre/Index">Sobre</a>
+            - <a asp-area="" asp-page="/Sobre/Services">Termos de serviço</a>
+            - <a asp-area="" asp-page="/Sobre/Privacy">Política de Privacidade</a>
+        </div>
+    </footer>
+    @if (route == "/Index")
+    {
+      #warning deve ser enviado para o page correspondente
+      <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 @if (SignInManager.IsSignedIn(User)){
+
+                    @await Html.PartialAsync("Components/Room/_FormNewRoom",
+                    new _FormNewRoomModel {
+                        Room = new Room(),
+                        TagsSelected = new List<string>(),
+                        RelatioTags = DataTags.GetTags()
+                    })
+
+                 }else{
+                    @await Html.PartialAsync("Components/Room/_FakeFormNewRoom")
+                 }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+      <div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+                    @if (SignInManager.IsSignedIn(User)){
+
+                        @await Html.PartialAsync("Components/Live/_FormNewLive",
+                        new _FormNewLiveModel {
+                            Live = new Domain.Models.ViewModels.PreLiveViewModel(),
+                            TagsSelected = new List<string>(),
+                            RelatioTags = DataTags.GetTags(),
+                            ScheduleTimeSelection = new Domain.RequestModels.ScheduleTimeSelectionRequestModel(),
+                            ScheduleLiveForTimeSelection = new Domain.RequestModels.ScheduleLiveForTimeSelection(),
+                            ScheduleFreeTimeForTimeSelection = new Domain.RequestModels.ScheduleFreeTimeForTimeSelectionRequestModel()
+                        })
+                    }else{
+                        @await Html.PartialAsync("Components/Live/_FakeFormNewLive")
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/tags.js" asp-append-version="true"></script>
+
+
+
+    @* #warning deve ser criado um arquivo correspondente *@
+    @if(route == "/Index")
+    {
+        <script>
+            function enviarTagsParaAPI(tags) {
+                fetch("?handler=ChatGPT&entrada=" + tags)
+                    .then(function (response) {
+                    document.querySelector('#TituloTitulo').classList.remove('skeleton-loading');
+                    document.querySelector('#TituloDescricao').classList.remove('skeleton-loading');
+                    document.querySelector('#LiveTitulo').placeholder = ""
+                    document.querySelector('#LiveDescricao').placeholder = ""
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                    document.querySelector('#LiveDescricao').value = data.descricao;
+                    document.querySelector('#LiveTitulo').value = data.titulo;
+
+                    })
+                }
+                function verificarSelecao() {
+            var selectedTags = [];
+            for (var i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].selected) {
+                selectedTags.push(selectElement.options[i].value);
+                }
+            }
+            if (selectedTags.length > 0) {
+                document.getElementById('btnPrepararChatGPT').disabled = false;
+                document.getElementById('btnPrepararChatGPT').classList.remove('button-disabled');
+            } else {
+                document.getElementById('btnPrepararChatGPT').disabled = true;
+                document.getElementById('btnPrepararChatGPT').classList.add('button-disabled');
+            }
+        }
+        document.getElementById('btnPrepararChatGPT').addEventListener('click', function (event) {
+            event.preventDefault(); // Impede o envio do formulário
+
+            var selectedTags = [];
+            for (var i = 0; i < selectElement.options.length; i++) {
+                var option = selectElement.options[i];
+                if (option.selected) {
+                selectedTags.push(option.value);
+                }
+            }
+            if (selectedTags.length > 0) {
+                enviarTagsParaAPI(selectedTags.toString());
+
+                document.querySelector('#TituloTitulo').classList.add('skeleton-loading');
+                document.querySelector('#TituloDescricao').classList.add('skeleton-loading');
+                document.querySelector('#LiveDescricao').value = "";
+                document.querySelector('#LiveTitulo').value = "";
+                document.querySelector('#LiveTitulo').placeholder = "Carregando informações ..."
+                document.querySelector('#LiveDescricao').placeholder = "Carregando informações ..."
+            }
+
+        });
+           const selectElement = document.querySelector("#TagsForLive");
+
+
+
+        </script>
+    }
+    @if(enviroment == "Production"){
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-17S4EYBPS2"></script>
+        <script>
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-17S4EYBPS2');
+        </script>
+         <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "hvq6ia4ts5");
+        </script>
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:3493229,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+    }
+
+    <script>
+        function openTimePickerForHelp() {
+            $("#tipoTempoLivre").val("requestHelp");
+            $("#timePickerModal").modal("show");
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script defer src="~/js/EventActions.js"></script>
+    <script>
+        RenderCalendarItens();
+    </script>
+</body>
+</html>

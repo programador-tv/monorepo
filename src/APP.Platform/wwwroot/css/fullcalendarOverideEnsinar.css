@@ -1,0 +1,24 @@
+.fc-button-primary{
+    background-color: #B5DCF0 !important;
+    color: #2E2E2E !important;
+    border: none !important;
+    height: 45px !important;
+    margin-top: 0.5em !important;
+    border-radius: 8px !important;
+    padding-left: 1.6rem !important;
+    padding-right: 1.6rem !important;
+    max-width: 480px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.fc-v-event {
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+.fc .fc-col-header-cell-cushion {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  padding: 0.5;
+}

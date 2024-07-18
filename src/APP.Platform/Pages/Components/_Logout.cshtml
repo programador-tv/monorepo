@@ -1,0 +1,69 @@
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="modal-title">
+                        <h4 class="text-center">
+                            Tem certeza que deseja sair da sua conta?
+                        </h4>
+                    </div>
+                </div>
+                    <section class="text-center" style="display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-evenly;">
+                        <form asp-area="Identity" asp-page="/Account/Logout"
+                            asp-route-returnUrl='@Url.Page("/", new { area = "" })' method="post"
+                            style="display:flex; justify-content: space-evenly; width: 100%; max-width: 330px; padding: 15px 0; margin: auto;">
+                                  <button id="logout_confirm_btn" class="btn btn-lg btn-block" type="submit">
+                                <div style="display: flex; justify-content: space-evenly; align-items: center;">
+                                    <span class="material-symbols-outlined "
+                                        style="border: none;color: inherit; padding-right: 5px;">
+                                        logout
+                                    </span>
+                                    <span>Sim</span>
+                                </div>
+                            </button>
+                            <button id="logout_cancel_btn" type="button" class="btn btn-lg btn-block" data-bs-dismiss="modal">
+                                <div style="display: flex; justify-content: space-evenly; align-items: center;">
+                                    <span class="material-symbols-outlined "
+                                        style="border: none;color: inherit; padding-right: 5px;">
+                                        cancel
+                                    </span>
+                                    <span>Cancelar</span>
+                                </div>
+                            </button>
+
+                        </form>
+                    </section>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #logout_cancel_btn {
+        background-color: #fff;
+        border-color: #cdcdcd;
+    }
+    #logout_cancel_btn:hover {
+        background-color: #f2f2f2;
+        border-color: #f2f2f2;
+    }
+    #logout_cancel_btn:active {
+        background-color: #e0e0e0;
+        border-color: #e0e0e0;
+    }
+    #logout_confirm_btn {
+        background-color: #D82B2B;
+        border-color: #D82B2B;
+        color: #fff;
+    }
+    #logout_confirm_btn:hover {
+        background-color: #C52424;
+        border-color: #C52424;
+    }
+    #logout_confirm_btn:active {
+        background-color: #E05555;
+        border-color: #E05555;
+    }
+</style>

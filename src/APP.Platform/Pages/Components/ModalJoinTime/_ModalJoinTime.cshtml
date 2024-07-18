@@ -1,0 +1,62 @@
+﻿@using Domain.Entities;
+@using Domain.Enums;
+
+@model _ModalJoinTime
+@{
+    var requestProfileId = Model.requestProfileId;
+}
+<div class="modal fade" id="matchModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #FEFBFB !important;box-shadow: 0px 2px 6px 0px #00000033;border: none;
+        border-radius: 8px;">
+            <div class="modal-body" id="mentorMatch">
+                Carregando...
+            </div>
+            <form asp-page-handler="TrySetMentor" class="form-button-solicitar-mentoria">
+                <input id="ownerProfileId" type="hidden" asp-for="JoinTime.PerfilId">
+                <input type="hidden" asp-for="JoinTime.TimeSelectionId">
+                <input id="requestProfileJoinTime" type="hidden" value="@requestProfileId" />
+                <br>
+                <div id="solicitarAjudaBtnDiv">
+                    <button type="submit" id="solicitarBtn" class="button-capacitacao">
+                        @if (Model.IsLogedUser)
+                        {
+                            <text>Confirmar interesse</text>
+                        }
+                        else
+
+                        {
+                            <text>Realizar login</text>
+                        }
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#matchModal").on("show.bs.modal", function (event) {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+            let modal = $(this);
+            let btn = modal.find("#solicitarBtn")
+            let requestProfileJoinTime = document.getElementById('requestProfileJoinTime').value;
+            const profileIdFromFormRequest = $("#ownerProfileId").val();
+            const tooltipPhrase = "Você não pode se oferecer para orientar a si mesmo";
+            let isProfileMatched = profileIdFromFormRequest == requestProfileJoinTime;
+            btn.attr("disabled", isProfileMatched);
+            btn.attr("class", isProfileMatched ? "button disabled" : "button button-capacitacao");
+            btn.attr("style", isProfileMatched ? "cursor: not-allowed;" : "cursor: pointer;");
+            btn.attr("data-toggle", isProfileMatched ? "tooltip" : "");
+            btn.attr("data-original-title", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("data-bs-original-title", isProfileMatched ? "true" : "");
+            btn.attr("data-placement", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("title", isProfileMatched ? tooltipPhrase : "");
+            btn.attr("data-bs-container", isProfileMatched ? "#solicitarAjudaBtnDiv" : "");
+            btn.attr("data-bs-placement", isProfileMatched ? "left" : "");
+        });
+    });
+</script>

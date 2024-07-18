@@ -1,0 +1,73 @@
+@using Domain.Models.ViewModels
+@using Domain.Enums
+@using Domain.Utils
+@model LiveSchedulePreviewViewModel
+@{
+    var Url = Model.UrlAlias ?? Model.CodigoLive;
+}
+<div style="padding:0;"
+    class="default-card card-sm canal schedule">
+
+    <div style="display: flex; flex-direction:column; width: 100%;">
+        <img src="@Model.Thumbnail" alt="thumbnail_not_found" class="video-preview preview"
+             onclick='location.href="/Watch/@Url"' style="cursor: pointer;">
+        <span onclick='location.href="/Watch/@Url"' style="cursor: pointer;" class="formate-duration-videos">
+            Em breve
+        </span>
+        @await Html.PartialAsync("Components/_PerfilAvatar",
+        new _PerfilAvatar{
+        Perfil = new(){
+        Nome = Model.NomeCriador,
+        Foto = Model.FotoCriador,
+        UserName = Model.UserNameCriador
+        },
+        WithLink = true
+        })
+
+        <div class="divisao-content-card-videos">
+
+            <b class="tree-points"
+               onclick='location.href="/Watch/@Url"' style="cursor: pointer;">
+                @Html.Raw(Model.Titulo)
+            </b>
+
+            <small style="
+                        color: #575757;
+                        text-overflow: ellipsis;
+                        font-size: 14px;
+                        margin-top: 12px;
+                        ">
+                @Html.Raw(Model.NomeCriador)
+            </small>
+            <div style="margin-top: 0px;">
+                <span style="text-align: center; margin-top: -2px; font-size: 12px;">
+                    Estréia dia
+                    <strong> @Model.DataCriacao.ToString("dd/MM/yyyy")</strong>
+                    às
+                    <strong> @Model.DataCriacao.ToString("HH:mm") </strong>
+                </span>
+            </div>
+        </div>
+
+        <h6 style="margin-bottom:0px">
+            @if (Model.StatusLive == StatusLive.Iniciada)
+            {
+
+                <small style="margin-left:5px;float:right;padding:3px; background-color: firebrick; color:white; border-radius:5px">
+                    AO
+                    VIVO
+                </small>
+            }
+        </h6>
+    </div>
+    <div class="footer-card-meusVideos" style="display: flex; margin-left: 93%; justify-content: space-between">
+        <div style="margin-bottom:0px">
+            @if (Model.IsUsrCanal)
+            {
+                <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px;cursor: pointer">
+                    <small class="material-icons mdc-button__icon" aria-hidden="true">more_vert</small>
+                </a>
+            }
+        </div>
+    </div>
+</div>

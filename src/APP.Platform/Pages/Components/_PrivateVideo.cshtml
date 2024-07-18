@@ -1,0 +1,86 @@
+@using Domain.Models.ViewModels
+@using Domain.Enums
+@using Domain.Utils
+@model PrivateLiveViewModel
+@{
+    var VideoUrl = Model.UrlAlias ?? Model.CodigoLive;
+}
+
+<div class="default-card card-sm canal" style="padding: 0;">
+    <div style="display: flex; flex-direction:column; width: 100%;">
+        <a href="/Watch/@VideoUrl" style="text-decoration: none;">
+            <img alt="@Model.Titulo"
+                 src="@Model.Thumbnail" class="video-preview preview">
+        </a>
+        <a href="/Watch/@VideoUrl" style="text-decoration: none;">
+            <span style="cursor:pointer;"
+                  class="formate-duration-videos">
+                @(Model.FormatedDuration ?? "0:00")
+            </span>
+        </a>
+        <div class="header-card-meusVideos">
+            @await Html.PartialAsync("Components/_PerfilAvatar",
+                new _PerfilAvatar{
+                    Perfil = new(){
+                        Nome = Model.NomeCriador,
+                        Foto = Model.FotoCriador,
+                        UserName = Model.UserNameCriador
+                    },
+                    WithLink = false
+                })
+
+            <b class="tree-points" style="width: 80%; display: initial; cursor:pointer;"
+               onclick='location.href="/Watch/@VideoUrl"'>@Html.Raw(Model.Titulo)
+            </b>   
+        </div>
+       
+        <div class="content-card-meusVideos">
+               <small style="
+                        color: #575757;
+                        text-overflow: ellipsis;
+                        font-size: 14px;
+                        margin-top: 12px;
+                    ">
+                    @Html.Raw(Model.NomeCriador)
+                </small>
+            <div>
+                <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.14193 7.05C6.79431 7.05 7.34829 6.80191 7.80388 6.30573C8.25946 5.80956 8.48725 5.20706 8.48725 4.49823C8.48725 3.78941 8.25892 3.1875 7.80225 2.6925C7.34558 2.1975 6.79106 1.95 6.13867 1.95C5.48629 1.95 4.93231 2.19809 4.47672 2.69427C4.02114 3.19044 3.79334 3.79294 3.79334 4.50177C3.79334 5.21059 4.02168 5.8125 4.47835 6.3075C4.93501 6.8025 5.48954 7.05 6.14193 7.05ZM6.13705 6.18C5.70664 6.18 5.34187 6.01632 5.04275 5.68897C4.74363 5.36162 4.59407 4.96412 4.59407 4.49648C4.59407 4.02883 4.74471 3.6325 5.046 3.3075C5.34729 2.9825 5.71314 2.82 6.14354 2.82C6.57396 2.82 6.93872 2.98367 7.23785 3.31102C7.53697 3.63838 7.68653 4.03588 7.68653 4.50352C7.68653 4.97117 7.53589 5.3675 7.2346 5.6925C6.93331 6.0175 6.56746 6.18 6.13705 6.18ZM6.1403 9C4.79655 9 3.58166 8.585 2.49562 7.755C1.40957 6.925 0.599644 5.84 0.0658264 4.5C0.599644 3.16 1.40957 2.075 2.49562 1.245C3.58166 0.415 4.79655 0 6.1403 0C7.48405 0 8.69894 0.415 9.78498 1.245C10.871 2.075 11.681 3.16 12.2148 4.5C11.681 5.84 10.871 6.925 9.78498 7.755C8.69894 8.585 7.48405 9 6.1403 9ZM6.13797 8.1C7.25317 8.1 8.27787 7.7725 9.21205 7.1175C10.1462 6.4625 10.8572 5.59 11.345 4.5C10.8572 3.41 10.147 2.5375 9.21438 1.8825C8.28175 1.2275 7.25783 0.9 6.14263 0.9C5.02742 0.9 4.00273 1.2275 3.06855 1.8825C2.13437 2.5375 1.41878 3.41 0.921775 4.5C1.41878 5.59 2.13359 6.4625 3.06622 7.1175C3.99885 7.7725 5.02277 8.1 6.13797 8.1Z"
+                      fill="#CCCCCC" />
+                </svg>
+                <span style="margin-top: -2px; font-size: 12px;"> @Model.QuantidadeDeVisualizacoes </span>
+                <span style="margin-top: -2px; font-size: 12px; float: right; margin-right: 58px;"> @TimeHelper.GetTempoQuePassouFormatado(@Model.DataCriacao) </span>
+            </div>
+        </div>
+     
+    </div>
+    <div  class="footer-card-meusVideos" style="display: flex; justify-content: space-between">
+            <div style="margin-bottom:0px">
+            @if (Model.IsUsrCanal)
+            {
+                string iconName = @Model.Visibility ? "lock_open" : "lock";
+                string btnColor = @Model.Visibility ? "#B5DCF0" : "#f44336";
+                string btnText = @Model.Visibility ? "Público" : "Privado";
+                <small style="
+                            display: flex;
+                            color: #2E2E2E;
+                            background-color: @btnColor;
+                            padding: 3px;
+                            border-radius: 8px;">
+                            <small style="font-size: 14px; margin-top: 5px;" class="material-icons"
+                                aria-hidden="true">@iconName
+                            </small>
+                            <span style="float: inherit;">&nbsp;@btnText</span>
+                </small>
+            }
+            </div>
+            @if (Model.IsUsrCanal)
+        {
+            <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px; cursor: pointer">
+                <small class="material-icons mdc-button__icon" aria-hidden="true">more_vert</small>
+            </a>
+        }
+    </div>
+</div>
+          
+    

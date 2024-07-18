@@ -1,0 +1,406 @@
+@page
+@model StudioModel
+@using Microsoft.Extensions.Options
+@using Domain.Enums
+@inject IOptions<Settings> Settings
+
+@{
+
+    var LIVESOCKET_URL  =
+        Environment.GetEnvironmentVariable("LIVESOCKET_URL")
+        ?? Settings.Value.LIVESOCKET_URL
+        ?? string.Empty;
+
+    var LIVEAPI_URL =
+        Environment.GetEnvironmentVariable("LIVEAPI_URL")
+        ?? Settings.Value.LIVEAPI_URL
+        ?? string.Empty;
+
+    var CHATSOCKET_URL =
+        Environment.GetEnvironmentVariable("CHATSOCKET_URL")
+        ?? Settings.Value.CHATSOCKET_URL
+        ?? string.Empty;
+
+    ViewData["Title"] = " | Studio";
+}
+       <aside id="theGreatAside" class="studio" >
+        <div class="default-card" style="width: 100%;"
+         @* style="height: 62vh; width: 23%; float: left; margin: 0.6em !important;" *@
+         >
+
+    
+            <div style="width: 100%; text-align: center;">
+            <img alt="user" id="me" src="https://programador.tv/no-user.svg" style="width: 75%; margin: 0 auto">
+            <video style="width: 100%; display: none;" id="localVideo" muted autoplay playsinline></video>
+            <div>
+                <br>
+                <button class="button-close-color button mediaControl" id="switchCamera">
+                    <i class="material-icons" aria-hidden="true">videocam</i>
+                    <span class="text-button-align-icon">Camera</span>
+                </button>
+                <br>
+                <button class="button-close-color button mediaControl" id="switchAudio">
+                    <i class="material-icons" aria-hidden="true">volume_up</i>
+                    <span class="text-button-align-icon">Audio</span>
+                </button>
+            </div>
+        </div>
+            <section>
+                <br>
+                <h5 id="titulo" style="color: #2E2E2E;
+                                    font-style: normal;
+                                    font-weight: 700;
+                                    font-size: 28px;
+                                    line-height: 29px;">
+                </h5>
+                <div style=" overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                    <small id="desc" class="title-salas" style="color: #2E2E2E;
+                                                                font-weight: 400;
+                                                                font-size: 20px;
+                                                                display: -webkit-box;
+                                                                -webkit-box-orient: vertical;
+                                                                -webkit-line-clamp: 7;
+                                                                white-space: pre-line;">
+                    </small>
+                </div>
+
+                <div id="broadcast-viewers-counter"></div>
+                <div>
+                    <span id="currentRoom"></span>
+                </div>
+            </section>
+        </div>
+    </aside>
+    <div id="screen" class="default-card"
+        style="width: 100%; min-height: 62vh;">
+        <video style="width: 100%;height:90%; text-align: center;" id="screenVideo" muted autoplay playsinline></video>
+
+
+    <div id="patternGroup" style="margin-top: -105px;margin-left: 40px; display:none; position: relative;">
+            <input checked name="pattern" value="oneShot" type="radio" id="oneShot"><label for="oneShot"> &nbsp; Gerar pré-visualização de vídeo uma vez no início </label> <br>
+            <input name="pattern" value="repeat" type="radio" id="repeat"><label for="repeat"> &nbsp; Atualizar pré-visualização de vídeo a cada 1 minuto </label> <br>
+            <input name="pattern" value="keep" type="radio" id="keep"><label for="keep"> &nbsp; Manter pré-visualização enviada</label>
+    </div>
+
+
+        <div class="buttons-studio">
+            <div class="button " id="isLive" style="cursor:default; float: left; display: none; color:brown">
+                <i class="material-icons" aria-hidden="true">cell_tower</i>
+                <span id="text-start">ao vivo</span>
+                <span id="accountant-start"
+                    style="margin-left:6px; font-weight: bold; color:#424242"></span>
+            </div>
+            <button class="button action" id="switchScreen">
+                <i class="material-icons" aria-hidden="true">connected_tv</i>
+                <span class="text-button-align-icon" id="text-start">Compartilhar tela</span>
+            </button>
+            <button class="button action " id="startBtn" style="display: none;">
+                <i class="material-icons" aria-hidden="true">play_arrow</i>
+                <span class="text-button-align-icon" id="text-start">Iniciar</span>
+            </button>
+
+            <button class=" button action " id="goLive" style="color: white; display: none;">
+                <i class="material-icons" aria-hidden="true">cell_tower</i>
+                <span class="text-button-align-icon">Entrar ao vivo</span>
+            </button>
+
+
+            <button class="button " id="hangupBtn" style="color: #ffff; background-color: firebrick;">
+                <i class="material-icons" aria-hidden="true">close</i>
+                <span class="text-button-align-icon">Encerrar</span>
+            </button>
+
+        </div>
+         <br>
+
+        <br>
+    </div>
+      
+ 
+
+    <div class="default-card chat" style="" >
+        @* @await Html.PartialAsync("Components/_Chat",
+            new _Chat{
+                StatusLive = Model.Live.StatusLive,
+                UserProfile = Model.UserProfile
+            }) *@
+
+        </div>
+    <form id="forgery" method="post">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <script>
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    const wsurl = '@LIVESOCKET_URL';
+    const apiurl = '@LIVEAPI_URL';
+    const chaturl = '@CHATSOCKET_URL';
+    const tituloLive = '@Model.Live.Titulo'
+    const descricaoLive = '@Model.Live.Descricao'
+    const thumbnailLive = '@Model.Live.Thumbnail'
+    </script>
+
+    <script>
+        const liveId = params['mainkey'];
+        const chatws = chaturl + '/ws?liveId=' + liveId;
+        const messageList = document.querySelector('#messageList');
+        let webSocket;
+
+
+        function publishMessage() {
+            if(messageTxt.value.trim() == ""){
+                return;
+            }
+            if(!btnPublishMessage.classList.contains("action")){
+                return;
+            }
+            btnPublishMessage.classList.remove("action");
+            btnPublishMessage.style.cursor = "not-allowed";
+
+
+            const formData = new FormData();
+
+            if (!formData.has("__RequestVerificationToken")) {
+                const token = document.querySelector("#forgery input").value
+                formData.append("__RequestVerificationToken", token)
+            }
+            formData.append("comment", messageTxt.value)
+            formData.append("liveId", liveId)
+
+            const url = '?handler=Message';
+
+            const options = {
+                method: "POST",
+                body: formData,
+            };
+            messageTxt.value = "";
+            fetch(url, options)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    IdsMessagesThatISeed.push(data.id);
+                    showNewMessage(data, true)
+                })
+                .catch(function (error) {
+                    console.error(error);
+                })
+                .finally(()=>{
+                    setTimeout(() => {
+                        btnPublishMessage.classList.add("action");
+                        btnPublishMessage.style.cursor = "pointer";
+                    }, 1000);
+                });;
+        }
+
+    const messageTxt = document.querySelector('#message');
+    const messageBtn = document.querySelector("#publish-message");
+
+    const btnPublishMessage = document.querySelector("#publish-message");
+
+    function deleteMessageAsync(id) {
+        var resultFormulario = document.querySelector("#DeleteMyMessage-" + id);
+        const formData = new FormData(resultFormulario)
+
+        if (!formData.has("__RequestVerificationToken")) {
+            const token = document.querySelector("#forgery input").value
+            formData.append("__RequestVerificationToken", token)
+        }
+        formData.append("messageId", id)
+        formData.append("liveId", liveId)
+        const url = "?handler=DeleteMessage"
+        const data = {
+            method: "POST",
+            body: formData
+        }
+        const comentarioToDelete = document.querySelector("#message-" + id)
+        comentarioToDelete.remove()
+        fetch(url, data)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao enviar a solicitação POST.");
+                }
+                return response.json();
+            })
+            .then((data) => {
+
+            })
+    }
+
+    function publishMessage() {
+        if(!btnPublishMessage.classList.contains("action")){
+            return;
+        }
+        btnPublishMessage.classList.remove("action");
+        btnPublishMessage.style.cursor = "not-allowed";
+
+
+        const formData = new FormData();
+
+        if (!formData.has("__RequestVerificationToken")) {
+            const token = document.querySelector("#forgery input").value
+            formData.append("__RequestVerificationToken", token)
+        }
+        formData.append("comment", messageTxt.value)
+        formData.append("liveId", liveId)
+
+        const url = '?handler=Message';
+
+        const options = {
+            method: "POST",
+            body: formData,
+        };
+        messageTxt.value = "";
+        fetch(url, options)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao enviar a solicitação POST.");
+                }
+                return response.json();
+            })
+            .catch(function (error) {
+                console.error(error);
+            })
+            .finally(()=>{
+                setTimeout(() => {
+                    btnPublishMessage.classList.add("action");
+                    btnPublishMessage.style.cursor = "pointer";
+                }, 1000);
+            });;
+
+    }
+
+    function showNewMessage(data, isMine){
+            const fotoPerfil = data.foto
+            const nomeUser = data.nome
+            const id = data.id
+            const commentAsync = document.createElement('div');
+
+            const when = data.dataCriacao;
+
+            const dataCriacao = new Date(when);
+            const dataAtual = new Date();
+            const diference = getDifferenceText(dataAtual, dataCriacao);
+
+            commentAsync.innerHTML =
+            `
+            <div style="
+                border-radius: 15px;
+                margin: 0 auto;
+                padding: 6px;
+                "
+                id="message-${id}">
+                <h5 style="font-weight: bold; font-size: 15px; ">
+                    ${renderAvatar({userName: nomeUser, foto: fotoPerfil}, true)}
+                    ${nomeUser}
+                    <small id='message-time-passed-${id}' style="font-size: 13px; color: #808080"> ${diference}</small>
+                </h5>
+
+                <p style="margin-left: 25px; word-break: break-all; width: 80%;"> ${data.content}</p>
+                ${isMine ?
+                ` <form id="DeleteMyMessage-${id}" style="text-align:right; margin-top: -45px;" method="post">
+
+                    <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${id}" >
+
+                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+
+                    </div>
+                    <input asp-for="IdMessageToDelete" value="${id}" type="hidden" />
+                </form> `
+                : ``
+                }
+
+            </div>
+            `
+
+
+        messageList.prepend(commentAsync);
+        const timePassed = document.querySelector(`#message-time-passed-${id}`);
+
+        setInterval(()=>{
+            const dataCriacao = new Date(when);
+            const dataAtual = new Date();
+            const diference = getDifferenceText(dataAtual, dataCriacao);
+            timePassed.innerText = diference;
+        }, 7000);
+
+    }
+    function getDifferenceText(currentDate, initialDate) {
+        const seconds = Math.floor((currentDate - initialDate) / 1000);
+
+        if (seconds < 60) {
+            return `há ${seconds} segundo${seconds !== 1 ? 's' : ''}`;
+        }
+
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) {
+            return `há ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+        }
+
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) {
+            return `há ${hours} hora${hours !== 1 ? 's' : ''}`;
+        }
+
+        const days = Math.floor(hours / 24);
+        if (days < 30) {
+            return `há ${days} dia${days !== 1 ? 's' : ''}`;
+        }
+
+        const months = Math.floor(days / 30);
+        return `há ${months} mês${months !== 1 ? 'es' : ''}`;
+    }
+    const IdsMessagesThatISeed = [];
+
+    function startWebSocket() {
+
+
+        webSocket = new WebSocket(chatws);
+        webSocket.onopen = event => {
+            console.log('WebSocket connection opened:', event);
+        };
+
+        webSocket.onmessage = event => {
+            const message = JSON.parse(event.data);
+
+
+            if (message.actionType && message.actionType === "RemoveMessage") {
+                const messageElement = document.querySelector(`#message-${message.messageId}`);
+                if (messageElement) {
+                    messageElement.remove();
+                }
+            }else if (message.actionType && message.actionType === "UpdateLiveUserCount") {
+                    const liveUserCount = message.viewerCount;
+
+                    document.getElementById("liveUserCount").textContent = liveUserCount;
+
+            }else{
+                if(message.perfilId != "@Model.UserProfile!.Id"){
+                    showNewMessage(message, false)
+                }else{
+                    if(!IdsMessagesThatISeed.includes(message.id)){
+                            showNewMessage(message, true)
+                    }
+                }
+            }
+        };
+
+        webSocket.onclose = event => {
+            console.log('WebSocket connection closed:', event);
+        };
+
+        webSocket.onerror = error => {
+            console.error('WebSocket error:', error);
+        };
+    }
+    startWebSocket();
+    </script>
+
+    <script src="./js/Studio/Utils/merge.js"></script>
+    <script src="./js/Studio/app.js" type="module"></script>

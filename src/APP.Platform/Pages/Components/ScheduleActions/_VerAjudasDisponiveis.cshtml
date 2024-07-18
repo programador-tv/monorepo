@@ -1,0 +1,180 @@
+﻿@*
+    <div class="modal fade timeSelection-x" id="capacitacaoModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 955px;">
+        <div class="modal-content" style="background-color: #FEFBFB;">
+
+            <div class="modal-body" style="padding: 32px 1rem 8px;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="tittle-newDesign">🛠️ Capacitação</h4> *@
+            <section
+            class="nav nav-tabs"
+            style="display: flex;
+                        flex-wrap: wrap;
+                        padding-top: 1rem; border-bottom: 2px solid aliceblue;" >
+
+                <div style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp active button-tab"
+                        data-bs-toggle="tab" data-bs-target="#ajuda">
+
+                        @* <img src="/Pictures/Icons/mdi_account-sync-outline.svg" alt="mdi_account-sync-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
+                        <span >Pedidos de Ajuda</span>
+                    </div>
+                <div  style="cursor: pointer; display: flex;
+
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
+                    data-bs-toggle="tab" data-bs-target="#oneToOne">
+
+                        @* <img src="/Pictures/Icons/material-symbols_person-outline.png" alt="material-symbols_person-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
+                        <span >Ajuda 1:1</span>
+                    </div>
+
+                    <div  style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
+                    data-bs-toggle="tab" data-bs-target="#cursos">
+
+                        @* <img src="/Pictures/Icons/mdi_briefcase-account.svg" alt="mdi_briefcase-account"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
+                        <span >Eventos</span>
+                    </div>
+
+
+                    @* <div style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
+                        data-bs-toggle="tab" data-bs-target="#mentoria">
+
+                        <img src="/Pictures/Icons/mdi_account-sync-outline.svg" alt="mdi_account-sync-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Mentoria continuada</span>
+                    </div> *@
+
+
+
+                    @* <div style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
+                    data-bs-toggle="tab" data-bs-target="#entrevista">
+
+                        <img src="/Pictures/Icons/material-symbols_groups-outline.svg" alt="material-symbols_groups-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Simular entrevista</span>
+                    </div>
+
+                    <div style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
+                    data-bs-toggle="tab" data-bs-target="#recursos">
+
+                        <img src="/Pictures/Icons/mdi_link-variant.svg" alt="mdi_link-variant"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Recursos externos</span>
+                    </div> *@
+                <br>
+                </section>
+                @* <hr style="background-color: #5c00ac; height: 2px;"> *@
+                <div class="tab-content ">
+
+                    <section  class="tab-pane fade " id="oneToOne">
+
+                        <br>
+                        <button class="button-capacitacao" onclick="openOneToOne()">
+                            Criar sessão 1:1
+                        </button>
+                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                            <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
+                            <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
+                        </div>
+                        <div id="OneToOneMatch" style="display: flex;justify-content: center; flex-wrap:wrap">
+                        </div>
+                    </section>
+                    <section  class="tab-pane active" id="ajuda">
+                        <br>
+                        <button class="button-capacitacao" onclick="openTimePickerForHelp()">
+                            Tirar dúvida
+                        </button>
+                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                            <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
+                            <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
+                        </div>
+                        <div id="pedidosPanel" style="display: flex;justify-content: center; flex-wrap:wrap">
+                            <div class="d-flex justify-content-center" id="pedidosLoading">
+                                <div class="spinner-grow" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                <section class="tab-pane fade" id="mentoria">
+                    @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                </section>
+
+                <section class="tab-pane" id="cursos">
+                    <br>
+                        <button class="button-capacitacao" onclick="openCursosAndEventos()">
+                            Criar evento
+                        </button>
+                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                            <span id="groupCursos-left" style="filter: grayscale(0.8);">👈</span>
+                            <span id="groupCursos-right" style="filter: grayscale(0.8);">👉</span>
+                        </div>
+                       <div id="CursosMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap"></div>
+                </section>
+                <section class="tab-pane" id="entrevista">
+                    @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                </section>
+                <section class="tab-pane" id="recursos">
+                    @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                </section>
+                @* </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div> *@
+<style>
+    .nav-tabs {
+        border: none;
+    }
+    .button-revamp {
+        box-sizing: border-box;
+        padding: 8px 8px !important;
+        border-radius: 0px !important;
+        transition: 0.3s all;
+
+        background: transparent;
+        border-bottom: 3px solid transparent;
+    }
+    .active.button-revamp {
+        background: transparent;
+        border-bottom: 3px solid navy;
+        color: navy;
+    }
+    .button-revamp:hover {
+
+        border-bottom: 3px solid navy;
+        color: rgb(147, 147, 167);
+    }
+    #groupOneToOne-left, #groupOneToOne-right,
+    #groupCursos-left, #groupCursos-right,
+    #groupHelp-left, #groupHelp-right
+    {
+
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    #pedidosPanel {
+        margin-top: 12px;
+       height: 220px;
+       align-content: center;
+    }
+
+</style>
+
+@* <script defer src="/js/TabBsHandler.js"></script> *@

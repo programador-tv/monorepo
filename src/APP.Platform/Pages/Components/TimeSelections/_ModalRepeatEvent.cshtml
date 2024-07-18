@@ -1,0 +1,53 @@
+﻿@using Domain.Enums
+@model ModalRepeatEvent
+
+<div class="modal fade" id="repeatModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="repeatModalLabel">Repetir marcação nos próximos dias? </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="repeatEventForm">
+
+                    <div class="form-group">
+                        <strong>
+                            Padrão de repetição
+                        </strong>
+                        <br>
+                        <input type="radio" id="opcao1" name="Opcao" value="@EnumWeekPattern.todasSemanasDoMes" />
+                        <label for="opcao1">Repetir apenas neste dia da semana</label>
+                        <br>
+                        <input type="radio" id="opcao3" name="Opcao" value="@EnumWeekPattern.todosDias" />
+                        <label for="opcao3">Repetir em todos os dias da semana</label>
+                        <br>
+                        <input type="radio" id="opcao4" name="Opcao" value="@EnumWeekPattern.todosDiasExcetoFinalDeSemana" />
+                        <label for="opcao4">Repetir todos os dias, exceto finais de semana</label>
+                        <br>
+                        <hr />
+                        <div id="opcoes-adicionais" style="display: none">
+                            <strong>
+                                Padrão de aplicação
+                            </strong>
+                            <br>
+                            <input type="checkbox" id="opcao5" name="NeedAddActualMonth" asp-for="NeedAddActualMonth" />
+                            <label for="opcao5">Este mês</label>
+                            <br>
+                            <input type="checkbox" id="opcao6" name="Opcao1" value="@EnumRepeatWeekParttern.proximoMes" class="opcao-checkbox" />
+                            <label for="opcao6">Próximo mês</label>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <span id="submitNotConfirmSpan" style="display: none; color: firebrick; font-size:small; text-align:center">Escolha ao menos uma opção</span>
+                        <button type="submit" id="repeatTimeSelectionSubmitButtom" class="btn action btn-block" disabled>APLICAR</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">NÃO</button>
+            </div>
+        </div>
+    </div>
+</div>

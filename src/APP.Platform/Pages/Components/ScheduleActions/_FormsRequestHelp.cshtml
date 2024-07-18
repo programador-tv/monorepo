@@ -1,0 +1,70 @@
+﻿@using Domain.Enums
+@inject SignInManager<IdentityUser> SignInManager
+
+@model FormsRequestHelp
+<div class="modal fade eventModal" id="eventModalRequestHelp" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">🤝 Pedir Ajuda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="saveTimeFormHelp" method="post">
+                    <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.PedirAjuda">
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <strong>
+                            Escolha quais áreas de conhecimento voce está precisando
+                            de ajuda neste em seu pedido.
+                        </strong><span style='color:firebrick'>*</span>
+                        <br>
+                        <select multiple="multiple"
+                                asp-for="ScheduleTimeSelection.TagsSelected"
+                                class=" form-control isSelect2"
+                                required
+                                id="TagsSelectedHelp">
+                            @foreach (var item in Model.RelatioTags)
+                            {
+                                <optgroup label="@item.Key">
+                                    @foreach (var subItem in Model.RelatioTags[item.Key])
+                                    {
+                                        <option value="@subItem">@subItem</option>
+                                    }
+                                </optgroup>
+                            }
+                        </select>
+                    </div>
+                    <div class="pt-2" id="TituloMentoria">
+                        <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título <span style="font-size: 12px; color: rgb(152, 152, 152)">opcional</span></label>
+                        <input id="TimeSelectionMentoriaTitulo" asp-for="ScheduleTimeSelection.Titulo" class="form-control" />
+                    </div>
+                    <div class="pt-2" id="HelpDescription">
+                        <label asp-for="ScheduleTimeSelection.Descricao" class="control-label">
+                            Descreva sua duvida (minimo 150 caracteres): <span style='color:firebrick'>*</span>
+                        </label>
+                        <textarea id="TimeSelectionHelpingDescription" required asp-for="ScheduleTimeSelection.Descricao" class="form-control" minlength="150"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group" id="imageHelpContainer">
+                        <label asp-for="ScheduleTimeSelection.ImageFile" id="AjudaImagem-label" class="control-label">Adicione uma imagem do seu erro (Opcional)</label>
+                        <br>
+                        <input type="file" asp-for="ScheduleTimeSelection.ImageFile" accept="image/*" />
+                        <br>
+                    </div>
+                    <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.RequestHelp" />
+                    <input type="hidden" class="startLive" asp-for="ScheduleTimeSelection.StartTime" />
+                    <input type="hidden" class="endLive" asp-for="ScheduleTimeSelection.EndTime" />
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn button action">Salvar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@{
+    var isLoggedUser = SignInManager.IsSignedIn(User);
+}
+<div class="modal fade" id="pedidosModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="tittle-newDesign">🤝 Pedidos de Ajuda</h4>
+                <hr />
+                <div style="display: flex; justify-content: center; flex-wrap: wrap">
+                    
+                </div>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>

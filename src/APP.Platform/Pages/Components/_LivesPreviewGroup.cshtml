@@ -1,0 +1,64 @@
+@using Domain.Models.ViewModels
+@using Domain.Enums
+@model List<LiveViewModel>
+
+@foreach(var item in Model){
+ 
+    var url = "/Watch/" + item.UrlAlias ?? item.CodigoLive;
+
+    <div style="padding:0;"
+    class="default-card card-sm schedule">
+
+    <div style="display: flex; flex-direction:column; width: 100%;">
+        <img src="@item.Thumbnail" class="video-preview preview"
+        onclick='location.href="@url"' style="cursor: pointer;">
+        <span onclick='location.href="@url"' style="cursor: pointer;" class="formate-duration-videos"> Em breve
+        </span>
+        @await Html.PartialAsync("Components/_PerfilAvatar",
+            new _PerfilAvatar{
+                Perfil = new(){
+                    Nome = item.NomeCriador,
+                    Foto = item.FotoCriador,
+                    UserName = item.UserNameCriador
+                },
+                WithLink = true
+            })
+
+        <div class="divisao-content-card-videos">
+
+            <b class="tree-points"
+            onclick='location.href="@url"' style="cursor: pointer;"
+                >@Html.Raw(item.Titulo)
+            </b>
+
+                <small style="
+                        color: #575757;
+                        text-overflow: ellipsis;
+                        font-size: 14px;
+                        margin-top: 12px;
+                        ">
+                        @Html.Raw(item.NomeCriador)
+                </small>
+                <div style="margin-top: 0px;">
+                    <span style="text-align: center; margin-top: -2px; font-size: 12px;">
+                        Estréia dia
+                        <strong> @item.DataCriacao.ToString("dd/MM/yyyy")</strong>
+                        às
+                        <strong> @item.DataCriacao.ToString("HH:mm") </strong>
+                    </span>
+                </div>
+        </div>
+
+        <h6 style="margin-bottom:0px">
+            @if (item.StatusLive == StatusLive.Iniciada)
+            {
+
+                    <small
+                    style="margin-left:5px;float:right;padding:3px; background-color: firebrick; color:white; border-radius:5px">AO
+                    VIVO
+                    </small>
+            }
+        </h6>
+    </div>
+</div>
+}

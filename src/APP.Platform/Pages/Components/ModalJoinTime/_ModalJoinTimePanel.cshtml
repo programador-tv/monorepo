@@ -1,0 +1,194 @@
+﻿@using Domain.Enums;
+@using Domain.Entities;
+@using Domain.Utils;
+
+@model ModalJoinTimePanel
+@{
+    var conclusaoPendente = new Dictionary<JoinTime, TimeSelection>();
+    var proximos = new Dictionary<JoinTime, TimeSelection>();
+    var marcado = new Dictionary<JoinTime, TimeSelection>();
+    var pendente = new Dictionary<JoinTime, TimeSelection>();
+    var concluido = new Dictionary<JoinTime, TimeSelection>();
+    @foreach (var data in Model.JoinEvent)
+    {
+        @if (data.Key.StatusJoinTime == StatusJoinTime.ConclusaoPendente)
+        {
+            conclusaoPendente.Add(data.Key, data.Value);
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Marcado)
+        {
+            var timeDelta = data.Value.StartTime - DateTime.Now;
+            @if (timeDelta.TotalMinutes <= 30 && timeDelta.TotalMinutes > 0)
+            {
+                proximos.Add(data.Key, data.Value);
+            }
+            else
+            {
+                marcado.Add(data.Key, data.Value);
+            }
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Pendente)
+        {
+            pendente.Add(data.Key, data.Value);
+        }
+        @if (data.Key.StatusJoinTime == StatusJoinTime.Concluído)
+        {
+            concluido.Add(data.Key, data.Value);
+        }
+    }
+}
+@if (conclusaoPendente.Count > 0)
+{
+    <div id="conclusao-pendente-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Conclusões Pendentes</strong>
+        <div id="conclusao-pendente-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @{
+                var resultadoConclusaoPendente = conclusaoPendente.Select(data =>
+                {
+                    var joinTime = data.Value;
+                    if (joinTime != null)
+                    {
+                        return new Models.ConsideracoesPendentesCardPageModel
+                        {
+                            Id = joinTime.Id,
+                            Titulo = joinTime.TituloTemporario ?? string.Empty,
+                            FotoEnvolvido = joinTime.Perfil?.Foto ?? string.Empty,
+                            NomeEnvolvido = joinTime.Perfil?.Nome ?? string.Empty,
+                        };
+                    }
+                    return null;
+                });
+                foreach (var item in resultadoConclusaoPendente)
+                {
+                    @await Html.PartialAsync("Components/TimeSelections/_ConsideracoesPendentesCard", item)
+                }
+            }
+        </div>
+    </div>
+}
+@if (proximos.Count > 0)
+{
+    <div id="eventos-proximos-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Próximos</strong>
+        <div id="eventos-proximos-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @{
+                var resultadoProximos = proximos.Select(data =>
+                {
+                    var joinTime = data.Value;
+                    if (joinTime != null)
+                    {
+                        var timeDelta = data.Value.StartTime - DateTime.Now;
+                        string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                        return new Models.EventosProximosCardPageModel
+                        {
+                            Id = joinTime.Id,
+                            Titulo = joinTime.TituloTemporario ?? string.Empty,
+                            FotoEnvolvido = joinTime.Perfil!.Foto ?? string.Empty,
+                            NomeEnvolvido = joinTime.Perfil!.Nome ?? string.Empty,
+                            TempoRestante = tempoRestante
+                        };
+                    }
+                    return null;
+                });
+                foreach (var item in resultadoProximos)
+                {
+                    @await Html.PartialAsync("Components/TimeSelections/_EventosProximosCard", item)
+                }
+            }
+        </div>
+    </div>
+}
+@if (marcado.Count > 0)
+{
+    <div id="eventos-marcados-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Marcados</strong>
+        <div id="eventos-marcados-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+            @{
+                var resultadoMarcado = marcado.Select(data =>
+                {
+                    var joinTime = data.Value;
+                    if (joinTime != null)
+                    {
+                        var timeDelta = data.Value.StartTime - DateTime.Now;
+                        string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                        return new Models.EventosMarcadosCardPageModel
+                        {
+                            Id = joinTime.Id,
+                            Titulo = joinTime.TituloTemporario ?? string.Empty,
+                            FotoEnvolvido = joinTime.Perfil!.Foto ?? string.Empty,
+                            NomeEnvolvido = joinTime.Perfil!.Nome ?? string.Empty,
+                            TempoRestante = tempoRestante
+                        };
+                    }
+                    return null;
+                });
+                foreach (var item in resultadoMarcado)
+                {
+                    @await Html.PartialAsync("Components/TimeSelections/_EventosMarcadosCard", item)
+                }
+            }
+        </div>
+    </div>
+}
+
+<div id="eventos-pendentes-card" class="default-card card-right">
+    <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos em Aberto</strong>
+    <div id="eventos-pendentes-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+        @{
+            var resultadoPendente = pendente.Select(data =>
+            {
+                var joinTime = data.Value;
+                if (joinTime != null)
+                {
+                    var timeDelta = data.Value.StartTime - DateTime.Now;
+                    string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                    return new Models.PendentesCardPageModel
+                    {
+                        Id = joinTime.Id,
+                        Titulo = joinTime.TituloTemporario ?? string.Empty,
+                        TempoRestante = tempoRestante,
+                    };
+                }
+                return null;
+            });
+            foreach (var item in resultadoPendente)
+            {
+                @await Html.PartialAsync("Components/TimeSelections/_PendentesCard", item)
+            }
+        }
+    </div>
+</div>
+@if (concluido.Count > 0)
+{
+    <div id="eventos-concluidos-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Concluidos</strong>
+        <div id="eventos-concluidos-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @{
+                var resultadoConcluido = concluido.Select(data =>
+                {
+                    var joinTime = data.Value;
+                    if (joinTime != null)
+                    {
+                        return new Models.ConcluidosCardPageModel
+                        {
+                            Id = joinTime.Id,
+                            Titulo = joinTime.TituloTemporario ?? string.Empty,
+                            FotoEnvolvido = joinTime.Perfil!.Foto ?? string.Empty,
+                            NomeEnvolvido = joinTime.Perfil!.Nome ?? string.Empty,
+                        };
+                    }
+                    return null;
+                });
+                foreach (var item in resultadoConcluido)
+                {
+                    @await Html.PartialAsync("Components/TimeSelections/_ConcluidosCard", item)
+                }
+            }
+        </div>
+    </div>
+}

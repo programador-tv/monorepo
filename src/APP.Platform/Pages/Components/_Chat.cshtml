@@ -1,0 +1,33 @@
+@model _Chat
+@using Domain.Entities
+@using Domain.Enums
+
+@inject SignInManager<IdentityUser> SignInManager
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Chat </h2>   
+    <div style="display: flex;justify-content: space-between; font-size:20px; min-width:40px;color: gray;"> 
+        <small style="padding-right: 1.5%;" class="material-icons mdc-button__icon" aria-hidden="true">people
+        </small>              
+        <span id="liveUserCount">0</span>      
+    </div>         
+</div>
+<div style="margin-top: 20px;height:50vh;overflow:auto;" id='messageList'>
+</div>
+@if (
+    SignInManager.IsSignedIn(User) 
+    && Model.StatusLive != StatusLive.Finalizada
+)
+{
+    <div style="width: 80%; margin: 10px auto; display: table;">
+        <h5>
+            <label for="message">@Model.UserProfile.Nome:</label>
+        </h5>
+        <textarea id="message" class="form-control" name="message" rows="4" cols="50"
+        onkeypress="if (event.keyCode == 13) {event.preventDefault(); publishMessage(); return false};"
+        ></textarea>
+        <button style="float:right; margin-top:5px;" id="publish-message" class="button action"
+            onClick=publishMessage()>
+            Publicar
+        </button>
+    </div>
+}

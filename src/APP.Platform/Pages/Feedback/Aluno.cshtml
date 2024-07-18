@@ -1,0 +1,154 @@
+@page
+@model AlunoModel
+@using Domain.Enums
+@{
+    ViewData["Title"] = " | Considerações finais aluno";
+}
+
+<div class="row">
+    <section 
+         class="default-card card-lg " style="padding:20px">
+        <h1>
+           Considerações finais
+        </h1>
+        <p>Por gentileza, forneça alguns dados para que possamos melhorar a experiência do mentor e do mentor </p>
+        <hr>
+        <strong>
+            Ocorreu a mentoria?
+        </strong>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="time-tab" data-bs-toggle="tab"
+                data-bs-target="#sim" type="button" role="tab" aria-controls="sim"
+                aria-selected="true">Sim</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="live-tab" data-bs-toggle="tab"
+                data-bs-target="#nao" type="button" role="tab"
+                aria-controls="nao" aria-selected="false">Não</button>
+            </li>
+            
+            
+        </ul>
+       <br>
+        <div class="tab-content">
+        <div class="tab-pane " id="nao" role="tabpanel" aria-labelledby="home-tab">
+                <form asp-page-handler="SemMentor">
+                    <input type="hidden" asp-for="FeedbackJoinTime.JoinTimeId" />
+                    <input type="hidden" asp-for="FeedbackJoinTime.AvaliadorCompareceu" value="false" />
+                    <input type="hidden" asp-for="FeedbackJoinTime.AvaliadoCompareceu" value="false" />
+                    <button type="submit" class="button action">Eu não compareci</button>
+                </form>
+                <br>
+                <form asp-page-handler="SemMentor">
+                    <input type="hidden" asp-for="FeedbackJoinTime.JoinTimeId" />
+                    <input type="hidden" asp-for="FeedbackJoinTime.AvaliadorCompareceu" value="true" />
+                    <input type="hidden" asp-for="FeedbackJoinTime.AvaliadoCompareceu" value="false" />
+                    <button type="submit" class="button action">O aluno não compareceu</button>
+                </form>
+        </div>
+        <div class="tab-pane active" id="sim" role="tabpanel" aria-labelledby="home-tab">
+        
+        <form method="post" asp-action="">
+            <input type="hidden" asp-for="FeedbackJoinTime.JoinTimeId" />
+
+  
+            <label><strong>Qual nível de expêriencia voce atribuiria ao mentor?</strong></label>
+            <div class="form-group">
+                @{
+                    var i = 0;
+                }
+                @foreach(var item in Model.EstimativaSenioridade){
+                    @if(true){
+                        i++;
+                    }
+                    
+                        @if(i == 1){
+                            <input type="radio"
+                                checked="checked"
+                                value="@item.Value"
+                                id="ref-@item.Value" 
+                                asp-for="FeedbackJoinTime.EstimativaSenioridadeAvaliado"  />
+                        }else{
+                            <input type="radio"
+                                id="ref-@item.Value" 
+                                value="@item.Value"
+                                asp-for="FeedbackJoinTime.EstimativaSenioridadeAvaliado"  />
+                       
+                        }
+                         <label 
+                            style=" margin-right: 25px;"
+                            for="ref-@item.Value" >
+                                @item.Text
+                            </label>
+                }
+                
+            </div>
+            <br>
+            
+            <div class="form-group">
+                <label asp-for="FeedbackJoinTime.EstimativaSalarioAvaliado">
+                    <strong>Qual salário mensal você atribuiria ao mentor?</strong></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">R$</span>
+                    <input asp-for="FeedbackJoinTime.EstimativaSalarioAvaliado" class="form-control" />
+                </div>
+                
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="FeedbackJoinTime.ConheciaAvaliadoPreviamente">
+                    <strong>Você já conhecia mentor?</strong> </label>
+                <select asp-for="FeedbackJoinTime.ConheciaAvaliadoPreviamente" class="form-control">
+                    
+                    <option value="true">Sim</option>
+                    <option checked value="false">Não</option>
+                </select>
+            </div>
+            <br>
+            <label><strong>Qual seu grau de satisfação geral?</strong></label>
+            <div class="form-group">
+                @foreach(var item in Model.SatisfacaoPossivel){
+                    <input type="radio"
+                        value="@item.Value"
+                        id="ref-@item.Value"
+                        asp-for="FeedbackJoinTime.SatisfacaoExperiencia"  />
+                    <label 
+                    style="font-size: 42px; margin-right: 25px; cursor:pointer"
+                    for="ref-@item.Value" >
+                        @item.Text
+                    </label>
+                        
+                }
+                
+            </div>
+
+            <button type="submit" class="button action">SALVAR</button>
+        </form>
+        </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+<script>
+    let lastValue;
+    const salario = $("#FeedbackJoinTime_EstimativaSalarioAvaliado")
+    salario.on("keyup", function () {
+        let valorDigitado = salario.val();
+        let valorFormatado = formatarRealInput(valorDigitado);
+        salario.val(valorFormatado);
+        lastValue = recuperarValorNumerico(valorFormatado)
+    })
+    function formatarRealInput(valor) {
+        valor = valor.replace(/\D/g, ''); // remove tudo que não é dígito
+        valor = valor.replace(/(\d{1,2})$/, ',$1'); // coloca a vírgula no lugar do último dígito
+        valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // coloca o ponto para separar os milhares
+        return valor;
+    }
+    function recuperarValorNumerico(valorFormatado) {
+        let valorNumerico = parseFloat(valorFormatado.replace(/[^\d.,]/g, '').replace(',', '.'));
+        return valorNumerico;
+    }
+</script>
+}

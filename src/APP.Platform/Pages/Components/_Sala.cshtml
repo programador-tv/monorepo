@@ -1,0 +1,76 @@
+@using Domain.Enums
+@model _SalaModel
+
+
+<div class="default-card card-sm">
+    <h5 class="title-card" title="@Model.Sala.Titulo">
+        @if (string.IsNullOrEmpty(Model.Sala.Titulo))
+        {
+            @("💻")
+        }
+        else
+        {
+            @Model.Sala.Titulo
+        }
+    </h5>
+    <form asp-page-handler="joinRoom">
+        <input asp-for="Joined" value="@Model.Sala.CodigoSala" type="hidden" />
+
+        <div id="button">
+            <button type="submit" class="button button-icon-seta">
+                <span style="font-size: 50px; font-weight: bold;"
+                    class="material-icons material-symbols-outlined span-icon-seta">arrow_forward_ios
+                </span>
+            </button>
+        </div>
+    </form>
+     @{
+            var presentes = Model.Sala.Presentes;
+        }
+        <div class="div-avatar">
+            @if (presentes != null)
+            {
+                @foreach (var presente in presentes)
+                {
+
+                    @await Html.PartialAsync("Components/_PerfilAvatar",
+                        new _PerfilAvatar{
+                            Perfil = new(){
+                                Nome = presente.Nome,
+                                Foto = presente.Foto
+                            },
+                            WithLink = true
+                        })
+                }
+            }
+        </div>
+
+            @if (Model.Sala.TipoSala == EnumTipoSalas.Mentoria)
+            {
+                <small
+                    class="tag"
+                    style="background-color: #4049c1; color:white; float: left; ">
+                    MENTORIA
+                </small>
+            }
+            else if (Model.Sala.TipoSala == EnumTipoSalas.Livre)
+            {
+                <small
+                    class="tag"
+                    style="background-color: #bdc140; color:white; float: left; ">
+                    LIVRE
+                </small>
+            }
+
+        <div class="tag-tipo">
+            @if (Model.Sala.Tags != null)
+            {
+                @foreach (var tag in Model.Sala.Tags)
+                {
+                    <span class="tag" title="@Html.Raw(tag)"> @Html.Raw(tag) </span>
+                }
+            }
+        </div>
+
+
+</div>

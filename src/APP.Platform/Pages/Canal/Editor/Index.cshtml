@@ -1,0 +1,142 @@
+﻿@page
+@using Domain.Enums
+@model EditorIndexModel
+@{
+    ViewData["Title"] = " | Editor";
+}
+
+<div class="container" style="display: grid;justify-content: space-evenly;">
+    <hr />
+    <h4>Preview</h4>
+
+    <br />
+    <main class="videos-group">
+        @if (Model.LivePreview != null && Model.IsUsrCanal)
+        {
+            <div style="margin-top: 23px" class="default-card card-medium">
+                <div style="display: flex; flex-direction:column;">
+                    <img id="previewThumbnail" src="@Model.LivePreview.Thumbnail" class="video-preview preview">
+                    <span style="width: fit-content;position: relative;bottom: 25px;left: 4px; background-color: #000000bd;color: white;border-radius: 3px;padding: 0px 5px;">@Model.LivePreview.FormatedDuration</span>
+                    <h6 style="padding-left: 5px;" class="font-two-lines-and-tree-points-editor">
+                        <b id="previewTitle">@Html.Raw(Model.LivePreview.Titulo)</b>
+                    </h6>
+                    <h6 style="display: flex; min-height: 70px; margin-bottom:0px">
+
+
+                        @await Html.PartialAsync("Components/_PerfilAvatar",
+                            new _PerfilAvatar{
+                                Perfil = new Domain.Entities.Perfil{
+                                    Nome = Model.LivePreview.NomeCriador,
+                                    Foto = Model.LivePreview.FotoCriador
+                                    },
+                                WithLink = false
+                            })
+
+                        <small style="color: grey;margin: 15px;
+                            display: block;text-overflow: ellipsis;">
+                            @Html.Raw(Model.LivePreview.NomeCriador)
+                        </small>
+                    </h6>
+                    <div style="display: flex">
+                        <small style="padding-right: 1.5%;" class="material-icons mdc-button__icon" aria-hidden="true">visibility</small>
+                        <span> @Model.LivePreview.QuantidadeDeVisualizacoes </span>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 455px">
+                <form method="post" enctype="multipart/form-data" id="video-editor-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label>Tecnologias relacionadas</label><br>
+                         <select multiple="multiple" asp-for="TagsSelected"
+                            class="form-control"
+                            required
+                            >
+                                @foreach (var item in Model.RelatioTags)
+                                {
+                                    <optgroup label="@item.Key">
+                                        @foreach (var subItem in  Model.RelatioTags[item.Key])
+                                        {
+                                            <option value="@subItem">@subItem</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        @* @Html.DropDownListFor(x => new SelectList(x.TagsFront), Model.TagsSelected) *@
+                        <span asp-validation-for="TagsFront" class="text-danger"></span>
+                    </div>
+                    @{
+                        var visibilityEditor = Model.LivePreview.IsTimeSelection ? "none" : "block";
+                    }
+                    <div id="checkboxDiv" style="margin-top: 12px; display: @visibilityEditor">
+                            <input asp-for="Live.Visibility" type="checkbox" id="Visibility">
+                            <span class="slider round" id="checkTxt">Público</span>
+                        </div>
+                    <div style="margin-top: 10px;">
+                        <label asp-for="Live.Titulo" class="control-label"></label>
+                        <input asp-for="Live.Titulo" class="form-control" id="Titulo" placeholder="Título" />
+                        <span asp-validation-for="Live.Titulo" class="text-danger"></span>
+                    </div>
+                    <div style="max-width: 450px; margin-top: 10px;">
+                        <label asp-for="Live.Descricao" class="control-label"></label>
+                        <textarea asp-for="Live.Descricao" style="height: 168px; max-height250px; " class="form-control" id="Descricao" placeholder="Faça uma descrição do video(opcional)"></textarea>
+                        <span asp-validation-for="Live.Descricao" class="text-danger"></span>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group" id="thumbnailUploadContainer">
+                        <label asp-for="Live.Thumbnail" class="control-label">Pré-Vizualização</label>
+                        <br>
+                        <input type="file" asp-for="Live.Thumbnail"  accept="image/*" />
+                        <br>
+                        <br>
+                    </div>
+                    <div id="editor-message" class="button action" style="display: none; width: fit-content">
+                    </div>
+                    <br>
+                    <div style="display: flex; justify-content: space-between">
+                        <a href="./?usr=@Model.UserProfile?.UserName"
+                           class="button button-close-color action text-dark disable-anchor-decoration">
+                            <i style="margin-top: 3px" class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
+                            <span style="margin-top: 5px" class="text-button-align-icon">VOLTAR</span>
+                        </a>
+                        <button id="btn-save" type="submit" class="button action" nome="key" data-value="@Model.LivePreview.CodigoLive">
+                            <i style="margin-top: 3px" class="material-icons" aria-hidden="true">save</i>
+                            <span style="margin-top: 5px" class="text-button-align-icon">Salvar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        }
+    </main>
+</div>
+
+@section scripts{
+    <script src="/js/Editor/editorHandler.js"></script>
+    <script>
+        document.getElementById('Visibility').addEventListener('change', () => {
+            const chkDiv = document.querySelector('#checkboxDiv')
+            const mark = document.querySelector('#smallVisibility')
+            const chk = document.querySelector('#Visibility')
+            if (mark.style.backgroundColor == 'cornflowerblue') {
+                mark.style.backgroundColor = '#f44336';
+                mark.innerHTML = `
+                            <small style="font-size: 14px" class="material-icons mdc-button__icon" aria-hidden="true">lock</small>
+                            <span style="float: inherit;">Privado</span>
+                        `
+            } else {
+                mark.style.backgroundColor = 'cornflowerblue';
+                mark.innerHTML = `
+                            <small style="font-size: 14px" class="material-icons mdc-button__icon" aria-hidden="true">lock_open</small>
+                            <span style="float: inherit" id="checkTxt">Publico</span>
+                        `
+            }
+        })
+
+        createSelect2("#TagsSelected")
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

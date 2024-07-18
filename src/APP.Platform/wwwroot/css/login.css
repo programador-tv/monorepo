@@ -1,0 +1,146 @@
+@font-face {
+    font-family: 'LeagueSpartan';
+    src: url('../styles/LeagueSpartan-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../styles/Roboto-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: 'LeagueSpartan', sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.bg-settings {
+    flex: 1;
+    display: flex;
+    min-height: 100vh;
+}
+
+#left-half {
+    background-color: #FAFAFA;
+    flex-direction: column;
+}
+
+#right-half {
+    background-color: #F3F2EF;
+    flex-direction: column;
+}
+
+.custom-title {
+    display: block;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: 1.25%;
+    color: #575757;
+    margin-bottom: 0.5px;
+}
+
+.custom-subtitle {
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing:1.25%;
+    color: #0F0F0F;
+}
+
+.custom-section-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 90px;
+    z-index: 1;
+    text-align: center;
+}
+
+.btn-login {
+    width: 270px;
+    height: 60px;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 8px;
+    border: 1px #AFAFAF solid;
+    gap: 12px;
+    background-color: #F3F2EF;
+    box-shadow: 0px 3px 6px 0px #33313133;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-login:hover {
+    background-color: #AFAFAF;
+    font-weight: bold;
+}
+
+.logo-img {
+    height: 58.41px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.description-right-title {
+    margin-top: 40px;
+    line-height: 50px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.title-right {
+    color: #0F0F0F;
+    letter-spacing: 0.0125em;
+    font-size: 40px;
+}
+
+.subtitle-right {
+    color: #575757;
+    letter-spacing: 0.0125em;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.footer-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    text-align: center;
+}
+
+.footer-login-small {
+    display: flex;
+    justify-content: center;
+    margin-top: 80%;
+    text-align: center;
+}
+
+.img-left {
+    position: absolute;
+    float: right;
+    right: 70px;
+    top: 210px;
+}
+
+@media (max-width: 1217px) {
+    .img-left {
+        position: static;
+    }
+}
+
+@media (min-width: 1217px) {
+    .img-left {
+        position: absolute;
+        height: auto;
+    }
+}
+
+
+
+
+

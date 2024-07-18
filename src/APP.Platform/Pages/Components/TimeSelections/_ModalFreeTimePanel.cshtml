@@ -1,0 +1,162 @@
+﻿@using Domain.Enums;
+@using Domain.Entities;
+@using Domain.Utils;
+@using Domain.Models.ViewModels;
+
+@model ModalFreeTimePanel
+@{
+    var conclusaoPendente = new Dictionary<TimeSelection, List<JoinTimeViewModel>>();
+    var proximos = new Dictionary<TimeSelection, List<JoinTimeViewModel>>();
+    var marcado = new Dictionary<TimeSelection, List<JoinTimeViewModel>>();
+    var pendente = new Dictionary<TimeSelection, List<JoinTimeViewModel>>();
+    var concluido = new Dictionary<TimeSelection, List<JoinTimeViewModel>>();
+    @foreach (var data in Model.TimeSelectionAndJoinTimes ?? new())
+    {
+        @if (data.Key.Status == StatusTimeSelection.ConclusaoPendente)
+        {
+            conclusaoPendente.Add(data.Key, data.Value);
+        }
+        @if (data.Key.Status == StatusTimeSelection.Marcado)
+        {
+            var timeDelta = data.Key.StartTime - DateTime.Now;
+            @if (timeDelta.TotalMinutes <= 30 && timeDelta.TotalMinutes > 0)
+            {
+                proximos.Add(data.Key, data.Value);
+            }
+            else
+            {
+                marcado.Add(data.Key, data.Value);
+            }
+        }
+        @if (data.Key.Status == StatusTimeSelection.Pendente)
+        {
+            pendente.Add(data.Key, data.Value);
+        }
+        @if (data.Key.Status == StatusTimeSelection.Concluído)
+        {
+            concluido.Add(data.Key, data.Value);
+        }
+    }
+}
+@if (conclusaoPendente.Count > 0)
+{
+    <div id="conclusao-pendente-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Conclusões Pendentes</strong>
+        <div id="conclusao-pendente-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @foreach (var data in conclusaoPendente)
+            {
+                @await Html.PartialAsync("Components/TimeSelections/_ConsideracoesPendentesCard",
+                         new Models.ConsideracoesPendentesCardPageModel
+        {
+            Id = data.Key.Id,
+            Titulo = data.Key.TituloTemporario ?? string.Empty,
+            FotoEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Foto ?? string.Empty,
+            NomeEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Nome ?? string.Empty,
+        })
+            }
+        </div>
+    </div>
+}
+
+@if (proximos.Count > 0)
+{
+    <div id="eventos-proximos-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Próximos</strong>
+        <div id="eventos-proximos-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @foreach (var data in proximos)
+            {
+                var timeDelta = data.Key.StartTime - DateTime.Now;
+                string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                @await Html.PartialAsync("Components/TimeSelections/_EventosProximosCard",
+                         new Models.EventosProximosCardPageModel
+        {
+            Id = data.Key.Id,
+            Titulo = data.Key.TituloTemporario ?? string.Empty,
+            FotoEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Foto ?? string.Empty,
+            NomeEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Nome ?? string.Empty,
+            TempoRestante = tempoRestante
+        })
+            }
+        </div>
+    </div>
+}
+@if (marcado.Count > 0)
+{
+    <div id="eventos-marcados-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Marcados</strong>
+        <div id="eventos-marcados-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+            @foreach (var data in marcado)
+            {
+                var timeDelta = data.Key.StartTime - DateTime.Now;
+                string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                @await Html.PartialAsync("Components/TimeSelections/_EventosMarcadosCard",
+                         new Models.EventosMarcadosCardPageModel
+        {
+            Id = data.Key.Id,
+            Titulo = data.Key.TituloTemporario ?? string.Empty,
+            FotoEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Foto ?? string.Empty,
+            NomeEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Nome ?? string.Empty,
+            TempoRestante = tempoRestante
+        })
+            }
+        </div>
+    </div>
+}
+
+<div id="free-time-pendentes-card" class="default-card card-right">
+    <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos em Aberto</strong>
+    <div id="eventos-pendentes-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+
+        @{
+            var resultadoPendente = pendente.Select(data =>
+            {
+                var freeTime = data.Key;
+                if (freeTime != null)
+                {
+                    var timeDelta = data.Key.StartTime - DateTime.Now;
+                    string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+                    return new Models.PendentesCardPageModel
+                    {
+                        Id = freeTime.Id,
+                        Titulo = freeTime.TituloTemporario ?? string.Empty,
+                        TempoRestante = tempoRestante,
+                    };
+                }
+                return null;
+            });
+            foreach (var item in resultadoPendente)
+            {
+                @await Html.PartialAsync("Components/TimeSelections/_PendentesCard", item)
+            }
+        }
+        @if (pendente.Count == 0)
+        {
+            <div id="semAbertos" style="text-align: center;">
+                <small style="color:grey;">Nenhum evento em aberto.</small>
+            </div>
+        }
+    </div>
+</div>
+@if (concluido.Count > 0)
+{
+    <div id="eventos-concluidos-card" class="default-card card-right">
+        <strong class="tittle-newDesign" style="font-size: 20px; font-weight: bold; text-align: center">Eventos Concluidos</strong>
+        <div id="eventos-concluidos-card-events" class="scrollable-list" style="max-height: 500px; overflow-y: auto; padding-right: 0.5em;">
+            @foreach (var data in concluido)
+            {
+                <partial name="Components/TimeSelections/_ConcluidosCard"
+                         model="new Models.ConcluidosCardPageModel
+                         {
+                             Id = data.Key.Id,
+                             Titulo = data.Key.TituloTemporario ?? string.Empty,
+                             FotoEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Foto ?? string.Empty,
+                             NomeEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Nome ?? string.Empty,
+                         }" />
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,181 @@
+﻿@page
+@using Domain.Enums
+@using APP.Platform.Pages.Components.ModalJoinTime;
+@using Domain.Entities;
+
+
+@model IndexModel
+@{
+    ViewData["Title"] = "";
+}
+    <br>
+    <main  id="destaques"  >
+        @await Html.PartialAsync("Components/ScheduleActions/_VerAjudasDisponiveis")
+    </main>
+
+    <br>
+
+
+@* <br>
+<h4 class="title-salas">Salas</h4>
+
+<main class="videos-group">
+    <a class="material-icons OpenNewButtom"
+       data-bs-toggle="modal"
+       data-bs-target="#roomModal">
+        add_circle
+    </a>
+<div class="default-card card-sm">
+    <h5 class="title-card" title="Sala aberta">
+        Sala aberta
+    </h5>
+    <form asp-page-handler="joinOpenRoom">
+        <button type="submit" class="button button-icon-seta">
+            <span class="material-icons material-symbols-outlined span-icon-seta">arrow_forward_ios</span>
+        </button>
+    </form>
+
+        <div class="div-avatar">
+            @foreach (var presente in Model.PresentesOpenRoom!)
+            {
+                @await Html.PartialAsync("Components/_PerfilAvatar",
+                    new _PerfilAvatar{
+                        Perfil = new(){
+                            Foto = presente.Foto,
+                            Nome = presente.Nome
+                        },
+                        WithLink = true
+                    })
+            }
+        </div>
+
+                <small
+                    class="tag"
+                    style="background-color: #9F86C0; color:white; float: left; ">
+                    ESPAÇO ABERTO
+                </small>
+
+
+        <div class="tag-tipo">
+
+        <span class="tag" title="Code Review"> Code Review </span>
+        <span class="tag" title="Tira dúvida"> Tira dúvida </span>
+        <span class="tag" title="Networking"> Networking </span>
+
+        </div>
+    </div>
+    @foreach (var item in Model.Rooms)
+    {
+        @await Html.PartialAsync("Components/_Sala", new _SalaModel
+            {
+            Sala = item,
+            Joined = Model.Joined!
+            })
+
+    }
+    </main> *@
+
+
+
+
+    <main style="background: white;
+    border-radius: 20px;
+    padding: 20px;">
+
+            <br>
+        <button class="button-capacitacao" data-bs-toggle="modal"
+            data-bs-target="#liveModal">
+            Nova live
+        </button>
+                @* <div style="text-align: right; font-size: 32px; cursor : pointer">
+                    <span id="groupCursos-left" style="filter: grayscale(0.8);">👈</span>
+                    <span id="groupCursos-right" style="filter: grayscale(0.8);">👉</span>
+                </div> *@
+                <br>
+                <div class="videos-group" id="savedVideos" style="display: flex; justify-content: center; flex-wrap: wrap; min-height: 280px;">
+                    <div class="d-flex justify-content-center" id="videosLoading" style="padding-top: 6.5rem;">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Loading...</span>
+
+                        </div>
+                    </div>
+
+                </div>
+    </main>
+    @await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTime",
+        new _ModalJoinTime
+        {
+            JoinTime = Model.JoinTime,
+            IsLogedUser = Model.IsAuth,
+            requestProfileId = Model.UserProfile.Id
+
+        })
+@await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTimeForRequestHelp",
+              new _ModalJoinTimeForRequestHelp
+        {
+            JoinTime = Model.JoinTime,
+            IsLogedUser = Model.IsAuth,
+            requestProfileId = Model.UserProfile.Id
+        })
+
+@await Html.PartialAsync("Components/_AjudarOptions")
+@await Html.PartialAsync("Components/_PedidosAjudaOptions")
+
+    @await Html.PartialAsync("Components/ScheduleActions/_FormLiveSchedule",
+        new FormLiveSchedule{
+            ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+            ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
+            ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection,
+            RelatioTags = Model.RelatioTags,
+            })
+    @if (Model.IsAuth)
+    {
+        @await Html.PartialAsync("Components/ScheduleActions/_FormsOneToOne",
+        new FormsOneToOne{
+            ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+            ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
+            ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection,
+            RelatioTags = Model.RelatioTags,
+        })
+        @await Html.PartialAsync("Components/ScheduleActions/_FormsCursosAndEventos",
+        new FormsCursosAndEventos{
+            ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+            ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
+            ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection,
+            RelatioTags = Model.RelatioTags,
+        })
+        @await Html.PartialAsync("Components/ScheduleActions/_FormsRequestHelp",
+            new FormsRequestHelp
+        {
+            ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+            RelatioTags = Model.RelatioTags,
+        })
+    }
+    @await Html.PartialAsync("Components/TimeSelections/_ModalTimePicker")
+    @await Html.PartialAsync("Components/TimeSelections/_ModalSelectJoinTime")
+
+    <div id="JoinTime_PerfilId"></div>
+    <div id="JoinTime_TimeSelectionId"></div>
+    <div id="mentorMatch"></div>
+
+<link href="/css/timePicker.css" rel="stylesheet" />
+
+<script defer src="~/js/timePickerFlow.js"></script>
+<script defer src="~/js/renderComponentsCapacitacao.js"></script>
+<script defer src="~/js/renderComponentsPedirAjuda.js"></script>
+
+<script defer src="~/js/OneToOneFlow.js"></script>
+<script defer src="~/js/CursosAndEventosFlow.js"></script>
+<script defer src="~/js/RequestHelpFlow.js"></script>
+<script defer src="~/js/ScheduleLiveFlow.js"></script>
+<script defer src="~/js/afterLoadHome.js"></script>
+<script defer src="~/js/liveOriginVerification.js"></script>
+<script defer src="~/js/loginCallback.js"></script>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            afterLoad(@Model.IsAuth.ToString().ToLower());
+        });
+    </script>
+}

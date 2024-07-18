@@ -1,0 +1,836 @@
+﻿@page "{key}"
+@using Domain.Enums
+@using Domain.Utils
+@model WatchIndexModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = " | Assitir";
+}
+
+
+<br>
+
+<div id="modal" style="display: none;">
+    <h2>Atenção!</h2>
+    <p>O vídeo está prestes a terminar.</p>
+</div>
+
+<div id="screen" class="default-card" style="width: 100%; margin: 0 auto;">
+    <div id="videoScreen" style="position: relative">
+        @if(Model.isScheduledLive)
+        {
+            <img src="@Model.Live!.Thumbnail" style="width: 100%; height: 100%; text-align: center;" alt="imagem de prévia do vídeo">
+
+        }else{
+            <video style="width: 100%; height: 100%; text-align: center;" id="CurrentVideo" preload="auto" autoplay
+                playsinline controls></video>
+        }
+
+        <div id="modal-Videos"
+            style="display: none; flex-direction: column; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;background-image: linear-gradient(to top, rgba(87, 86, 86, 0.5), rgba(34, 34, 32, 0.6509803921568628) 21.43%, rgba(0, 0, 0, 0.74) 90.34%);">
+            <!-- Conteúdo do modal -->
+            <h2 class="modal-header" style="border:none;color: white; padding: 5px 5px 5px 5px; justify-content: center;">Recomendações de vídeos</h2>
+            <div class="modal-body" id="videoRecomendations" style="display:flex;  overflow-x: auto; flex: 1; align-items: center; ">
+                <!-- Exibir recomendações de vídeos aqui -->
+            </div>
+            <div class="modal-footer" style="justify-content: flex-start;  padding: 0;">
+                    <i  onclick='CurrentVideo.play();' title="Clique aqui para recomeçar o vídeo" style="cursor: pointer; color: white" class="material-icons mdc-button__icon" aria-hidden="true">replay</i>
+            </div>
+        </div>
+    </div>
+    @if(Model.Live!.StatusLive == StatusLive.Iniciada)
+    {
+        <div id="onLive" class="mdc-button button "
+        style="cursor: default; float: right; display: inline-flex; margin-top: 0;">
+        <small
+            style="margin-left:5px;float:right;padding:3px; background-color: firebrick; color:white; border-radius:5px">AO
+            VIVO</small>
+        </div>
+    }
+<h4 style="padding: 15px;" id="titulo"></h4>
+@if (Model.PerfilOwner != null)
+{
+    <h5 style="display: flex; justify-content:space-between;align-items: center;">
+        <div style="display: flex;
+                    align-items: center;
+                    gap: 20px;"
+        >
+            <div>
+                @await Html.PartialAsync("Components/_PerfilAvatar",
+            new _PerfilAvatar{
+            Perfil = Model.PerfilOwner,
+            WithLink = true
+            })
+                @Model.PerfilOwner.Nome
+            </div>
+
+        </div>
+
+        @if(Model.isScheduledLive)
+        {
+            <span>
+                Estreia em @TimeHelper.ReturnRemainingTimeString(
+                    Model.TimeSelectionScheduledLive!.StartTime
+                    - DateTime.Now
+                    )
+                    <br>
+                <strong>
+                    @Model.TimeSelectionScheduledLive.StartTime.ToString("dd/MM/yyyy")
+                    às @Model.TimeSelectionScheduledLive.StartTime.ToString("HH:mm")
+                </strong>
+            </span>
+            @if(SignInManager.IsSignedIn(User)){
+                @if(Model.initialScheduledState){
+                    <button class="action button active" id="notification" onclick="toogleNotification('@Model.Live.Id')">
+                        <i class="material-icons " aria-hidden="true">notifications_active</i>
+                        Desativar notificações
+                    </button>
+                }else{
+                    <button class=" button desactive" id="notification" onclick="toogleNotification('@Model.Live.Id')">
+                        <i class="material-icons " aria-hidden="true">notifications</i>
+                        Receber notificação
+                    </button>
+                }
+            }
+        }
+        @{
+            var likeBtnClass = Model.IsUserLiked ? "liked" : "notLiked";
+        }
+        @if(Model.UserProfile.UserName != null){
+
+        <div id="interation-context"
+        onclick="likeButtonEvent('@Model.LiveId')"
+        class="@likeBtnClass" >
+            <span id="like-counter">@Model.LikesCounter</span>
+            <button class="material-symbols-outlined "
+                style="background: none; border: none; padding-bottom: 7px;color: inherit;">
+                    thumb_up
+            </button>
+        </div>
+        }else{
+            <div id="interation-context"
+            style="cursor: default; background-color: #e6e6e6"
+            >
+            <span id="like-counter">@Model.LikesCounter</span>
+            <div class="material-symbols-outlined "
+                style="background: none; border: none; padding-bottom: 7px;color: inherit;">
+                    thumb_up
+            </div>
+        </div>
+        }
+    </h5>
+}
+<h3 id="perfilVideo"></h3>
+<small id="desc" style="color: grey;"></small>
+<div id="broadcast-viewers-counter"></div>
+@if(Model.Live.StatusLive == StatusLive.Finalizada) 
+{
+
+    <hr>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (Model.UserProfile != null)
+        {
+            <div style="width: 80%; margin: 10px auto;">
+                @* aqui identificar forma de redenrizar na tela numero de usuarios ao vivo, analisar youtube e outras lives e suas soluções *@
+                <h4><label for=" comentario">Comentários </label>
+                </h4>
+                <textarea id="comment" class="form-control" name="comentario" rows="4" cols="50"></textarea>
+                <button style="float:right; margin-top:5px;" id="publish-comment"
+                class="button action"
+                    onClick=publishComment()>
+                    Publicar
+                </button>
+            </div>
+        }
+    }
+
+    <div style="margin-top: 50px;" id='commentList'>
+        @foreach (var item in @Model.Comments!)
+        {
+            <div style="
+                width: 80%;
+                border-radius: 15px;
+                margin: 0 auto;
+                padding: 6px;
+                " id="comentario-@item.Id">
+                <h5 style="font-weight: bold; font-size: 20px; ">
+
+
+                     @await Html.PartialAsync("Components/_PerfilAvatar",
+                        new _PerfilAvatar{
+                            Perfil = item.Perfil ?? new(),
+                            WithLink = true
+                        })
+                    @item?.Perfil?.Nome
+                    <small style="font-size: 13px; color: #808080"> @item?.TempoQuePassou</small>
+
+                </h5>
+                @if (item?.Perfil?.Id == Model?.UserProfile!.Id || Model?.Live.PerfilId == Model?.UserProfile!.Id)
+                {
+                    <form id="DeleteMyComment-@item?.Id" style="text-align:right; margin-top: -30px;" method="post">
+                        <div style="margin-top: -9px; " class="transparente-button" id='btn-delete-@item?.Id'
+                            >
+                            <i  onclick="deleteCommentAsync('@item?.Id')" class="material-icons mdc-button__icon" aria-hidden="true"
+                                style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+
+                        </div>
+                    </form>
+
+                }
+                <p style="margin-left: 45px; word-break: break-all; width: 80%;"> @Html.Raw(item?.Content ?? string.Empty) </p>
+
+
+            </div>
+        }
+    </div>
+
+}
+<form id="forgery" method="post">
+    @Html.AntiForgeryToken()
+</form>
+</div>
+<aside id="theGreatAside">
+    <div class="default-card card-right" >
+
+    @* @await Html.PartialAsync("Components/_Chat",
+                        new _Chat{
+                            StatusLive = Model.Live.StatusLive,
+                            UserProfile = Model.UserProfile
+                        }) *@
+
+    </div>
+</aside>
+<input asp-for="LiveId" type="hidden" />
+
+@section Scripts {
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script> *@
+    <script>
+        function likeButtonEvent(entityKey) {
+            const counter = document.querySelector("#like-counter");
+            const likeContainer = document.querySelector("#interation-context");
+
+            const url = `?handler=LikeInteration&entityKey=${entityKey}`;
+
+            fetch(url)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.userAlredyLiked) {
+                        likeContainer.classList.remove("notLiked");
+                        likeContainer.classList.add("liked")
+                    }else{
+                        likeContainer.classList.add("notLiked")
+                        likeContainer.classList.remove("liked");
+                    }
+                    counter.innerHTML = data.newCount;
+                })
+                .catch(error => {
+                    console.error("Erro na solicitação:", error);
+                });
+        }
+
+        @* const chatws = '@(Model._settings.CHATSOCKET_URL)/ws?liveId=@Model.LiveId'; *@
+        @* const messageList = document.querySelector('#messageList'); *@
+        @* let webSocket; *@
+
+    function showNewMessage(data, isMine){
+            const fotoPerfil = data.foto
+            const nomeUser = data.nome
+            const id = data.id
+            const commentAsync = document.createElement('div');
+
+            const when = data.dataCriacao;
+
+            const dataCriacao = new Date(when);
+            const dataAtual = new Date();
+            const diference = getDifferenceText(dataAtual, dataCriacao);
+
+            commentAsync.innerHTML =
+            `
+            <div style="
+                border-radius: 15px;
+                margin: 0 auto;
+                padding: 6px;
+                "
+                id="message-${id}">
+                <h5 style="font-weight: bold; font-size: 15px; ">
+                    ${renderAvatar({userName: nomeUser, foto: fotoPerfil}, true)}
+                    ${nomeUser}
+                    <small id='message-time-passed-${id}' style="font-size: 13px; color: #808080"> ${diference}</small>
+                </h5>
+
+                <p style="margin-left: 25px; word-break: break-all; width: 80%;"> ${data.content}</p>
+                ${isMine ?
+                ` <form id="DeleteMyMessage-${id}" style="text-align:right; margin-top: -45px;" method="post">
+
+                    <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${id}" >
+
+                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+
+                    </div>
+                    <input asp-for="IdMessageToDelete" value="${id}" type="hidden" />
+                </form> `
+                : ``
+                }
+
+            </div>
+            `
+
+
+        messageList.prepend(commentAsync);
+        const timePassed = document.querySelector(`#message-time-passed-${id}`);
+
+        setInterval(()=>{
+            const dataCriacao = new Date(when);
+            const dataAtual = new Date();
+            const diference = getDifferenceText(dataAtual, dataCriacao);
+            timePassed.innerText = diference;
+        }, 7000);
+
+        }
+
+    function getDifferenceText(currentDate, initialDate) {
+        const seconds = Math.floor((currentDate - initialDate) / 1000);
+
+        if (seconds < 60) {
+            return `há ${seconds} segundo${seconds !== 1 ? 's' : ''}`;
+        }
+
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) {
+            return `há ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+        }
+
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) {
+            return `há ${hours} hora${hours !== 1 ? 's' : ''}`;
+        }
+
+        const days = Math.floor(hours / 24);
+        if (days < 30) {
+            return `há ${days} dia${days !== 1 ? 's' : ''}`;
+        }
+
+        const months = Math.floor(days / 30);
+        return `há ${months} mês${months !== 1 ? 'es' : ''}`;
+    }
+
+    const IdsMessagesThatISeed = [];
+    const retryInterval = 5000;
+
+
+    @* const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chat")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    connection.on("RemoveMessage", (messageId) => {
+        const messageElement = document.querySelector(`#message-${messageId}`);
+        if (messageElement) {
+            messageElement.remove();
+        }
+    }); *@
+
+    @* connection.on("UpdateLiveUserCount", (viewerCount) => {
+        document.getElementById("liveUserCount").textContent = viewerCount;
+    });
+
+    connection.on("ReceiveMessage", (message) => {
+        if (message.perfilId != "@Model.UserProfile!.Id") {
+            showNewMessage(message, false);
+        } else {
+            if (!IdsMessagesThatISeed.includes(message.id)) {
+                showNewMessage(message, true);
+            }
+        }
+    }); *@
+    function sendMessage(message) {
+        @* connection.invoke("SendMessage", message).catch((err) => {
+            console.error(err.toString());
+        }); *@
+    }
+    async function start() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected.");
+        } catch (err) {
+            console.log(err);
+            setTimeout(start, 5000);
+        }
+    };
+
+    connection.onclose(async () => {
+        await start();
+    });
+
+    // Start the connection.
+    start();
+    function startWebSocket() {
+
+        
+
+
+            webSocket = new WebSocket(chatws);
+            webSocket.onopen = event => {
+                console.log('WebSocket connection opened:', event);
+            };
+
+            webSocket.onmessage = event => {
+                const message = JSON.parse(event.data);
+
+
+                if (message.actionType && message.actionType === "RemoveMessage") {
+                    const messageElement = document.querySelector(`#message-${message.messageId}`);
+                    if (messageElement) {
+                        messageElement.remove();
+                    }
+                }else if (message.actionType && message.actionType === "UpdateLiveUserCount") {
+                     const liveUserCount = message.viewerCount;
+
+                     document.getElementById("liveUserCount").textContent = liveUserCount;
+
+                }else{
+                    if(message.perfilId != "@Model.UserProfile!.Id"){
+                        showNewMessage(message, false)
+                    }else{
+                        if(!IdsMessagesThatISeed.includes(message.id)){
+                              showNewMessage(message, true)
+                        }
+                    }
+                }
+            };
+
+            webSocket.onclose = event => {
+                console.log('WebSocket connection closed:', event);
+                setTimeout(startWebSocket, retryInterval);
+            };
+
+            webSocket.onerror = error => {
+                console.error('WebSocket error:', error);
+            };
+        }
+        startWebSocket();
+    </script>
+    <script>
+        const commentTxt = document.querySelector('#comment');
+        const liveid = document.querySelector("#LiveId").value;
+        const publishBtn = document.querySelector("#publish-comment");
+
+        const messageTxt = document.querySelector('#message');
+        const messageBtn = document.querySelector("#publish-message");
+
+        const btnPublishMessage = document.querySelector("#publish-message");
+
+
+        function publishMessage() {
+            if(messageTxt.value.trim() == ""){
+                return;
+            }
+            if(!btnPublishMessage.classList.contains("action")){
+                return;
+            }
+            btnPublishMessage.classList.remove("action");
+            btnPublishMessage.style.cursor = "not-allowed";
+
+
+            @* const formData = new FormData();
+
+            if (!formData.has("__RequestVerificationToken")) {
+                const token = document.querySelector("#forgery input").value
+                formData.append("__RequestVerificationToken", token)
+            }
+            formData.append("comment", messageTxt.value)
+            formData.append("liveId", liveid)
+
+            const url = '?handler=Message';
+
+            const options = {
+                method: "POST",
+                body: formData,
+            };
+            messageTxt.value = ""; *@
+            connection.invoke("SendMessage", message).catch((err) => {
+                console.error(err.toString());
+            });
+            fetch(url, options)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    IdsMessagesThatISeed.push(data.id);
+                    showNewMessage(data, true)
+                })
+                .catch(function (error) {
+                    console.error(error);
+                })
+                .finally(()=>{
+                    setTimeout(() => {
+                        btnPublishMessage.classList.add("action");
+                        btnPublishMessage.style.cursor = "pointer";
+                    }, 1000);
+                });;
+        }
+
+        function publishComment() {
+
+            const url = '?handler=Comment&comment=' + commentTxt.value + '&liveId=' + liveid;
+            commentTxt.value = "";
+            fetch(url)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    showNewComment(data)
+                })
+                .catch(function (error) {
+                    console.error(error);
+                })
+        }
+
+        function showNewComment(data){
+            const fotoPerfil = data.foto
+                    const nomeUser = data.nome
+                    const btnDelete = data.id
+                    const commentAsync = document.createElement('div');
+
+                    commentAsync.innerHTML = `
+                    <div style="
+                    width: 80%;
+                    border-radius: 15px;
+                    margin: 0 auto;
+                    padding: 6px;
+                "
+                id="comentario-${data.id}"
+                >
+                    <h5 style="font-weight: bold; font-size: 20px;">
+                    ${renderAvatar({userName: nomeUser, foto: fotoPerfil}, true)}
+                    ${nomeUser}
+                    <small style="font-size: 13px; color: #808080"> ${data.data}</small>
+                    </h5>
+                    <p style="margin-left: 45px; word-break: break-all; width: 80%;"> ${data.comentario} </p>
+                    <form id="DeleteMyComment-${data.id}" style="text-align:right; margin-top: -30px;" method="post">
+
+                    <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${data.id}"">
+
+                    <i  onclick="deleteCommentAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="position: relative; top: -6px; color: firebrick;cursor: pointer;">delete</i>
+                    </div>
+                    <input asp-for="IdCommentToDelete" value="${data.id}" type="hidden" />
+                    <input asp-for="LiveId" type="hidden" />
+                    </form>
+                    </div>
+                    `;
+
+                    document.querySelector('#commentList').prepend(commentAsync);
+
+
+        }
+    </script>
+    <script>
+        function toogleNotification(id) {
+            const formData = new FormData()
+
+            if (!formData.has("__RequestVerificationToken")) {
+                const token = document.querySelector("#forgery input").value
+                formData.append("__RequestVerificationToken", token)
+            }
+            formData.append("LiveId", id )
+
+            var notificationBtn = document.querySelector("#notification")
+
+            if(notificationBtn.classList.contains("desactive")){
+                notificationBtn.classList.remove("desactive")
+                notificationBtn.classList.add("action")
+                notificationBtn.classList.add("active")
+                notificationBtn.innerHTML = `
+                 <i class="material-icons " aria-hidden="true">notifications_active</i>
+                    Desativar notificações
+                `
+            }
+            else{
+                notificationBtn.classList.remove("active")
+                notificationBtn.classList.remove("action")
+                notificationBtn.classList.add("desactive")
+                notificationBtn.innerHTML = `
+                 <i class="material-icons " aria-hidden="true">notifications</i>
+                    Receber notificação
+                `
+            }
+            const url = "?handler=ActiveNotification"
+            const data = {
+                method: "POST",
+                body: formData
+            }
+            fetch(url, data)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                })
+        }
+
+
+        function deleteMessageAsync(id) {
+            var resultFormulario = document.querySelector("#DeleteMyMessage-" + id);
+            const formData = new FormData(resultFormulario)
+
+            if (!formData.has("__RequestVerificationToken")) {
+                const token = document.querySelector("#forgery input").value
+                formData.append("__RequestVerificationToken", token)
+            }
+            formData.append("messageId", id)
+            formData.append("liveId", '@Model.LiveId')
+            const url = "?handler=DeleteMessage"
+            const data = {
+                method: "POST",
+                body: formData
+            }
+            const comentarioToDelete = document.querySelector("#message-" + id)
+            comentarioToDelete.remove()
+            fetch(url, data)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+
+                })
+        }
+        function deleteCommentAsync(id) {
+            var resultFormulario = document.querySelector("#DeleteMyComment-" + id);
+            const formData = new FormData(resultFormulario)
+
+            if (!formData.has("__RequestVerificationToken")) {
+                const token = document.querySelector("#forgery input").value
+                formData.append("__RequestVerificationToken", token)
+            }
+            formData.append("IdCommentToDelete", id)
+            const url = "?handler=DeleteMyComment"
+            const data = {
+                method: "POST",
+                body: formData
+            }
+            const comentarioToDelete = document.querySelector("#comentario-" + id)
+            comentarioToDelete.remove()
+            fetch(url, data)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+
+                })
+        }
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-17S4EYBPS2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-17S4EYBPS2');
+    </script>
+
+    <script>
+        var video = document.getElementById('CurrentVideo');
+        document.querySelector("#titulo").innerText = `@Html.Raw(Model.Live.Titulo)`
+        document.querySelector("#desc").innerText = `@Html.Raw(Model.Live.Descricao)`
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+
+       @if(Model.Live.StatusLive != StatusLive.Iniciada)
+        {
+        <script>
+            var videoSrc = '@(Model._settings.MEDIASERVER_URL)/Lives/@(Model.LiveId).m3u8';
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+            } else {
+                video.src = videoSrc;
+            }
+
+            var videoTimeKey = 'videoTime_@Model.Live?.FormatedDuration?.ToString()';
+            var videoTimes = [];
+
+            if (localStorage.getItem(videoTimeKey)) {
+                videoTimes = JSON.parse(localStorage.getItem(videoTimeKey));
+                var currentTime = videoTimes[videoTimes.length - 1];
+                video.currentTime = currentTime;
+            }
+
+            video.addEventListener('timeupdate', function () {
+                videoTimes.push(video.currentTime);
+                localStorage.setItem(videoTimeKey, JSON.stringify(videoTimes));
+            });
+
+            video.addEventListener('loadedmetadata', function () {
+                video.currentTime = 0;
+
+                if (localStorage.getItem(videoTimeKey)) {
+                    videoTimes = JSON.parse(localStorage.getItem(videoTimeKey));
+                    var currentTime = videoTimes[videoTimes.length - 1];
+                    video.currentTime = currentTime;
+                }
+
+                video.play();
+            });
+
+            var limiteTempoMinutos = 60;
+            var dataCriacaoKey = `${videoTimeKey}_data`;
+
+            if (localStorage.getItem(dataCriacaoKey)) {
+                var dataCriacao = new Date(localStorage.getItem(dataCriacaoKey));
+                var dataAtual = new Date();
+                var diferencaMinutos = Math.floor((dataAtual - dataCriacao) / (1000 * 60 * 60 * 24));
+
+                if (diferencaMinutos >= limiteTempoMinutos) {
+                    localStorage.removeItem(videoTimeKey);
+                    localStorage.removeItem(dataCriacaoKey);
+                    videoTimes = [];
+                }
+            } else {
+                localStorage.setItem(dataCriacaoKey, new Date());
+            }
+        </script>
+
+    }
+    else
+    {
+
+        <script>
+        var videoSrc = '@(Model._settings.MEDIASERVER_URL)/Lives/@(Model.LiveId).m3u8';
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+        }else{
+            video.src = videoSrc;
+        }
+
+        var ultimaPosicaoCarregada = 0;
+        fetch(videoSrc)
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            video.play();
+        })
+        .catch(function(err) {
+            console.error(err);
+            video.play();
+        });
+
+        </script>
+
+        <script>
+            const id = "@Model.Live.Id.ToString()";
+            const socket = new WebSocket("wss://@(Model._settings.LIVESOCKET_URL)/closed?id=" + id);
+            var liveDiv = document.querySelector("#onLive");
+
+            socket.onmessage = function (event) {
+                if (liveDiv != null && event.data == "Encerrada") {
+                    liveDiv.remove();
+                }
+            };
+
+            socket.onerror = function (event) {
+                console.error("WebSocket error: ", event);
+            };
+
+            socket.onopen = function (event) {
+                encerrado = setInterval(() => {
+                    socket.send("");
+                }, 5000);
+            };
+
+        </script>
+      }
+    <script>
+        var currentVideo = document.getElementById('CurrentVideo');
+        var modalVideos = document.getElementById('modal-Videos');
+        var videoRecomendations = document.getElementById('videoRecomendations');
+        let loadVideo = false;
+        let amountVideos = true;
+        currentVideo.addEventListener('timeupdate', function () {
+            var currentTime = video.currentTime;
+            var duration = video.duration;
+
+            if (duration - currentTime <= 60 && !loadVideo) {
+                loadVideo = true;
+                fetch("?handler=LivePlusView&id=@Model.Live!.PerfilId")
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error("Erro ao enviar a solicitação POST.");
+                        }
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        if (data.length != 0) {
+                            loadLivePlusView(data)
+                        }
+                        amountVideos = false;
+                    })
+            }
+        });
+        currentVideo.addEventListener('play', function () {
+            modalVideos.style.display = 'none';
+            currentVideo.setAttribute("controls", "true");
+        });
+        currentVideo.addEventListener('ended', function () {
+            if (!amountVideos) {
+                modalVideos.style.display = 'flex';
+                currentVideo.removeAttribute("controls");
+            }
+        });
+
+        function loadLivePlusView(data) {
+            var videoRecomendations = document.querySelector('#videoRecomendations');
+            videoRecomendations.innerHTML = '';
+            var videoContainer = document.createElement('div');
+            data.forEach(function (video) {
+                var videoCard = document.createElement('div');
+                videoCard.className = 'default-card card-medium';
+                videoCard.style.cursor = 'pointer';
+                videoCard.onclick = function () {
+                    var link = '/Watch?key=' + video.codigoLive;
+                    window.location.href = link;
+                };
+                var videoContent = `
+
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <div>
+                                                    <img src="${video.thumbnail}" alt="thumbnail do video" class="video-preview preview">
+                                                        <div style=" color: white; padding: 0px 4px; display: flex; justify-content: start; gap: 10px; margin-top: -25px;">
+                                                        <span style="background-color: #000000bd;  border-radius: 3px; padding: 0px 5px;"> ${video.formatedDuration}  </span>
+                                                            <div style="display: flex; background-color: #000000bd;  border-radius: 3px; padding: 0px 4px;">
+                                                                <small style="padding-right: 1.5%;" class="material-icons mdc-button__icon" aria-hidden="true">visibility</small>
+                                                                <span>${video.quantidadeDeVisualizacoes}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h6  style="padding-left: 5px;margin-top: 5px;"><b>${video.titulo}</b></h6>
+                                                </div>
+
+                                        `;
+                videoCard.innerHTML = videoContent;
+                videoRecomendations.appendChild(videoCard);
+            });
+        }
+    </script>
+}

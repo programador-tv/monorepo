@@ -1,0 +1,163 @@
+@inject SignInManager<IdentityUser> SignInManager
+    <div class="modal fade timeSelection-x" id="ajudarModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 955px;">
+        <div class="modal-content" style="background-color: #FEFBFB;">
+
+            <div class="modal-body" style="padding: 32px 1rem 8px;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="tittle-newDesign">🦾 Disponibilizar ajuda</h4>
+                <section style="display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around; padding-top: 1rem;"
+                        class="tab" >
+
+                    <div  style="cursor: pointer; display: flex;
+                    justify-content: flex-start;
+                    align-items: center; gap: 8px" class="button button-revamp action active hover-blue button-tab active-tab"
+                    data-bs-toggle="tab" data-bs-target="#oneToOnePanel">
+
+                        <img src="/Pictures/Icons/material-symbols_person-outline.png" alt="material-symbols_person-outline"
+                            style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;"/>
+                        <span >Ajuda 1:1</span>
+                    </div>
+
+                    <div  style="cursor: pointer; display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab hover-blue" data-bs-target="#cursosPanel">
+
+                        <img src="/Pictures/Icons/mdi_briefcase-account.svg" alt="mdi_briefcase-account"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Cursos e eventos </span>
+                    </div>
+
+                    <div class="progTV-btn-disabled" aria-disabled="true" style="display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp hover-blue button-tab"
+                         data-bs-toggle="tab" data-bs-target="#mentoriaPanel">
+
+                        <img src="/Pictures/Icons/mdi_account-sync-outline.svg" alt="mdi_account-sync-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Mentoria continuada</span>
+                    </div>
+
+                    <div class="progTV-btn-disabled" style="display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab hover-blue" data-bs-target="#simulacaoPanel">
+
+                        <img src="/Pictures/Icons/material-symbols_groups-outline.svg" alt="material-symbols_groups-outline"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Simular entrevista</span>
+                    </div>
+
+                    <div class="progTV-btn-disabled" style="display: flex;
+                    justify-content: space-between;
+                    align-items: center; gap: 8px" class="button button-revamp button-tab hover-blue" data-bs-target="#recursosPanel">
+
+                        <img src="/Pictures/Icons/mdi_link-variant.svg" alt="mdi_link-variant"
+                             style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" />
+                        <span >Recursos externos</span>
+                    </div>
+                </section>
+                <hr style="background-color: #5c00ac; height: 2px;">
+                <div class="tab-content tab-content-time-selections">
+
+                    <section  class="tab-pane active" id="oneToOnePanel">
+                        <div class="alert alert-info" role="alert">
+                            Ajuda com problemas simples
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            Direcionamento de carreira ou técnico
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            Bate papo e networking
+                        </div>
+                        <div id="marcarBtn" style="margin-left: 74.9%; cursor: pointer" class="button panel-agreed-btn action" onclick="openOneToOne()">
+                            <span>Disponibilizar Horário</span>
+                        </div>
+                    </section>
+                    <section class="tab-pane" id="mentoriaPanel">
+                        @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                    </section>
+                    <section class="tab-pane" id="simulacaoPanel">
+                        @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                    </section>
+                    <section class="tab-pane" id="cursosPanel">
+                        <div class="alert alert-info" role="alert">
+                           Grupos de estudo
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                           Demonstração de problemas complexos
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                          Conecte-se com sua comunidade e a comunidade dev
+                        </div>
+                        <div id="marcarBtn" style="margin-left: 74.9%; cursor: pointer;" class="button action panel-agreed-btn" onclick="openCursosAndEventos()">
+                            <span>Criar evento</span>
+                        </div>
+                    </section>
+                    <section class="tab-pane" id="recursosPanel">
+                        @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
+                    </section>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="tipoTempoLivre" value="" />
+<style>
+    .button-revamp {
+        padding: 8px 16px !important;
+        @* border-radius: 5px !important; *@
+    }
+
+    .button-revamp:hover {
+        @* background-color: #d5c6e2; *@
+        @* color: #373737; *@
+    }
+
+    .timeSelection-x .active-tab {
+        background-color: #d5c6e2;
+        color: #373737;
+    }
+
+    .progTV-btn-disabled {
+        color: #878787 !important;
+        cursor: not-allowed !important;
+        user-select: none !important;
+    }
+
+    .tab-content-time-selections > .active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab-content-time-selections .alert-info {
+        background-color: #d5c6e2;
+        border-color: #d5c6e2;
+        color: #373737;
+    }
+
+    .panel-agreed-btn {
+        margin-top: 2rem;
+    }
+
+</style>
+<script defer src="/js/TabBsHandler.js"></script>
+<script>
+    function openOneToOne() {
+          $("#tipoTempoLivre").val("1:1");
+          openTimePicker()
+    }
+    function openCursosAndEventos() {
+          $("#tipoTempoLivre").val("cursos");
+          openTimePicker()
+    }
+    function openTimePicker(){
+            $("#ajudarModal").modal("hide");
+            $("#timePickerModal").modal("show");
+    }
+</script>

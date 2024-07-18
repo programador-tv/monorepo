@@ -1,0 +1,229 @@
+@model _FormNewLiveModel
+@using Domain.Enums
+<br>
+<h4>
+    Criar uma Live
+</h4>
+<hr>
+<input type="hidden" id="tipoLive" />
+<ul class="nav nav-tabs" id="navTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="my-videos-tab" data-bs-toggle="tab" data-bs-target="#my-videos"
+            type="button" role="tab" aria-controls="my-videos" aria-selected="true">
+             Live Instantânea 🎥
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="scheduleLive-tab" data-bs-toggle="tab" data-bs-target="#scheduleLive" type="button"
+            role="tab" aria-controls="scheduleLive" aria-selected="false" onclick="openLiveSchedule()">Agendar Live
+            📆</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="my-videos" role="tabpanel" aria-labelledby="my-videos-tab">
+        <form method="post" action="/ScheduleActions" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label id="platform-opt-label" class="py-2">Escolha uma plataforma<span
+                        style="color:firebrick">*</span></label>
+                <div class="stream-platform">
+                    <div id="browser-opt" class="stream-chosen chosen-platform  chrome">
+                        <img alt="progTv-logo" src="/Pictures/_programador-tv.png" style="width:35px; heigth:35px;">
+                        <span>Navegador</span>
+                    </div>
+                    <div id="browser-off" class="stream-chosen chosen-platform no-chrome"
+                        style="display:none; background: grey;">
+                        <img alt="progTv-logo" src="/Pictures/_programador-tv.png" style="width:30px; heigth:30px;">
+                        <span>Navegador</span>
+                    </div>
+                    <div id="obs-opt" class="stream-chosen">
+                        <img alt="obs-logo" src="/Pictures/_obs-logo.png" style="width:30px; heigth:30px">
+                        <span>OBS Studio</span>
+                    </div>
+                </div>
+                <div>
+                    <div id="alert-no-chrome" class=" shadow p-3 mb-3 bg-yellow rounded mt-3 alert alert-warning"
+                        role="alert">
+                        A transmissão através do navegador só esta disponível no chrome.
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
+                <select multiple="multiple" asp-for="TagsSelected" required onchange="verificarSelecao()"
+                    class="form-control" id="TagsForLive">
+                    @foreach (var item in Model.RelatioTags!)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var subItem in Model.RelatioTags[item.Key])
+                            {
+                                <option value="@subItem">@subItem</option>
+                            }
+                        </optgroup>
+                    }
+                </select>
+            </div>
+            <br>
+            <button id="btnPrepararChatGPT" class="button action button-disabled"
+                title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
+                disabled>
+                <i class="material-icons mdc-button__icon" aria-hidden="true">lightbulb</i>
+                <span class="text-button-align-icon">Sugerir contúdo com GPT</span>
+            </button>
+            <hr>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Live.IsUsingObs" type="hidden" id="stream-opt">
+            <div class="form-group" id="TituloTitulo">
+
+                <label asp-for="Live.Titulo" class="control-label">Título<span style='color:firebrick'>*</span></label>
+
+                <input id="LiveTitulo" required asp-for="Live.Titulo" class="form-control "
+                    placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+                <span asp-validation-for="Live.Titulo" id="LiveTitulospan" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group" id="TituloDescricao">
+                <label asp-for="Live.Descricao" class="control-label">Descrição</label>
+                <textarea id="LiveDescricao" asp-for="Live.Descricao" class="form-control "
+                    placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
+                <span asp-validation-for="Live.Descricao" id="LiveDescricaospan" class="text-danger"></span>
+            </div>
+
+            <br>
+
+            <div class="form-group" id="thumbnailUploadContainer">
+                <label asp-for="Live.Thumbnail" id="thumb-label" class="control-label">
+                    Pré-Vizualização<span id="thumb-span"  style='color:firebrick'>*</span>
+                </label>
+                <br>
+                <input type="file" asp-for="Live.Thumbnail" accept="image/*" />
+                <br>
+                <br>
+                <div style="text-align: center;">
+
+                    (1280x720)
+                    <img id="previewForm" style="
+                width: 300px;
+                height: 150px;">
+                </div>
+            </div>
+            <br>
+            <div class="form-group d-flex">
+                <button type="submit" class="button action button-right" onclick="return validarFormulario();">
+                    <span class="text-button-align-icon">Ir para o Estúdio</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="scheduleLive" role="tabpanel" aria-labelledby="scheduleLive-tab">...</div>
+</div>
+
+<script>
+    function openLiveSchedule () {
+        $("#tipoTempoLivre").val("scheduled");
+        $("#tipoLive").val("scheduled");
+        openTimePickerForLiveSchedule()
+    }
+
+    function openTimePickerForLiveSchedule () {
+        $("#liveModal").modal("hide");
+        $("#timePickerModal").modal("show");
+        $('#scheduleLive-tab').removeClass('active');
+        $('#my-videos-tab').addClass('active');
+        $('#my-videos').addClass('show active');
+        $("#scheduleLive").removeClass('show active');
+
+        $("#timePickerModal").on('hidden.bs.modal', function () {
+            $('#scheduleLive-tab').removeClass('active');
+            $('#my-videos-tab').addClass('active');
+            $('#my-videos').addClass('show active');
+            $("#scheduleLive").removeClass('show active');
+        });
+    }
+
+
+    const obsOpt = document.querySelector("#obs-opt");
+    const thumbnailLabel = document.querySelector("#thumb-label");
+    const thumbnailInput = document.querySelector("#Live_Thumbnail");
+    const hiddenInput = document.querySelector("#stream-opt");
+
+    function verificarNavegador() {
+
+
+        if (notChrome()) {
+
+         const off = document.getElementById("browser-off");
+         const opt = document.getElementById("browser-opt");
+         const obsOpt = document.getElementById("obs-opt");
+         opt.style.display = "none";
+         opt.classList.remove("chosen-platform");
+         off.style.display = "block";
+         off.style.display = "flex";
+         off.style.cursor = "not-allowed";
+         off.classList.remove("chosen-platform");
+         hiddenInput.value = "true";
+      }
+      else
+      {
+        const alert = document.getElementById("alert-no-chrome");
+        const alertSched = document.getElementById("alert-no-chrome-sched");
+        alert.style.display = "none";
+        alertSched.style.display = "none";
+        const spanElement = document.querySelector("#thumb-span");
+        spanElement.innerHTML = "";
+        hiddenInput.value = "false";
+      }
+    }
+
+     verificarNavegador();
+
+    function isChrome() {
+        return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    }
+
+    function notChrome() {
+        return /Edge/.test(navigator.userAgent) || /Edg/.test(navigator.userAgent)
+            || /OPR/.test(navigator.userAgent) || /Opera/.test(navigator.userAgent) || /Firefox/.test(navigator.userAgent)
+            || /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)
+            || /SamsungBrowser/.test(navigator.userAgent);
+    }
+
+    document.getElementById('obs-opt').addEventListener('click', function () {
+
+        const spanElement = document.querySelector("#thumb-span");
+        if (isChrome() && spanElement.innerHTML !== "*") {
+            spanElement.innerHTML = "*";
+        }
+        if (hiddenInput.value === "false") {
+            hiddenInput.value === "true";
+        }
+    })
+
+    document.getElementById('browser-opt').addEventListener('click', function () {
+        if (isChrome()) {
+            const spanElement = document.querySelector("#thumb-span");
+            spanElement.innerHTML = "";
+        }
+        if (hiddenInput.value === "true") {
+            hiddenInput.value === "false";
+        }
+    })
+
+    document.getElementById('Live_Thumbnail').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var previewDiv = document.getElementById('previewForm');
+                previewDiv.src = reader.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+
+

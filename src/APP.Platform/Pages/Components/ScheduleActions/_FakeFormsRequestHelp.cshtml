@@ -1,0 +1,50 @@
+﻿<div class="modal fade eventModal" id="eventModalRequestHelp" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">🤝 Pedir Ajuda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br>
+                <br>
+                <div class="form-group">
+                    <strong>
+                        Escolha quais áreas de conhecimento voce está precisando
+                        de ajuda neste em seu pedido.
+                    </strong><span style='color:firebrick'>*</span>
+                    <br>
+                    <select multiple="multiple"
+                            class=" form-control isSelect2"
+                            disabled
+                            id="TagsSelectedHelp">
+                    </select>
+                </div>
+                <div class="pt-2" id="TituloMentoria">
+                    <label class="control-label">Título <span style="font-size: 12px; color: rgb(152, 152, 152)">opcional</span></label>
+                    <input id="TimeSelectionMentoriaTitulo" disabled class="form-control" />
+                </div>
+                <div class="pt-2" id="HelpDescription">
+                    <label class="control-label">
+                        Descreva sua duvida (minimo 150 caracteres): <span style='color:firebrick'>*</span>
+                    </label>
+                    <textarea id="TimeSelectionHelpingDescription" disabled class="form-control" minlength="150"></textarea>
+                </div>
+                <br>
+                <div class="form-group" id="imageHelpContainer">
+                    <label id="AjudaImagem-label" class="control-label">Adicione uma imagem do seu erro (Opcional)</label>
+                    <br>
+                    <input type="file" disabled accept="image/*" />
+                    <br>
+                </div>
+                <br>
+                <div class="d-grid gap-2">
+                    <button onclick="loginCallback('requestHelp')" class="btn button action">Realizar login</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>

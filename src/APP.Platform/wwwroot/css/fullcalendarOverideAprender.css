@@ -1,0 +1,15 @@
+.fc-button-primary{
+    background-color: #DFDBFF !important;
+    color: #2E2E2E !important;
+    border: none !important;
+    height: 45px !important;
+    margin-top: 0.5em !important;
+    border-radius: 8px !important;
+    padding-left: 1.6rem !important;
+    padding-right: 1.6rem !important;
+    max-width: 480px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+}

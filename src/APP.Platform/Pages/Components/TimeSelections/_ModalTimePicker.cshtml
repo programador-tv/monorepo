@@ -1,0 +1,218 @@
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    bool isAuth = SignInManager.IsSignedIn(User);
+}
+<div
+      class="modal fade"
+      id="timePickerModal"
+      tabindex="-1"
+      aria-labelledby="timePickerModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="timePickerModalLabel">
+              Selecione a data do evento
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body time-picker-modal">
+            <div class="date-picker">
+              <div class="text-container">
+                <p class="time-picker-text">Data do evento</p>
+              </div>
+              @if(isAuth){
+                <input type="date" class="dateTime-picker-input" />
+              }
+              else{
+                <input type="date" class="dateTime-picker-input" disabled/>
+              }
+            </div>
+
+            <div class="TPContainer">
+
+
+              <div class="input-group">
+                <div class="text-container">
+                  <p class="time-picker-text">Início</p>
+                </div>
+                <div class="time-picker">
+                    @if(isAuth){
+                      <div class="hours-picker">
+                        <div class="arrowContainer upHHContainer">
+                          <i class="material-icons mdc-button__icon firstPickerUpHH">
+                            expand_less
+                          </i>
+                        </div>
+                        <input
+                          class="hours1 time-picker-inputs"
+                          type="number"
+                          min="00"
+                          max="23"
+                          maxlength="2"
+                          placeholder="00"
+                          value="00"
+                        />
+                        <div class="arrowContainer downHHContainer">
+                          <i class="material-icons mdc-button__icon firstPickerDownHH">
+                              keyboard_arrow_down
+                          </i>
+                        </div>
+                      </div>
+                      <span class="separation">:</span>
+                      <div class="minutes-picker">
+                        <div class="arrowContainer upMMContainer">
+                          <i class="material-icons mdc-button__icon firstPickerUpMM">
+                              expand_less
+                          </i>
+                        </div>
+                        <input
+                          class="minutes1 time-picker-inputs"
+                          type="number"
+                          min="00"
+                          max="59"
+                          maxlength="2"
+                          placeholder="00"
+                          value="00"
+                        />
+                        <div class="arrowContainer downMMContainer">
+                          <i class="material-icons mdc-button__icon firstPickerDownMM">
+                              keyboard_arrow_down
+                          </i>
+                        </div>
+                      </div>
+                    }
+                    else{
+                      <div class="hours-picker">
+                        <br>
+                        <br>
+                        <input class="hours1 time-picker-inputs"
+                          type="number"
+                          placeholder="00"
+                          value="00"
+                          disabled />
+                        <br>
+                        <br>
+                      </div>
+                      <span class="separation">:</span>
+                      <div class="minutes-picker">
+                        <br>
+                        <br>
+                        <input class="minutes1 time-picker-inputs"
+                          type="number"
+                          placeholder="00"
+                          value="00"
+                          disabled />
+                        <br>
+                        <br>
+                      </div>
+                    }
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="text-container">
+                  <p class="time-picker-text">Encerramento</p>
+                </div>
+                <div class="time-picker">
+                @if(isAuth){
+                  <div class="hours-picker">
+                    <div class="arrowContainer upHHContainer">
+                      <i class="material-icons mdc-button__icon lastPickerUpHH">
+                          expand_less
+                      </i>
+                    </div>
+                    <input
+                      class="hours2 time-picker-inputs"
+                      type="number"
+                      min="00"
+                      max="23"
+                      maxlength="2"
+                      placeholder="00"
+                      value="00"
+                    />
+                    <div class="arrowContainer downHHContainer">
+                      <i class="material-icons mdc-button__icon lastPickerDownHH">
+                          keyboard_arrow_down
+                      </i>
+                    </div>
+                  </div>
+                  <span class="separation">:</span>
+                  <div class="minutes-picker">
+                    <div class="arrowContainer upMMContainer">
+                      <i class="material-icons mdc-button__icon lastPickerUpMM">
+                          expand_less
+                      </i>
+                    </div>
+                    <input
+                      class="minutes2 time-picker-inputs"
+                      type="number"
+                      min="00"
+                      max="59"
+                      maxlength="2"
+                      placeholder="00"
+                      value="00"
+                    />
+                    <div class="arrowContainer downMMContainer">
+                      <i class="material-icons mdc-button__icon lastPickerDownMM">
+                          keyboard_arrow_down
+                      </i>
+                    </div>
+                  </div>
+                }
+                else{
+                  <div class="hours-picker">
+                        <br>
+                        <br>
+                    <input class="hours2 time-picker-inputs"
+                      type="number"
+                      placeholder="00"
+                      value="00"
+                      disabled />
+                        <br>
+                        <br>
+                  </div>
+                  <span class="separation">:</span>
+                  <div class="minutes-picker">
+                        <br>
+                        <br>
+                    <input class="minutes2 time-picker-inputs"
+                      type="number"
+                      placeholder="00"
+                      value="00"
+                      disabled />
+                        <br>
+                        <br>
+                  </div>
+                }
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-light displayTimeAlert" role="alert"></div>
+            <div class="alert alert-danger timePickerAlert" role="alert">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn button-close-color"
+              data-bs-dismiss="modal"> Fechar
+            </button>
+            @if(SignInManager.IsSignedIn(User)){
+
+                <button type="button" class="ok btn action">Próximo</button>
+            }
+            else{
+                <button type="button" class="ok btn action" onclick="loginCallback()">Realizar login</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <script defer src="~/js/ScheduleLiveSelectionTagVerifier.js"></script>

@@ -1,0 +1,94 @@
+﻿@page
+@using Microsoft.AspNetCore.Authentication;
+@model LoginModel
+@{
+    ViewData["Title"] = " | Entrar";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="left-half" class="bg-settings">
+            <a asp-area="" asp-page="/Index" class="logo-img">
+                <img width="200" src="~/logo-bg.png" alt="">
+            </a>
+            <section class="custom-section-title d-flex justify-content-center">
+                <h1 class="custom-title">Crie sua conta!</h1>
+                <p class="custom-subtitle">Entre com sua conta para acessar todas as funcionalidades</p>
+            </section>
+
+            <section class="d-flex justify-content-center">
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div>
+                                    @foreach (var provider in Model.ExternalLogins ?? Enumerable.Empty<AuthenticationScheme>())
+                                    { 
+                                        <div>
+                                            @if(provider.Name == "Google")
+                                            { 
+                                                    <button id="send" class="btn-login" type="submit" name="provider"  value="@provider.Name"
+                                                    title="Log in using your @provider.DisplayName account">
+                                                        <img src="/Pictures/_google.png" alt="Imagem da logo do google para efetuar login"
+                                                        style="margin: 2px;width: 25px; height: 25px; cursor:pointer;">
+                                                        <p style="letter-spacing: 0.25px; text-align: center; margin-bottom: 0; font-size: 18px;">Entrar com o @provider.Name</p>
+                                                    </button>
+                                            }
+                                            @if (provider.Name == "LinkedIn")
+                                            {
+                                                
+                                                <button id="send"  class="btn-login" type="submit" name="provider"  value="@provider.Name"
+                                                title="Log in using your @provider.DisplayName account">
+                                                    <img src="/Pictures/_linkedin.png" alt="Imagem da logo do linkedin para efetuar login" style="margin: 2px;width: 25px; height: 25px; cursor:pointer;">
+                                                    <p style="letter-spacing: 0.25px; text-align: center; margin-bottom: 0; font-size: 18px;">Entrar com o @provider.Name</p>
+                                                </button>
+                                            }
+                                            @if (provider.Name == "GitHub")
+                                            {
+                                                <button id="send"  class="btn-login" type="submit" name="provider"  value="@provider.Name"
+                                                title="Log in using your @provider.DisplayName account">
+                                                    <img src="/Pictures/_github.png" alt="Imagem da logo do github para efetuar login" style="margin: 2px;width: 25px; height: 25px; cursor:pointer;">                                                
+                                                    <p style="letter-spacing: 0.25px; text-align: center; margin-bottom: 0; font-size: 18px;">Entrar com o @provider.Name</p>
+                                                </button>
+                                            }
+                                            
+                                        </div>
+                                    }
+                                   
+                            </div>
+                        </form>
+                    }
+                }
+               
+            </section>
+
+            <br>
+            <div style="text-align: center;"> Ao entrar você automáticamente aceita os <a asp-area="" asp-page="/Sobre/Services">Termos de serviço</a> 
+                e a <a asp-area="" asp-page="/Sobre/Privacy">Política de Privacidade</a></div>
+
+        </div>
+        <div id="right-half" class="bg-settings">
+            <section class="custom-title description-right-title">
+                <h1 class="fw-mid title-right">Encontre mentores e impulsione seu desenvolvimento</h1>
+                <p class="subtitle-right">Conecte-se com mentores experientes e participe de uma comunidade de aprendizado e colaboração. Explore todo o potencial de sua jornada</p>
+            </section>
+
+            <img src="/Pictures/login-img.png" alt="" class="img-left">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            const footer = document.querySelector("#footer");
+            const divLeft = document.querySelector("#left-half");
+            const imgLeft = document.querySelector(".img-left");
+            footer.classList.add("footer-login");
+            footer.classList.remove("footer", "border-top", "footer", "text-muted");
+            divLeft.appendChild(footer);
+        });
+    </script>
+}

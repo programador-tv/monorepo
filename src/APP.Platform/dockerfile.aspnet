@@ -1,0 +1,18 @@
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /app
+
+COPY . .
+RUN dotnet publish -c Release -o /out APP.Platform/APP.Platform.csproj
+
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+
+WORKDIR /app
+COPY --from=build /out ./
+
+ENV ENV_PROJECT_NAME "./APP.Platform"
+
+CMD $ENV_PROJECT_NAME

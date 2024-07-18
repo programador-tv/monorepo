@@ -1,0 +1,27 @@
+@using Domain.Models.ViewModels
+@using Domain.Enums
+@model List<LiveViewModel>
+
+@foreach(var item in Model){
+     if ((item.StatusLive == StatusLive.Iniciada
+        || item.StatusLive == StatusLive.Finalizada))
+        {
+            @await Html.PartialAsync("Components/_Video",
+            new LiveViewModel{
+                CodigoLive = item.CodigoLive,
+                DataCriacao = item.DataCriacao,
+                FormatedDuration = item.FormatedDuration,
+                Titulo = item.Titulo,
+                Descricao = item.Descricao,
+                Thumbnail = item.Thumbnail,
+                NomeCriador = item.NomeCriador,
+                UserNameCriador = item.UserNameCriador,
+                FotoCriador = item.FotoCriador,
+                QuantidadeDeVisualizacoes = item.QuantidadeDeVisualizacoes,
+                Visibility = item.Visibility,
+                LiveEstaAberta = item.LiveEstaAberta,
+                StatusLive = item.StatusLive,
+                UrlAlias = item.UrlAlias
+                })
+        }
+    }

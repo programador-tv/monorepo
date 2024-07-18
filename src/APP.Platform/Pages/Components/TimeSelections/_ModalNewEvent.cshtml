@@ -1,0 +1,180 @@
+@using Domain.Enums
+
+@model _ModalNewEvent
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Novo evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="time-tab" data-bs-toggle="tab" data-bs-target="#timeTab" type="button" role="tab" aria-controls="time" aria-selected="true">Tempo disponível</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="live-tab" data-bs-toggle="tab" data-bs-target="#liveTab" type="button" role="tab" aria-controls="live" aria-selected="false">Agendar Live</button>
+        </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
+
+            <form id="saveTimeForm" method="post">
+                <br>
+              <div class="numberMaxMentees"  style="flex-direction:row;">
+               
+                <label for="maxParticipants" style="display: flex; align-items: center; justify-content: center; margin-right:5%;">
+                   <strong>Selecione o número de alunos para mentoria:</strong></label>
+
+                <div class="numberMentees-picker">
+
+                    <div class="arrowContainer upHHContainer">
+                      <i class="material-icons mdc-button__icon numberMenteesUp">
+                          expand_less
+                      </i>
+                    </div>
+                <input type="number" class="time-picker-inputs" id="maxParticipants" min="1"
+                    max="5"
+                    maxlength="1"
+                    placeholder="1"
+                    value="1"
+                    asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.MaxParticipants" required />
+                     <div class="arrowContainer downHHContainer">
+                      <i class="material-icons mdc-button__icon numberMenteesDown">
+                          keyboard_arrow_down
+                      </i>
+                    </div>
+
+                    </div>
+
+              </div>
+
+                <br>
+                <div class="form-group">
+                <strong>
+                    Escolha quais áreas de conhecimento voce está disposto
+                    a ensinar ou falar sobre neste tempo disponível
+                </strong><span style='color:firebrick'>*</span>
+                <br>
+                <select multiple="multiple"
+                asp-for="ScheduleTimeSelection.TagsSelected"
+                class=" form-control isSelect2"
+                required
+                id="TagsSelected">
+                    @foreach (var item in Model.RelatioTags)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var subItem in  Model.RelatioTags[item.Key])
+                            {
+                                <option value="@subItem">@subItem</option>
+                            }
+                        </optgroup>
+                    }
+                </select>
+                </div>
+                <div class="pt-2" id="TituloMentoria">
+                    <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título <span style="font-size: 12px; color: rgb(152, 152, 152)">opcional</span></label>
+                    <input id="TimeSelectionMentoriaTitulo" asp-for="ScheduleTimeSelection.Titulo" class="form-control" />
+                </div>
+                <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.FreeTime" />
+                <input type="hidden" asp-for="ScheduleTimeSelection.StartTime" />
+                <input type="hidden" asp-for="ScheduleTimeSelection.EndTime" />
+                <br>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn button action">Salvar</button>
+                </div>
+            </form>
+
+            </div>
+            <div class="tab-pane" id="liveTab" role="tabpanel" aria-labelledby="profile-tab">
+                <form id="saveLiveForm" method="post">
+                    <div class="form-group">
+                        <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
+                        <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" onchange="verificarSelecaoLiveAgenda()"
+                                class="form-control"
+                                required
+                                id="TagsForLive">
+                            @foreach (var item in Model.RelatioTags)
+                            {
+                                <optgroup label="@item.Key">
+                                    @foreach (var subItem in Model.RelatioTags[item.Key])
+                                    {
+                                        <option value="@subItem">@subItem</option>
+                                    }
+                                </optgroup>
+                            }
+                        </select>
+                    </div>
+                    <br>
+                    <button id="prepararChatGPT"
+                            class="button action button-disabled"
+                            title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
+                            disabled>
+                        <i class="material-icons" aria-hidden="true">lightbulb</i>
+                        <span class="text-button-align-icon">Sugerir contúdo com GPT</span>
+                    </button>
+                    <hr>
+                    <br>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group" id="TituloAgendaLive">
+                        <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título<span style='color:firebrick'>*</span></label>
+                        <input id="TimeSelectionTitulo" required asp-for="ScheduleTimeSelection.Titulo" class="form-control " placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+                    </div>
+                    <br>
+                    <div class="form-group" id="TituloDescricaoAgenda">
+                        <label asp-for="ScheduleLiveForTimeSelection.Descricao" class="control-label">Descrição</label>
+                        <textarea id="TimeSelectionDescricao" asp-for="ScheduleLiveForTimeSelection.Descricao" class="form-control " placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
+                    </div>
+
+                    <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.Live" />
+                    <input type="hidden" id="startLive" asp-for="ScheduleTimeSelection.StartTime" />
+                    <input type="hidden" id="endLive" asp-for="ScheduleTimeSelection.EndTime" />
+
+                    <br>
+                    <div class="form-group" id="thumbnailUploadContainer">
+                        <label asp-for="ScheduleLiveForTimeSelection.Thumbnail" class="control-label">Pré-Visualização<span style='color:firebrick'>*</span></label>
+                        <br>
+                        <input type="file" asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="LiveThumb" accept="image/*" required/>
+                        <br>
+                        <br>
+                        <div style="text-align: center;">
+
+                            (1280x720)
+                            <img id="preview" style="
+                                                     width: 300px;
+                                                     height: 150px;">
+                        </div>
+                    </div>
+                    <br>
+
+                    <button type="submit"
+                            class="button action button-right">
+                        <span class="text-button-align-icon">Agendar Live</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.getElementById('LiveThumb').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var previewDiv = document.getElementById('preview');
+                previewDiv.src = reader.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

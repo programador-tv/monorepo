@@ -1,0 +1,29 @@
+# Utiliza a imagem oficial do Go
+FROM golang:1.19 as builder
+
+# Diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia os arquivos do Go para o container
+COPY go.mod go.sum ./
+
+# Baixa as dependências
+RUN go mod download
+
+# Copia o resto dos arquivos
+COPY . .
+
+# Compila o aplicativo
+RUN go build -o rtmp-server
+
+# Utiliza um container alpine como base por ser leve
+FROM golang:1.19 
+
+RUN apt-get update && apt-get install -y ffmpeg
+
+COPY --from=builder /app/rtmp-server /rtmp-server
+RUN chmod +x /rtmp-server
+
+EXPOSE 1935
+
+CMD ["/rtmp-server"]
