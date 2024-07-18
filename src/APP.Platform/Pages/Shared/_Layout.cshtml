@@ -97,6 +97,10 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="~/js/feedback.js"></script>
 
+    @if (ActualPage == "/Sobre/Index"){
+        <link rel="stylesheet" href="~/css/aboutStyle.css">
+    }
+
 </head>
 <body>
     @{
@@ -219,7 +223,7 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                 </aside>
               }
               @if(route == "/Sobre/Index"){
-                <aside id="theGreatAside" aria-label="Para você">
+                @* <aside id="theGreatAside" aria-label="Para você">
                     <div class="default-card card-right" >
                         <strong class="tittle-newDesign">Parceiros</strong>
                         <img src="/Pictures/msfs.png" style="width: 300px;">
@@ -262,7 +266,8 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                         <br>
 
                     </div>
-                </aside>
+                </aside> *@
+                
               }
             @if (route == "/Canal/Index" ){
                 <aside id="theGreatAside">
@@ -469,11 +474,17 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                 </aside>
             }
     </div>
-    <br>
         } else {
             @RenderBody()
         }
     }
+    @if (route != "/Account/Login")
+    {
+        @if (route == "/Sobre/Index"){
+            <footer>
+
+            </footer>
+        } else{
     <footer class="border-top footer text-muted" id="footer">
         <div class="container">
             &copy; 2024 - Programador.TV
@@ -482,6 +493,18 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
             - <a asp-area="" asp-page="/Sobre/Privacy">Política de Privacidade</a>
         </div>
     </footer>
+    }
+    }
+    else
+    {
+        <footer class="border-top footer text-muted" id="footer">
+        <div class="container">
+            &copy; 2024 - Programador.TV
+            - <a asp-area="" asp-page="/Sobre/Index">Sobre</a>
+        </div>
+    </footer>   
+    }
+    
     @if (route == "/Index")
     {
       #warning deve ser enviado para o page correspondente

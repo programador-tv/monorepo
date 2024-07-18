@@ -46,6 +46,7 @@ namespace Domain.Entities
 
         [NotMapped]
         public int MaxParticipants { get; set; }
+
         [NotMapped]
         public bool Ilimitado { get; set; }
     }

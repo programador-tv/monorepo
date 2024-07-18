@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Platform.Services;
+using Presentation.EndPoints;
 using Queue;
 using tags;
 
@@ -28,6 +29,7 @@ public class IndexModel : CustomPageModel
 
     private readonly OpenAiService _openAiService;
     private new readonly ApplicationDbContext _context;
+    public readonly PerfilDbContext _perfilContext;
     protected readonly IHttpClientFactory _httpClientFactory;
     protected new readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMessagePublisher _messagePublisher;
@@ -65,6 +67,7 @@ public class IndexModel : CustomPageModel
         IRazorViewEngine viewEngine,
         ITempDataProvider tempDataProvider,
         ApplicationDbContext context,
+        PerfilDbContext perfilDbContext,
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
         OpenAiService openAiService,
@@ -81,6 +84,7 @@ public class IndexModel : CustomPageModel
         _tempDataProvider = tempDataProvider;
         _perfilWebService = perfilWebService;
         _context = context;
+        _perfilContext = perfilDbContext;
         _httpContextAccessor = httpContextAccessor;
         _messagePublisher = messagePublisher;
         _openAiService = openAiService;
@@ -354,19 +358,109 @@ public class IndexModel : CustomPageModel
             return Redirect("../Perfil");
         }
 
-        var myTimeSelectionAndJoinTimes = _AprenderService.GetMyTimeSelectionAndJoinTimes(
-            UserProfile.Id,
-            _meetUrl
-        );
+        var myTimeSelectionAndJoinTimes = new Dictionary<TimeSelection, List<JoinTime>>();
 
-        _AprenderService.GetMyEvents(
-            myTimeSelectionAndJoinTimes,
-            UserProfile.Id,
-            _meetUrl,
-            MyEvents,
-            OldMyEvents,
-            UserProfile.Nome
-        );
+        var myJoinTimes = _context
+            .JoinTimes.Where(joinTime =>
+                joinTime.PerfilId == UserProfile.Id
+                && joinTime.StatusJoinTime != StatusJoinTime.Cancelado
+                && joinTime.StatusJoinTime != StatusJoinTime.Rejeitado
+            )
+            .ToList();
+
+        var timeSelectionIDs = myJoinTimes.Select(joinTime => joinTime.TimeSelectionId).ToList();
+
+        var filteredTimeSelections = _context
+            .TimeSelections.Where(timeSelection => timeSelectionIDs.Contains(timeSelection.Id))
+            .ToList();
+
+        var joinTimeBrothers = _context
+            .JoinTimes.Where(joinTime =>
+                timeSelectionIDs.Contains(joinTime.Id)
+                && joinTime.PerfilId == UserProfile.Id
+                && joinTime.StatusJoinTime != StatusJoinTime.Cancelado
+                && joinTime.StatusJoinTime != StatusJoinTime.Rejeitado
+            )
+            .ToList();
+
+        foreach (var timeSelection in filteredTimeSelections)
+        {
+            var joins = new List<JoinTime>();
+            var brothersTimeSelections = joinTimeBrothers
+                .Where(jt => jt.TimeSelectionId == timeSelection.Id)
+                .ToList();
+
+            joins.AddRange(brothersTimeSelections);
+            joins.AddRange(myJoinTimes.Where(jt => jt.TimeSelectionId == timeSelection.Id));
+
+            myTimeSelectionAndJoinTimes.Add(timeSelection, joins);
+        }
+
+        foreach (var tsAndJts in myTimeSelectionAndJoinTimes)
+        {
+            var item = tsAndJts.Value.First(ts => ts.PerfilId == UserProfile.Id);
+
+            if (tsAndJts.Key.Status == StatusTimeSelection.Cancelado)
+            {
+                continue;
+            }
+            else if (
+                tsAndJts.Key.EndTime < DateTime.Now
+                && tsAndJts.Key.Status != StatusTimeSelection.Concluído
+                && tsAndJts.Key.Status != StatusTimeSelection.Marcado
+                && tsAndJts.Key.Status != StatusTimeSelection.ConclusaoPendente
+            )
+            {
+                OldMyEvents[item] = tsAndJts.Key;
+                continue;
+            }
+
+            var code = _context
+                ?.Rooms?.Where(room => room.Id == tsAndJts.Key.RoomId)
+                .FirstOrDefault()
+                ?.CodigoSala;
+
+            if (code != null)
+            {
+                tsAndJts.Key.LinkSala = _meetUrl + "?name=" + code + "&usr=" + UserProfile.Nome;
+            }
+
+            var tags = _context
+                ?.Tags?.Where(tag => tag.FreeTimeRelacao == tsAndJts.Key.Id.ToString())
+                .ToList();
+
+            if (tags != null)
+            {
+                tsAndJts.Key.Tags = tags;
+            }
+
+            var perfil = _perfilContext
+                ?.Perfils?.Where(perfil => perfil.Id == tsAndJts.Key.PerfilId)
+                .FirstOrDefault();
+
+            if (perfil != null)
+            {
+                tsAndJts.Key.Perfil = perfil;
+            }
+
+            tsAndJts.Key.TempoRestante = Math.Floor(
+                    tsAndJts.Key.StartTime.Subtract(DateTime.Now).TotalHours
+                )
+                .ToString();
+
+            if (
+                (
+                    item.StatusJoinTime == StatusJoinTime.Marcado
+                    || item.StatusJoinTime == StatusJoinTime.ConclusaoPendente
+                )
+                && tsAndJts.Key.StartTime < DateTime.Now
+            )
+            {
+                tsAndJts.Key.ActionNeeded = true;
+            }
+            MyEvents ??= new();
+            MyEvents[item] = tsAndJts.Key;
+        }
 
         HashSet<TimeSelection> valueSet = new();
 
@@ -375,15 +469,163 @@ public class IndexModel : CustomPageModel
             valueSet = new HashSet<TimeSelection>(MyEvents.Values);
         }
 
-        var timeSelections = GetFreeTimeService.ObtemTimeSelectionSetForHome(_context, valueSet);
+        var getMentorings = _context
+            .TimeSelections.AsNoTracking()
+            .Where(e =>
+                e.Status == StatusTimeSelection.Pendente
+                && e.Tipo == EnumTipoTimeSelection.FreeTime
+                && !valueSet.Contains(e)
+            )
+            .OrderBy(e => e.StartTime)
+            .ToList();
+
+        var getCloseMentorings = getMentorings
+            .Where(e => e.StartTime > DateTime.Now)
+            .Select(e => new TimeSelectionForMentorFreeTimeViewModel()
+            {
+                TimeSelectionId = e.Id.ToString(),
+                PerfilId = e.PerfilId.ToString() ?? Guid.Empty.ToString(),
+                StartTime = e.StartTime,
+                EndTime = e.EndTime,
+                Titulo = e.TituloTemporario
+            })
+            .ToList();
+
+        var timeSelections = getCloseMentorings
+            .GroupBy(e => e.PerfilId)
+            .SelectMany(group => group.Take(1))
+            .Take(3)
+            .ToList();
 
         var timeSelectionGroupByPerfilId = timeSelections.GroupBy(e => e.PerfilId);
 
-        var MentorsFreeTime = await GetFreeTimeService.ObtemPerfisRelacionados(
-            timeSelectionGroupByPerfilId,
-            _context,
-            _perfilWebService
-        );
+        var MentorsFreeTime = new List<MentorFreeTime>();
+        List<string?> anotherTimeSelectionIDs = new();
+        List<Tag>? anotherTags;
+
+        var perfilsIds = timeSelectionGroupByPerfilId
+            .Select(item => item.Key)
+            .Where(id => id != null && Guid.TryParse(id, out _))
+            .Select(id => Guid.Parse(id))
+            .ToList();
+
+        var perfis = await _perfilWebService.GetAllById(perfilsIds) ?? new();
+
+        var perfisLegacy = new List<Domain.Entities.Perfil>();
+
+        foreach (var perfil in perfis)
+        {
+            var perfilLegacy = new Domain.Entities.Perfil
+            {
+                Id = perfil.Id,
+                Nome = perfil.Nome,
+                Foto = perfil.Foto,
+                Token = perfil.Token,
+                UserName = perfil.UserName,
+                Linkedin = perfil.Linkedin,
+                GitHub = perfil.GitHub,
+                Bio = perfil.Bio,
+                Email = perfil.Email,
+                Descricao = perfil.Descricao,
+                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+            };
+            perfisLegacy.Add(perfilLegacy);
+        }
+
+        foreach (var perfilTimeSelection in timeSelectionGroupByPerfilId)
+        {
+            var key = perfilTimeSelection.Key ?? Guid.Empty.ToString();
+
+            if (key != Guid.Empty.ToString())
+            {
+                var mentor = perfisLegacy.First(perfil => perfil.Id.ToString() == key);
+                if (mentor == null)
+                {
+                    continue;
+                }
+
+                var mentorFreeTime = new MentorFreeTime
+                {
+                    TimeSelections = perfilTimeSelection
+                        .Select(perfil => new TimeSelectionForMentorFreeTimeViewModel()
+                        {
+                            TimeSelectionId = perfil.TimeSelectionId,
+                            PerfilId = perfil.PerfilId.ToString(),
+                            StartTime = perfil.StartTime,
+                            EndTime = perfil.EndTime,
+                            Titulo = perfil.Titulo,
+                            Variacao = perfil.Variacao
+                        })
+                        .ToList(),
+                    Perfils = mentor
+                };
+
+                anotherTimeSelectionIDs.AddRange(
+                    mentorFreeTime.TimeSelections.Select(item => item.TimeSelectionId).ToList()
+                );
+
+                MentorsFreeTime.Add(mentorFreeTime);
+            }
+        }
+
+        anotherTags = _context
+            .Tags.Where(timeSelection =>
+                anotherTimeSelectionIDs.Contains(timeSelection.FreeTimeRelacao)
+            )
+            .ToList();
+
+        var timeSelectionsDictionary = MentorsFreeTime
+            .SelectMany(mentor => mentor.TimeSelections)
+            .ToDictionary(ts => ts.TimeSelectionId);
+
+        foreach (var timeSelection in timeSelectionsDictionary.Values)
+        {
+            timeSelection.Tags = anotherTags
+                .Where(tag => tag.FreeTimeRelacao == timeSelection.TimeSelectionId)
+                .ToList();
+        }
+
+        var freeTimeBackstages = _context
+            .FreeTimeBackstages.Where(e =>
+                anotherTimeSelectionIDs.Contains(e.TimeSelectionId.ToString())
+            )
+            .ToList();
+
+        var confirmedJoinTimes = _context
+            .JoinTimes.Where(e => anotherTimeSelectionIDs.Contains(e.TimeSelectionId.ToString()))
+            .ToList();
+
+        var anotherTimeSelections = MentorsFreeTime
+            .Where(e => e.TimeSelections != null)
+            .SelectMany(e => e.TimeSelections ?? new())
+            .ToList();
+
+        for (int iterator = 0; iterator < anotherTimeSelections.Count; iterator++)
+        {
+            var tsFreeTime = anotherTimeSelections[iterator];
+
+            var freeTimeBackstage =
+                freeTimeBackstages.Find(e =>
+                    e.TimeSelectionId.ToString() == tsFreeTime.TimeSelectionId
+                ) ?? new();
+
+            tsFreeTime.CountInteressados = confirmedJoinTimes.Count(e =>
+                e.TimeSelectionId.ToString() == tsFreeTime.TimeSelectionId
+            );
+
+            if (freeTimeBackstage.MaxParticipants == 0)
+            {
+                continue;
+            }
+
+            tsFreeTime.MaxParticipantes = freeTimeBackstage.MaxParticipants;
+
+            tsFreeTime.CountInteressadosAceitos = confirmedJoinTimes.Count(e =>
+                e.TimeSelectionId.ToString() == tsFreeTime.TimeSelectionId
+                && e.StatusJoinTime == StatusJoinTime.Marcado
+            );
+        }
+
         bool isLoggedUsr = true;
         if (!IsAuth)
         {
@@ -466,13 +708,16 @@ public class IndexModel : CustomPageModel
 
         JoinTime.PerfilId = UserProfile.Id;
 
-         var freeTimeBackstage = _context
-                .FreeTimeBackstages.AsNoTracking()
-                .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
+        var freeTimeBackstage = _context
+            .FreeTimeBackstages.AsNoTracking()
+            .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
 
-        if(freeTimeBackstage?.Ilimitado ?? false){
+        if (freeTimeBackstage?.Ilimitado ?? false)
+        {
             JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
-        }else{
+        }
+        else
+        {
             JoinTime.StatusJoinTime = StatusJoinTime.Pendente;
         }
         _context.JoinTimes.Add(JoinTime);

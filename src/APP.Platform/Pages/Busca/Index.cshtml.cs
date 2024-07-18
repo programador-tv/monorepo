@@ -150,10 +150,10 @@ public sealed class BuscaIndexModel : CustomPageModel
             );
         }
 
-        var visualizations = _context.Visualizations
-        .GroupBy(v => v.LiveId)
-        .Select(g => new { LiveId = g.Key, Count = g.Count() })
-        .ToList();
+        var visualizations = _context
+            .Visualizations.GroupBy(v => v.LiveId)
+            .Select(g => new { LiveId = g.Key, Count = g.Count() })
+            .ToList();
 
         var visualizationCounts = visualizations.ToDictionary(x => x.LiveId, x => x.Count);
 
@@ -174,7 +174,9 @@ public sealed class BuscaIndexModel : CustomPageModel
                         UserNameCriador = perfilCriador.UserName ?? "",
                         NomeCriador = perfilCriador.Nome ?? "Anônimo",
                         FotoCriador = perfilCriador.Foto,
-                        QuantidadeDeVisualizacoes = visualizationCounts.ContainsKey(live.Id) ? visualizationCounts[live.Id] : 0,
+                        QuantidadeDeVisualizacoes = visualizationCounts.ContainsKey(live.Id)
+                            ? visualizationCounts[live.Id]
+                            : 0,
                         Visibility = live.Visibility,
                         FormatedDuration = live.FormatedDuration,
                     }

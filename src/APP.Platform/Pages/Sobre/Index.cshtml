@@ -1,325 +1,644 @@
-@page
+@page 
 @model SobreModel
+ @{ ViewData["Title"] = " | Sobre"; }
 
-@{
-    ViewData["Title"] = " | Sobre";
-}
+<div>
+  <br />
+  <br />
+  <br />
+  <div
+    class="justify-content-sm-start justify-content-center text-center text-sm-start"
+    id="firstContainer"
+  >
+    <div class="col-lg-6 col-sm-10">
+      <h1 class="h1About mb-4">Sobre Nós</h1>
+      <p class="pAbout">
+        Uma comunidade que valoriza o aprendizado e ensino contínuos. Nosso
+        objetivo é impulsionar o crescimento pessoal e profissional,
+        incentivando a troca constante de experiências em um ambiente inclusivo.
+      </p>
+      <p class="pAbout">
+        Vivemos em um mundo que valoriza a evolução constante. Oferecemos um
+        espaço de compartilhamento de habilidades e saberes, cultivando uma
+        comunidade inclusiva. Aqui, todos têm algo valioso para ensinar e
+        aprender, não importa seu nível ou campo de atuação.
+      </p>
 
-<div class="row">
-    <section 
-            class="default-card card-lg" style="padding:20px">
-        <h2>
-            PROGRAMADOR.TV
-            <span style="float: right;">
-                <a href="https://github.com/programador-tv/" style="text-decoration:none" target="_blank">
-                    <img style="margin-left:15px;width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+      <h2 class="h2About my-4">Nossos Serviços</h2>
+      <p class="pAbout">
+        Nossa plataforma é um ambiente de aprendizado interativo e colaborativo
+        que proporciona uma experiência de ensino única.
+      </p>
+
+      <!--Classes nao estão funcionando...-->
+      <div class=" justify-content-start">
+        <div class="col-lg-12 col-md-12">
+          <!--Acc 1 -->
+          <div class="accordion" id="accordionExample1">
+            <div class="accordion-item accordionPadding">
+              <h2 class="accordion-header">
+                <button
+                  class="accordionButton accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  <span class="accordionHeaderAbout"
+                    >Mentorias Colaborativas
+                  </span>
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                class="accordion-collapse collapse show"
+                data-bs-parent="#accordionExample1"
+              >
+                <div class="accordion-body accordionBody">
+                  <p class="accordionPAbout">
+                    Transforme conhecimento em ensino e aprendizado,
+                    participando como mentor em áreas de sua expertise e como
+                    aprendiz em novos campos de interesse.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Acc 1 -->
+
+          <!--Acc 2 -->
+          <div class="accordion" id="accordionExample2">
+            <div class="accordion-item accordionPadding">
+              <h2 class="accordion-header">
+                <button
+                  class="accordionButton accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-controls="collapseTwo"
+                >
+                  <span class="accordionHeaderAbout"
+                    >Aulas em Grupo Autogeridas
+                  </span>
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample2"
+              >
+                <div class="accordion-body accordionBody">
+                  <p class="accordionPAbout">
+                    Promova ou participe de aulas coletivas, onde o aprendizado
+                    em grupo fortalece o suporte mútuo e a exploração conjunta
+                    de novos temas.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Acc 3 -->
+
+          <div class="accordion" id="accordionExample3">
+            <div class="accordion-item accordionPadding">
+              <h2 class="accordion-header">
+                <button
+                  class="accordionButton accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="true"
+                  aria-controls="collapseThree"
+                >
+                  <span class="accordionHeaderAbout"
+                    >Lives e Workshops Interativos
+                  </span>
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample3"
+              >
+                <div class="accordion-body accordionBody">
+                  <p class="accordionPAbout">
+                    Liderados por membros da comunidade, esses eventos são
+                    oportunidades de aprender de forma interativa e compartilhar
+                    habilidades.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Acc 3 -->
+
+          <!--Acc 4 -->
+
+          <div class="accordion" id="accordionExample4">
+            <div class="accordion-item accordionPadding">
+              <h2 class="accordion-header">
+                <button
+                  class="accordionButton accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseFour"
+                  aria-expanded="true"
+                  aria-controls="collapseFour"
+                >
+                  <span class="accordionHeaderAbout"
+                    >Sessões de Dúvidas em Chamadas
+                  </span>
+                </button>
+              </h2>
+              <div
+                id="collapseFour"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample4"
+              >
+                <div class="accordion-body accordionBody">
+                  <p class="accordionPAbout">
+                    Além das mentorias tradicionais, oferecemos uma categoria
+                    inovadora onde você pode tirar dúvidas e obter orientações
+                    por meio de chamadas, facilitando um aprendizado mais direto
+                    e personalizado.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class=" pt-5 mt-5 purpleRow"
+    style="
+      background: linear-gradient(180deg, #e5d5f3 0%, #b098c5 100%) !important;
+      max-height: 3000px;
+      height: auto ;
+    "
+  >
+    <div class="">
+      <br />
+      <div class=" purpleHeading justify-content-center justify-content-sm-start">
+        <div class="col-12 col-sm-6 text-center text-sm-start" style="width: 100% !important;">
+          <h2 class="fundoRoxoHeader m-0 m-sm-3">Nosso Time</h2>
+          <p class="fundoRoxoP m-2 mx-4 m-sm-3 mt-3">
+            Nossa equipe de desenvolvedores e designers, que também são usuários
+            desta plataforma, valoriza a educação transformadora. Conheça nossos
+            perfis e histórias para talvez se inspirar.
+          </p>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class=" justify-content-center" style="flex-direction: row; display:flex; flex-wrap: wrap">
+        <!-- !-->
+        <div class="card card-team">
+          <div 
+          class="imageContainer" style="background-image: url('/Pictures/Members/EduardoWorrel.jpg');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/eduardoworrel/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0 mt-2 mb-0 pb-0">
+              Eduardo Worrel
+            </p>
+            <small class="pTeamCargo">Fundador</small>
+          </div>
+        </div>
+
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainer" style="background-image: url('/Pictures/Members/SabrinaTeixeira.jpeg');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/txsabrina"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Sabrina Teixeira</p>
+            <small class="pTeamCargo">Desenvolvedora .Net</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainer" style="background-image: url('/Pictures/Members/MatheusFerreira.jpeg');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/matheusferreiraml/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Matheus Ferreira</p>
+            <small class="pTeamCargo">UX/UI Designer</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainer" style="background-image: url('/Pictures/Members/PedroAntonio.jpg');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/pedro-mila/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Pedro Antonio</p>
+            <small class="pTeamCargo">Desenvolvedor Fullstack</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainer" style="background-image: url('/Pictures/Members/CarolBobaid.jpeg'); background-size:120%;">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/mariacarolinaboabaid/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Carol Bobaid</p>
+            <small class="pTeamCargo">Desenvolvedora .Net</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/LeonardoGasperin.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/leonardo-dgasperin/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">
+              Leonardo V. De Gasperin
+            </p>
+            <small class="pTeamCargo"
+              >Engenheiro de software & Desenvolvedor .Net</small
+            >
+          </div>
+        </div>
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/MarcosDorneles.png'); background-size: 110%;">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/marcos-dorneles/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Marcos Dorneles</p>
+            <small class="pTeamCargo">Desenvolvedor Fullstack</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/DannyelaGeovanna.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/dannyela-geovanna-69944b201/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Dannyela Geovanna</p>
+            <small class="pTeamCargo">Desenvolvedora Júnior</small>
+          </div>
+        </div>
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/JarbasGouveia.png'); background-size: 110%;">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/jarbasgouveia/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Jarbas Gouveia</p>
+            <small class="pTeamCargo">Desenvolvedor .Net</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/HelioNeto.png'); background-size: 110%;" >
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/h%C3%A9lio-neto-611934206/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Helio Neto</p>
+            <small class="pTeamCargo">Engenheiro de software</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/nicolasFerreira.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/nicolas-ferreira-a9bb711b6/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Nicolas Ferreira</p>
+            <small class="pTeamCargo">Engenheiro de software</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/RenoAmoedo.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/reno-amoedo/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Reno Amoêdo</p>
+            <small class="pTeamCargo">UI Designer</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/RafaelPetter.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://github.com/rapPetter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Rafael Petter</p>
+            <small class="pTeamCargo">Engenheiro de software</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/RaulMulerschat.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/raulcesarmulerschat/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Raul Mulerschat</p>
+            <small class="pTeamCargo">Engenheiro de software</small>
+          </div>
+        </div>
+        <!-- !-->
+
+        <div class="card card-team">
+          <div class="imageContainerInativo" style="background-image: url('/Pictures/Members/TatyanaJacques.png');">
+            <a
+              style="position: relative; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block;"
+              href="https://www.linkedin.com/in/tatyana-jacques-438190b3/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </div>
+          <div class="card-body p-0 text-center">
+            <p class="card-text pTeamName mt-2 mb-0 pb-0">Tatyana Jacques</p>
+            <small class="pTeamCargo"
+              >Engenheira de software & Sound Designer</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footerTelaPequena">
+      <div class="container">
+        <div  class="row text-center justify-content-center mt-5">
+          <div class="col-8">
+            <p class="preFooterTitle mt-5">Entre em contato</p>
+            <p class="preFooterText">contato@programador.tv</p>
+            <p class="preFooterText">(21) 96592-4718</p>
+          </div>
+        </div>
+        <div  class="row text-center justify-content-center mt-5">
+          <div class="col-8">
+            <p class="preFooterTitle">Onde estamos</p>
+            <div class="row justify-content-center">
+              <div class="col-3 text-center">
+                <a
+                  href="https://github.com/programador-tv/"
+                  style="text-decoration: none"
+                  target="_blank"
+                >
+                  <img
+                    style="width: 30px; cursor: pointer"
+                    src="https://eduardoworrel.com/imgs/social/github (1).png"
+                  />
                 </a>
-                <a style="text-decoration:none" href="https://www.linkedin.com/company/programador-tv" target="_blank">
-                    <img style="margin-left:15px;width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+              </div>
+               <div class="col-3 text-center">
+                 <a
+                  style="text-decoration: none"
+                  href="https://www.linkedin.com/company/programador-tv"
+                  target="_blank"
+                >
+                  <img
+                    style=" width: 30px; cursor: pointer"
+                    src="https://eduardoworrel.com/imgs/social/linkedin.png"
+                  />
                 </a>
-              
-            </span>
-        </h2>
-        
-        <hr>
-        <div id="sobre">
-           
-                
-                <p style="font-size: 45px; line-height:45px">
-                    Acreditamos que <b>aprender</b> é diferente para cada um.
-                    Por isso estamos criando um ambiente de educação <b>orientado por mentores</b>.<br>
-                </p>
-                 <br>
-                <p style="font-size: 45px; line-height:45px">
-                    Quem são esses mentores? <br>
-                </p>
-                <p style="font-size: 45px; line-height:45px">
-                   - <b> É você</b> ajudando quem está começando agora.
-                </p>
-                <p style="font-size: 45px; line-height:45px">
-                    - É <b>o profissonal que você admira</b> pronto para te ajudar a dar o próximo passo.
-                </p>
-               
+              </div>
+            </div>
+            
+          </div>
+         
         </div>
         <br>
-        <h2>
-            Sessões de mentoria
-        </h2>
-        
-        <hr>
-        <div >
-                <p style="font-size: 20px;">
-                    Em <b>Aprender</b> você encontra mentores disponíveis para te ajudar a dar o próximo passo na sua carreira, tirar dúvidas e te ajudar a encontrar o caminho certo.
-                </p>
-                <p style="font-size: 20px;">
-                    Em <b>Ensinar</b> você pode se tornar um mentor e ajudar quem está começando agora ou já está no mercado a dar o próximo passo.
-                </p>
-                                
+         <div class=" mt-5 justify-content-center text-center" style="color:white">
+            <p>&copy; 2024 - Programador.TV - <a style="color:white" asp-area="" asp-page="/Sobre/Index">Sobre</a> - <a style="color:white" asp-area="" asp-page="/Sobre/Privacy">Privacy</a> </p>
+            
+            
+            
+          </div>
+      </div>
+      
+    </div>
+    <div id="footerTelaGrande">
+      <br>
+      <br>
+      <br>
+<div class="justify-content-center mt-5" style="display:flex;">
+      <div class="col-10 col-sm-7" style="border-top: 4px solid #734B95;
+">
+        <div class="row mt-5 align-items-center">
+          <div class="col-sm-4 text-center">
+            <img src="~/logo-bg.png" width="60%" />
+          </div>
+          <div class="col-4 text-center">
+            <p class="preFooterTitle">Entre em contato</p>
+          </div>
+          <div class="col-4 text-center">
+            <p class="preFooterTitle">Onde estamos</p>
+          </div>
         </div>
-        <h2>
-            transmissão ao vivo 
-        </h2>
-        
-        <hr>
-        <div >
-                <p style="font-size: 20px;">
-                    Na página inicial, você pode iniciar uma transmissão ao vivo para compartilhar conhecimento com a comunidade.
-                </p>
+        <div class="row justify-content-end">
+          <div class="col-4 text-center">
+            <a class="text-dark" href="mailto:contato@programador.tv">contato@programador.tv</a>
+            <p class="text-dark">(21) 96592-4718</p>
+          </div>
+          <div class="col-4 text-center">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-3">
+                <a
+                  href="https://github.com/programador-tv/"
+                  style="text-decoration: none"
+                  target="_blank"
+                >
+                  <img
+                    style="margin-left: 15px; width: 30px; cursor: pointer"
+                    src="https://eduardoworrel.com/imgs/social/github (1).png"
+                  />
+                </a>
+              </div>
+              <div class="col-3">
+                <a
+                  style="text-decoration: none"
+                  href="https://www.linkedin.com/company/programador-tv"
+                  target="_blank"
+                >
+                  <img
+                    style="margin-left: 15px; width: 30px; cursor: pointer"
+                    src="https://eduardoworrel.com/imgs/social/linkedin.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <br>
-        <br>
-        <h2>
-            Nosso Time
-        </h2>
+      </div>
+    </div>
+      <br>
+      <br>
+      <br>
+      <br>
 
-        <hr>
-        <div id="time" class="team-section-about-page">
-            <div class="card-team-leader card-team-member">
-                <img src="/Pictures/Members/EduardoWorrel.jpg"
-                     alt="Eduardo Worrrel" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/eduardoworrel/" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/eduardoworrel/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Eduardo Worrel
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Fundador</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
 
-            <div class="card-team-member">
-                <img src="/Pictures/Members/LeonardoGasperin.jpeg" alt="Leonardo Gasperin" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/leonardoGasperin/" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/leonardo-dgasperin/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Leonardo V. De Gasperin
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheiro de software & Desenvolvedor .Net</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member">
-                <img src="/Pictures/Members/MatheusFerreira.jpg"
-                     alt="" class="member-preview">
-                <div class="member-links">
-                    <a href="https://www.behance.net/ferreiramt" target="_blank" rel="noopener" class="fa member-ancor">&#xf1c9;</a>
-                    <a href="https://www.linkedin.com/in/matheusferreiraml/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Matheus Ferreira
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>UX/UI Designer</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member">
-                <img src="/Pictures/Members/MarcosDorneles.jpg"
-                     alt="" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/marcosdorneles" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/marcos-dorneles/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Marcos Dorneles
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Desenvolvedor Fullstack</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member">
-                <img src="/Pictures/Members/DannyelaGeovanna.jpg"
-                     alt="" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/Danny-for" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/dannyela-geovanna-69944b201/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Dannyela Geovanna
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Desenvolvedora Júnior</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member">
-                <img src="/Pictures/Members/SabrinaTeixeira.jpg"
-                     alt="" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/txsabrina" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/txsabrina" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Sabrina Teixeira
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Desenvolvedora .Net</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member">
-                <img src="/Pictures/Members/JarbasGouveia.jpg"
-                     alt="" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/jjgouveia" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/jarbasgouveia/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Jarbas Gouveia
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Desenvolvedor .Net</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/HelioNeto.jpg"
-                     alt="Helio Neto" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/ehlliot8" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/hélio-neto-611934206/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Helio Neto
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheiro de software</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/nicolasFerreira.jpg"
-                     alt="Nicolas Ferreira" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/nicolasfvp" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/nicolas-ferreira-a9bb711b6/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Nicolas Ferreira
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheiro de software</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/RenoAmoedo.jpg"
-                     alt="Reno Amoêdo" class="member-preview">
-                <div class="member-links">
-                    <a href="https://www.linkedin.com/in/reno-amoedo/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Reno Amoêdo
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>UI Designer</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/RafaelPetter.png"
-                     alt="Rafael Petter" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/rapPetter" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Rafael Petter
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheiro de software</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/RaulMulerschat.jpg"
-                     alt="Raul Cesar Mulerschat" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/RaulCesarM" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/raulcesarmulerschat/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Raul Mulerschat
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheiro de software</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
-
-            <div class="card-team-member card-team-inactive">
-                <img src="/Pictures/Members/TatyanaJacques.jpg"
-                     alt="Tatyana Jacques" class="member-preview">
-                <div class="member-links">
-                    <a href="https://github.com/tatyana-jacques" target="_blank" rel="noopener" class="fa member-ancor">&#xf09b;</a>
-                    <a href="https://www.linkedin.com/in/tatyana-jacques-438190b3/" target="_blank" rel="noopener" class="fa member-ancor">&#xf08c;</a>
-                </div>
-                <div>
-                    <h3 class="member-font">
-                        Tatyana Jacques
-                    </h3>
-                    <p class="member-role-font">
-                        <strong>Engenheira de software & Sound Designer</strong>
-                    </p>
-                </div>
-                <h6 style="margin-bottom:0px">
-                </h6>
-            </div>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-10 text-center">
+          <div class="container">
+            &copy; 2024 - Programador.TV -
+            <a asp-area="" asp-page="/Sobre/Index">Sobre</a> -
+            <a asp-area="" asp-page="/Sobre/Services">Termos de serviço</a> -
+            <a asp-area="" asp-page="/Sobre/Privacy">Política de Privacidade</a>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+      <br>
+      <br>
+      <br>
+      <br>
+
+    </div>
+    
+  </div>
 </div>
+
 @section Scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<script>
+  document.body.style.backgroundColor = "#FEFBFB";
+  document.body.style.marginBottom = "0";
+  document.body.style.marginLeft= "30px";
+
+  const containerElements = document.querySelectorAll("div.container");
+  const secondContainerElement = containerElements[1];
+  secondContainerElement.classList.add("containerWidth")
+  secondContainerElement.style.marginRight = "0px";
+  secondContainerElement.classList.add("p-0");
+  secondContainerElement.classList.add("m-0");
+
+  const leftContainer = document.getElementById("theLeftFakeAside");
+  leftContainer.remove();
+  const theGreatContent = document.getElementById("theGreatContent");
+  theGreatContent.style.marginLeft = "0px";
+  theGreatContent.setAttribute("style", "width: 100% !important;");
+
+  const firstContainer = document.getElementById("firstContainer")
+
+  function updateMarginLeft() {
+    if (window.innerWidth > 992) {
+      secondContainerElement.setAttribute("style", "padding-left: 300px !important;")
+      firstContainer.classList.remove("mx-4")
+    } else {
+      document.body.style.marginLeft= "0px";
+      secondContainerElement.style.paddingLeft = "0";
+      firstContainer.classList.add("mx-4")
+    }
+  }
+
+  updateMarginLeft();
+  window.addEventListener("resize", updateMarginLeft);
+</script>
 }

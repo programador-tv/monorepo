@@ -14,12 +14,13 @@
 
                 <div style="cursor: pointer; display: flex;
                     justify-content: space-between;
-                    align-items: center; gap: 8px" class="button button-revamp active button-tab"
+                    align-items: center; gap: 8px" class="button button-revamp button-tab"
                         data-bs-toggle="tab" data-bs-target="#ajuda">
 
                         @* <img src="/Pictures/Icons/mdi_account-sync-outline.svg" alt="mdi_account-sync-outline"
                              style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
                         <span >Pedidos de Ajuda</span>
+                        <span id="count-help"></span>
                     </div>
                 <div  style="cursor: pointer; display: flex;
 
@@ -29,6 +30,7 @@
                         @* <img src="/Pictures/Icons/material-symbols_person-outline.png" alt="material-symbols_person-outline"
                              style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
                         <span >Ajuda 1:1</span>
+                        <span id="count-one"></span>
                     </div>
 
                     <div  style="cursor: pointer; display: flex;
@@ -39,7 +41,9 @@
                         @* <img src="/Pictures/Icons/mdi_briefcase-account.svg" alt="mdi_briefcase-account"
                              style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;" /> *@
                         <span >Eventos</span>
+                        <span id="count-cursos"></span>
                     </div>
+
 
 
                     @* <div style="cursor: pointer; display: flex;

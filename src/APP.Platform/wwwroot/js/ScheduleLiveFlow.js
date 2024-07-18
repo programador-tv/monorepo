@@ -7,7 +7,7 @@ saveScheduleLiveForm.addEventListener("submit", (event) => {
   SaveTime(saveScheduleLiveForm);
 });
 
-  async function createLiveModal() {
+  async function createLiveModal(id) {
       const response = await fetch("?handler=AfterLoadLivePreview")
       if (!response.ok) {
           throw new Error("Erro ao enviar a solicitação GET.");
@@ -21,6 +21,16 @@ saveScheduleLiveForm.addEventListener("submit", (event) => {
           content.innerHTML = data.preview + content.innerHTML;
           $("#destaque-tittle").show();
       }
+
+      const modalContainer = document.querySelector("#eventModals");
+      fetch("/ScheduleActions?handler=PartialLiveModal&timeSelectionId=" + id)
+          .then((response) => response.text())
+          .then((data) => {
+              modalContainer.innerHTML += data;
+          })
+          .catch((error) => {
+              console.error("Error:", error);
+          });
 
   }
 
@@ -53,7 +63,7 @@ function SaveTime (aspForm, _hideEventModal) {
         tsId = content.id;
         content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
 
-        await createLiveModal();
+          await createLiveModal(tsId);
 
         calendar.addEvent(content);
         firstForm = content;

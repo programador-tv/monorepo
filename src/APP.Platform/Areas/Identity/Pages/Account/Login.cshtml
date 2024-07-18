@@ -5,18 +5,27 @@
     ViewData["Title"] = " | Entrar";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div id="left-half" class="bg-settings">
+<div style="min-height: 90vh; overflow:hidden">
+<div class="container p-0 mx-0 mt-4">
+    <div class="row justify-content-start">
+        <div class="col-12">
             <a asp-area="" asp-page="/Index" class="logo-img">
                 <img width="200" src="~/logo-bg.png" alt="">
             </a>
-            <section class="custom-section-title d-flex justify-content-center">
-                <h1 class="custom-title">Crie sua conta!</h1>
-                <p class="custom-subtitle">Entre com sua conta para acessar todas as funcionalidades</p>
-            </section>
+        </div>
+    </div>
+    
+</div>
 
-            <section class="d-flex justify-content-center">
+<div class="container mx-auto mt-5">
+<div class="row justify-content-center">
+        <div class="col-sm-10 col-md-8 col-lg-6 text-center">
+            <h1 class="custom-title fw-bold">Entre ou crie uma conta!</h1>
+                <p class="custom-subtitle">Entre para acessar todas as funcionalidades</p>
+        </div>
+        <div class="row justify-content-center mt-4">
+        <div class="col-sm-10 col-md-8 col-lg-4 ">
+            <div class="d-flex justify-content-center">
                 @{
                     if ((Model.ExternalLogins?.Count ?? 0) != 0)
                     {
@@ -60,21 +69,22 @@
                     }
                 }
                
-            </section>
-
-            <br>
-            <div style="text-align: center;"> Ao entrar você automáticamente aceita os <a asp-area="" asp-page="/Sobre/Services">Termos de serviço</a> 
+            </div>
+        </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-sm-10 col-md-8 col-lg-6">
+                <div style="text-align: center;"> Ao entrar você automáticamente aceita os <a asp-area="" asp-page="/Sobre/Services">Termos de serviço</a> 
                 e a <a asp-area="" asp-page="/Sobre/Privacy">Política de Privacidade</a></div>
-
+            </div>
         </div>
-        <div id="right-half" class="bg-settings">
-            <section class="custom-title description-right-title">
-                <h1 class="fw-mid title-right">Encontre mentores e impulsione seu desenvolvimento</h1>
-                <p class="subtitle-right">Conecte-se com mentores experientes e participe de uma comunidade de aprendizado e colaboração. Explore todo o potencial de sua jornada</p>
-            </section>
+    </div>
+</div>
+</div>
 
-            <img src="/Pictures/login-img.png" alt="" class="img-left">
-        </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center" id="footerDiv"></div>
     </div>
 </div>
 
@@ -83,12 +93,14 @@
 
     <script>
         $(document).ready(function () {
+            document.body.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+
             const footer = document.querySelector("#footer");
-            const divLeft = document.querySelector("#left-half");
-            const imgLeft = document.querySelector(".img-left");
-            footer.classList.add("footer-login");
-            footer.classList.remove("footer", "border-top", "footer", "text-muted");
-            divLeft.appendChild(footer);
+            const footerDiv = document.querySelector("#footerDiv");
+            footer.classList.remove("footer", "border-top", "text-muted");
+            footer.removeAttribute("footer")
+            footerDiv.appendChild(footer);
         });
     </script>
 }

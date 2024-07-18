@@ -102,10 +102,7 @@ function cancelEvent(timeSelectionId) {
     setTimeout(function () {
         calendar.getEventById(timeSelectionId).remove();
         $('#card-' + timeSelectionId).remove();
-        var tsIndext = asyncEvents.findIndex(el => el.id === timeSelectionId);
-        if (tsIndext > -1) {
-            asyncEvents.splice(tsIndext, 1);
-        }
+        asyncEvents = asyncEvents.filter(el => el.id !== timeSelectionId);
     }, 200);
     fetch(url, options)
         .then((response) => {

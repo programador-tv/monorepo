@@ -1,4 +1,4 @@
-const asyncEvents = []
+let asyncEvents = []
 
 
 document.addEventListener('DOMContentLoaded',()=>{

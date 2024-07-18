@@ -3,81 +3,84 @@
 
 @model ModalLive
 @foreach (var data in Model.LiveTimeSelection)
-{
+{ 
     <div class="modal fade" id="eventModal-@data.Id" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div id="home-@data.Id">
-                    <div style="display: flex;justify-content: space-between;align-items: center;padding: 15px;">
-                        <h5 class="modal-title" id="eventModalLabel" style="color: #9067B2;font-size: 32px;font-weight: 500;letter-spacing: 0.015em;margin: 0px;word-wrap: break-word;padding: 0px 30px;text-align: center; line-height: 1.1;">
-                            <span>Live</span>
-                        </h5>
-                        <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div id="modal-freetime-content" style="padding: 15px;"></div>
-                        <div id="detalhes" style="">
-                            <div id="data" style="display: flex;padding: 0px 20px 20px;gap: 10px;align-items: center;">
-                                <span style="background-color: #99B6EE;width: 4px; height: 60px;border-radius: 10px;"></span>
-                                @{
-                                    var cultureInfo = new System.Globalization.CultureInfo("pt-BR");
-                                    var textInfo = cultureInfo.TextInfo;
-                                }
-                                <div>
-                                    <p style="font-size: 13px;"> Início       <strong style="color: #373737;font-weight: 500;font-size: 16px;padding-left: 27px">@textInfo.ToTitleCase(data.StartTime.ToString("dddd, dd 'de' MMMM ' - ' HH:mm", cultureInfo)) </strong></p>
-                                    <p style="font-size: 13px; margin: 0"> Término      <strong style="color: #373737;font-weight: 500;font-size: 16px;padding-left: 10px">@textInfo.ToTitleCase(data.EndTime.ToString("dddd, dd 'de' MMMM ' - ' HH:mm", cultureInfo))</strong></p>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="home-@data.Id">
+                        <div style="display: flex;justify-content: space-between;align-items: center;padding: 15px;">
+                            <h5 class="modal-title" id="eventModalLabel" style="color: #9067B2;font-size: 32px;font-weight: 500;letter-spacing: 0.015em;margin: 0px;word-wrap: break-word;padding: 0px 30px;text-align: center; line-height: 1.1;">
+                                <span>Live</span>
+                            </h5>
+                            <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="modal-freetime-content" style="padding: 15px;"></div>
+                            <div id="detalhes" style="">
+                                <div id="data" style="display: flex;padding: 0px 20px 20px;gap: 10px;align-items: center;">
+                                    <span style="background-color: #99B6EE;width: 4px; height: 60px;border-radius: 10px;"></span>
+                                    @{
+                                        var cultureInfo = new System.Globalization.CultureInfo("pt-BR");
+                                        var textInfo = cultureInfo.TextInfo;
+                                    }
+                                    <div>
+                                        <p style="font-size: 13px;"> Início       <strong style="color: #373737;font-weight: 500;font-size: 16px;padding-left: 27px">@textInfo.ToTitleCase(data.StartTime.ToString("dddd, dd 'de' MMMM ' - ' HH:mm", cultureInfo)) </strong></p>
+                                        <p style="font-size: 13px; margin: 0"> Término      <strong style="color: #373737;font-weight: 500;font-size: 16px;padding-left: 10px">@textInfo.ToTitleCase(data.EndTime.ToString("dddd, dd 'de' MMMM ' - ' HH:mm", cultureInfo))</strong></p>
+                                    </div>
+                                </div>
+                                <div style="display: flex;flex-wrap: wrap;padding-left: 80px;gap: 5px;">
+                                    @if (data.Tags != null)
+                                    {
+                                        @foreach (var tags in data.Tags)
+                                        {
+                                        <span class="tag" style="width: fit-content; font-size: 12px;">@tags.Titulo</span>
+                                        }
+                                    }
                                 </div>
                             </div>
-                            <div style="display: flex;flex-wrap: wrap;padding-left: 80px;gap: 5px;">
-                                @if (data.Tags != null)
-                                {
-                                    @foreach (var tags in data.Tags)
-                                    {
-                                    <span class="tag" style="width: fit-content; font-size: 12px;">@tags.Titulo</span>
-                                    }
-                                }
-                            </div>
-                        </div>
-                        <hr>
+                            <hr>
                         <div id="studio "class="d-flex justify-content-between p-4">
                             <button
-                            id="startWithBrowser"
-                            class="button botao-entrar-active"
-                            onclick="window.open('../Studio?mainkey=@(data.LinkSala)', '_blank');"
+                                id="startWithBrowser"
+                                class="button botao-entrar-active"
+                                onclick="window.open('../Studio?mainkey=@(data.LinkSala)', '_blank');"
                             >
                                 Iniciar pelo navegador
                             </button>
                             <button
-                            class="button botao-entrar-active"
-                            onclick="window.open('../Studio/OBS?mainkey=@(data.LinkSala)', '_blank');"
+                                class="button botao-entrar-active"
+                                onclick="window.open('../Studio/OBS?mainkey=@(data.LinkSala)', '_blank');"
                             >
                                 Iniciar pelo OBS Studio
                             </button>
                         </div>
-                        <div id="close" class="w-100 p-4">
-                            <div onclick="cancelEvent('@data.Id')" class="btn btn-danger w-100 btn-block">Cancelar Live</div>
-                        </div>
+                        
+                        <form id="CancelTime-@data.Id" method="post" class="w-100 p-4">
+                            <div onclick="cancelEvent('@data?.Id')" 
+                                 class="btn btn-danger w-100 btn-block">
+                                Cancelar Live
+                            </div>
+                        </form>
                     </div>
-
                 </div>
+            </div>
         </div>
     </div>
-</div>
-<script>
-    function verificarNavegador() {
-        if (notChrome()) {
-            const browserBtn = document.getElementById("startWithBrowser");
-            browserBtn.disabled = true;
-            browserBtn.classList.add("btn-secondary");
-            browserBtn.style.cursor = "not-allowed";
-      }
-    }
-    function notChrome() {
-        return /Edge/.test(navigator.userAgent) || /Edg/.test(navigator.userAgent)
-            || /OPR/.test(navigator.userAgent) || /Opera/.test(navigator.userAgent) || /Firefox/.test(navigator.userAgent)
-            || /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)
-            || /SamsungBrowser/.test(navigator.userAgent);
-    }
-    verificarNavegador();
-</script>
+    <script>
+        function verificarNavegador() {
+            if (notChrome()) {
+                const browserBtn = document.getElementById("startWithBrowser");
+                browserBtn.disabled = true;
+                browserBtn.classList.add("btn-secondary");
+                browserBtn.style.cursor = "not-allowed";
+          }
+        }
+        function notChrome() {
+            return /Edge/.test(navigator.userAgent) || /Edg/.test(navigator.userAgent)
+                || /OPR/.test(navigator.userAgent) || /Opera/.test(navigator.userAgent) || /Firefox/.test(navigator.userAgent)
+                || /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)
+                || /SamsungBrowser/.test(navigator.userAgent);
+        }
+        verificarNavegador();
+    </script>
 }
