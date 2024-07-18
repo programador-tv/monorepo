@@ -7,14 +7,36 @@ function diferencaEmMinutos(data1, data2) {
     const diferencaEmMinutos = Math.round(diferenca / (1000 * 60));
     return diferencaEmMinutos;
 }
-
+let countLoaded = 0
 const result = []
 
-let containsMoreEvents = 0;
+let countHelp = 0;
+let countOneToOne = 0;
+let countCursos = 0;
 
-const countHelp = $("#count-help");
-const countOneToOne = $("#count-one");
-const countCursos = $("#count-cursos");
+const countHelpElement = $("#count-help");
+const countOneToOneElement = $("#count-one");
+const countCursosElement = $("#count-cursos");
+function updateOpenPanel(){
+    if(countLoaded != 3){
+        return
+    }
+    console.log(countHelp)
+    console.log(countCursos)
+    $(".tab-pane").removeClass("active");
+    
+    if (countHelp >= countOneToOne && countHelp >= countCursos) {
+        countHelpElement.parent().addClass("active");
+        $("#ajuda").addClass("active show");
+    } else if (countOneToOne >= countHelp && countOneToOne >= countCursos) {
+      countOneToOneElement.parent().addClass("active");
+      $("#oneToOne").addClass("active show");
+    } else {
+      countCursosElement.parent().addClass("active");
+      $("#cursos").addClass("active show");
+    }
+}
+
 function afterLoad(isAuth) {
     const pedidosLoading = document.querySelector("#pedidosLoading");
     const videosLoading = document.querySelector("#videosLoading");
@@ -205,25 +227,19 @@ function loadMentoresParaTag(data) {
 
         $("#OneToOneMatch").html(preparedOneToOne)
         if (groupOneToOne.length > 0) {
-            countOneToOne.html(groupOneToOne.length).addClass("count-tab-events")
+            countOneToOneElement.html(groupOneToOne.length).addClass("count-tab-events")
         }
-
 
         $("#CursosMatch").html(preparedCursos)
-        if (groupCursos.length > 0) { countCursos.html(groupCursos.length).addClass("count-tab-events") }
+        if (groupCursos.length > 0) { countCursosElement.html(groupCursos.length).addClass("count-tab-events") }
 
-        if (groupOneToOne.length > containsMoreEvents) {
-            containsMoreEvents = groupOneToOne.length;
-            countOneToOne.parent().addClass("active");
-        }
-
-        if (groupCursos.length > containsMoreEvents) {
-            containsMoreEvents = groupCursos.length;
-            countCursos.parent().addClass("active");
-        }
-
+        countOneToOne = groupOneToOne.length;
+        countLoaded++
+        countCursos = groupCursos.length;
+        countLoaded++
         activePaginationFor("groupOneToOne", groupOneToOne.length)
         activePaginationFor("groupCursos", groupCursos.length)
+        updateOpenPanel()
     }
 
 }
@@ -258,12 +274,11 @@ function loadPedidosAjudaParaTag(data) {
 
         $("#pedidosPanel").html(pedidosDeAjuda)
         activePaginationFor("groupHelp", groupHelp.length)
-        if (groupHelp.length > 0) { countHelp.html(groupHelp.length).addClass("count-tab-events") }
-
-        if (groupHelp.length > containsMoreEvents) {
-            containsMoreEvents = groupHelp.length;
-            countHelp.parent().addClass("active");
-        }
+        if (groupHelp.length > 0) { countHelpElement.html(groupHelp.length).addClass("count-tab-events") }
+        countHelp = groupHelp.length;
+        countLoaded++
+        updateOpenPanel()
+        
     }
 
 }
