@@ -247,29 +247,6 @@ jobs:
           docker-compose -f docker-compose.yml build core-rtmp-live
          fi   
 
-  publish_app_room:
-    name: Deploy Core.APP.Room
-    runs-on: ubuntu-latest
-    needs: [code_format]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1 
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GHCR_TOKEN }}
-    - name: Build and push Docker image
-      run: |
-         if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build room
-           docker-compose -f docker-compose.prod.yml push room
-         elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build room
-          docker-compose -f docker-compose.yml push room
-         else  
-          docker-compose -f docker-compose.yml build room
-         fi   
   publish_app_platform:
     name: Deploy Core.APP.Platform
     runs-on: ubuntu-latest

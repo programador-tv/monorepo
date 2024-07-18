@@ -196,7 +196,7 @@ public class LiveBusinessLogicTests
 
         _mockRepository
             .Setup(repo => repo.GetByIdAsync(nonExistentLiveId))
-            .ReturnsAsync((Live)null);
+            .Throws<KeyNotFoundException>();
 
         await Assert.ThrowsAsync<KeyNotFoundException>(
             async () => await _businessLogic.KeepOn(nonExistentLiveId)

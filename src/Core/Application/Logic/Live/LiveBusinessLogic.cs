@@ -66,7 +66,7 @@ public sealed class LiveBusinessLogic(
     public async Task KeepOn(Guid id)
     {
         var live = await _repository.GetByIdAsync(id);
-        live.MantemAberta();
+        live!.MantemAberta();
         await _repository.UpdateAsync(live);
     }
 
