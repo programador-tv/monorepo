@@ -43,7 +43,7 @@ public sealed class GenerateOpenGraphImageQueue(
                 build.PerfilId,
                 TipoNotificacao.PreviewCriada,
                 conteudo,
-                "https://programador.tv/Canal?usr={build.UserNickName}&freetime={id}",
+                $"https://programador.tv/Canal?usr={build.UserNickName}&freetime={id}",
                 string.Empty
             );
             await publisher.PublishAsync(typeof(NotificationsQueue).Name, notification);

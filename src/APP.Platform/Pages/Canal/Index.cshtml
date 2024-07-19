@@ -444,6 +444,8 @@
                 .then(function (data) {
                     if (data) {
                         SetItToTry(freeTimeId);
+                    }else{
+                        alert('você já possui eventos marcados nesse horário')
                     }
                 })
         }
@@ -530,7 +532,6 @@
 
             prepared += `</div>`
 
-            document.querySelector("#JoinTime_PerfilId").value = perfil.id
             document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId
 
 
