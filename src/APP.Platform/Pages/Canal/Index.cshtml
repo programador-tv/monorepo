@@ -565,6 +565,7 @@
                     prepared += JoinTimeForMentorias(tss[ts], perfil, "groupOneToOne canal", ts)
             }
             $("#eventos-usuario").html(prepared)
+            $("#eventos-usuarioBelow").html(prepared)
 
             activePaginationFor("groupOneToOne", tss.length)
         }
@@ -575,6 +576,7 @@
 
             if (data.length == 0) {
                 $("#pedidos-usuario").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento <div>")
+                $("#pedidos-usuarioBelow").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento <div>")
                 return;
             }
             if (data[0].timeSelections.length > 2) {
@@ -599,6 +601,7 @@
                     }
             }
             $("#pedidos-usuario").html(prepared)
+            $("#pedidos-usuarioBelow").html(prepared)
 
             activePaginationFor("groupHelp", tss.length)
         }
