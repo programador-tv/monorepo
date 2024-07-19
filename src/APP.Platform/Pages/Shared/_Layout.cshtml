@@ -40,11 +40,10 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                 <meta name="description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
                 <meta property="og:title" content="Programador.TV">
                 <meta property="og:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
-                <meta property="og:image" content="@(liveapi_url)/Room/GetImageFreetime?id=@freeTimeId">
-
+                <meta property="og:image" content="/Index?Handler=GetImageFreetime&id=@freeTimeId">
                 <meta name="twitter:title" content="Programador.TV">
                 <meta name="twitter:description" content="Plataforma de mentoria e compartilhamento de conhecimento sobre desenvolvimento de software">
-                <meta name="twitter:image" content="@(liveapi_url)/Room/GetImageFreetime?id=@freeTimeId">
+                <meta name="twitter:image" content="/Index?Handler=GetImageFreetime&id=@freeTimeId">
             }else{
                 // TODO: Gerar preview do perfil do usuario
             }

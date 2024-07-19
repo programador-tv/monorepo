@@ -125,6 +125,24 @@ public class IndexModel : CustomPageModel
         return Page();
     }
 
+    public async Task<IActionResult> OnGetGetImageFreetimeAsync(Guid id)
+    {
+        var freeTime = await _context
+            .TimeSelections.AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (freeTime == null)
+        {
+            return NotFound("Mentoria não encontrada");
+        }
+
+        if (string.IsNullOrEmpty(freeTime.PreviewImage))
+        {
+            throw new ArgumentException("String base64 não pode ser vazia ou nula.");
+        }
+
+        return Base64toImage(freeTime.PreviewImage);
+    }
     public async Task<IActionResult> OnGetAsync()
     {
         if (IsAuthenticatedWithoutProfile())
@@ -952,5 +970,16 @@ public class IndexModel : CustomPageModel
             _context?.Tags?.Add(tag);
         }
         return room.Id;
+    }
+
+
+    public IActionResult Base64toImage(string base64)
+    {
+        if (base64.Contains(","))
+            base64 = base64.Split(",")[1];
+
+        byte[] imageBytes = Convert.FromBase64String(base64);
+
+        return File(imageBytes, "image/png");
     }
 }
