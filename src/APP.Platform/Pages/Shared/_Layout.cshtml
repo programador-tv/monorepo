@@ -445,23 +445,7 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                     </div>
                      @await Html.PartialAsync("_News")
 
-            @if(enviroment == "Production"){
-                    <div class="default-card card-right" >
-                        <strong class="tittle-newDesign">🛟 Doação</strong>
-                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
-
-                                        <script async
-                                        src="https://js.stripe.com/v3/buy-button.js">
-                                        </script>
-
-                                        <stripe-buy-button
-                                        buy-button-id="buy_btn_1NQAK8Bu4SWvbh9BLRsaRFWh"
-                                        publishable-key="pk_live_51NPvLsBu4SWvbh9B2ebkdnPXgq4It1YqQLYgPqnbEvg29lqJIPgetZyiusKATZo4a2xjmhhc1R4mTDMx3KuDV8u300AJLhmE3i"
-                                        >
-                                        </stripe-buy-button>
-                        </section>
-                    </div>
-                }
+            @* Doação ficava aqui*@
 
 
                     <div class="default-card card-right" >
@@ -518,24 +502,8 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                         </section>
                     </div>
                      @await Html.PartialAsync("_NewsBelow")
-
-            @if(enviroment == "Production"){
-                    <div class="default-card card-right" >
-                        <strong class="tittle-newDesign">🛟 Doação</strong>
-                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
-
-                                        <script async
-                                        src="https://js.stripe.com/v3/buy-button.js">
-                                        </script>
-
-                                        <stripe-buy-button
-                                        buy-button-id="buy_btn_1NQAK8Bu4SWvbh9BLRsaRFWh"
-                                        publishable-key="pk_live_51NPvLsBu4SWvbh9B2ebkdnPXgq4It1YqQLYgPqnbEvg29lqJIPgetZyiusKATZo4a2xjmhhc1R4mTDMx3KuDV8u300AJLhmE3i"
-                                        >
-                                        </stripe-buy-button>
-                        </section>
-                    </div>
-                }
+            
+           @* Doação ficava aqui *@
 
 
                     <div class="default-card card-right" >
