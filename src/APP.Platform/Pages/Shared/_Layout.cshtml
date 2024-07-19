@@ -180,7 +180,6 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                 </div>
             </div>
         </aside>
-        <aside id="theLeftFakeAside"></aside>
         <main role="main" id="theGreatContent">
             @RenderBody()
             @{
@@ -278,6 +277,15 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                         <strong class="tittle-newDesign">🎒 Dúvidas</strong><section id="pedidos-usuario"></section>
                     </div>
                 </aside>
+                <div id="asideBelow">
+                <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🧑‍🏫 Tempo disponível</strong>
+                        <section id="eventos-usuarioBelow"></section>
+                    </div>
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">🎒 Dúvidas</strong><section id="pedidos-usuarioBelow"></section>
+                    </div>
+                    </div>
               }
             }else
             {
@@ -436,23 +444,7 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                     </div>
                      @await Html.PartialAsync("_News")
 
-            @if(enviroment == "Production"){
-                    <div class="default-card card-right" >
-                        <strong class="tittle-newDesign">🛟 Doação</strong>
-                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
-
-                                        <script async
-                                        src="https://js.stripe.com/v3/buy-button.js">
-                                        </script>
-
-                                        <stripe-buy-button
-                                        buy-button-id="buy_btn_1NQAK8Bu4SWvbh9BLRsaRFWh"
-                                        publishable-key="pk_live_51NPvLsBu4SWvbh9B2ebkdnPXgq4It1YqQLYgPqnbEvg29lqJIPgetZyiusKATZo4a2xjmhhc1R4mTDMx3KuDV8u300AJLhmE3i"
-                                        >
-                                        </stripe-buy-button>
-                        </section>
-                    </div>
-                }
+            @* Doação ficava aqui*@
 
 
                     <div class="default-card card-right" >
@@ -471,6 +463,66 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                         <br>
                     </div>
                 </aside>
+                @*  *@
+                <div id="asideBelow"> 
+  <div class="default-card card-right" >
+                            <strong class="tittle-newDesign">💼 Jobs</strong>
+                            <br>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 48px;"
+                                src="https://mandajobs.tech/manda_jobs_logo.svg">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 90%">
+                                    Filtro inteligente para o Linkedin
+                                </p>
+
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://mandajobs.tech">
+                                      <button class="button"  style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> Manda Jobs
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                        <hr/>
+                        <section class="card" style="display: flex; justify-content: center; align-items: center;   background-color: #fff; border: none;">
+                            <img alt="card-kit" style="width: 72px; border-radius: 33px;"
+                                src="https://trampardecasa.com.br/images/logo.svg">
+                            <div>
+                                <p style="margin-top:4px; color: #575757;text-align: center; width: 100%; margin: 2% auto; font-size:14px; width: 90%">
+                                    Vagas remotas no seu e-mail
+                                </p>
+
+                                <a style="justify-content: center;" target="_blank" class="news-anchor" href="https://trampardecasa.com.br/">
+                                      <button class="button"  style="margin-top:0; ">
+                                        <span class="material-icons">north_east</span> Trampar de Casa
+                                    </button>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                     @await Html.PartialAsync("_NewsBelow")
+            
+           @* Doação ficava aqui *@
+
+
+                    <div class="default-card card-right" >
+                        <strong class="tittle-newDesign">Onde estamos</strong>
+                        <br>
+                        <br>
+                        <div style="display: flex; justify-content: space-evenly">
+                         <a href="https://github.com/programador-tv/" style="text-decoration:none" target="_blank">
+                            <img style="margin-left:15px;width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+                        </a>
+                        <a style="text-decoration:none" href="https://www.linkedin.com/company/programador-tv" target="_blank">
+                            <img style="margin-left:15px;width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                        </a>
+                    
+                        </div>
+                        <br>
+                    </div>
+                    
+                    </div>
+                    @*  *@
             }
     </div>
         } else {
@@ -561,6 +613,10 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
             </div>
         </div>
     </div>
+
+    <div style="display:none">
+        
+        </div>
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -676,5 +732,57 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
     <script>
         RenderCalendarItens();
     </script>
+    <script>
+        const aside = document.getElementById("theGreatAside");
+        const main = document.getElementById("theGreatContent")
+        const asideToRender = document.getElementById("asideBelow");
+        
+      function checkIfAside() {
+    if (window.innerWidth < 1485) {
+        if (aside) {
+            aside.style.display = 'none';
+        }
+        if (main) {
+            main.style.paddingRight = "0px";
+        }
+        if (asideToRender) {
+            asideToRender.style.display = "flex";
+        }
+    } else {
+        if (aside) {
+            aside.style.display = 'block';
+        }
+        if (main) {
+            main.style.paddingRight = "360px";
+        }
+        if (asideToRender) {
+            asideToRender.style.display = "none";
+        }
+    }
+}
+
+        function checkPaddingMain(){
+            if (window.innerWidth > 992){
+                main.style.paddingLeft = "300px"
+                if (asideToRender){
+                asideToRender.style.paddingLeft = "335px";
+                }
+
+            } else{
+                main.style.paddingLeft = "0px"
+                if (asideToRender){
+                asideToRender.style.paddingLeft = "35px";
+                }
+            }
+        }
+
+        // Verificação inicial
+        checkIfAside();
+        checkPaddingMain();
+
+        // Adicionar o event listener para o redimensionamento da janela
+        window.addEventListener('resize', checkIfAside);
+        window.addEventListener('resize', checkPaddingMain);
+        </script>
 </body>
 </html>
