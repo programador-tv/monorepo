@@ -180,12 +180,12 @@
       height: auto ;
     "
   >
-    <div class="">
+    <div id="divRoxo" style="margin-left: 30px">
       <br />
       <div class=" purpleHeading justify-content-center justify-content-sm-start">
         <div class="col-12 col-sm-6 text-center text-sm-start" style="width: 100% !important;">
-          <h2 class="fundoRoxoHeader m-0 m-sm-3">Nosso Time</h2>
-          <p class="fundoRoxoP m-2 mx-4 m-sm-3 mt-3">
+          <h2 class="fundoRoxoHeader">Nosso Time</h2>
+          <p class="fundoRoxoP mt-3">
             Nossa equipe de desenvolvedores e designers, que também são usuários
             desta plataforma, valoriza a educação transformadora. Conheça nossos
             perfis e histórias para talvez se inspirar.
@@ -608,13 +608,13 @@
 />
 
 <script>
-  document.body.style.backgroundColor = "#FEFBFB";
   document.body.style.marginBottom = "0";
-  document.body.style.marginLeft= "30px";
+
 
   const containerElements = document.querySelectorAll("div.container");
   const secondContainerElement = containerElements[1];
-  secondContainerElement.classList.add("containerWidth")
+  const divRoxo = document.getElementById("divRoxo");
+
   secondContainerElement.style.marginRight = "0px";
   secondContainerElement.classList.add("p-0");
   secondContainerElement.classList.add("m-0");
@@ -627,12 +627,14 @@
 
   function updateMarginLeft() {
     if (window.innerWidth > 992) {
-      secondContainerElement.setAttribute("style", "padding-left: 300px !important;")
       firstContainer.classList.remove("mx-4")
+      divRoxo.classList.remove("mx-4")
+      firstContainer.style.marginLeft="30px"
     } else {
       document.body.style.marginLeft= "0px";
       secondContainerElement.style.paddingLeft = "0";
       firstContainer.classList.add("mx-4")
+      divRoxo.classList.add("mx-4")
     }
   }
 
