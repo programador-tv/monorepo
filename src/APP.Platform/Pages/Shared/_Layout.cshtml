@@ -752,7 +752,9 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
         if (aside) {
             aside.style.display = 'block';
         }
-        if (main) {
+            const currentUrl = window.location.pathname;
+            console.log(currentUrl)
+        if (main && currentUrl!= "/Sobre" ) {
             main.style.paddingRight = "360px";
         }
         if (asideToRender) {
