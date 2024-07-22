@@ -2,6 +2,10 @@
 @{
     bool isAuth = SignInManager.IsSignedIn(User);
 }
+
+
+
+
 <div
       class="modal fade"
       id="timePickerModal"
@@ -12,51 +16,21 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body time-picker-modal">
-            <h5 class="modal-title" id="timePickerModalLabel">
-              Selecione a data do evento
-              @* variavel *@
+            <div class="modalTitleHeaderDiv">
+            <h5 class="modal-title modalTitleHeader" id="timePickerModalLabel">
+              Criação de Colaboração 1:1
             </h5>
 
-<div class="progressOneToOne">
-            <div class="progressBall" style="color: #fff;">
-            1
-            </div>
-            <div class="progressRectangle">
+            @* <button
+              type="button"
+              class="btn-close btnModalClose"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button> *@
 
             </div>
             
-            <div class="progressBall">
-                <img src="~/Pictures/Icons/checkModalIcon.svg">
-            </div>
-
-            <div class="progressRectangle">
-                
-            </div>
-
-            <div class="progressBallNext">
-                3
-            </div>
-            
-        </div>
-
-        <div class="progressOneToOneText">
-            <div class="progressTextBox">
-                <p class="progressText">Titulo e Descrição</p>
-            </div>
-            <div class="progressTextBox">
-                <p class="progressText">Data e Hora</p>
-            </div>
-            <div class="progressTextBox">
-                <p class="progressText">Concluir</p>
-            </div>
-        </div>
-
-      <div class="datePickerFlexDiv">
-        <div class="datePickerFlexItem">
-          <h2>Escolha o horario e a data que se encontra disponível</h2>
-        </div>
-        <div class="datePickerFlexItem">
-          <div class="date-picker">
+            <div class="date-picker">
               <div class="text-container">
                 <p class="time-picker-text">Data do evento</p>
               </div>
@@ -68,23 +42,9 @@
               }
             </div>
 
-            <div>
-              <label for="">Horário de Início</label>
-<input type="time" style="width: 100%;
-  text-align: center;
-}">
-            </div>
-
-            <div>
-              <label for="">Horário de Término</label>
-<input type="time" style="width: 100%;
-  text-align: center;
-}">
-            </div>
-            
+            <div class="TPContainer">
 
 
-          @* <div class="TPContainer">
               <div class="input-group">
                 <div class="text-container">
                   <p class="time-picker-text">Início</p>
@@ -240,18 +200,11 @@
                 }
                 </div>
               </div>
-            </div> *@
+            </div>
             <div class="alert alert-light displayTimeAlert" role="alert"></div>
             <div class="alert alert-danger timePickerAlert" role="alert">
             </div>
           </div>
-
-
-
-        </div>
-      </div>
-            
-          
           <div class="modal-footer">
             <button
               type="button"

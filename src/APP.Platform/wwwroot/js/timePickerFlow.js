@@ -229,7 +229,7 @@ okBtn.addEventListener("click", () => {
       switch($("#tipoTempoLivre").val()){
 
         case "1:1":
-          $('#eventModalOneToOne').modal('show')
+          $('#confirmOneToOneModal').modal('show')
           break;
           case "cursos":
           $('#eventModalCustosAndEventos').modal('show')

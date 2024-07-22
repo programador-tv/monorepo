@@ -33,6 +33,7 @@ body {
 
 .select2-container {
   z-index: 1100 !important;
+  height: 38px;
 }
 
 .box-shaddow-side-cards {
@@ -1554,4 +1555,122 @@ body {
   100% {
     transform: translateX(100%);
   }
+}
+
+.btnModalClose {
+  position: absolute;
+  right: 20px;
+}
+
+.modalTitleHeaderDiv {
+  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.modalTitleHeader {
+  font-size: 20px;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+.progressBall {
+  border-radius: 50%;
+  color: #437ae2;
+  background-color: #437ae2;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  align-content: center;
+}
+
+.progressBallNext {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #437ae2;
+  align-content: center;
+  text-align: center;
+  color: #437ae2;
+}
+
+.progressOneToOne {
+  padding-top: 2rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressRectangle {
+  width: 50px;
+  height: 2px;
+  color: #437ae2;
+  background-color: #437ae2;
+  margin-inline: 15px;
+}
+
+.progressOneToOneText {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressTextBox {
+  width: 56px;
+  height: 65px;
+  margin-inline: 30px;
+  text-align: center;
+}
+
+.progressText {
+  color: #437ae2;
+  font-weight: 500px;
+}
+
+.oneToOneTextHeader {
+  margin: auto;
+  max-width: 256px;
+  display: flex;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.oneToOneLabel {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1c1c1c;
+}
+
+.selected-tag {
+  display: inline-block;
+  font-size: 12px;
+  background-color: #d7d7d7;
+  border-radius: 5%;
+  padding: 0.1rem;
+  margin: 0.2rem;
+}
+
+.oneToOneButton {
+  background: #437ae2;
+  font-size: 20px;
+  color: #f2f2f2;
+}
+
+.datePickerFlexDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.datePickerFlexItem {
+  width: 50%;
+  padding: 20px;
+
+  flex: 1;
 }

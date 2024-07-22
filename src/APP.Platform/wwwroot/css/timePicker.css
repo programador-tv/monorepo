@@ -29,7 +29,6 @@ input[type="number"] {
   height: fit-content;
 }
 .time-picker {
-  background: #f3f2ef;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +48,7 @@ input[type="number"] {
   flex-direction: column;
   width: fit-content;
 }
-.numberMaxMentees{
+.numberMaxMentees {
   display: flex;
   flex-direction: row;
 }
@@ -80,8 +79,6 @@ input[type="number"] {
   width: 2em;
   text-align: center;
   border: none;
-  font-size: 3em;
-  background-color: #f3f2ef;
   border-radius: 4%;
 }
 .time-picker-inputs:focus {
@@ -92,7 +89,6 @@ input[type="number"] {
   text-align: center;
   border: none;
   font-size: 1em;
-  background-color: #f3f2ef;
 }
 .time-picker-modal {
   display: flex;
@@ -100,7 +96,7 @@ input[type="number"] {
   align-items: flex-start;
 }
 .TPContainer {
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -113,17 +109,16 @@ input[type="number"] {
   font-weight: bold;
 }
 .date-picker {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   width: 100%;
   justify-content: space-evenly;
 }
 .dateTime-picker-input {
-  background-color: #f3f2ef;
-  border: none;
-  font-size: 3em;
+  border: 1px solid #878787;
   border-radius: 4%;
   text-align: center;
+  width: 100%;
 }
 .dateTime-picker-input:focus {
   outline: none;
