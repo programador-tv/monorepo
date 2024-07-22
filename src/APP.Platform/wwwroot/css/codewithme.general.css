@@ -1550,8 +1550,60 @@ body {
   animation: loading 1s infinite;
 }
 
+#theGreatAside {
+  display: block;
+}
+
+#theGreatContent {
+  padding-right: 360px;
+}
+
+#asideBelow {
+  display: none;
+  padding-left: 335px;
+}
+
+@media (max-width: 1485px) {
+  #theGreatAside {
+      display: none;
+  }
+
+  #theGreatContent {
+      padding-right: 0;
+  }
+
+  #asideBelow {
+      display: flex;
+  }
+}
+
+/* Media query para largura maior que 992px */
+@media (min-width: 993px) {
+  #theGreatContent {
+      padding-left: 300px;
+  }
+
+  #asideBelow {
+      padding-left: 335px;
+  }
+}
+
+/* Media query para largura menor que 993px */
+@media (max-width: 992px) {
+  #theGreatContent {
+      padding-left: 0;
+  }
+
+  #asideBelow {
+      padding-left: 35px;
+  }
+}
+
+
 @keyframes loading {
   100% {
     transform: translateX(100%);
   }
+
+  
 }
