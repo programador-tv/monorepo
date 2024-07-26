@@ -234,13 +234,15 @@ function loadMentoresParaTag(data) {
         if (groupCursos.length > 0) { countCursosElement.html(groupCursos.length).addClass("count-tab-events") }
 
         countOneToOne = groupOneToOne.length;
-        countLoaded++
         countCursos = groupCursos.length;
-        countLoaded++
         activePaginationFor("groupOneToOne", groupOneToOne.length)
         activePaginationFor("groupCursos", groupCursos.length)
-        updateOpenPanel()
+        
     }
+    countLoaded++
+    countLoaded++
+
+    updateOpenPanel()
 
 }
 
@@ -276,10 +278,12 @@ function loadPedidosAjudaParaTag(data) {
         activePaginationFor("groupHelp", groupHelp.length)
         if (groupHelp.length > 0) { countHelpElement.html(groupHelp.length).addClass("count-tab-events") }
         countHelp = groupHelp.length;
-        countLoaded++
-        updateOpenPanel()
+
+       
         
     }
+    countLoaded++
+    updateOpenPanel()
 
 }
 
