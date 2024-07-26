@@ -1,6 +1,7 @@
 using System.Net;
 using System.Reflection;
 using Background;
+using Domain.WebServices;
 using Moq;
 using tests;
 
@@ -11,7 +12,6 @@ public class JoinTimeWorkerTests
     [Fact]
     public async Task ExecuteAsync_CallsHttpEndpoints_AndRespectsInterval()
     {
-        // Simula uma resposta HTTP
         var fakeResponse = new HttpResponseMessage(HttpStatusCode.OK);
         var fakeHandler = new FakeHttpMessageHandler(fakeResponse);
         var fakeHttpClient = new HttpClient(fakeHandler)
@@ -19,10 +19,12 @@ public class JoinTimeWorkerTests
             BaseAddress = new Uri("http://example.com/")
         };
 
-        var mockFactory = new Mock<IHttpClientFactory>();
-        mockFactory.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(fakeHttpClient);
+        var mockJoinTimeWebService = new Mock<IJoinTimeWebService>();
+        mockJoinTimeWebService
+            .Setup(service => service.UpdateOldJoinTimes())
+                .Returns(Task.CompletedTask);
 
-        var worker = new JoinTimeWorker(mockFactory.Object);
+        var worker = new JoinTimeWorker(mockJoinTimeWebService.Object);
 
         using var cts = new CancellationTokenSource(1000);
 
@@ -30,16 +32,22 @@ public class JoinTimeWorkerTests
             "ExecuteAsync",
             BindingFlags.NonPublic | BindingFlags.Instance
         );
-        var method = methodInfo?.Invoke(worker, new object[] { cts.Token });
 
-        await (Task)method!;
+        if (methodInfo == null)
+        {
+            throw new InvalidOperationException("Method 'ExecuteAsync' not found.");
+        }
+
+        var task = methodInfo.Invoke(worker, new object[] { cts.Token }) as Task;
+        if (task == null)
+        {
+            throw new InvalidOperationException("Task returned by 'ExecuteAsync' is null.");
+        }
+
+        await task;
+
         cts.Cancel();
 
-        // Verifica se as URLs específicas foram chamadas
-        var calledUrls = fakeHandler
-            .Requests.Select(request => request.RequestUri?.ToString())
-            .ToList();
-
-        Assert.Contains("http://example.com/api/joinTimes/UpdateOldJoinTimes", calledUrls);
+        mockJoinTimeWebService.Verify(service => service.UpdateOldJoinTimes(), Times.AtLeastOnce());
     }
 }
