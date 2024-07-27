@@ -2,26 +2,21 @@ using System.Text;
 using System.Text.Json;
 using Application.Logic;
 using Domain.Entities;
+using Domain.WebServices;
 using Infrastructure;
 using Infrastructure.Repositories;
 using MassTransit;
 
 namespace Background;
 
-public sealed class ChatsQueue(IHttpClientFactory factory) : IConsumer<ChatMessage>
+public sealed class ChatsQueue(IChatWebService chatWebService) : IConsumer<ChatMessage>
 {
     public async Task Consume(ConsumeContext<ChatMessage> context)
     {
-        using var client = factory.CreateClient("CoreAPI");
-
-        var json = JsonSerializer.Serialize(context.Message);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var SaveChat = client.PostAsync("api/chats", content);
-
         try
         {
-            await SaveChat;
+            var chatMessage = context.Message;
+            await chatWebService.Save(chatMessage);
         }
         catch (Exception e)
         {

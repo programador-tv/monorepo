@@ -212,7 +212,9 @@ public static class DependencyInjection
         services.AddScoped<INotificationWebService, NotificationWebService>();
         services.AddScoped<ITimeSelectionWebService, TimeSelectionWebService>();
         services.AddScoped<ILiveWebService, LiveWebService>();
-
+        services.AddScoped<IChatWebService, ChatWebService>();
+        services.AddScoped<ICommentWebService, CommentWebService>();
+        
         return services;
     }
 
