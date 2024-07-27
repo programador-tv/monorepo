@@ -25,9 +25,8 @@ public sealed class LiveCloseQueue(IVideoHandling handler, ILiveWebService webse
             var duration = VideoHandlingSingleton.GetM3U8DurationById(context.Message.Id);
 
             await webservice.FinishWithDuration(
-                 new LiveThumbnailRequest(context.Message.Id, duration)
+                new LiveThumbnailRequest(context.Message.Id, duration)
             );
-            
         }
         catch (Exception e)
         {

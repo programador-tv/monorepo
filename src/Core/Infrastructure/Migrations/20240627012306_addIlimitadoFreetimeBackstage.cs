@@ -15,15 +15,14 @@ namespace Infrastructure.Migrations
                 table: "FreeTimeBackstages",
                 type: "bit",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Ilimitado",
-                table: "FreeTimeBackstages");
+            migrationBuilder.DropColumn(name: "Ilimitado", table: "FreeTimeBackstages");
         }
     }
 }
