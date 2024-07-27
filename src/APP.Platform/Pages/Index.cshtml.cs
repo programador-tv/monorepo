@@ -143,7 +143,6 @@ public class IndexModel : CustomPageModel
 
         return Base64toImage(freeTime.PreviewImage);
     }
-
     public async Task<IActionResult> OnGetAsync()
     {
         if (IsAuthenticatedWithoutProfile())
@@ -972,6 +971,7 @@ public class IndexModel : CustomPageModel
         }
         return room.Id;
     }
+
 
     public IActionResult Base64toImage(string base64)
     {
