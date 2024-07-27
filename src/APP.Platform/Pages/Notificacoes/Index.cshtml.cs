@@ -14,19 +14,22 @@ namespace APP.Platform.Pages
         private new readonly ApplicationDbContext _context;
         private new readonly IHttpClientFactory _httpClientFactory;
         private IPerfilWebService _perfilWebService { get; set; }
+        private readonly INotificationWebService _notificationWebService;
 
         public NotificacoesModel(
             ApplicationDbContext context,
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContextAccessor,
             Settings settings,
-            IPerfilWebService perfilWebService
+            IPerfilWebService perfilWebService,
+            INotificationWebService notificationWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
             _httpClientFactory = httpClientFactory;
             _context = context;
             _perfilWebService = perfilWebService;
+            _notificationWebService = notificationWebService;
         }
 
         public List<NotificationViewModel>? Notifications { get; set; }
@@ -38,22 +41,8 @@ namespace APP.Platform.Pages
                 return Redirect("/Perfil");
             }
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
-            using var notificationResponse = await client.GetAsync(
-                $"api/notifications/{UserProfile.Id}"
-            );
-
-            var notifications = await notificationResponse.Content.ReadFromJsonAsync<
-                List<NotificationItemResponse>
-            >();
-            // var notifications = JsonSerializer.Deserialize<List<NotificationItemResponse>>(
-            //     responseTaskNotification
-            // );
-
-            if (notifications == null)
-            {
-                notifications = new List<NotificationItemResponse> { };
-            }
+            List<NotificationItemResponse> notifications =
+                await _notificationWebService.GetById(UserProfile.Id) ?? new();
 
             var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? new();
 

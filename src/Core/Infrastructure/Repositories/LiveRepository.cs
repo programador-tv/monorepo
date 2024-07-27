@@ -180,11 +180,13 @@ public sealed class LiveRepository(ApplicationDbContext context)
 
     public async Task<List<Guid>> CloseNonUpdatedLiveRangeAsync()
     {
-        var lives = await DbContext.Lives.Where(e =>
-            e.StatusLive == StatusLive.Iniciada
-            && e.UltimaAtualizacao != null
-            && e.UltimaAtualizacao.Value.AddMinutes(5) < DateTime.Now
-        ).ToListAsync();
+        var lives = await DbContext
+            .Lives.Where(e =>
+                e.StatusLive == StatusLive.Iniciada
+                && e.UltimaAtualizacao != null
+                && e.UltimaAtualizacao.Value.AddMinutes(5) < DateTime.Now
+            )
+            .ToListAsync();
 
         lives.ForEach(e => e.Encerra());
         DbContext.UpdateRange(lives);
