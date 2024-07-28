@@ -1,11 +1,12 @@
 using Application.Logic;
 using Domain.WebServices;
 using Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Background;
 
-public sealed class LiveCloseWorker(ILiveWebService liveWebService) : BackgroundService
+public sealed class LiveCloseWorker(IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
     private const int EXECUTION_INTERVAL = 60000 * 3;
 
@@ -15,6 +16,11 @@ public sealed class LiveCloseWorker(ILiveWebService liveWebService) : Background
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                
+                var liveWebService =
+                    scope.ServiceProvider.GetRequiredService<ILiveWebService>();
+                    
                 await liveWebService.Close();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
