@@ -17,9 +17,8 @@ public sealed class LiveNotifyWorker(IServiceScopeFactory serviceScopeFactory) :
             try
             {
                 using var scope = serviceScopeFactory.CreateScope();
-                
-                var liveWebService =
-                    scope.ServiceProvider.GetRequiredService<ILiveWebService>();
+
+                var liveWebService = scope.ServiceProvider.GetRequiredService<ILiveWebService>();
 
                 await liveWebService.NotifyUpcomingLives();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
