@@ -106,8 +106,12 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
         var route = @Context.GetRouteValue("page").ToString();
         if(route != "/Account/Login")
         {
-    @await Html.PartialAsync("Components/_Agenda")
-    @await Html.PartialAsync("Components/_Logout")
+            if (SignInManager.IsSignedIn(User))
+            {
+                @await Html.PartialAsync("Components/_Agenda")
+            }
+           
+             @await Html.PartialAsync("Components/_Logout")
 
             <header id="header">
                 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3" style="margin-bottom: 0!important">
