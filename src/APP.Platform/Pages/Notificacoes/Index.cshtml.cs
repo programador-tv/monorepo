@@ -3,7 +3,6 @@ using Domain.Models.ViewModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace APP.Platform.Pages
 {
@@ -37,8 +36,7 @@ namespace APP.Platform.Pages
                 return Redirect("/Perfil");
             }
 
-            List<NotificationItemResponse> notifications =
-                await _notificationWebService.GetById(UserProfile.Id) ?? [];
+            var notifications = await _notificationWebService.GetById(UserProfile.Id) ?? [];
 
             var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? [];
 
