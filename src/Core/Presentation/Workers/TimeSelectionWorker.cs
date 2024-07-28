@@ -18,7 +18,7 @@ public sealed class TimeSelectionWorker(IServiceScopeFactory serviceScopeFactory
             try
             {
                 using var scope = serviceScopeFactory.CreateScope();
-                
+
                 var timeSelectionWebService =
                     scope.ServiceProvider.GetRequiredService<ITimeSelectionWebService>();
 
