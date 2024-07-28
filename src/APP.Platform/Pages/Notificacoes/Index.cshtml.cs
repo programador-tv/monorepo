@@ -1,18 +1,15 @@
-﻿using System.Text;
-using System.Text.Json;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Models.ViewModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
-using Infrastructure.WebServices;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace APP.Platform.Pages
 {
     public sealed class NotificacoesModel : CustomPageModel
     {
         private new readonly ApplicationDbContext _context;
-        private new readonly IHttpClientFactory _httpClientFactory;
         private IPerfilWebService _perfilWebService { get; set; }
         private readonly INotificationWebService _notificationWebService;
 
@@ -26,7 +23,6 @@ namespace APP.Platform.Pages
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
-            _httpClientFactory = httpClientFactory;
             _context = context;
             _perfilWebService = perfilWebService;
             _notificationWebService = notificationWebService;
