@@ -17,10 +17,9 @@ public sealed class LiveCloseWorker(IServiceScopeFactory serviceScopeFactory) : 
             try
             {
                 using var scope = serviceScopeFactory.CreateScope();
-                
-                var liveWebService =
-                    scope.ServiceProvider.GetRequiredService<ILiveWebService>();
-                    
+
+                var liveWebService = scope.ServiceProvider.GetRequiredService<ILiveWebService>();
+
                 await liveWebService.Close();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
