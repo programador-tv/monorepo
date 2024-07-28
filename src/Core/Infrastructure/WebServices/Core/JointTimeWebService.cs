@@ -13,7 +13,7 @@ public sealed class JoinTimeWebService(CoreClient client) : IJoinTimeWebService
 
     public async Task UpdateOldJoinTimes()
     {
-        var route = Path.Combine(baseRoute, "UpdateOldJoinTimes");  
+        var route = Path.Combine(baseRoute, "UpdateOldJoinTimes");
         await client.GetAsync(route);
     }
 }

@@ -1,11 +1,12 @@
 using Application.Logic;
+using Domain.WebServices;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Hosting;
-using Domain.WebServices;
 
 namespace Background;
 
-public sealed class TimeSelectionWorker(ITimeSelectionWebService timeSelectionWebService) : BackgroundService
+public sealed class TimeSelectionWorker(ITimeSelectionWebService timeSelectionWebService)
+    : BackgroundService
 {
     private const int EXECUTION_INTERVAL = 60000 * 5;
 

@@ -22,7 +22,7 @@ public class JoinTimeWorkerTests
         var mockJoinTimeWebService = new Mock<IJoinTimeWebService>();
         mockJoinTimeWebService
             .Setup(service => service.UpdateOldJoinTimes())
-                .Returns(Task.CompletedTask);
+            .Returns(Task.CompletedTask);
 
         var worker = new JoinTimeWorker(mockJoinTimeWebService.Object);
 

@@ -46,6 +46,9 @@ public class TimeSelectionWorkerTests
         await task;
         cts.Cancel();
 
-        mockTimeSelectionWebService.Verify(service => service.UpdateOldTimeSelections(), Times.AtLeastOnce());
+        mockTimeSelectionWebService.Verify(
+            service => service.UpdateOldTimeSelections(),
+            Times.AtLeastOnce()
+        );
     }
 }

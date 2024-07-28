@@ -28,8 +28,8 @@ public sealed class TimeSelectionWebService(CoreClient client) : ITimeSelectionW
         var route = Path.Combine(baseRoute, "UpdateOldTimeSelections");
         await client.GetAsync(route);
     }
-    
-    public async Task  NotifyUpcomingTimeSelectionAndJoinTime()
+
+    public async Task NotifyUpcomingTimeSelectionAndJoinTime()
     {
         var route = Path.Combine(baseRoute, "NotifyUpcomingTimeSelectionAndJoinTime");
         await client.GetAsync(route);
