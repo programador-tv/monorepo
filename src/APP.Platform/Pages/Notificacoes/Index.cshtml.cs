@@ -38,9 +38,9 @@ namespace APP.Platform.Pages
             }
 
             List<NotificationItemResponse> notifications =
-                await _notificationWebService.GetById(UserProfile.Id) ?? new();
+                await _notificationWebService.GetById(UserProfile.Id) ?? [];
 
-            var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? new();
+            var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? [];
 
             var profiles = await _perfilWebService.GetAllById(profileIds) ?? [];
 
