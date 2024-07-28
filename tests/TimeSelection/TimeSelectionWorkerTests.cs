@@ -2,6 +2,7 @@ using System.Net;
 using System.Reflection;
 using Background;
 using Domain.WebServices;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace tests;
@@ -23,8 +24,20 @@ public class TimeSelectionWorkerTests
             .Setup(service => service.UpdateOldTimeSelections())
             .Returns(Task.CompletedTask);
 
-        var worker = new TimeSelectionWorker(mockTimeSelectionWebService.Object);
+        var mockServiceProvider = new Mock<IServiceProvider>();
+        mockServiceProvider
+            .Setup(provider => provider.GetService(typeof(ITimeSelectionWebService)))
+            .Returns(mockTimeSelectionWebService.Object);
 
+        var mockServiceScope = new Mock<IServiceScope>();
+        mockServiceScope.Setup(scope => scope.ServiceProvider).Returns(mockServiceProvider.Object);
+
+        var mockServiceScopeFactory = new Mock<IServiceScopeFactory>();
+        mockServiceScopeFactory
+            .Setup(factory => factory.CreateScope())
+            .Returns(mockServiceScope.Object);
+
+        var worker = new TimeSelectionWorker(mockServiceScopeFactory.Object);
         using var cts = new CancellationTokenSource(1000);
 
         var methodInfo = typeof(TimeSelectionWorker).GetMethod(

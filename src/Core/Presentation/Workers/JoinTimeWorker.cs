@@ -17,10 +17,10 @@ public sealed class JoinTimeWorker(IServiceScopeFactory serviceScopeFactory) : B
             try
             {
                 using var scope = serviceScopeFactory.CreateScope();
-                
+
                 var joinTimeWebService =
                     scope.ServiceProvider.GetRequiredService<IJoinTimeWebService>();
-                    
+
                 await joinTimeWebService.UpdateOldJoinTimes();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
