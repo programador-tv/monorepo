@@ -22,4 +22,16 @@ public sealed class TimeSelectionWebService(CoreClient client) : ITimeSelectionW
         var route = Path.Combine(baseRoute, "UpdateOpenGraphImage");
         await client.PostAsync(route, request);
     }
+
+    public async Task UpdateOldTimeSelections()
+    {
+        var route = Path.Combine(baseRoute, "UpdateOldTimeSelections");
+        await client.GetAsync(route);
+    }
+    
+    public async Task  NotifyUpcomingTimeSelectionAndJoinTime()
+    {
+        var route = Path.Combine(baseRoute, "NotifyUpcomingTimeSelectionAndJoinTime");
+        await client.GetAsync(route);
+    }
 }
