@@ -21,8 +21,7 @@ function updateOpenPanel(){
     if(countLoaded != 3){
         return
     }
-    console.log(countHelp)
-    console.log(countCursos)
+
     $(".tab-pane").removeClass("active");
     
     if (countHelp >= countOneToOne && countHelp >= countCursos) {

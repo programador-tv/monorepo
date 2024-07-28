@@ -1,10 +1,11 @@
 using Application.Logic;
+using Domain.WebServices;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Hosting;
 
 namespace Background;
 
-public sealed class LiveCloseWorker(IHttpClientFactory factory) : BackgroundService
+public sealed class LiveCloseWorker(ILiveWebService liveWebService) : BackgroundService
 {
     private const int EXECUTION_INTERVAL = 60000 * 3;
 
@@ -12,11 +13,9 @@ public sealed class LiveCloseWorker(IHttpClientFactory factory) : BackgroundServ
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var client = factory.CreateClient("CoreAPI");
-            var CloseNotUpdatedAnymore = client.GetAsync("api/lives/close", stoppingToken);
             try
             {
-                await CloseNotUpdatedAnymore;
+                await liveWebService.Close();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
             catch (Exception e)

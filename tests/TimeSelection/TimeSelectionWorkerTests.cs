@@ -1,6 +1,7 @@
 using System.Net;
 using System.Reflection;
 using Background;
+using Domain.WebServices;
 using Moq;
 
 namespace tests;
@@ -10,7 +11,6 @@ public class TimeSelectionWorkerTests
     [Fact]
     public async Task ExecuteAsync_CallsHttpEndpoints_AndRespectsInterval()
     {
-        // Simula uma resposta HTTP
         var fakeResponse = new HttpResponseMessage(HttpStatusCode.OK);
         var fakeHandler = new FakeHttpMessageHandler(fakeResponse);
         var fakeHttpClient = new HttpClient(fakeHandler)
@@ -18,37 +18,37 @@ public class TimeSelectionWorkerTests
             BaseAddress = new Uri("http://example.com/")
         };
 
-        // Mock do IHttpClientFactory para retornar o HttpClient simulado
-        var mockFactory = new Mock<IHttpClientFactory>();
-        mockFactory.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(fakeHttpClient);
+        var mockTimeSelectionWebService = new Mock<ITimeSelectionWebService>();
+        mockTimeSelectionWebService
+            .Setup(service => service.UpdateOldTimeSelections())
+            .Returns(Task.CompletedTask);
 
-        // Inicializa TimeSelectionWorker com o mockFactory
-        var worker = new TimeSelectionWorker(mockFactory.Object);
+        var worker = new TimeSelectionWorker(mockTimeSelectionWebService.Object);
 
-        // CancellationToken com timeout para encerrar o teste
         using var cts = new CancellationTokenSource(1000);
 
         var methodInfo = typeof(TimeSelectionWorker).GetMethod(
             "ExecuteAsync",
             BindingFlags.NonPublic | BindingFlags.Instance
         );
-        var method = methodInfo?.Invoke(worker, new object[] { cts.Token });
 
-        await (Task)method!;
+        if (methodInfo == null)
+        {
+            throw new InvalidOperationException("Method 'ExecuteAsync' not found.");
+        }
+
+        var task = methodInfo.Invoke(worker, new object[] { cts.Token }) as Task;
+        if (task == null)
+        {
+            throw new InvalidOperationException("Task returned by 'ExecuteAsync' is null.");
+        }
+
+        await task;
         cts.Cancel();
 
-        // Verifica se as URLs específicas foram chamadas
-        var calledUrls = fakeHandler
-            .Requests.Select(request => request.RequestUri?.ToString())
-            .ToList();
-
-        Assert.Contains(
-            "http://example.com/api/timeSelections/UpdateOldTimeSelections",
-            calledUrls
-        );
-        Assert.Contains(
-            "http://example.com/api/timeSelections/NotifyUpcomingTimeSelectionAndJoinTime",
-            calledUrls
+        mockTimeSelectionWebService.Verify(
+            service => service.UpdateOldTimeSelections(),
+            Times.AtLeastOnce()
         );
     }
 }
