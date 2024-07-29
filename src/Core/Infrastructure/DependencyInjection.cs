@@ -214,7 +214,8 @@ public static class DependencyInjection
         services.AddScoped<ILiveWebService, LiveWebService>();
         services.AddScoped<IChatWebService, ChatWebService>();
         services.AddScoped<ICommentWebService, CommentWebService>();
-        
+        services.AddScoped<IJoinTimeWebService, JoinTimeWebService>();
+
         return services;
     }
 
