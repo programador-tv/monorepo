@@ -1,20 +1,25 @@
 using System.Text;
 using System.Text.Json;
 using Application.Logic;
-using Domain.Entities;
 using Domain.WebServices;
+using Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using Infrastructure;
 using Infrastructure.Repositories;
 using MassTransit;
 
 namespace Background;
 
-public sealed class ChatsQueue(IChatWebService chatWebService) : IConsumer<ChatMessage>
+public sealed class ChatsQueue(IServiceScopeFactory serviceScopeFactory) : IConsumer<ChatMessage>
 {
     public async Task Consume(ConsumeContext<ChatMessage> context)
     {
         try
         {
+            using var scope = serviceScopeFactory.CreateScope();
+            var chatWebService =
+                scope.ServiceProvider.GetRequiredService<IChatWebService>();
+
             var chatMessage = context.Message;
             await chatWebService.Save(chatMessage);
         }
