@@ -55,7 +55,7 @@ public class IndexModel(
     public List<RoomViewModel> Rooms = [];
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = [];
     public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = [];
-    public Dictionary<string, List<string>> RelatioTags { get; set; }
+    public Dictionary<string, List<string>> ?RelatioTags { get; set; }
 
     [BindProperty]
     public ScheduleTimeSelectionRequestModel? ScheduleTimeSelection { get; set; }
