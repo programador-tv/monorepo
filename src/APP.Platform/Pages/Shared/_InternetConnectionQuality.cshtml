@@ -1,0 +1,58 @@
+<div id="connection-quality-alert" class="alert alert-primary" role="alert">
+    Qualidade da transmissão: <span id="connection-quality"></span>
+</div>
+<script>
+    async function getInternetSpeed(callback) {
+        const image = new Image();
+        const startTime = new Date().getTime();
+        const cacheBuster = "?nnn=" + startTime;
+        image.src = "https://www.gstatic.com/webp/gallery/1.jpg" + cacheBuster;
+
+        image.onload = function () {
+            const endTime = new Date().getTime();
+            const duration = (endTime - startTime) / 1000;
+            const bitsLoaded = 44 * 1024 * 8; //tamanho da imagem usada para o teste -> 44kb, alterar caso a imagem tenha outro tamanho.
+            const speedBps = bitsLoaded / duration;
+            const speedKbps = speedBps / 1024;
+            const speedMbps = speedKbps / 1024;
+
+            callback(speedMbps);
+        };
+
+        image.onerror = function () {
+            console.error('Erro ao carregar a imagem para medir a velocidade.');
+            callback(null);
+        };
+    }
+
+    function getQualityBasedOnSpeed(speedMbps) {
+        if (speedMbps > 5) {
+            return 'Alta';
+        } else if (speedMbps > 2) {
+            return 'Média';
+        } else {
+            return 'Baixa';
+        }
+    }
+
+    function initInternetSpeedTest() {
+        getInternetSpeed(function (speedMbps) {
+            if (speedMbps !== null) {
+                const quality = getQualityBasedOnSpeed(speedMbps);
+                console.log(`Velocidade da internet: ${speedMbps.toFixed(2)} Mbps`);
+                console.log(`Qualidade da conexão: ${quality}`);
+
+                const qualityElement = document.getElementById("connection-quality");
+                if (qualityElement) {
+                    qualityElement.textContent = quality;
+                }
+            } else {
+                console.error('Erro ao medir a velocidade da internet.');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        initInternetSpeedTest();
+    });
+</script>
