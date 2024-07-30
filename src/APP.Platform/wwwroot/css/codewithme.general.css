@@ -1565,45 +1565,361 @@ body {
 
 @media (max-width: 1485px) {
   #theGreatAside {
-      display: none;
+    display: none;
   }
 
   #theGreatContent {
-      padding-right: 0;
+    padding-right: 0;
   }
 
   #asideBelow {
-      display: flex;
+    display: flex;
   }
 }
 
 /* Media query para largura maior que 992px */
 @media (min-width: 993px) {
   #theGreatContent {
-      padding-left: 300px;
+    padding-left: 300px;
   }
 
   #asideBelow {
-      padding-left: 335px;
+    padding-left: 335px;
   }
 }
 
 /* Media query para largura menor que 993px */
 @media (max-width: 992px) {
   #theGreatContent {
-      padding-left: 0;
+    padding-left: 0;
   }
 
   #asideBelow {
-      padding-left: 35px;
+    padding-left: 35px;
   }
 }
-
 
 @keyframes loading {
   100% {
     transform: translateX(100%);
   }
+}
 
-  
+.btnModalClose {
+  position: absolute;
+  right: 20px;
+}
+
+.modalTitleHeaderDiv {
+  margin: auto;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.modalTitleHeader {
+  font-size: 20px;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+.progressBall {
+  border-radius: 50%;
+  color: #fff;
+  background-color: #437ae2;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  align-content: center;
+}
+
+.progressBallNext {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #437ae2;
+  align-content: center;
+  text-align: center;
+  color: #437ae2;
+}
+
+.progressOneToOne {
+  padding-top: 1.2rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressRectangle {
+  width: 50px;
+  height: 2px;
+  color: #437ae2;
+  background-color: #437ae2;
+  margin-inline: 15px;
+}
+
+.progressOneToOneText {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressTextBox {
+  width: 56px;
+  height: 65px;
+  margin-inline: 30px;
+  text-align: center;
+}
+
+.progressText {
+  color: #437ae2;
+  font-weight: 500px;
+}
+
+.oneToOneTextHeader {
+  margin: auto;
+  max-width: 256px;
+  display: flex;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 23px;
+}
+
+.oneToOneLabel {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1c1c1c;
+}
+
+.selected-tag {
+  display: inline-block;
+  font-size: 12px;
+  background-color: #d7d7d7;
+  border-radius: 5%;
+  padding: 0.1rem;
+  margin: 0.2rem;
+}
+
+.oneToOneButton {
+  background: #437ae2;
+  font-size: 20px;
+  color: #f2f2f2;
+}
+
+.datePickerFlexDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.datePickerFlexItem {
+  width: 50%;
+  padding: 20px;
+  padding-top: 0;
+  align-self: baseline;
+  font-size: 16px;
+
+  flex: 1;
+}
+
+.body-oneToOne-2 {
+  display: none;
+}
+
+.body-oneToOne-3 {
+  display: none;
+}
+
+.form-group {
+  max-height: 300px; /* Defina a altura máxima para o container rolável */
+  overflow-y: auto; /* Habilita a rolagem vertical */
+}
+
+.form-control.isSelect2 {
+  width: 100%; /* Garante que o select ocupe 100% da largura disponível */
+}
+
+.form-group-modal {
+  max-height: 100% !important;
+}
+
+.btn-modal-first {
+  margin-right: 32px;
+  margin-top: 63px;
+}
+
+.modal-input-padding {
+  padding-inline: 15px;
+}
+.one-to-one-input {
+  height: 32px;
+}
+
+#TituloMentoria {
+  margin-bottom: 23px;
+}
+
+.btn-conferir-informacao {
+  padding-inline: 2rem;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.btn-criar-modal {
+  padding-inline: 2rem;
+  margin-top: 26px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.conferir-info-header {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.conferir-info-modal {
+  background-color: #f2f2f2;
+  margin-top: 30px;
+}
+
+.conferir-info-titulo {
+  font-weight: 600;
+  font-size: 22px;
+  color: #437ae2;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.resumo-one-to-one {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  padding-inline: 100px;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 400px;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding-bottom: 30px;
+}
+
+.modal-tag-main {
+  flex-wrap: wrap;
+  background-color: #437ae2;
+  border: 1px solid #437ae2;
+  width: Hug (59px) px;
+  height: Hug (24px) px;
+  top: 322px;
+  left: 145px;
+  padding: 4px 12px 4px 12px;
+  gap: 10px;
+  border-radius: 20px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+
+  color: #fff;
+  margin: 5px;
+  border-radius: 14px;
+}
+
+.btn-avancar:hover {
+  background: #2559bb;
+  color: #fff;
+}
+.modal-tag {
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border: 1px solid #878787;
+  top: 322px;
+  left: 145px;
+  padding: 4px 12px 4px 12px;
+  gap: 10px;
+  border-radius: 20px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+
+  color: #525252;
+  margin: 5px;
+  border-radius: 14px;
+}
+
+.btn-voltar {
+  text-align: center;
+  width: 152px;
+  height: 46px;
+
+  gap: 8px;
+  border-radius: 2px 0px 0px 0px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  background: #fefbfb;
+  border: 1px solid #525252;
+  box-shadow: 3px 2px 8px 0px #11185533;
+  font-family: League Spartan;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: 0.0125em;
+  text-align: left;
+  color: #525252;
+}
+
+.btn-voltar:hover {
+  border: 1px solid #2559bb;
+  color: #2559bb;
+}
+
+.btn-voltar:active {
+  border: 1px solid #437ae2;
+  color: #437ae2;
+}
+
+.modal-select {
+  display: none;
+}
+
+.modal-select.active {
+  display: block;
+}
+
+#errorMsg {
+  position: absolute;
+  padding: 5px;
+  width: 12.8rem;
+  text-align: center;
+  display: none;
+}
+
+.modal-body {
+  max-height: 700px;
+  padding: 0;
+  max-height: 700px;
+}
+
+.date-input-div {
+  padding-bottom: 35px;
+}
+
+.alert-below-input {
+  font-size: 12px;
+  color: #d82b2b;
+  position: absolute;
+  display: none;
+  padding-right: 10px;
+  padding-left: 5px;
 }

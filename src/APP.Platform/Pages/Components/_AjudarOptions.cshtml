@@ -1,4 +1,9 @@
+@{
+    bool isAuth = User.Identity.IsAuthenticated;
+}
+
 @inject SignInManager<IdentityUser> SignInManager
+    <input type="hidden" id="isAuthenticated" value="@SignInManager.IsSignedIn(User)" />
     <div class="modal fade timeSelection-x" id="ajudarModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 955px;">
         <div class="modal-content" style="background-color: #FEFBFB;">
@@ -148,10 +153,19 @@
 </style>
 <script defer src="/js/TabBsHandler.js"></script>
 <script>
+    //PM- Lógica de abrir modais
     function openOneToOne() {
-          $("#tipoTempoLivre").val("1:1");
-          openTimePicker()
+    var isAuthenticated = @isAuth.ToString().ToLower();
+    console.log(isAuthenticated)
+
+    if (isAuthenticated) {
+        $('#eventModalOneToOne').modal('show');
+    } else {
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+        // Você pode redirecionar para a página de login ou abrir um modal de login
+        window.location.href = "/Identity/Account/Login"; // Ou a URL da sua página de login
     }
+}
     function openCursosAndEventos() {
           $("#tipoTempoLivre").val("cursos");
           openTimePicker()
@@ -160,4 +174,8 @@
             $("#ajudarModal").modal("hide");
             $("#timePickerModal").modal("show");
     }
+     function openTimePickerForHelp() {
+            $("#tipoTempoLivre").val("requestHelp");
+            $("#timePickerModal").modal("show");
+        }
 </script>
