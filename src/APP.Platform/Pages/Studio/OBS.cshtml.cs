@@ -10,31 +10,23 @@ using Queue;
 
 namespace APP.Platform.Pages.Studio
 {
-    public sealed class OBSModel : CustomPageModel
+    public sealed class OBSModel(
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        IMessagePublisher messagePublisher,
+        Settings settings,
+        RateLimit rateLimit
+    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private readonly IMessagePublisher _messagePublisher;
-        private readonly RateLimit _rateLimit;
+        private new readonly ApplicationDbContext _context = context;
+        private readonly IMessagePublisher _messagePublisher = messagePublisher;
+        private readonly RateLimit _rateLimit = rateLimit;
 
         public Live? Live { get; set; }
 
         [BindProperty]
         public List<Domain.Entities.Perfil>? Perfil { get; set; }
-
-        public OBSModel(
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            IMessagePublisher messagePublisher,
-            Settings settings,
-            RateLimit rateLimit
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _context = context;
-            _messagePublisher = messagePublisher;
-            _rateLimit = rateLimit;
-        }
 
         public async Task<IActionResult> OnGetAsync(string mainkey)
         {
