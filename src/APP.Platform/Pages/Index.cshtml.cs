@@ -39,18 +39,6 @@ public class IndexModel(
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     public List<PresentesOpenRoom>? PresentesOpenRoom { get; set; }
-
-    private readonly OpenAiService _openAiService = openAiService;
-    private new readonly ApplicationDbContext _context = context;
-    public readonly PerfilDbContext _perfilContext = perfilDbContext;
-    protected readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    protected new readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-    private readonly IMessagePublisher _messagePublisher = messagePublisher;
-    private readonly IAprenderService _AprenderService = aprenderService;
-
-    private readonly IRazorViewEngine _viewEngine = viewEngine;
-    private readonly ITempDataProvider _tempDataProvider = tempDataProvider;
-    private readonly ILiveService _liveService = liveService;
     private IPerfilWebService _perfilWebService { get; set; } = perfilWebService;
     public List<RoomViewModel> Rooms = [];
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = [];
@@ -220,7 +208,7 @@ public class IndexModel(
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
 
             lives.Add(liveViewModel);
         }
@@ -267,7 +255,7 @@ public class IndexModel(
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
 
             savedVideos.Add(liveViewModel);
         }
@@ -330,7 +318,7 @@ public class IndexModel(
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
             var liveId = liveViewModel.CodigoLive;
 
             var timeSelectionId = backstages
@@ -437,7 +425,7 @@ public class IndexModel(
                 tsAndJts.Key.Tags = tags;
             }
 
-            var perfil = _perfilContext
+            var perfil = perfilDbContext
                 ?.Perfils?.Where(perfil => perfil.Id == tsAndJts.Key.PerfilId)
                 .FirstOrDefault();
 
@@ -640,12 +628,12 @@ public class IndexModel(
 
     public async Task<ActionResult> OnGetAfterLoadRequestedHelp()
     {
-        var myTimeSelectionAndJoinTimes = _AprenderService.GetMyTimeSelectionAndJoinTimes(
+        var myTimeSelectionAndJoinTimes = aprenderService.GetMyTimeSelectionAndJoinTimes(
             UserProfile.Id,
             _meetUrl
         );
 
-        _AprenderService.GetMyEvents(
+        aprenderService.GetMyEvents(
             myTimeSelectionAndJoinTimes,
             UserProfile.Id,
             _meetUrl,
@@ -671,7 +659,7 @@ public class IndexModel(
         var pedidos = await GetFreeTimeService.PrepareViewModelForRenderRequestedHelpBoard(
             timeSelectionGroupByPerfilId,
             _context,
-            _httpClientFactory,
+            httpClientFactory,
             _perfilWebService
         );
 
@@ -752,7 +740,7 @@ public class IndexModel(
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         else if (timeSelection.Tipo == EnumTipoTimeSelection.RequestHelp)
         {
@@ -769,7 +757,7 @@ public class IndexModel(
                     ",
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
 
         return Redirect("./?event=" + JoinTime.TimeSelectionId);
@@ -780,9 +768,9 @@ public class IndexModel(
         return await RenderVideosService.RenderVideos(
             viewName,
             model,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
     }
 
@@ -790,7 +778,7 @@ public class IndexModel(
     {
         try
         {
-            var response = await _openAiService.GetTitleAndDescriptionSugestion(entrada);
+            var response = await openAiService.GetTitleAndDescriptionSugestion(entrada);
 
             if (!string.IsNullOrEmpty(response?.Titulo))
             {
@@ -872,7 +860,7 @@ public class IndexModel(
         }
         if (notification != null)
         {
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         return Redirect("./?event=" + join.TimeSelectionId);
     }
