@@ -10,31 +10,23 @@ using Queue;
 
 namespace APP.Platform.Pages.Studio
 {
-    public sealed class StudioModel : CustomPageModel
+    public sealed class StudioModel(
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        Settings settings,
+        RateLimit rateLimit,
+        ILiveWebService webservice
+    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private readonly RateLimit _rateLimit;
-        private ILiveWebService _webservice { get; set; }
+        private new readonly ApplicationDbContext _context = context;
+        private readonly RateLimit _rateLimit = rateLimit;
+        private ILiveWebService _webservice { get; set; } = webservice;
 
         public Live? Live { get; set; }
 
         [BindProperty]
         public List<Domain.Entities.Perfil>? Perfil { get; set; }
-
-        public StudioModel(
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            Settings settings,
-            RateLimit rateLimit,
-            ILiveWebService webservice
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _context = context;
-            _rateLimit = rateLimit;
-            _webservice = webservice;
-        }
 
         public async Task<IActionResult> OnGetAsync(Guid mainkey)
         {
