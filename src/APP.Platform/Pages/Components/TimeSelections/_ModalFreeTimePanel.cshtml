@@ -99,6 +99,7 @@
             Titulo = data.Key.TituloTemporario ?? string.Empty,
             FotoEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Foto ?? string.Empty,
             NomeEnvolvido = data.Value?.FirstOrDefault()?.Perfil!.Nome ?? string.Empty,
+            UserName = data.Value?.FirstOrDefault()?.Perfil!.UserName ?? string.Empty,
             TempoRestante = tempoRestante
         })
             }
