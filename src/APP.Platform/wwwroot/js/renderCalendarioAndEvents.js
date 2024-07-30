@@ -140,23 +140,17 @@ async function RenderActualEvents(events, embed, joinTimes, TimeSelectionModals,
     $("#eventModals").html(embed)
     let needOpenModalId;
 
+    if (window.location.href.indexOf("event") > -1) {
+        needOpenModalId = window.location.href.split("event=")[1];
+        $("#calendarModal").modal("show");
+        $("#eventModal-" + needOpenModalId).modal("show");
+    }
+    
     $("#joinTimes").html(joinTimes)
-
     $("#freeTimes").html(TimeSelectionModals)
-    if (window.location.href.indexOf("event") > -1) {
-        needOpenModalId = window.location.href.split("event=")[1];
-        $("#calendarModal").modal("show");
-        $("#eventModal-" + needOpenModalId).modal("show");
-    }
-
     $("#askedHelp").html(requestHelpList)
-    if (window.location.href.indexOf("event") > -1) {
-        needOpenModalId = window.location.href.split("event=")[1];
-        $("#calendarModal").modal("show");
-        $("#eventModal-" + needOpenModalId).modal("show");
-    }
-
     $("#solvedHelp").html(solvedHelpList)
+
     if (window.location.href.indexOf("event") > -1) {
         needOpenModalId = window.location.href.split("event=")[1];
         $("#calendarModal").modal("show");

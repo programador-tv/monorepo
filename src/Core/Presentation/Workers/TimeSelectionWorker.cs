@@ -1,10 +1,13 @@
 using Application.Logic;
+using Domain.WebServices;
 using Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Background;
 
-public sealed class TimeSelectionWorker(IHttpClientFactory factory) : BackgroundService
+public sealed class TimeSelectionWorker(IServiceScopeFactory serviceScopeFactory)
+    : BackgroundService
 {
     private const int EXECUTION_INTERVAL = 60000 * 5;
 
@@ -12,21 +15,16 @@ public sealed class TimeSelectionWorker(IHttpClientFactory factory) : Background
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var client = factory.CreateClient("CoreAPI");
-
-            var UpdateOldTimeSelections = client.GetAsync(
-                "api/timeSelections/UpdateOldTimeSelections",
-                stoppingToken
-            );
-
-            var NotifyUpcomingTimeSelectionAndJoinTime = client.GetAsync(
-                "api/timeSelections/NotifyUpcomingTimeSelectionAndJoinTime",
-                stoppingToken
-            );
-
             try
             {
-                await Task.WhenAll(UpdateOldTimeSelections, NotifyUpcomingTimeSelectionAndJoinTime);
+                using var scope = serviceScopeFactory.CreateScope();
+
+                var timeSelectionWebService =
+                    scope.ServiceProvider.GetRequiredService<ITimeSelectionWebService>();
+
+                await timeSelectionWebService.UpdateOldTimeSelections();
+                await timeSelectionWebService.NotifyUpcomingTimeSelectionAndJoinTime();
+
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
             catch (Exception e)

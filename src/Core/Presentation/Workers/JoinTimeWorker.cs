@@ -1,10 +1,12 @@
 using Application.Logic;
+using Domain.WebServices;
 using Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Background;
 
-public sealed class JoinTimeWorker(IHttpClientFactory factory) : BackgroundService
+public sealed class JoinTimeWorker(IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
     private const int EXECUTION_INTERVAL = 60000 * 5;
 
@@ -12,15 +14,14 @@ public sealed class JoinTimeWorker(IHttpClientFactory factory) : BackgroundServi
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var client = factory.CreateClient("CoreAPI");
-            var UpdateOldTimeSelections = client.GetAsync(
-                "api/joinTimes/UpdateOldJoinTimes",
-                stoppingToken
-            );
-
             try
             {
-                await UpdateOldTimeSelections;
+                using var scope = serviceScopeFactory.CreateScope();
+
+                var joinTimeWebService =
+                    scope.ServiceProvider.GetRequiredService<IJoinTimeWebService>();
+
+                await joinTimeWebService.UpdateOldJoinTimes();
                 await Task.Delay(EXECUTION_INTERVAL, stoppingToken);
             }
             catch (Exception e)

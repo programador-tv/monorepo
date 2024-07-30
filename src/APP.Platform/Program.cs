@@ -104,7 +104,6 @@ builder.Services.AddScoped<OpenAiService>();
 builder.Services.AddScoped<IEnsinarService, EnsinarService>();
 builder.Services.AddScoped<ILiveService, LiveService>();
 builder.Services.AddScoped<IAprenderService, AprenderService>();
-builder.Services.AddScoped<IPerfilService, PerfilService>();
 builder.Services.AddScoped<IFollowService, FollowService>();
 builder.Services.AddScoped<IAliasService, AliasService>();
 
