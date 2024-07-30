@@ -7,27 +7,20 @@ using Infrastructure.Data.Contexts;
 using Infrastructure.WebServices;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace APP.Platform.Pages
 {
-    public sealed class NotificacoesModel : CustomPageModel
+    public sealed class NotificacoesModel(
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        Settings settings,
+        IPerfilWebService perfilWebService
+        ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private new readonly IHttpClientFactory _httpClientFactory;
-        private IPerfilWebService _perfilWebService { get; set; }
-
-        public NotificacoesModel(
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            Settings settings,
-            IPerfilWebService perfilWebService
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _httpClientFactory = httpClientFactory;
-            _context = context;
-            _perfilWebService = perfilWebService;
-        }
+        private new readonly ApplicationDbContext _context = context;
+        private  readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private IPerfilWebService _perfilWebService { get; set; } = perfilWebService;
 
         public List<NotificationViewModel>? Notifications { get; set; }
 
@@ -50,10 +43,7 @@ namespace APP.Platform.Pages
             //     responseTaskNotification
             // );
 
-            if (notifications == null)
-            {
-                notifications = new List<NotificationItemResponse> { };
-            }
+            notifications ??= new List<NotificationItemResponse> { };
 
             var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? new();
 
