@@ -1,10 +1,7 @@
-﻿using System.Text;
-using System.Text.Json;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Models.ViewModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
-using Infrastructure.WebServices;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -29,7 +26,6 @@ namespace APP.Platform.Pages
             }
 
             var notifications = await _notificationWebService.GetById(UserProfile.Id) ?? [];
-
 
             var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? [];
 
