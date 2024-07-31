@@ -22,7 +22,7 @@ function updateOpenPanel(){
         return
     }
 
-    $(".tab-pane").removeClass("active");
+    $(".tab-pane-events").removeClass("active");
     
     if (countHelp >= countOneToOne && countHelp >= countCursos) {
         countHelpElement.parent().addClass("active");
