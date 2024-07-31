@@ -45,7 +45,6 @@ public sealed class CanalIndexModel : CustomPageModel
     private readonly IMessagePublisher _messagePublisher;
     private readonly IRazorViewEngine _viewEngine;
     private readonly ITempDataProvider _tempDataProvider;
-    private readonly IPerfilService _perfilService;
     private IPerfilWebService _perfilWebService { get; set; }
     private readonly ILiveService _liveService;
     private readonly IFollowService _followService;
@@ -63,7 +62,6 @@ public sealed class CanalIndexModel : CustomPageModel
         IHttpContextAccessor httpContextAccessor,
         IMessagePublisher messagePublisher,
         Settings settings,
-        IPerfilService perfilService,
         IPerfilWebService perfilWebService,
         ILiveService liveService,
         IFollowService followService
@@ -76,7 +74,6 @@ public sealed class CanalIndexModel : CustomPageModel
         _perfilWebService = perfilWebService;
         _context = context;
         _messagePublisher = messagePublisher;
-        _perfilService = perfilService;
         _liveService = liveService;
         _followService = followService;
     }
