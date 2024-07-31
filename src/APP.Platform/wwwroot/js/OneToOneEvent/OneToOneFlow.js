@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let modalTags = document.getElementById("modal-tags");
 
-  var tagsSelected = $("#TagsSelected").attr("id");
-
   const saveTimeForm = document.getElementById("saveTimeForm");
 
   function SaveTime(aspForm, _hideEventModal) {
@@ -116,7 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
   $("#btnOneToOne2").click(() => {
     switchStep(".body-oneToOne-2", ".body-oneToOne-3");
     let titulo = document.getElementById("TimeSelectionMentoriaTitulo").value;
-    let dia = dateForm.value;
     tituloResumo.innerText = titulo;
     horariosResumo.innerText = formInicio.value + " - " + formFim.value;
 

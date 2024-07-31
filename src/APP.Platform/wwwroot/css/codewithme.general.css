@@ -1819,22 +1819,12 @@ body {
 }
 
 .modal-tag-main {
-  flex-wrap: wrap;
   background-color: #437ae2;
   border: 1px solid #437ae2;
-  width: Hug (59px) px;
-  height: Hug (24px) px;
-  top: 322px;
-  left: 145px;
   padding: 4px 12px 4px 12px;
-  gap: 10px;
   border-radius: 20px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
-
   color: #fff;
   margin: 5px;
-  border-radius: 14px;
 }
 
 .btn-avancar:hover {
@@ -1842,40 +1832,27 @@ body {
   color: #fff;
 }
 .modal-tag {
-  flex-wrap: wrap;
   background-color: #ffffff;
   border: 1px solid #878787;
-  top: 322px;
-  left: 145px;
   padding: 4px 12px 4px 12px;
-  gap: 10px;
-  border-radius: 20px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
-
   color: #525252;
   margin: 5px;
   border-radius: 14px;
 }
 
 .btn-voltar {
-  text-align: center;
   width: 152px;
   height: 46px;
-
-  gap: 8px;
   border-radius: 2px 0px 0px 0px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
   background: #fefbfb;
   border: 1px solid #525252;
   box-shadow: 3px 2px 8px 0px #11185533;
-  font-family: League Spartan;
+  font-family: "League Spartan", sans-serif;
   font-size: 20px;
   font-weight: 600;
   line-height: 26px;
   letter-spacing: 0.0125em;
-  text-align: left;
+  text-align: center;
   color: #525252;
 }
 
@@ -1906,7 +1883,6 @@ body {
 }
 
 .modal-body {
-  max-height: 700px;
   padding: 0;
   max-height: 700px;
 }
