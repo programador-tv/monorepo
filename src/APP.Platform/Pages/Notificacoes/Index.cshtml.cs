@@ -15,7 +15,8 @@ namespace APP.Platform.Pages
         IHttpClientFactory _httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
         Settings settings,
-        IPerfilWebService _perfilWebService
+        IPerfilWebService _perfilWebService,
+        INotificationWebService _notificationWebService
         ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
     {
         public List<NotificationViewModel>? Notifications { get; set; }
@@ -27,21 +28,10 @@ namespace APP.Platform.Pages
                 return Redirect("/Perfil");
             }
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
-            using var notificationResponse = await client.GetAsync(
-                $"api/notifications/{UserProfile.Id}"
-            );
+            var notifications = await _notificationWebService.GetById(UserProfile.Id) ?? [];
 
-            var notifications = await notificationResponse.Content.ReadFromJsonAsync<
-                List<NotificationItemResponse>
-            >();
-            // var notifications = JsonSerializer.Deserialize<List<NotificationItemResponse>>(
-            //     responseTaskNotification
-            // );
 
-            notifications ??= new List<NotificationItemResponse> { };
-
-            var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? new();
+            var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? [];
 
             var profiles = await _perfilWebService.GetAllById(profileIds) ?? [];
 
