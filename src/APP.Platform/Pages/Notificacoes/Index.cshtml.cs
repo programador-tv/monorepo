@@ -11,17 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace APP.Platform.Pages
 {
     public sealed class NotificacoesModel(
-        ApplicationDbContext context,
-        IHttpClientFactory httpClientFactory,
+        ApplicationDbContext _context,
+        IHttpClientFactory _httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
         Settings settings,
-        IPerfilWebService perfilWebService
-        ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
+        IPerfilWebService _perfilWebService
+        ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context = context;
-        private  readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-        private IPerfilWebService _perfilWebService { get; set; } = perfilWebService;
-
         public List<NotificationViewModel>? Notifications { get; set; }
 
         public async Task<ActionResult> OnGet()
