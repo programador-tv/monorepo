@@ -141,11 +141,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-api
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-api; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-api
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-api; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
 
   publish_websocket:
     name: Deploy Core.WebSocket
@@ -161,11 +191,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-websocket
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-websocket; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-websocket
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-websocket; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
 
   publish_background:
     name: Deploy Core.Background
@@ -181,11 +241,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-background
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-background; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-background
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-background; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
          
   publish_background_live:
     name: Deploy Core.Background.Live
@@ -201,11 +291,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-background-live
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-background-live; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-background-live
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-background-live; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
          
   publish_background_browser:
     name: Deploy Core.Background.Browser
@@ -221,11 +341,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-background-browser
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-background-browser; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-background-browser
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-background-browser; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
      
   publish_rtmp_live:
     name: Deploy Core.RTMP.Live
@@ -241,11 +391,41 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build core-rtmp-live
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build core-rtmp-live; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push core-rtmp-live
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push core-rtmp-live; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
 
   publish_app_platform:
     name: Deploy Core.APP.Platform
@@ -261,8 +441,38 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
     - name: Build Docker image
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml build platform
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml build platform; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
     - name: Publish Docker image
       if: github.ref == 'refs/heads/main'
       run: |
-        retry 3 docker-compose -f docker-compose.prod.yml push platform
+        retry() {
+          local retries=3
+          local count=0
+          until docker-compose -f docker-compose.prod.yml push platform; do
+            exit=$?
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries:"
+              sleep 10
+            else
+              echo "Failed after $count attempts."
+              return $exit
+            fi
+          done
+        }
+        retry
