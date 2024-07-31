@@ -17,9 +17,7 @@ namespace APP.Platform.Pages
     {
         private new readonly ApplicationDbContext _context;
         private readonly IHttpClientFactory _httpClientFactory;
-
         private readonly IMessagePublisher _messagePublisher;
-        private IWebHostEnvironment hostingEnvironment;
 
         [BindProperty]
         public bool hasPefil { get; set; }
@@ -42,7 +40,6 @@ namespace APP.Platform.Pages
         {
             _httpClientFactory = httpClientFactory;
             _context = context;
-            hostingEnvironment = environment;
             _messagePublisher = messagePublisher;
         }
 
@@ -169,74 +166,57 @@ namespace APP.Platform.Pages
                 using var byUsernameResponse = await client.GetAsync(
                     $"api/perfils/ByUsername/" + Perfil.UserName
                 );
-                if (byUsernameResponse.IsSuccessStatusCode)
-                {
-                    var perfilExist =
-                        await byUsernameResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
-                    if (perfilExist?.Token != _perfil.Token)
+                if (_perfil != null)
+                {
+                    if (byUsernameResponse.IsSuccessStatusCode)
                     {
-                        UsernameExist = true;
-                        return OnGet();
+                        var perfilExist =
+                            await byUsernameResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+
+                        if (perfilExist?.Token != _perfil.Token)
+                        {
+                            UsernameExist = true;
+                            return OnGet();
+                        }
                     }
-                }
 
-                _perfil.Nome = Perfil.Nome;
-                _perfil.UserName = Perfil.UserName;
-                _perfil.Linkedin = Perfil.Linkedin;
-                _perfil.GitHub = Perfil.GitHub;
-                _perfil.Bio = Perfil.Bio;
-                _perfil.Descricao = Perfil.Descricao;
-                _perfil.Experiencia = Perfil.Experiencia;
+                    _perfil.Nome = Perfil.Nome;
+                    _perfil.UserName = Perfil.UserName;
+                    _perfil.Linkedin = Perfil.Linkedin;
+                    _perfil.GitHub = Perfil.GitHub;
+                    _perfil.Bio = Perfil.Bio;
+                    _perfil.Descricao = Perfil.Descricao;
+                    _perfil.Experiencia = Perfil.Experiencia;
 
-                var json = JsonSerializer.Serialize(_perfil);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                using var responseTask = await client.PutAsync($"api/perfils", content);
+                    var json = JsonSerializer.Serialize(_perfil);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    using var responseTask = await client.PutAsync($"api/perfils", content);
 
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    if (Perfil.Foto != null)
+                    if (responseTask.IsSuccessStatusCode)
                     {
-                        using var form = new MultipartFormDataContent();
+                        if (Perfil.Foto != null)
+                        {
+                            using var form = new MultipartFormDataContent();
 
-                        var stream = Perfil.Foto.OpenReadStream();
-                        using var streamContent = new StreamContent(stream);
+                            var stream = Perfil.Foto.OpenReadStream();
+                            using var streamContent = new StreamContent(stream);
 
-                        streamContent.Headers.ContentType = new MediaTypeHeaderValue(
-                            Perfil.Foto.ContentType
-                        );
+                            streamContent.Headers.ContentType = new MediaTypeHeaderValue(
+                                Perfil.Foto.ContentType
+                            );
 
-                        form.Add(streamContent, "file", Path.GetFileName(Perfil.Foto.FileName));
+                            form.Add(streamContent, "file", Path.GetFileName(Perfil.Foto.FileName));
 
-                        var response = await client.PutAsync(
-                            "api/perfils/UpdateFoto/" + _perfil.Id,
-                            form
-                        );
+                            var response = await client.PutAsync(
+                                "api/perfils/UpdateFoto/" + _perfil.Id,
+                                form
+                            );
+                        }
                     }
                 }
                 return new JsonResult(new { });
             }
-        }
-
-        private string SaveFoto(IFormFile foto)
-        {
-            string uniqueFileName = string.Empty;
-
-            if (foto != null)
-            {
-                // https://www.macoratti.net/20/05/aspc_webroot1.htm webroot do treco
-                string uploadsFolder = Path.Combine(
-                    hostingEnvironment.WebRootPath,
-                    "shared/profile"
-                );
-                uniqueFileName = Perfil!.UserName + Path.GetExtension(foto.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    foto.CopyTo(fileStream);
-                }
-            }
-            return uniqueFileName;
         }
     }
 }
