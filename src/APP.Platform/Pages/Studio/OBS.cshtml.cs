@@ -19,10 +19,6 @@ namespace APP.Platform.Pages.Studio
         RateLimit rateLimit
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context = context;
-        private readonly IMessagePublisher _messagePublisher = messagePublisher;
-        private readonly RateLimit _rateLimit = rateLimit;
-
         public Live? Live { get; set; }
 
         [BindProperty]
@@ -89,7 +85,7 @@ namespace APP.Platform.Pages.Studio
                 return BadRequest();
             }
 
-            if (_rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
+            if (rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
             {
                 return BadRequest("Você está enviando mensagens muito rápido.");
             }
