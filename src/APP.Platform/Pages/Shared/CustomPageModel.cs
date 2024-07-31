@@ -17,7 +17,7 @@ public class CustomPageModel : PageModel
     protected readonly ApplicationDbContext _context;
     protected readonly IHttpClientFactory _httpClientFactory;
     protected readonly IHttpContextAccessor _httpContextAccessor;
-    public Settings _settings;
+    public Settings PageSettings { get; set; }
     protected readonly string _meetUrl;
 
     public CustomPageModel(
@@ -28,7 +28,7 @@ public class CustomPageModel : PageModel
     )
     {
         _httpClientFactory = httpClientFactory;
-        _settings = settings;
+        PageSettings = settings;
         _context = context;
         _httpContextAccessor = httpContextAccessor;
 
