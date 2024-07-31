@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RabbitMQ.Client;
 
 namespace APP.Platform.Pages;
 
@@ -14,11 +15,10 @@ public class CustomPageModel : PageModel
     public bool IsAuth { get; set; }
     public int CountNotifications { get; set; }
     protected readonly ApplicationDbContext _context;
+    protected readonly IHttpClientFactory _httpClientFactory;
     protected readonly IHttpContextAccessor _httpContextAccessor;
-
-    public readonly Settings _settings;
+    public Settings _settings;
     protected readonly string _meetUrl;
-    IHttpClientFactory _httpClientFactory;
 
     public CustomPageModel(
         ApplicationDbContext context,
@@ -33,13 +33,13 @@ public class CustomPageModel : PageModel
         _httpContextAccessor = httpContextAccessor;
 
         SetProfileIfExistis().Wait();
-        setCountNotifications();
+        SetCountNotifications();
         _meetUrl = settings.MEET_URL;
     }
 
     public new HttpContext? HttpContext => _httpContextAccessor.HttpContext;
 
-    private void setCountNotifications()
+    private void SetCountNotifications()
     {
         if (Profile == null)
             return;

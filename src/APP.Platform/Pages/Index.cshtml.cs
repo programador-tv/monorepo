@@ -39,8 +39,7 @@ public class IndexModel(
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     public List<PresentesOpenRoom>? PresentesOpenRoom { get; set; }
-    private IPerfilWebService _perfilWebService { get; set; } = perfilWebService;
-    public List<RoomViewModel> Rooms = [];
+    public List<RoomViewModel> Rooms { get; set; } = [];
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = [];
     public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = [];
     public Dictionary<string, List<string>>? RelatioTags { get; set; }
@@ -136,7 +135,7 @@ public class IndexModel(
 
         var associatedOwnerId = rooms.Select(e => e.PerfilId).ToList();
 
-        var associatedOwners = await _perfilWebService.GetAllById(associatedOwnerId) ?? [];
+        var associatedOwners = await perfilWebService.GetAllById(associatedOwnerId) ?? [];
 
         var associatedPresentes = _context
             .Presentes.Where(e => roomsId.Contains(e.RoomId) && e.EstaPresente)
@@ -184,7 +183,7 @@ public class IndexModel(
         var PerfilIds = visibleVideos.Select(e => e.PerfilId).ToList();
         var liveIds = visibleVideos.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -230,7 +229,7 @@ public class IndexModel(
         var PerfilIds = visibleVideos.Select(e => e.PerfilId).ToList();
         var liveIds = visibleVideos.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -294,7 +293,7 @@ public class IndexModel(
         var PerfilIds = livesSchedules.Select(e => e.PerfilId).ToList();
         var liveIds = livesSchedules.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -500,7 +499,7 @@ public class IndexModel(
             .Select(id => Guid.Parse(id))
             .ToList();
 
-        var perfis = await _perfilWebService.GetAllById(perfilsIds) ?? [];
+        var perfis = await perfilWebService.GetAllById(perfilsIds) ?? [];
 
         var perfisLegacy = new List<Domain.Entities.Perfil>();
 
@@ -659,8 +658,8 @@ public class IndexModel(
         var pedidos = await GetFreeTimeService.PrepareViewModelForRenderRequestedHelpBoard(
             timeSelectionGroupByPerfilId,
             _context,
-            httpClientFactory,
-            _perfilWebService
+            _httpClientFactory,
+            perfilWebService
         );
 
         return new JsonResult(new { pedidos, isLogged = IsAuth });
