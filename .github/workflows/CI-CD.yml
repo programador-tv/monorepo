@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
-      - develop
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -118,13 +116,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-api
-           docker-compose -f docker-compose.prod.yml push core-api
+           docker compose -f docker-compose.prod.yml build core-api
+           docker compose -f docker-compose.prod.yml push core-api
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-api
-          docker-compose -f docker-compose.yml push core-api
+          docker compose -f docker-compose.yml build core-api
+          docker compose -f docker-compose.yml push core-api
          else  
-          docker-compose -f docker-compose.yml build core-api
+          docker compose -f docker-compose.yml build core-api
          fi
 
   publish_websocket:
@@ -142,13 +140,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-websocket
-           docker-compose -f docker-compose.prod.yml push core-websocket
+           docker compose -f docker-compose.prod.yml build core-websocket
+           docker compose -f docker-compose.prod.yml push core-websocket
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-websocket
-          docker-compose -f docker-compose.yml push core-websocket
+          docker compose -f docker-compose.yml build core-websocket
+          docker compose -f docker-compose.yml push core-websocket
          else  
-          docker-compose -f docker-compose.yml build core-websocket
+          docker compose -f docker-compose.yml build core-websocket
          fi
 
   publish_background:
@@ -166,13 +164,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-background
-           docker-compose -f docker-compose.prod.yml push core-background
+           docker compose -f docker-compose.prod.yml build core-background
+           docker compose -f docker-compose.prod.yml push core-background
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-background
-          docker-compose -f docker-compose.yml push core-background
+          docker compose -f docker-compose.yml build core-background
+          docker compose -f docker-compose.yml push core-background
          else  
-          docker-compose -f docker-compose.yml build core-background
+          docker compose -f docker-compose.yml build core-background
          fi
          
   publish_background_live:
@@ -190,13 +188,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-background-live
-           docker-compose -f docker-compose.prod.yml push core-background-live
+           docker compose -f docker-compose.prod.yml build core-background-live
+           docker compose -f docker-compose.prod.yml push core-background-live
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-background-live
-          docker-compose -f docker-compose.yml push core-background-live
+          docker compose -f docker-compose.yml build core-background-live
+          docker compose -f docker-compose.yml push core-background-live
          else  
-          docker-compose -f docker-compose.yml build core-background-live
+          docker compose -f docker-compose.yml build core-background-live
          fi     
          
   publish_background_browser:
@@ -214,13 +212,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-background-browser
-           docker-compose -f docker-compose.prod.yml push core-background-browser
+           docker compose -f docker-compose.prod.yml build core-background-browser
+           docker compose -f docker-compose.prod.yml push core-background-browser
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-background-browser
-          docker-compose -f docker-compose.yml push core-background-browser
+          docker compose -f docker-compose.yml build core-background-browser
+          docker compose -f docker-compose.yml push core-background-browser
          else  
-          docker-compose -f docker-compose.yml build core-background-browser
+          docker compose -f docker-compose.yml build core-background-browser
          fi     
 
   publish_rtmp_live:
@@ -238,13 +236,13 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build core-rtmp-live
-           docker-compose -f docker-compose.prod.yml push core-rtmp-live
+           docker compose -f docker-compose.prod.yml build core-rtmp-live
+           docker compose -f docker-compose.prod.yml push core-rtmp-live
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build core-rtmp-live
-          docker-compose -f docker-compose.yml push core-rtmp-live
+          docker compose -f docker-compose.yml build core-rtmp-live
+          docker compose -f docker-compose.yml push core-rtmp-live
          else  
-          docker-compose -f docker-compose.yml build core-rtmp-live
+          docker compose -f docker-compose.yml build core-rtmp-live
          fi   
 
   publish_app_platform:
@@ -262,12 +260,12 @@ jobs:
     - name: Build and push Docker image
       run: |
          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
-           docker-compose -f docker-compose.prod.yml build platform
-           docker-compose -f docker-compose.prod.yml push platform
+           docker compose -f docker-compose.prod.yml build platform
+           docker compose -f docker-compose.prod.yml push platform
          elif [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          docker-compose -f docker-compose.yml build platform
-          docker-compose -f docker-compose.yml push platform
+          docker compose -f docker-compose.yml build platform
+          docker compose -f docker-compose.yml push platform
          else  
-          docker-compose -f docker-compose.yml build platform
+          docker compose -f docker-compose.yml build platform
          fi   
 
