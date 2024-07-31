@@ -19,10 +19,6 @@ namespace APP.Platform.Pages.Studio
         ILiveWebService webservice
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context = context;
-        private readonly RateLimit _rateLimit = rateLimit;
-        private ILiveWebService _webservice { get; set; } = webservice;
-
         public Live? Live { get; set; }
 
         [BindProperty]
@@ -35,7 +31,7 @@ namespace APP.Platform.Pages.Studio
                 return Redirect("../Perfil");
             }
 
-            var liveCore = await _webservice.GetLiveById(mainkey);
+            var liveCore = await webservice.GetLiveById(mainkey);
             if (liveCore == null)
             {
                 return Redirect("../Index");
@@ -92,7 +88,7 @@ namespace APP.Platform.Pages.Studio
                 return BadRequest();
             }
 
-            if (_rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
+            if (rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
             {
                 return BadRequest("Você está enviando mensagens muito rápido.");
             }
