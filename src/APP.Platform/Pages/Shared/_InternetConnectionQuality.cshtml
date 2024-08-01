@@ -11,12 +11,18 @@
         image.onload = function () {
             const endTime = new Date().getTime();
             const duration = (endTime - startTime) / 1000;
-            const bitsLoaded = 44 * 1024 * 8; //tamanho da imagem usada para o teste -> 44kb, alterar caso a imagem tenha outro tamanho.
-            const speedBps = bitsLoaded / duration;
-            const speedKbps = speedBps / 1024;
-            const speedMbps = speedKbps / 1024;
 
-            callback(speedMbps);
+            if (duration > 0) {
+                const bitsLoaded = 44 * 1024 * 8; // Tamanho da imagem usada para o teste -> 44kb, alterar caso a imagem tenha outro tamanho.
+                const speedBps = bitsLoaded / duration;
+                const speedKbps = speedBps / 1024;
+                const speedMbps = speedKbps / 1024;
+
+                callback(speedMbps);
+            } else {
+                console.error('Duração muito curta para medir a velocidade da internet.');
+                callback(null);
+            }
         };
 
         image.onerror = function () {
@@ -39,8 +45,7 @@
         getInternetSpeed(function (speedMbps) {
             if (speedMbps !== null) {
                 const quality = getQualityBasedOnSpeed(speedMbps);
-                console.log(`Velocidade da internet: ${speedMbps.toFixed(2)} Mbps`);
-                console.log(`Qualidade da conexão: ${quality}`);
+                console.log(speedMbps)
 
                 const qualityElement = document.getElementById("connection-quality");
                 if (qualityElement) {
@@ -52,7 +57,18 @@
         });
     }
 
+    function handleOffline() {
+        const qualityElement = document.getElementById("connection-quality");
+        if (qualityElement) {
+            qualityElement.textContent = 'Sem conexão';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', (event) => {
         initInternetSpeedTest();
+
+        window.addEventListener('offline', () => {
+            handleOffline();
+        });
     });
 </script>
