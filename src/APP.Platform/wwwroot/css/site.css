@@ -25,4 +25,7 @@ body {
   margin-bottom: 60px;
 }
 
-
+.dateTime-newPicker {
+  text-align: center;
+  border-radius: 4px;
+}
