@@ -338,8 +338,11 @@
             })
             .then(function (data) {
                 const CONSIDERED_EMPTY = "";
+
                 let videosPrivates = document.querySelector("#savedVideosCanal");
-                  let botIniciarLiveComVideo =   ` 
+                
+                //Botão sem msg de span de "sem vídeos no momento"
+                let botIniciarLiveComVideo =    ` 
                                                       @{  
                                                             if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
                                                                 {
@@ -357,13 +360,11 @@
                                                                 }
                                                         }
                                                  `
-
+                 //Botão com msg de span "sem vídeos no momento"
                 let botIniciarLiveSemVideo =      ` 
                                                     <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
                                                        <span>Sem vídeos no momento</span>
- 
-                                                      @{
-                                                        
+                                                      @{ 
                                                             if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
                                                                 {
                                                                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
@@ -386,7 +387,7 @@
                     && data.liveSchedules === CONSIDERED_EMPTY) {
                     videosPrivates.innerHTML = botIniciarLiveSemVideo
 
-                //caso tiver lives agendadas (concatenação do botão iniciar live + Lives)
+                //caso tiver lives agendadas (concatena botão iniciar live + Vídeos)
                 } else {
                     videosPrivates.innerHTML = botIniciarLiveComVideo+data.liveSchedules+data.privateLives;
 
