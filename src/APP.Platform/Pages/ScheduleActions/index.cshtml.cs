@@ -389,6 +389,7 @@ namespace APP.Platform.Pages.ScheduleActions
                 new ModalFreeTimePanel { TimeSelectionAndJoinTimes = freeTimeList }
             );
 
+
             foreach (var kvp in requestHelpList)
             {
                 freeTimeList.Add(kvp.Key, kvp.Value);
@@ -398,6 +399,7 @@ namespace APP.Platform.Pages.ScheduleActions
                 "Components/TimeSelections/_ModalFreeTime",
                 new _ModalFreeTimeModel { TimeSelectionAndJoinTimes = freeTimeList }
             );
+            
 
             userTimeSelectionHtml += await RenderViewAsync(
                 "Components/TimeSelections/_ModalLive",
@@ -456,6 +458,12 @@ namespace APP.Platform.Pages.ScheduleActions
                 attatchFreeTimeList.Add(kvp.Key, kvp.Value);
             }
 
+           
+            var userLivesPanelHtml = await RenderViewAsync(
+                "Components/TimeSelections/_ModalLivesPanel",
+                new ModalLivesPanel { TimeSelections = livesList }
+            );
+
             userTimeSelectionHtml += await RenderViewAsync(
                 "Components/ModalJoinTime/_ModalJoinTimeEvent",
                 new _ModalJoinTimeEvent { JoinEvent = attatchFreeTimeList }
@@ -481,7 +489,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     TimeSelectionPanelModals = userFreeTimesHtml,
                     JoinTimeModalsPanel = userJoinTimesHtml,
                     RequestHelpModalsPanel = userRequestHelpListHtml,
-                    SolvedHelpModalsPanel = userSolvedHelpListHtml
+                    SolvedHelpModalsPanel = userSolvedHelpListHtml,
+                    LivesModalsPanel = userLivesPanelHtml
                 }
             );
         }
