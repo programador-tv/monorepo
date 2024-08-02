@@ -1696,6 +1696,8 @@ body {
 .datePickerFlexItem {
   width: 50%;
   padding: 20px;
+  padding-left: 32px;
+
   padding-top: 0;
   align-self: baseline;
   font-size: 16px;
@@ -1874,5 +1876,54 @@ body {
   display: none;
   padding-right: 10px;
   padding-left: 5px;
+}
 
+.selectTime {
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  border-radius: 4px;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+}
+.selectTime select {
+  width: 23%;
+  border: 0;
+  font-size: 1.1rem;
+  padding-block: 3px;
+  vertical-align: middle;
+  color: #878787;
+}
+
+.selectTime span {
+  align-content: center;
+  vertical-align: middle;
+  color: #878787;
+}
+
+.selectTimePicker {
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  border-radius: 4px;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+}
+.selectTimePicker input {
+  color: #878787;
+  font-size: 1.1rem;
+}
+
+.dateTime-newPicker {
+  text-align: center;
+  border-radius: 4px;
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  font-size: 1.1rem;
+  color: #878787;
+}
+
+.datePickerFlexTime {
+  width: 46%;
+  padding-right: 33px;
 }

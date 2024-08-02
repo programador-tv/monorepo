@@ -148,7 +148,7 @@
                   Escolha o horario e a data que se encontra disponível
                 </h2>
               </div>
-              <div class="datePickerFlexItem">
+              <div class="datePickerFlexTime">
                 <div class="date-picker date-input-div">
                   <div class="text-container">
                     <p class="time-picker-text">Data 
@@ -170,26 +170,74 @@
                   <label class="time-picker-text">Horário de Início
                       <span style="color: firebrick">*</span>
                   </label>
-                  <input
-                    type="time"
-                    class="startLive"
-                    style="width: 100%; text-align: center"
-                    id="startTime"
-                    asp-for="ScheduleTimeSelection.StartTime"
-                  />
+                  <div class="selectTime">
+<select name="hoursStart" id="hoursStart" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">10</option>
+      <option value="12">12</option>
+    </select>
+    <span class="text-xl mr-3">:</span>
+    <select name="minutesStart" id="minutesStart" class="bg-transparent text-xl appearance-none outline-none mr-4">
+      <option value="0">00</option>
+      <option value="15">15</option>
+      <option value="30">30</option>
+      <option value="45">45</option>
+    </select>
+    <select name="ampmStart" id="ampmStart" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="am">AM</option>
+      <option value="pm">PM</option>
+    </select>
+    <span class="material-symbols-outlined">
+schedule
+</span>
+                  </div>
                   <div class="alert-below-input" id="errorMsgTime"></div>
                 </div>
                 <div class="date-input-div">
                   <label class="time-picker-text">Horário de Término
                       <span style="color: firebrick">*</span>
                   </label>
-                  <input
-                    type="time"
-                    class="endLive"
-                    style="width: 100%; text-align: center"
-                    id="endTime"
-                    asp-for="ScheduleTimeSelection.EndTime"
-                  />
+                  <div>
+                    <div class="selectTime">
+<select name="hoursEnd" id="hoursEnd" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">10</option>
+      <option value="12">12</option>
+    </select>
+    <span class="text-xl mr-3">:</span>
+    <select name="minutesEnd" id="minutesEnd" class="bg-transparent text-xl appearance-none outline-none mr-4">
+      <option value="0">00</option>
+      <option value="15">15</option>
+      <option value="30">30</option>
+      <option value="45">45</option>
+    </select>
+    <select name="ampmEnd" id="ampmEnd" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="am">AM</option>
+      <option value="pm">PM</option>
+    </select>
+    <span class="material-symbols-outlined">
+schedule
+</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="alert-below-input" id="errorMsg"></div>
               </div>

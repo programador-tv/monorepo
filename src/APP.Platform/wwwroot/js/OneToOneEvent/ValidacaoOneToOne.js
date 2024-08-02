@@ -2,7 +2,21 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM totalmente carregado e analisado.");
 
   let formInicio = document.getElementById("startTime");
+  let hoursStart = document.getElementById("hoursStart");
+  let minutesStart = document.getElementById("minutesStart");
+  let isAmStart = document.getElementById("ampmStart");
+  let inicioHorario = `${
+    hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
+  }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
+
   let formFim = document.getElementById("endTime");
+  let hoursEnd = document.getElementById("hoursEnd");
+  let minutesEnd = document.getElementById("minutesEnd");
+  let isAmEnd = document.getElementById("ampmEnd");
+  let fimHorario = `${
+    hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value
+  }:${minutesEnd.value < 10 ? "0" + minutesEnd.value : minutesEnd.value}`;
+
   let dateForm = document.getElementById("dateTime");
   let btnNext2 = document.getElementById("btnOneToOne2");
   let errorSpanDate = document.getElementById("errorMsgDate");
@@ -11,8 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let tituloMentoria = document.getElementById("TimeSelectionMentoriaTitulo");
 
   if (
-    !formInicio ||
-    !formFim ||
     !dateForm ||
     !btnNext2 ||
     !errorSpanDate ||
@@ -79,8 +91,36 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const validateDates = () => {
-    const startDate = formInicio.value.trim();
-    const endDate = formFim.value.trim();
+    let hoursStartInt = parseInt(hoursStart.value, 10);
+    console.log(isAmStart.value);
+    if (isAmStart.value === "pm" && hoursStartInt !== 12) {
+      hoursStartInt += 12;
+    } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
+      hoursStartInt = 0; // Ajuste para 12 AM ser 00
+    }
+
+    let minutesInt = parseInt(minutesStart.value, 10);
+
+    inicioHorario = `${
+      hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
+    }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
+
+    let hoursEndInt = parseInt(hoursEnd.value, 10);
+    console.log(isAmEnd.value);
+    if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
+      hoursEndInt += 12;
+    } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
+      hoursEndInt = 0; // Ajuste para 12 AM ser 00
+    }
+
+    let minutesEndInt = parseInt(minutesEnd.value, 10);
+
+    fimHorario = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
+      minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
+    }`;
+
+    const startDate = inicioHorario;
+    const endDate = fimHorario;
     const dateFormValue = dateForm.value.trim();
 
     if (startDate === "" || endDate === "" || dateFormValue === "") {
@@ -134,8 +174,13 @@ document.addEventListener("DOMContentLoaded", function () {
   tituloMentoria.addEventListener("input", validateFirstModal);
   $("#TagsSelected").on("select2:select", validateFirstModal);
   $("#TagsSelected").on("select2:unselect", validateFirstModal);
-  formInicio.addEventListener("change", validateDates);
-  formFim.addEventListener("change", validateDates);
+
+  hoursStart.addEventListener("change", validateDates);
+  minutesStart.addEventListener("change", validateDates);
+  isAmStart.addEventListener("change", validateDates);
+  hoursEnd.addEventListener("change", validateDates);
+  minutesEnd.addEventListener("change", validateDates);
+  isAmEnd.addEventListener("change", validateDates);
 
   validateDates();
   validateFirstModal();

@@ -1,7 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateForm = document.getElementById("dateTime");
-  let formInicio = document.getElementById("startTime");
-  let formFim = document.getElementById("endTime");
+
+  let hoursStart = document.getElementById("hoursStart");
+  let minutesStart = document.getElementById("minutesStart");
+  let isAmStart = document.getElementById("ampmStart");
+
+  let inicioHorario = `${
+    hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
+  }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
+  console.log(inicioHorario);
+
+  let hoursEnd = document.getElementById("hoursEnd");
+  let minutesEnd = document.getElementById("minutesEnd");
+  let isAmEnd = document.getElementById("ampmEnd");
+
+  let fimHorario = `${
+    hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value
+  }:${minutesEnd.value < 10 ? "0" + minutesEnd.value : minutesEnd.value}`;
+  console.log(inicioHorario);
 
   let tituloResumo = document.getElementById("tituloResumo");
   let horariosResumo = document.getElementById("horarios-resumo");
@@ -17,13 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(aspForm);
     formData.set(
       "ScheduleTimeSelection.StartTime",
-      `${dateTime.value}T${formData.get(
-        "ScheduleTimeSelection.StartTime"
-      )}-03:00`
+      `${dateTime.value}T${inicioHorario}-03:00`
     );
     formData.set(
       "ScheduleTimeSelection.EndTime",
-      `${dateTime.value}T${formData.get("ScheduleTimeSelection.EndTime")}-03:00`
+      `${dateTime.value}T${fimHorario}-03:00`
     );
     const url = "/ScheduleActions?handler=SaveTime";
     const options = {
@@ -88,6 +102,49 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  hoursStart.addEventListener("change", updateTimeStart);
+  minutesStart.addEventListener("change", updateTimeStart);
+  isAmStart.addEventListener("change", updateTimeStart);
+  hoursEnd.addEventListener("change", updateTimeEnd);
+  minutesEnd.addEventListener("change", updateTimeEnd);
+  isAmEnd.addEventListener("change", updateTimeEnd);
+
+  function updateTimeStart() {
+    let hoursStartInt = parseInt(hoursStart.value, 10);
+    console.log(isAmStart.value);
+    if (isAmStart.value === "pm" && hoursStartInt !== 12) {
+      hoursStartInt += 12;
+    } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
+      hoursStartInt = 0; // Ajuste para 12 AM ser 00
+    }
+
+    let minutesInt = parseInt(minutesStart.value, 10);
+
+    inicioHorario = `${
+      hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
+    }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
+
+    console.log(inicioHorario);
+  }
+
+  function updateTimeEnd() {
+    let hoursEndInt = parseInt(hoursEnd.value, 10);
+    console.log(isAmEnd.value);
+    if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
+      hoursEndInt += 12;
+    } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
+      hoursEndInt = 0; // Ajuste para 12 AM ser 00
+    }
+
+    let minutesEndInt = parseInt(minutesEnd.value, 10);
+
+    fimHorario = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
+      minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
+    }`;
+
+    console.log(fimHorario);
+  }
+
   saveTimeForm.addEventListener("submit", (event) => {
     console.log("chamado");
     event.preventDefault();
@@ -115,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
     switchStep(".body-oneToOne-2", ".body-oneToOne-3");
     let titulo = document.getElementById("TimeSelectionMentoriaTitulo").value;
     tituloResumo.innerText = titulo;
-    horariosResumo.innerText = formInicio.value + " - " + formFim.value;
+    horariosResumo.innerText = inicioHorario + " - " + fimHorario;
 
     const date = new Date(dateForm.value);
     date.setDate(date.getDate() + 1);
