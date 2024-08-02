@@ -1140,7 +1140,7 @@ body {
 .channel-user-perfil-data {
   height: 166px;
   display: flex;
-  gap: 8.5%;
+  gap: 1rem;
 }
 
 #searchNotFound {
@@ -1232,8 +1232,6 @@ body {
 
   .channel-user-perfil-data {
     height: 180px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 @media (max-width: 992px) {
@@ -1292,8 +1290,6 @@ body {
 
   .channel-user-perfil-data {
     height: 180px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
@@ -1317,8 +1313,6 @@ body {
 
   .channel-user-perfil-data {
     height: 200px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
@@ -1358,32 +1352,24 @@ body {
 @media (max-width: 800px) {
   .channel-user-perfil-data {
     height: 200px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 767px) {
   .channel-user-perfil-data {
     height: 270px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 800px) {
   .channel-user-perfil-data {
     height: 200px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 767px) {
   .channel-user-perfil-data {
     height: 270px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
@@ -1412,16 +1398,12 @@ body {
 
   .channel-user-perfil-data {
     height: 270px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 457px) {
   .channel-user-perfil-data {
     height: 295px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 @media (max-width: 450px) {
@@ -1461,24 +1443,18 @@ body {
 
   .channel-user-perfil-data {
     height: 295px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 415px) {
   .channel-user-perfil-data {
     height: 320px;
-    display: flex;
-    gap: 8.5%;
   }
 }
 
 @media (max-width: 389px) {
   .channel-user-perfil-data {
     height: 415px;
-    display: flex;
-    gap: 8.5%;
   }
 
   .tiny-channel-seguindo-seguidores {
@@ -1605,5 +1581,5 @@ body {
     transform: translateX(100%);
   }
 
-  
+
 }
