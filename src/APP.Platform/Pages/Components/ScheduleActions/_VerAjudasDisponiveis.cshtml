@@ -82,7 +82,7 @@
                 @* <hr style="background-color: #5c00ac; height: 2px;"> *@
                 <div class="tab-content ">
 
-                    <section class="tab-pane fade" id="oneToOne">
+                    <section class="tab-pane tab-pane-events fade" id="oneToOne">
 
                         <br>
                         <button class="button-capacitacao" onclick="openOneToOne()">
@@ -95,7 +95,7 @@
                         <div id="OneToOneMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap">
                         </div>
                     </section>
-                    <section  class="tab-pane active" id="ajuda">
+    <section class="tab-pane tab-pane-events active" id="ajuda">
                         <br>
                         <button class="button-capacitacao" onclick="openTimePickerForHelp()">
                             Tirar dúvida
@@ -112,11 +112,11 @@
                             </div>
                         </div>
                     </section>
-                <section class="tab-pane fade" id="mentoria">
+                        <section class="tab-pane tab-pane-events fade" id="mentoria">
                     @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
                 </section>
 
-                <section class="tab-pane" id="cursos">
+                <section class="tab-pane tab-pane-events" id="cursos">
                     <br>
                         <button class="button-capacitacao" onclick="openCursosAndEventos()">
                             Criar evento
@@ -127,10 +127,10 @@
                         </div>
                        <div id="CursosMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap"></div>
                 </section>
-                <section class="tab-pane" id="entrevista">
+                    <section class="tab-pane tab-pane-events" id="entrevista">
                     @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
                 </section>
-                <section class="tab-pane" id="recursos">
+                 <section class="tab-pane tab-pane-events" id="recursos">
                     @await Html.PartialAsync("Components/TimeSelections/_EmBreveConteudo")
                 </section>
                 @* </div>
