@@ -8,12 +8,12 @@ namespace Application.Logic;
 public sealed class HelpResponseBusinessLogic(IHelpResponseRepository _repository)
     : IHelpResponseBusinessLogic
 {
-    public async Task Add(CreateHelpResponse request)
+    public async Task Add(CreateHelpResponse requestHelpResponse)
     {
         var helpResponse = HelpResponse.Create(
-            request.timeSelectionId,
-            request.perfilId,
-            request.Conteudo
+            requestHelpResponse.timeSelectionId,
+            requestHelpResponse.perfilId,
+            requestHelpResponse.Conteudo
         );
         await _repository.AddAsync(helpResponse);
     }
