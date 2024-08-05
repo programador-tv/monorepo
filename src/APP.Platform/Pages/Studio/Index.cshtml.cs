@@ -10,31 +10,19 @@ using Queue;
 
 namespace APP.Platform.Pages.Studio
 {
-    public sealed class StudioModel : CustomPageModel
+    public sealed class StudioModel(
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        Settings settings,
+        RateLimit rateLimit,
+        ILiveWebService webservice
+    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private readonly RateLimit _rateLimit;
-        private ILiveWebService _webservice { get; set; }
-
         public Live? Live { get; set; }
 
         [BindProperty]
         public List<Domain.Entities.Perfil>? Perfil { get; set; }
-
-        public StudioModel(
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            Settings settings,
-            RateLimit rateLimit,
-            ILiveWebService webservice
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _context = context;
-            _rateLimit = rateLimit;
-            _webservice = webservice;
-        }
 
         public async Task<IActionResult> OnGetAsync(Guid mainkey)
         {
@@ -43,7 +31,7 @@ namespace APP.Platform.Pages.Studio
                 return Redirect("../Perfil");
             }
 
-            var liveCore = await _webservice.GetLiveById(mainkey);
+            var liveCore = await webservice.GetLiveById(mainkey);
             if (liveCore == null)
             {
                 return Redirect("../Index");
@@ -100,7 +88,7 @@ namespace APP.Platform.Pages.Studio
                 return BadRequest();
             }
 
-            if (_rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
+            if (rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
             {
                 return BadRequest("Você está enviando mensagens muito rápido.");
             }

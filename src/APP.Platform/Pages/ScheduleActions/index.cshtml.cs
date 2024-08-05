@@ -300,19 +300,19 @@ namespace APP.Platform.Pages.ScheduleActions
                 .Where(kvp => kvp.Key.Tipo == EnumTipoTimeSelection.RequestHelp)
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-            var tsList = TimeSelectionList
+            var livesList = TimeSelectionList
                 .Keys.Where(ts => ts.Tipo == EnumTipoTimeSelection.Live)
                 .ToList();
 
-            var timeSelectionIds = tsList.Select(ts => ts.Id).ToList();
+            var liveTimeSelectionIds = livesList.Select(ts => ts.Id).ToList();
 
             var backstage = _context
-                .LiveBackstages.Where(x => timeSelectionIds.Contains(x.TimeSelectionId))
+                .LiveBackstages.Where(x => liveTimeSelectionIds.Contains(x.TimeSelectionId))
                 .ToList();
 
             foreach (var backstageItem in backstage)
             {
-                var ts = tsList.Find(x => x.Id == backstageItem.TimeSelectionId);
+                var ts = livesList.Find(x => x.Id == backstageItem.TimeSelectionId);
                 if (ts != null)
                 {
                     ts.LinkSala = backstageItem.LiveId.ToString();
@@ -404,7 +404,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
             userTimeSelectionHtml += await RenderViewAsync(
                 "Components/TimeSelections/_ModalLive",
-                new ModalLive { LiveTimeSelection = tsList }
+                new ModalLive { LiveTimeSelection = livesList }
             );
 
             var TsList = timeSelections

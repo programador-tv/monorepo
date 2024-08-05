@@ -4,20 +4,24 @@ using Application.Logic;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
+using Domain.WebServices;
 
 namespace Background;
 
-public sealed class CommentsQueue(IHttpClientFactory factory) : IConsumer<string>
+public sealed class CommentsQueue(IServiceScopeFactory serviceScopeFactory) : IConsumer<string>
 {
     public async Task Consume(ConsumeContext<string> context)
     {
-        using var client = factory.CreateClient("CoreAPI");
-
         try
         {
-            var content = new StringContent(string.Empty);
-            await client.PutAsync("api/comments/validate/" + context.Message, content);
+            using var scope = serviceScopeFactory.CreateScope();
+            var commentWebService =
+                    scope.ServiceProvider.GetRequiredService<ICommentWebService>();
+                    
+            var content = context.Message;
+            await commentWebService.ValidateComment(content);
         }
         catch (Exception e)
         {
