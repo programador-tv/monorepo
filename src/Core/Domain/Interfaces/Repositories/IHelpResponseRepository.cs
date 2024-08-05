@@ -11,7 +11,7 @@ namespace Domain.Interfaces.Repositories
     public interface IHelpResponseRepository
     {
         Task<List<HelpResponse>> GetAllAsync(Guid timeSelectionId);
-        Task<HelpResponse> GetById(Guid id);
+        Task<HelpResponse?> GetById(Guid id);
         Task AddAsync(HelpResponse helpResponse);
         Task UpdateAsync(HelpResponse helpResponse);
     }

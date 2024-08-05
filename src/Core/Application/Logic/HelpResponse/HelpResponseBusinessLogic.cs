@@ -8,19 +8,21 @@ namespace Application.Logic;
 public sealed class HelpResponseBusinessLogic(IHelpResponseRepository _repository)
     : IHelpResponseBusinessLogic
 {
-    public async Task Add(CreateHelpResponse request)
+    public async Task Add(CreateHelpResponse helpResponse)
     {
-        var helpResponse = HelpResponse.Create(
-            request.timeSelectionId,
-            request.perfilId,
-            request.Conteudo
+        var createdHelpResponse = HelpResponse.Create(
+            helpResponse.timeSelectionId,
+            helpResponse.perfilId,
+            helpResponse.Conteudo
         );
-        await _repository.AddAsync(helpResponse);
+        await _repository.AddAsync(createdHelpResponse);
     }
 
     public async Task Delete(Guid helpResponseId)
     {
-        var helpResponse = await _repository.GetById(helpResponseId);
+        var helpResponse =
+            await _repository.GetById(helpResponseId)
+            ?? throw new KeyNotFoundException("Coment�rio n�o encontrado.");
         helpResponse.DeleteResponse();
         await _repository.UpdateAsync(helpResponse);
     }
