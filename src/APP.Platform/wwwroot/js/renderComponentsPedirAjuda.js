@@ -98,8 +98,8 @@ function SetItToTryRequestedHelp(freetimeId) {
 
 function renderRequestedHelpResponse(listHelpResponse, perfilId) {
     const userLoggedId = document.getElementById("requestProfileId").value;
-    if (!(userLoggedId === perfilId)) {
-        prepareFormHelpResponse = `
+    if (userLoggedId !== perfilId) {
+        let prepareFormHelpResponse = `
             <p>Comentar</p>
             <div class="response-text-area">
                 <textarea class="form-control" id="contentHelpResponse"></textarea>
@@ -117,7 +117,7 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
         const qtdTempo = qtdEmMinutosCriada(item.createdAt);
         let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
         prepared +=
-            `<div class="container-helpResponse">
+            `<div class="container-helpResponse" id="helpResponse-${item.id}">
                 <div class="content-helpResponse">
                     <div id="container-description-helpResponse">
                         <p id="description-helpResponse">${item.conteudo}</p>
@@ -138,7 +138,6 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
         prepared += `
             ${botaoDeletar}
         </div>`
-        botaoDeletar = "";
     }
 
     $("#space-helpResponses").html(prepared)
@@ -193,6 +192,7 @@ function deleteHelpResponse(helpResponseId) {
         if (!response.ok) {
             throw new Error("Erro ao deletar comentário.");
         }
+        document.getElementById(`helpResponse-${helpResponseId}`).remove();
     })
 }
 

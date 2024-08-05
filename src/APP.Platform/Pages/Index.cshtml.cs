@@ -41,8 +41,8 @@ public class IndexModel : CustomPageModel
     private readonly IRazorViewEngine _viewEngine;
     private readonly ITempDataProvider _tempDataProvider;
     private readonly ILiveService _liveService;
-    private IPerfilWebService _perfilWebService;
-    private IHelpResponseWebService _helpResponseWebService;
+    private readonly IPerfilWebService _perfilWebService;
+    private readonly IHelpResponseWebService _helpResponseWebService;
     public List<RoomViewModel> Rooms = new();
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = new();
     public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = new();

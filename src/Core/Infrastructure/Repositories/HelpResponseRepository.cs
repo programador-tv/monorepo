@@ -31,5 +31,6 @@ public sealed class HelpResponseRepository(ApplicationDbContext context)
             .OrderByDescending(hlpr => hlpr.CreatedAt)
             .ToListAsync();
 
-    public async Task<HelpResponse> GetById(Guid id) => await DbContext.HelpResponses.FindAsync(id);
+    public async Task<HelpResponse?> GetById(Guid id) =>
+        await DbContext.HelpResponses.FindAsync(id);
 }
