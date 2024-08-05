@@ -5,5 +5,5 @@ namespace APP.Platform.Pages.Components.TimeSelections;
 
 public class ModalLivesPanel
 {
-    public List<TimeSelection>? TimeSelections { get; set; } = new();
+    public List<TimeSelection> TimeSelections { get; set; } = [];
 }
