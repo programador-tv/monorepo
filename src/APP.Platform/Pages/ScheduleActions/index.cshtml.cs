@@ -114,7 +114,7 @@ namespace APP.Platform.Pages.ScheduleActions
             Settings settings,
             IAliasService aliasService,
             IPerfilWebService perfilWebService,
-            IHelpResponseWebService  helpResponseWebService
+            IHelpResponseWebService helpResponseWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {

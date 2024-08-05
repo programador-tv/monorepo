@@ -96,10 +96,11 @@ public class IndexModel : CustomPageModel
         _AprenderService = aprenderService;
         _helpResponseWebService = helpResponseWebService;
     }
-    
+
     public async Task<IActionResult> OnPostHelpResponse(string timeSelectionId, string content)
     {
-        if (content.IsNullOrEmpty()) return BadRequest("Necessário preencher o conteúdo da ajuda.");
+        if (content.IsNullOrEmpty())
+            return BadRequest("Necessário preencher o conteúdo da ajuda.");
         var perfilId = UserProfile.Id;
         var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
 

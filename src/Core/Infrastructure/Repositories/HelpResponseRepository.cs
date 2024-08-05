@@ -23,12 +23,13 @@ public sealed class HelpResponseRepository(ApplicationDbContext context)
     }
 
     public async Task<List<HelpResponse>> GetAllAsync(Guid timeSelectionId) =>
-        await DbContext.HelpResponses.Where(
-            hlpr => hlpr.ResponseStatus == ResponseStatus.Posted &&
-            hlpr.TimeSelectionId == timeSelectionId)
+        await DbContext
+            .HelpResponses.Where(hlpr =>
+                hlpr.ResponseStatus == ResponseStatus.Posted
+                && hlpr.TimeSelectionId == timeSelectionId
+            )
             .OrderByDescending(hlpr => hlpr.CreatedAt)
             .ToListAsync();
 
-    public async Task<HelpResponse> GetById(Guid id) =>
-        await DbContext.HelpResponses.FindAsync(id);
+    public async Task<HelpResponse> GetById(Guid id) => await DbContext.HelpResponses.FindAsync(id);
 }

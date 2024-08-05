@@ -179,18 +179,22 @@ public static class GetFreeTimeService
                 var requesteds = new List<TimeSelectionForRequestedHelpViewModel>();
                 foreach (var item in PerfilTimeSelection)
                 {
-                    var helpResponses = await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId)) ?? [];
-                    requesteds.Add(new TimeSelectionForRequestedHelpViewModel()
-                    {
-                        TimeSelectionId = item.TimeSelectionId,
-                        PerfilId = item.PerfilId.ToString(),
-                        StartTime = item.StartTime,
-                        EndTime = item.EndTime,
-                        Description = item.Description,
-                        Variation = item.Variation,
-                        Title = item.Title,
-                        HelpResponses = helpResponses
-                    });
+                    var helpResponses =
+                        await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId))
+                        ?? [];
+                    requesteds.Add(
+                        new TimeSelectionForRequestedHelpViewModel()
+                        {
+                            TimeSelectionId = item.TimeSelectionId,
+                            PerfilId = item.PerfilId.ToString(),
+                            StartTime = item.StartTime,
+                            EndTime = item.EndTime,
+                            Description = item.Description,
+                            Variation = item.Variation,
+                            Title = item.Title,
+                            HelpResponses = helpResponses
+                        }
+                    );
                 }
                 var requestedHelp = new RequestedHelpViewModel
                 {

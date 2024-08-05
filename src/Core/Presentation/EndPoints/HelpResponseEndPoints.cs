@@ -23,7 +23,8 @@ public static class HelpResponseEndPoints
 
     public static async Task<IResult> GetAll(
         [FromServices] IHelpResponseBusinessLogic _logic,
-        Guid timeSelectionId)
+        Guid timeSelectionId
+    )
     {
         try
         {
@@ -37,7 +38,8 @@ public static class HelpResponseEndPoints
 
     public static async Task<IResult> Save(
         [FromServices] IHelpResponseBusinessLogic _logic,
-        [FromBody] CreateHelpResponse helpResponse)
+        [FromBody] CreateHelpResponse helpResponse
+    )
     {
         try
         {
@@ -52,7 +54,8 @@ public static class HelpResponseEndPoints
 
     public static async Task<IResult> Update(
         [FromServices] IHelpResponseBusinessLogic _logic,
-        Guid helpResponseId)
+        Guid helpResponseId
+    )
     {
         try
         {

@@ -5,27 +5,27 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3719C53-CAF3-4DBA-9804-B3669A1AFFFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\WebApi\WebApi.csproj", "{CA2F56B0-882B-449F-AA14-27912EEBE590}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{CA2F56B0-882B-449F-AA14-27912EEBE590}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "src\Core\Presentation\Presentation.csproj", "{98BE74BF-C2D4-46D9-819C-A8D73C028FC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Core\Presentation\Presentation.csproj", "{98BE74BF-C2D4-46D9-819C-A8D73C028FC3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Core\Infrastructure\Infrastructure.csproj", "{FEDE1266-A62B-4812-B16F-0EB173DEE230}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Core\Infrastructure\Infrastructure.csproj", "{FEDE1266-A62B-4812-B16F-0EB173DEE230}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Core\Domain\Domain.csproj", "{1179370F-2FFD-4B12-A08D-12D6B419142A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Core\Domain\Domain.csproj", "{1179370F-2FFD-4B12-A08D-12D6B419142A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Core\Application\Application.csproj", "{C093B262-7966-4119-BA97-0C76FCDEBA63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Core\Application\Application.csproj", "{C093B262-7966-4119-BA97-0C76FCDEBA63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Background", "src\Background\Background.csproj", "{319FA867-833D-4457-8908-749C83DEBD47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Background", "src\Background\Background.csproj", "{319FA867-833D-4457-8908-749C83DEBD47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tests", "tests\tests.csproj", "{81E47AD0-6B4F-46C3-B4A7-4E75A4D00957}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{81E47AD0-6B4F-46C3-B4A7-4E75A4D00957}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocket", "src\WebSocket\WebSocket.csproj", "{C33A9B43-25F1-4BE2-948C-2DC7FF12F2E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocket", "src\WebSocket\WebSocket.csproj", "{C33A9B43-25F1-4BE2-948C-2DC7FF12F2E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Background.Live", "src\Background.Live\Background.Live.csproj", "{18871EF1-0D39-495E-A6D5-11234472BD31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Background.Live", "src\Background.Live\Background.Live.csproj", "{18871EF1-0D39-495E-A6D5-11234472BD31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APP.Platform", "src\APP.Platform\APP.Platform.csproj", "{CB6E63D0-FE51-401A-94C5-69486252F426}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APP.Platform", "src\APP.Platform\APP.Platform.csproj", "{CB6E63D0-FE51-401A-94C5-69486252F426}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Background.Browser", "src\Background.Browser\Background.Browser.csproj", "{B1D71BD1-52C0-44E0-BC3B-590852021521}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Background.Browser", "src\Background.Browser\Background.Browser.csproj", "{B1D71BD1-52C0-44E0-BC3B-590852021521}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

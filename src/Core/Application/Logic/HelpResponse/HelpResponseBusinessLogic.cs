@@ -5,11 +5,16 @@ using Domain.Repositories;
 
 namespace Application.Logic;
 
-public sealed class HelpResponseBusinessLogic(IHelpResponseRepository _repository) : IHelpResponseBusinessLogic
+public sealed class HelpResponseBusinessLogic(IHelpResponseRepository _repository)
+    : IHelpResponseBusinessLogic
 {
     public async Task Add(CreateHelpResponse request)
     {
-        var helpResponse = HelpResponse.Create(request.timeSelectionId, request.perfilId, request.Conteudo);
+        var helpResponse = HelpResponse.Create(
+            request.timeSelectionId,
+            request.perfilId,
+            request.Conteudo
+        );
         await _repository.AddAsync(helpResponse);
     }
 

@@ -1,16 +1,15 @@
-﻿using Domain.Contracts;
-using Domain.Entities;
-using Domain.WebServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Contracts;
+using Domain.Entities;
+using Domain.WebServices;
 
 namespace Infrastructure.WebServices;
 
-public sealed class HelpResponseWebService(CoreClient client)
-    : IHelpResponseWebService
+public sealed class HelpResponseWebService(CoreClient client) : IHelpResponseWebService
 {
     const string baseRoute = "api/help-response";
 

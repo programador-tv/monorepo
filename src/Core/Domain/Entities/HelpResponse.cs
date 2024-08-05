@@ -10,7 +10,7 @@ public sealed class HelpResponse(
     string conteudo,
     DateTime createdAt,
     ResponseStatus responseStatus
-    ) : Entity(id)
+) : Entity(id)
 {
     public Guid TimeSelectionId { get; private set; } = timeSelectionId;
     public Guid PerfilId { get; private set; } = perfilId;
@@ -20,7 +20,14 @@ public sealed class HelpResponse(
 
     public static HelpResponse Create(Guid timeSelecionId, Guid perfilId, string conteudo)
     {
-        return new HelpResponse(Guid.NewGuid(), timeSelecionId, perfilId, conteudo, DateTime.Now, ResponseStatus.Posted);
+        return new HelpResponse(
+            Guid.NewGuid(),
+            timeSelecionId,
+            perfilId,
+            conteudo,
+            DateTime.Now,
+            ResponseStatus.Posted
+        );
     }
 
     public void DeleteResponse()
