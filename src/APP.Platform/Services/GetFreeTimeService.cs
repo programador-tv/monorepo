@@ -129,7 +129,8 @@ public static class GetFreeTimeService
         > timeSelectionGroupByPerfilId,
         ApplicationDbContext _context,
         IHttpClientFactory httpClientFactory,
-        IPerfilWebService _perfilWebService
+        IPerfilWebService _perfilWebService,
+        IHelpResponseWebService _helpResponseWebService
     )
     {
         var RequestedHelp = new List<RequestedHelpViewModel>();
@@ -175,20 +176,25 @@ public static class GetFreeTimeService
                 {
                     continue;
                 }
+                var requesteds = new List<TimeSelectionForRequestedHelpViewModel>();
+                foreach (var item in PerfilTimeSelection)
+                {
+                    var helpResponses = await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId)) ?? [];
+                    requesteds.Add(new TimeSelectionForRequestedHelpViewModel()
+                    {
+                        TimeSelectionId = item.TimeSelectionId,
+                        PerfilId = item.PerfilId.ToString(),
+                        StartTime = item.StartTime,
+                        EndTime = item.EndTime,
+                        Description = item.Description,
+                        Variation = item.Variation,
+                        Title = item.Title,
+                        HelpResponses = helpResponses
+                    });
+                }
                 var requestedHelp = new RequestedHelpViewModel
                 {
-                    TimeSelections = PerfilTimeSelection
-                        .Select(e => new TimeSelectionForRequestedHelpViewModel()
-                        {
-                            TimeSelectionId = e.TimeSelectionId,
-                            PerfilId = e.PerfilId.ToString(),
-                            StartTime = e.StartTime,
-                            EndTime = e.EndTime,
-                            Description = e.Description,
-                            Variation = e.Variation,
-                            Title = e.Title,
-                        })
-                        .ToList(),
+                    TimeSelections = requesteds,
                     Perfils = requesterPerfils
                 };
                 timeSelectionIds.AddRange(

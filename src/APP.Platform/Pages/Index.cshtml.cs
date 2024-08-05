@@ -3,12 +3,14 @@ using System.Text;
 using System.Text.Json;
 using APP.Platform.Services;
 using Background;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Platform.Services;
 using Presentation.EndPoints;
 using Queue;
@@ -38,7 +41,8 @@ public class IndexModel : CustomPageModel
     private readonly IRazorViewEngine _viewEngine;
     private readonly ITempDataProvider _tempDataProvider;
     private readonly ILiveService _liveService;
-    private IPerfilWebService _perfilWebService { get; set; }
+    private IPerfilWebService _perfilWebService;
+    private IHelpResponseWebService _helpResponseWebService;
     public List<RoomViewModel> Rooms = new();
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = new();
     public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = new();
@@ -74,6 +78,7 @@ public class IndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         IAprenderService aprenderService,
         IPerfilWebService perfilWebService,
+        IHelpResponseWebService helpResponseWebService,
         Settings settings
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
@@ -89,6 +94,30 @@ public class IndexModel : CustomPageModel
         _messagePublisher = messagePublisher;
         _openAiService = openAiService;
         _AprenderService = aprenderService;
+        _helpResponseWebService = helpResponseWebService;
+    }
+    
+    public async Task<IActionResult> OnPostHelpResponse(string timeSelectionId, string content)
+    {
+        if (content.IsNullOrEmpty()) return BadRequest("Necessário preencher o conteúdo da ajuda.");
+        var perfilId = UserProfile.Id;
+        var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
+
+        await _helpResponseWebService.Add(request);
+        return new EmptyResult();
+    }
+
+    public async Task<IActionResult> OnPostDeleteHelpResponse(string helpResponseId)
+    {
+        try
+        {
+            await _helpResponseWebService.Update(Guid.Parse(helpResponseId));
+            return new EmptyResult();
+        }
+        catch (Exception err)
+        {
+            return BadRequest(err.Message);
+        }
     }
 
     public IActionResult OnPostJoinOpenRoom()
@@ -687,7 +716,8 @@ public class IndexModel : CustomPageModel
             timeSelectionGroupByPerfilId,
             _context,
             _httpClientFactory,
-            _perfilWebService
+            _perfilWebService,
+            _helpResponseWebService
         );
 
         return new JsonResult(new { pedidos = pedidos, isLogged = IsAuth });

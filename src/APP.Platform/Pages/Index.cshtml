@@ -150,7 +150,9 @@
             ScheduleTimeSelection = Model.ScheduleTimeSelection!,
             RelatioTags = Model.RelatioTags,
         })
-
+    <form id="forgery" method="post">
+        @Html.AntiForgeryToken()
+    </form>
 
     <script defer src="~/js/OneToOneFlow.js"></script>
     <script defer src="~/js/CursosAndEventosFlow.js"></script>
