@@ -1,16 +1,20 @@
 ﻿@using Models
 @model ModalLivesPanel
 
-@foreach(var item in Model.TimeSelections)
-{
-  <div id="card-@item.Id"
-  class="list-item box-shaddow-side-cards" style="display: flex; flex-direction: column; align-items: flex-start; padding: 10px; border-top: 1em solid rgb(209, 221, 230); border-radius: 1em; margin: 1em 0.5em">
+<div class="row">
+  @foreach(var item in Model.TimeSelections)
+  {
+    <div class="col-md-4 mb-4">
+      <div id="card-@item.Id"
+      class="list-item box-shaddow-side-cards" style="display: flex; flex-direction: column; align-items: flex-start; padding: 10px; border-top: 1em solid rgb(230, 209, 209); border-radius: 1em; margin: 1em 0.5em">
 
-    <h3 class="list-item-title" style="font-size: 16px; font-weight: bold; align-self: center;">@item.TituloTemporario</h3>
-      <div class="elements-card-events">
-        
-        <p class="list-item-category" style="font-size: 1em; bold; margin: 0px;">@item.TempoRestante</p>
-      <button data-bs-toggle="modal" data-bs-target="#eventModal-@item.Id" class="button action" style="margin-top: 0.5em;">Detalhes</button>
-  </div>
-  </div>
-}
+        <h3 class="list-item-title" style="font-size: 16px; font-weight: bold; align-self: center;">@item.TituloTemporario</h3>
+        <div class="elements-card-events">
+            
+            <p class="list-item-category" style="font-size: 1em; bold; margin: 0px;">@item.TempoRestante</p>
+          <button data-bs-toggle="modal" data-bs-target="#eventModal-@item.Id" class="button action" style="margin-top: 0.5em;">Detalhes</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
