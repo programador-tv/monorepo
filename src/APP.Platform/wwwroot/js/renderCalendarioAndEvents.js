@@ -106,7 +106,7 @@ function RenderCalendarItens() {
         const timeSelection = [... data.myTimeSelection, ... data.attachedTimeSelection];
         const badFinished = data.badFinished;
 
-        await RenderActualEvents(timeSelection,data.modals, data.joinTimeModalsPanel, data.timeSelectionPanelModals, data.requestHelpModalsPanel, data.solvedHelpModalsPanel);
+        await RenderActualEvents(timeSelection,data.modals, data.joinTimeModalsPanel, data.timeSelectionPanelModals, data.requestHelpModalsPanel, data.solvedHelpModalsPanel, data.livesModalsPanel);
 
         for (let value of badFinished) {
             RenderOldEvents(value);
@@ -117,7 +117,7 @@ function RenderCalendarItens() {
       });
   }
 
-async function RenderActualEvents(events, embed, joinTimes, TimeSelectionModals, requestHelpList, solvedHelpList) {
+async function RenderActualEvents(events, embed, joinTimes, TimeSelectionModals, requestHelpList, solvedHelpList, livesModalsPanel) {
 
     for(let event of events){
 
@@ -150,6 +150,7 @@ async function RenderActualEvents(events, embed, joinTimes, TimeSelectionModals,
     $("#freeTimes").html(TimeSelectionModals)
     $("#askedHelp").html(requestHelpList)
     $("#solvedHelp").html(solvedHelpList)
+    $("#myLives").html(livesModalsPanel)
 
     if (window.location.href.indexOf("event") > -1) {
         needOpenModalId = window.location.href.split("event=")[1];

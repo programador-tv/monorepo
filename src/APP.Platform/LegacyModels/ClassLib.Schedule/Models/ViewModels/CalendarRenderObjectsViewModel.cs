@@ -10,6 +10,7 @@ public sealed class CalendarRenderObjectsViewModel
     public List<BadFinishedTimeSelectionForCalendarSectionViewModel>? BadFinished { get; set; }
     public string? Modals { get; set; }
     public string? TimeSelectionPanelModals { get; set; }
+    public string? LivesModalsPanel { get; set; }
     public string? JoinTimeModalsPanel { get; set; }
     public string? RequestHelpModalsPanel { get; set; }
     public string? SolvedHelpModalsPanel { get; set; }
