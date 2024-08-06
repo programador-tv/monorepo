@@ -280,6 +280,8 @@ body {
   height: 160px;
   border-radius: 50%;
   border: 1px solid lightgray;
+  z-index: 999;
+  position: relative;
 }
 
 .avatar-busca {
@@ -1541,45 +1543,42 @@ body {
 
 @media (max-width: 1485px) {
   #theGreatAside {
-      display: none;
+    display: none;
   }
 
   #theGreatContent {
-      padding-right: 0;
+    padding-right: 0;
   }
 
   #asideBelow {
-      display: flex;
+    display: flex;
   }
 }
 
 /* Media query para largura maior que 992px */
 @media (min-width: 993px) {
   #theGreatContent {
-      padding-left: 300px;
+    padding-left: 300px;
   }
 
   #asideBelow {
-      padding-left: 335px;
+    padding-left: 335px;
   }
 }
 
 /* Media query para largura menor que 993px */
 @media (max-width: 992px) {
   #theGreatContent {
-      padding-left: 0;
+    padding-left: 0;
   }
 
   #asideBelow {
-      padding-left: 35px;
+    padding-left: 35px;
   }
 }
-
 
 @keyframes loading {
   100% {
     transform: translateX(100%);
   }
-
-
 }
