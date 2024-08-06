@@ -733,9 +733,13 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
     </script>
     @await RenderSectionAsync("Scripts", required: false)
     <script defer src="~/js/EventActions.js"></script>
-    <script>
-        RenderCalendarItens();
-    </script>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <script>
+            RenderCalendarItens();
+        </script>
+    }
+   
    
 </body>
 </html>

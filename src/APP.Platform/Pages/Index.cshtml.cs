@@ -23,26 +23,26 @@ using tags;
 
 namespace APP.Platform.Pages;
 
-public class IndexModel : CustomPageModel
+public class IndexModel(
+    ILiveService liveService,
+    IRazorViewEngine viewEngine,
+    ITempDataProvider tempDataProvider,
+    ApplicationDbContext context,
+    PerfilDbContext perfilDbContext,
+    IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor,
+    OpenAiService openAiService,
+    IMessagePublisher messagePublisher,
+    IAprenderService aprenderService,
+    IPerfilWebService perfilWebService,
+    Settings settings
+) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     public List<PresentesOpenRoom>? PresentesOpenRoom { get; set; }
-
-    private readonly OpenAiService _openAiService;
-    private new readonly ApplicationDbContext _context;
-    public readonly PerfilDbContext _perfilContext;
-    protected readonly IHttpClientFactory _httpClientFactory;
-    protected new readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMessagePublisher _messagePublisher;
-    private readonly IAprenderService _AprenderService;
-
-    private readonly IRazorViewEngine _viewEngine;
-    private readonly ITempDataProvider _tempDataProvider;
-    private readonly ILiveService _liveService;
-    private IPerfilWebService _perfilWebService { get; set; }
-    public List<RoomViewModel> Rooms = new();
-    public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = new();
-    public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = new();
-    public Dictionary<string, List<string>> RelatioTags { get; set; }
+    public List<RoomViewModel> Rooms { get; set; } = [];
+    public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = [];
+    public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = [];
+    public Dictionary<string, List<string>>? RelatioTags { get; set; }
 
     [BindProperty]
     public ScheduleTimeSelectionRequestModel? ScheduleTimeSelection { get; set; }
@@ -60,36 +60,7 @@ public class IndexModel : CustomPageModel
     public string? Joined { get; set; }
 
     [BindProperty]
-    public List<string> TagsSelected { get; set; } = new();
-
-    public IndexModel(
-        ILiveService liveService,
-        IRazorViewEngine viewEngine,
-        ITempDataProvider tempDataProvider,
-        ApplicationDbContext context,
-        PerfilDbContext perfilDbContext,
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor,
-        OpenAiService openAiService,
-        IMessagePublisher messagePublisher,
-        IAprenderService aprenderService,
-        IPerfilWebService perfilWebService,
-        Settings settings
-    )
-        : base(context, httpClientFactory, httpContextAccessor, settings)
-    {
-        _httpClientFactory = httpClientFactory;
-        _liveService = liveService;
-        _viewEngine = viewEngine;
-        _tempDataProvider = tempDataProvider;
-        _perfilWebService = perfilWebService;
-        _context = context;
-        _perfilContext = perfilDbContext;
-        _httpContextAccessor = httpContextAccessor;
-        _messagePublisher = messagePublisher;
-        _openAiService = openAiService;
-        _AprenderService = aprenderService;
-    }
+    public List<string> TagsSelected { get; set; } = [];
 
     public IActionResult OnPostJoinOpenRoom()
     {
@@ -151,7 +122,7 @@ public class IndexModel : CustomPageModel
             return Redirect("/Perfil");
         }
 
-        PresentesOpenRoom = _context.PresentesOpenRooms.Where(e => e.EstaPresente).ToList();
+        PresentesOpenRoom = [.. _context.PresentesOpenRooms.Where(e => e.EstaPresente)];
 
         var rooms = _context.Rooms.Where(e => e.EstaAberto).ToList();
 
@@ -164,7 +135,7 @@ public class IndexModel : CustomPageModel
 
         var associatedOwnerId = rooms.Select(e => e.PerfilId).ToList();
 
-        var associatedOwners = await _perfilWebService.GetAllById(associatedOwnerId) ?? new();
+        var associatedOwners = await perfilWebService.GetAllById(associatedOwnerId) ?? [];
 
         var associatedPresentes = _context
             .Presentes.Where(e => roomsId.Contains(e.RoomId) && e.EstaPresente)
@@ -212,7 +183,7 @@ public class IndexModel : CustomPageModel
         var PerfilIds = visibleVideos.Select(e => e.PerfilId).ToList();
         var liveIds = visibleVideos.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -236,7 +207,7 @@ public class IndexModel : CustomPageModel
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
 
             lives.Add(liveViewModel);
         }
@@ -258,7 +229,7 @@ public class IndexModel : CustomPageModel
         var PerfilIds = visibleVideos.Select(e => e.PerfilId).ToList();
         var liveIds = visibleVideos.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -283,7 +254,7 @@ public class IndexModel : CustomPageModel
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
 
             savedVideos.Add(liveViewModel);
         }
@@ -322,7 +293,7 @@ public class IndexModel : CustomPageModel
         var PerfilIds = livesSchedules.Select(e => e.PerfilId).ToList();
         var liveIds = livesSchedules.Select(e => e.Id).ToList();
 
-        var perfils = await _perfilWebService.GetAllById(PerfilIds);
+        var perfils = await perfilWebService.GetAllById(PerfilIds);
 
         var liveVisualizations = _context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
@@ -346,7 +317,7 @@ public class IndexModel : CustomPageModel
             };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = _liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
             var liveId = liveViewModel.CodigoLive;
 
             var timeSelectionId = backstages
@@ -453,7 +424,7 @@ public class IndexModel : CustomPageModel
                 tsAndJts.Key.Tags = tags;
             }
 
-            var perfil = _perfilContext
+            var perfil = perfilDbContext
                 ?.Perfils?.Where(perfil => perfil.Id == tsAndJts.Key.PerfilId)
                 .FirstOrDefault();
 
@@ -477,11 +448,11 @@ public class IndexModel : CustomPageModel
             {
                 tsAndJts.Key.ActionNeeded = true;
             }
-            MyEvents ??= new();
+            MyEvents ??= [];
             MyEvents[item] = tsAndJts.Key;
         }
 
-        HashSet<TimeSelection> valueSet = new();
+        HashSet<TimeSelection> valueSet = [];
 
         if (MyEvents != null)
         {
@@ -519,7 +490,7 @@ public class IndexModel : CustomPageModel
         var timeSelectionGroupByPerfilId = timeSelections.GroupBy(e => e.PerfilId);
 
         var MentorsFreeTime = new List<MentorFreeTime>();
-        List<string?> anotherTimeSelectionIDs = new();
+        List<string?> anotherTimeSelectionIDs = [];
         List<Tag>? anotherTags;
 
         var perfilsIds = timeSelectionGroupByPerfilId
@@ -528,7 +499,7 @@ public class IndexModel : CustomPageModel
             .Select(id => Guid.Parse(id))
             .ToList();
 
-        var perfis = await _perfilWebService.GetAllById(perfilsIds) ?? new();
+        var perfis = await perfilWebService.GetAllById(perfilsIds) ?? [];
 
         var perfisLegacy = new List<Domain.Entities.Perfil>();
 
@@ -587,11 +558,12 @@ public class IndexModel : CustomPageModel
             }
         }
 
-        anotherTags = _context
-            .Tags.Where(timeSelection =>
+        anotherTags =
+        [
+            .. _context.Tags.Where(timeSelection =>
                 anotherTimeSelectionIDs.Contains(timeSelection.FreeTimeRelacao)
             )
-            .ToList();
+        ];
 
         var timeSelectionsDictionary = MentorsFreeTime
             .SelectMany(mentor => mentor.TimeSelections)
@@ -616,7 +588,7 @@ public class IndexModel : CustomPageModel
 
         var anotherTimeSelections = MentorsFreeTime
             .Where(e => e.TimeSelections != null)
-            .SelectMany(e => e.TimeSelections ?? new())
+            .SelectMany(e => e.TimeSelections ?? [])
             .ToList();
 
         for (int iterator = 0; iterator < anotherTimeSelections.Count; iterator++)
@@ -655,12 +627,12 @@ public class IndexModel : CustomPageModel
 
     public async Task<ActionResult> OnGetAfterLoadRequestedHelp()
     {
-        var myTimeSelectionAndJoinTimes = _AprenderService.GetMyTimeSelectionAndJoinTimes(
+        var myTimeSelectionAndJoinTimes = aprenderService.GetMyTimeSelectionAndJoinTimes(
             UserProfile.Id,
             _meetUrl
         );
 
-        _AprenderService.GetMyEvents(
+        aprenderService.GetMyEvents(
             myTimeSelectionAndJoinTimes,
             UserProfile.Id,
             _meetUrl,
@@ -687,10 +659,10 @@ public class IndexModel : CustomPageModel
             timeSelectionGroupByPerfilId,
             _context,
             _httpClientFactory,
-            _perfilWebService
+            perfilWebService
         );
 
-        return new JsonResult(new { pedidos = pedidos, isLogged = IsAuth });
+        return new JsonResult(new { pedidos, isLogged = IsAuth });
     }
 
     public async Task<ActionResult> OnPostTrySetMentor()
@@ -762,12 +734,12 @@ public class IndexModel : CustomPageModel
                 Conteudo =
                     $@" está interessado
                         em receber mentoria {timeSelection.TituloTemporario}
-                        no dia {timeSelection.StartTime.ToString("dd/MM/yyyy")}
+                        no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         else if (timeSelection.Tipo == EnumTipoTimeSelection.RequestHelp)
         {
@@ -780,11 +752,11 @@ public class IndexModel : CustomPageModel
                 Conteudo =
                     $@" está interessado
                         em oferecer orientação para: {timeSelection.TituloTemporario}
-                        no dia {timeSelection.StartTime.ToString("dd/MM/yyyy")}
+                        no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
 
         return Redirect("./?event=" + JoinTime.TimeSelectionId);
@@ -795,9 +767,9 @@ public class IndexModel : CustomPageModel
         return await RenderVideosService.RenderVideos(
             viewName,
             model,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
     }
 
@@ -805,7 +777,7 @@ public class IndexModel : CustomPageModel
     {
         try
         {
-            var response = await _openAiService.GetTitleAndDescriptionSugestion(entrada);
+            var response = await openAiService.GetTitleAndDescriptionSugestion(entrada);
 
             if (!string.IsNullOrEmpty(response?.Titulo))
             {
@@ -887,7 +859,7 @@ public class IndexModel : CustomPageModel
         }
         if (notification != null)
         {
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         return Redirect("./?event=" + join.TimeSelectionId);
     }
@@ -904,7 +876,7 @@ public class IndexModel : CustomPageModel
             )
             .ToList();
 
-        alunosTotal ??= new List<JoinTime>();
+        alunosTotal ??= [];
 
         var totalVagasOcupada = alunosTotal.Count;
 
@@ -914,7 +886,7 @@ public class IndexModel : CustomPageModel
         }
     }
 
-    public IActionResult OnPostTimeSelectionStatusMarcado(Guid id, Guid PerfilId = default(Guid))
+    public IActionResult OnPostTimeSelectionStatusMarcado(Guid id, Guid PerfilId = default)
     {
         var ts = _context?.TimeSelections.Where(e => e.Id == id).FirstOrDefault();
         if (ts == null)
@@ -975,7 +947,7 @@ public class IndexModel : CustomPageModel
 
     public IActionResult Base64toImage(string base64)
     {
-        if (base64.Contains(","))
+        if (base64.Contains(','))
             base64 = base64.Split(",")[1];
 
         byte[] imageBytes = Convert.FromBase64String(base64);
