@@ -34,8 +34,14 @@ function JoinTimeForRequestedHelp(time, perfil, group,index) {
             height: 75px; word-wrap: break-word;">${time.title.length > 50 ? time.title.substring(0, 50) + "..." : time.title}</h2>
             <div style="display: flex; flex-wrap: wrap;    width: 90%;">`
 
-            prepared += `<small class="tag-capacitacao" style=" border: solid 1px #1E53B7;background-color: #4C80E2; color: white;margin-top:0px">${mapTipo[time.variation]}</small>`;
-            prepared += `<small class="tag-capacitacao" style="margin-top:0px">${time.tags[0].titulo.length > 20 ? time.tags[0].titulo.substring(0, 20) + "..." : time.tags[0].titulo}</small>`;
+            prepared += `<small class="tag-capacitacao tag-duvida mt-0">
+													${mapTipo[time.variation]}
+												</small>`;
+            prepared += `<small class="tag-capacitacao mt-0">
+													${time.tags[0].titulo.length > 20
+														? time.tags[0].titulo.substring(0, 20) + "..."
+														: time.tags[0].titulo}
+												</small>`;
 
         prepared += `</div>
         </div>`

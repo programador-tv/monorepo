@@ -66,8 +66,14 @@ function JoinTimeForMentorias(time, perfil, group, index) {
             font-size: 18px;font-weight: 400; height: 75px; word-wrap: break-word;">${time.titulo.length > 50 ? time.titulo.substring(0, 50) + "..." : time.titulo}</h2>
             <div style="display: flex; flex-wrap: wrap;    width: 80%;">`
 
-            prepared += `<small class="tag-capacitacao" style="border: solid 1px #1E53B7;background-color: #4C80E2; color: white;margin-top:0px">${mapTipo[time.variacao]}</small>`;
-            prepared += `<small class="tag-capacitacao" style="margin-top:0px">${time.tags[0].titulo.length > 20 ? time.tags[0].titulo.substring(0, 20) + "..." : time.tags[0].titulo}</small>`;
+            prepared += `<small class="tag-capacitacao mt-0" data-mapTipo="${time.variacao}">
+													${mapTipo[time.variacao]}
+												</small>`;
+            prepared += `<small class="tag-capacitacao mt-0">
+													${time.tags[0].titulo.length > 20
+														? time.tags[0].titulo.substring(0, 20) + "..."
+														: time.tags[0].titulo}
+												</small>`;
 
 
         prepared += `</div>
