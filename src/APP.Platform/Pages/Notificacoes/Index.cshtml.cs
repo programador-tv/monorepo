@@ -4,7 +4,6 @@ using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace APP.Platform.Pages
 {
     public sealed class NotificacoesModel(
@@ -14,7 +13,7 @@ namespace APP.Platform.Pages
         Settings settings,
         IPerfilWebService _perfilWebService,
         INotificationWebService _notificationWebService
-        ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
+    ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
     {
         public List<NotificationViewModel>? Notifications { get; set; }
 

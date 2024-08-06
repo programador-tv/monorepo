@@ -38,6 +38,7 @@ public class IndexModel(
     IMessagePublisher messagePublisher,
     IAprenderService aprenderService,
     IPerfilWebService perfilWebService,
+    IHelpResponseWebService helpResponseWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -662,8 +663,8 @@ public class IndexModel(
             timeSelectionGroupByPerfilId,
             _context,
             _httpClientFactory,
-            _perfilWebService,
-            _helpResponseWebService
+            perfilWebService,
+            helpResponseWebService
         );
 
         return new JsonResult(new { pedidos, isLogged = IsAuth });
@@ -966,7 +967,7 @@ public class IndexModel(
         var perfilId = UserProfile.Id;
         var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
 
-        await _helpResponseWebService.Add(request);
+        await helpResponseWebService.Add(request);
         return new EmptyResult();
     }
 
@@ -974,7 +975,7 @@ public class IndexModel(
     {
         try
         {
-            await _helpResponseWebService.Update(Guid.Parse(helpResponseId));
+            await helpResponseWebService.Update(Guid.Parse(helpResponseId));
             return new EmptyResult();
         }
         catch (Exception err)
