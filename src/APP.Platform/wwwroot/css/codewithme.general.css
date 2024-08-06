@@ -1863,6 +1863,7 @@ body {
 .modal-body {
   padding: 0;
   max-height: 700px;
+  min-height: 510px;
 }
 
 .date-input-div {
@@ -1926,4 +1927,9 @@ body {
 .datePickerFlexTime {
   width: 46%;
   padding-right: 33px;
+}
+
+.request-help-input-div {
+  display: flex;
+  flex-direction: column;
 }

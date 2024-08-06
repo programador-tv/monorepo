@@ -152,17 +152,14 @@
 </style>
 <script defer src="/js/TabBsHandler.js"></script>
 <script>
+    var isAuthenticated = @isAuth.ToString().ToLower();
     //PM- Lógica de abrir modais
     function openOneToOne() {
-    var isAuthenticated = @isAuth.ToString().ToLower();
-    console.log(isAuthenticated)
-
     if (isAuthenticated) {
         $('#eventModalOneToOne').modal('show');
     } else {
         alert("Você precisa estar logado para acessar esta funcionalidade.");
-        // Você pode redirecionar para a página de login ou abrir um modal de login
-        window.location.href = "/Identity/Account/Login"; // Ou a URL da sua página de login
+        window.location.href = "/Identity/Account/Login";
     }
 }
     function openCursosAndEventos() {
@@ -174,7 +171,12 @@
             $("#timePickerModal").modal("show");
     }
      function openTimePickerForHelp() {
-            $("#tipoTempoLivre").val("requestHelp");
-            $("#timePickerModal").modal("show");
+         if (isAuthenticated) {
+         $("#eventModalRequestHelp").modal("show");
+    } else {
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+        window.location.href = "/Identity/Account/Login"; 
+    }
         }
 </script>
+
