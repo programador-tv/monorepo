@@ -113,8 +113,8 @@ const firstPickerHoursInput = document.querySelector(
 
 
 function validateTimeOverlap(timeSelection) {
-  for (var i = 0; i < asyncEvents.length; i++) {
-    var item = asyncEvents[i];
+  for (let i = 0; i < asyncEvents.length; i++) {
+    const item = asyncEvents[i];
     if (item.start <= timeSelection.start && item.end > timeSelection.start) {
       return false;
     }
@@ -207,7 +207,7 @@ okBtn.addEventListener("click", () => {
     const startStr = transformDateFormat(initialDate.toISOString())
     const endStr = transformDateFormat(finalDate.toISOString())
 
-    var event = {
+    const event = {
       id: 'temp',
       title: '',
       start: startStr,
