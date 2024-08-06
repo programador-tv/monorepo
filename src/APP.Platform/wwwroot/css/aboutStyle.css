@@ -161,6 +161,10 @@
   filter: grayscale(100%);
 }
 
+#theGreatContent {
+  padding-right: 0 !important;
+}
+
 .purpleHeading {
   width: 50%;
 }
