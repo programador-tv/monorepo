@@ -13,7 +13,6 @@ namespace APP.Platform.Pages.Studio
     public sealed class OBSModel : CustomPageModel
     {
         private new readonly ApplicationDbContext _context;
-        private readonly IMessagePublisher _messagePublisher;
         private readonly RateLimit _rateLimit;
 
         public Live? Live { get; set; }
@@ -25,14 +24,12 @@ namespace APP.Platform.Pages.Studio
             ApplicationDbContext context,
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContextAccessor,
-            IMessagePublisher messagePublisher,
             Settings settings,
             RateLimit rateLimit
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
             _context = context;
-            _messagePublisher = messagePublisher;
             _rateLimit = rateLimit;
         }
 
