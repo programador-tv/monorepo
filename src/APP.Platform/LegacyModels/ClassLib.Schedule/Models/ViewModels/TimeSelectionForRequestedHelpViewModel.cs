@@ -15,4 +15,5 @@ public class TimeSelectionForRequestedHelpViewModel
     public string? ImagePath { get; set; }
     public int Variation { get; set; }
     public EnumTipoTimeSelection Type { get; set; } = EnumTipoTimeSelection.RequestHelp;
+    public List<HelpResponse> HelpResponses { get; set; } = [];
 }

@@ -96,9 +96,149 @@ function SetItToTryRequestedHelp(freetimeId) {
     document.querySelector("#timeSelectionJoinTime").value = freetimeId
     setTimeout(() => {
         renderRequestedHelpSelected(perfil, time)
+        renderRequestedHelpResponse(time.helpResponses, time.perfilId)
         $("#eventModal").modal("hide")
         $("#matcHelphModal").modal("show")
     }, 300)
+}
+
+function renderRequestedHelpResponse(listHelpResponse, perfilId) {
+    const userLoggedId = document.getElementById("requestProfileId").value;
+    if (userLoggedId !== perfilId) {
+        let prepareFormHelpResponse = `
+            <p>Comentar</p>
+            <div class="response-text-area">
+                <textarea class="form-control" id="contentHelpResponse"></textarea>
+            </div>
+
+            <div class="btn-add-helpResponse">
+                <button id="btn-sendComment" onclick="sendComment()" type="button" class="button button-capacitacao">Enviar comentário</button>
+            </div>
+        `
+        $("#help-response").html(prepareFormHelpResponse)
+    }
+
+    let prepared = "";
+    for (let item of listHelpResponse) {
+        const qtdTempo = qtdEmMinutosCriada(item.createdAt);
+        let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
+        prepared +=
+            `<div class="container-helpResponse" id="helpResponse-${item.id}">
+                <div class="content-helpResponse">
+                    <div id="container-description-helpResponse">
+                        <p id="description-helpResponse">${item.conteudo}</p>
+                    </div>
+
+                    <div id="container-time">
+                        <p>${qtdTempo.valor}${qtdTempo.tag}</p>
+                    </div>
+                </div>
+            `
+        if (userLoggedId === perfilId || userLoggedId === item.perfilId) {
+            botaoDeletar = `
+                <div id="container-btn-deleteResponse">
+                    <span onclick=deleteHelpResponse('${item.id}') id="btn-deleteResponse">🗑️</span>
+                </div>
+            `
+        }
+        prepared += `
+            ${botaoDeletar}
+        </div>`
+    }
+
+    $("#space-helpResponses").html(prepared)
+}
+
+function sendComment() {
+    const url = '?handler=HelpResponse';
+    const formData = new FormData();
+    if (!formData.has("__RequestVerificationToken")) {
+        const token = document.querySelector("#forgery input").value
+        formData.append("__RequestVerificationToken", token)
+    }
+    let timeSelectionId = document.getElementById("timeSelectionJoinTime").value;
+    let contentHelpResponse = document.getElementById("contentHelpResponse").value;
+    formData.append("timeSelectionId", timeSelectionId);
+    formData.append("content", contentHelpResponse);
+
+    const options = {
+        method: "POST",
+        body: formData,
+    };
+
+    fetch(url, options).then(function (response) {
+        if (!response.ok) {
+            throw new Error("Erro ao enviar comentário");
+        }
+        document.getElementById("contentHelpResponse").value = "";
+        showsCommentMessageSent();
+        setTimeout(() => {
+            $("#container-msg-helpResponse").html("");
+        }, 3000)
+    });
+}
+
+
+function deleteHelpResponse(helpResponseId) {
+    const url = '?handler=DeleteHelpResponse';
+    const formData = new FormData();
+
+    if (!formData.has("__RequestVerificationToken")) {
+        const token = document.querySelector("#forgery input").value
+        formData.append("__RequestVerificationToken", token)
+    }
+    formData.append("helpResponseId", helpResponseId);
+
+    const options = {
+        method: "POST",
+        body: formData,
+    }
+
+    fetch(url, options).then(function (response) {
+        if (!response.ok) {
+            throw new Error("Erro ao deletar comentário.");
+        }
+        document.getElementById(`helpResponse-${helpResponseId}`).remove();
+    })
+}
+
+
+function showsCommentMessageSent() {
+    let prepared = "";
+
+    prepared += `
+        <div class="content-msg-helpResponse">
+            <div class="alert alert-success" role="alert">
+                Você contribuiu com o pedido de ajuda através de um comentário.
+            </div>
+        </div>
+    `;
+
+    $("#container-msg-helpResponse").html(prepared);
+}
+
+
+function qtdEmMinutosCriada(date) {
+    const datetimeAtual = Date.now();
+    const dataAtual = new Date(datetimeAtual).toISOString();
+    const createdAt = new Date(date).toISOString();
+
+    const diferencaEmMilissegundos = Date.parse(dataAtual) - Date.parse(createdAt)
+    const diferencaSegundos = Math.floor(diferencaEmMilissegundos / 1000);
+    const diferencaMinutos = Math.floor(diferencaSegundos / 60);
+
+    if (diferencaMinutos < 60) {
+        return diferencaMinutos == 0
+            ? { tag: "Agora", valor: "" } : { tag: "min atrás", valor: diferencaMinutos }
+    }
+    else {
+        const diferencaHoras = Math.floor(diferencaMinutos / 60);
+        const diferencaDias = Math.floor(diferencaHoras / 24);
+
+        return diferencaHoras > 48
+            ? { tag: "D atrás", valor: diferencaDias } : { tag: "h atrás", valor: diferencaHoras }
+    }
+
 }
 
 function renderRequestedHelpSelected(perfil, time) {
