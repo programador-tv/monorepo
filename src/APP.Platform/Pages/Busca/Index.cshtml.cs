@@ -54,7 +54,7 @@ public sealed class BuscaIndexModel : CustomPageModel
             return Redirect("index");
         }
 
-        var search = new Search(_context, _httpClientFactory, key);
+        var search = new Search(_context, _httpClientFactory, _perfilWebService, key);
 
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
