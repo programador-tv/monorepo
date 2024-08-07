@@ -1,4 +1,5 @@
 ﻿@*
+    <div @*
     <div class="modal fade timeSelection-x" id="capacitacaoModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 955px;">
         <div class="modal-content" style="background-color: #FEFBFB;">
@@ -89,8 +90,8 @@
                             Criar sessão 1:1
                         </button>
                         <div style="text-align: right; font-size: 32px; cursor : pointer">
-                            <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
-                            <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
+                            <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+                            <span id="groupOneToOne-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         </div>
                         <div id="OneToOneMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap">
                         </div>
@@ -101,9 +102,8 @@
                             Tirar dúvida
                         </button>
                         <div style="text-align: right; font-size: 32px; cursor : pointer">
-                            <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
-                            <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
-                        </div>
+                            <span id="groupHelp-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+                            <span id="groupHelp-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         <div id="pedidosPanel" style="display: flex;justify-content: center; flex-wrap:wrap">
                             <div class="d-flex justify-content-center" id="pedidosLoading">
                                 <div class="spinner-grow" role="status">
@@ -122,8 +122,8 @@
                             Criar evento
                         </button>
                         <div style="text-align: right; font-size: 32px; cursor : pointer">
-                            <span id="groupCursos-left" style="filter: grayscale(0.8);">👈</span>
-                            <span id="groupCursos-right" style="filter: grayscale(0.8);">👉</span>
+                            <span id="groupCursos-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+                            <span id="groupCursos-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         </div>
                        <div id="CursosMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap"></div>
                 </section>
@@ -159,25 +159,27 @@
         border-bottom: 3px solid navy;
         color: navy;
     }
-    .button-revamp:hover {
 
-        border-bottom: 3px solid navy;
-        color: rgb(147, 147, 167);
+      .button-revamp:hover {
+        color: #437AE2;
     }
-    #groupOneToOne-left, #groupOneToOne-right,
-    #groupCursos-left, #groupCursos-right,
-    #groupHelp-left, #groupHelp-right
-    {
+        .button-revamp.active {
+        color: #8DB5FF;
+    }
+      .bi-arrow-left, .bi-arrow-right {
+         color: #437AE2;
+        font-size: 32px;
+        cursor: pointer;
+        display: inline-block; /* Garante que as setas estejam na mesma linha */
+        vertical-align: middle; /* Alinha verticalmente ao centro */
+        margin: 0 5px; /* Adiciona um pequeno espaço entre as setas e outros elementos */
+    }
+    
+    /* Cor para hover */
+    .bi-arrow-left:hover, .bi-arrow-right:hover {
+        color: #437AE2;
+    }
 
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    #pedidosPanel {
-        margin-top: 12px;
-       height: 220px;
-       align-content: center;
-    }
 
 </style>
 
