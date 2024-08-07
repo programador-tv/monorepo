@@ -21,19 +21,23 @@ namespace Infrastructure.Migrations
                     Conteudo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ResponseStatus = table.Column<int>(type: "int", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                    Version = table.Column<byte[]>(
+                        type: "rowversion",
+                        rowVersion: true,
+                        nullable: false
+                    )
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HelpResponses", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "HelpResponses");
+            migrationBuilder.DropTable(name: "HelpResponses");
         }
     }
 }
