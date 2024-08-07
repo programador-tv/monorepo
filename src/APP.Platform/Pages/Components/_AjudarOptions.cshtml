@@ -161,8 +161,7 @@
         $('#eventModalOneToOne').modal('show');
     } else {
         alert("Você precisa estar logado para acessar esta funcionalidade.");
-        // Você pode redirecionar para a página de login ou abrir um modal de login
-        window.location.href = "/Identity/Account/Login"; // Ou a URL da sua página de login
+        loginCallbackOneToOne();
     }
 }
     function openCursosAndEventos() {
