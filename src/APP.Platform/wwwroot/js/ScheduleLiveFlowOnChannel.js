@@ -33,11 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((eventData) => {
           const content = eventData.content;
           if (content !== undefined) {
-            // timeSelectionIdForLive = content.id;
+            // const timeSelectionIdForLive = content.id;
             // content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
             // // createLiveModal();
             // calendar.addEvent(content);
-            // // firstForm = content;
+            // // const firstForm = content;
             setTimeout(() => {
               location.reload();
             }, 2000);

@@ -41,14 +41,14 @@ function SaveTime(aspForm, _hideEventModal) {
       const content = eventData.content;
       if  (content !== undefined) {
           if (content.tipo == 0) {
-            timeSelectionIdForLive = content.id;
+            const timeSelectionIdForLive = content.id;
             content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
            await  createLiveModal(content.id);
           } else {
             createTimeModal(content.id)
           }
           calendar.addEvent(content);
-          firstForm = content;
+          const firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
       }
         // if (content.tipo == 1) {
