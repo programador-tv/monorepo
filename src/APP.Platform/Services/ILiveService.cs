@@ -9,7 +9,7 @@ namespace Platform.Services;
 public interface ILiveService
 {
     public LiveViewModel BuildLiveViewModels(Live live, Perfil perfil, int views);
-    public List<PrivateLiveViewModel> RenderPrivateLives(Perfil perfilOwner, Guid perfilLogInId);
+    public List<PrivateLiveViewModel> RenderPrivateLives(Perfil perfilOwner, Guid perfilLogInId, bool isPrivate);
     public List<LiveSchedulePreviewViewModel> RenderPreviewLiveSchedule(
         Perfil perfilOwner,
         Guid perfilLogInId

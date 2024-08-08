@@ -29,9 +29,9 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
         };
     }
 
-    public List<PrivateLiveViewModel> RenderPrivateLives(Perfil perfilOwner, Guid perfilLogInId)
+    public List<PrivateLiveViewModel> RenderPrivateLives(Perfil perfilOwner, Guid perfilLogInId, bool isPrivate)
     {
-        var lives = context.Lives.Where(e => e.PerfilId == perfilOwner.Id).ToList();
+        var lives = context.Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility == !isPrivate).ToList();
 
         var privateLives = new List<PrivateLiveViewModel>();
         var isUsrCanal = perfilLogInId == perfilOwner.Id;

@@ -33,13 +33,21 @@
             </div>
 
             <div class="mt-4 w-50">
-                <h1 style="word-break: break-word; font-family: League Spartan; font-size: 32px; font-weight: 500; color: #1c1c1c">@Model.PerfilOwner.Nome</h1>
-                <p style="word-wrap: break-word; font-family: League Spartan; font-size: 20px; font-weight: 500; color: #525252"> @Model.PerfilOwner.Bio</p>
+                <h1
+                    style="word-break: break-word; font-family: League Spartan; font-size: 32px; font-weight: 500; color: #1c1c1c">
+                    @Model.PerfilOwner.Nome</h1>
+                <p
+                    style="word-wrap: break-word; font-family: League Spartan; font-size: 20px; font-weight: 500; color: #525252">
+                    @Model.PerfilOwner.Bio</p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="tiny-channel-seguindo-seguidores" style="display: flex; justify-content: space-between; align-items: center; min-width: 140px;">
-                        <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-right: 1rem;">
-                            <span id="followerCount" style="font-size: 1rem; font-weight: 600; border-right: 10px">@Model.followersCount</span>
-                            <span id="follow_tag" style="color: #525252; font-size: 16px; font-weight: 500px; border-right: 10px; margin-left: 10px">
+                    <div class="tiny-channel-seguindo-seguidores"
+                        style="display: flex; justify-content: space-between; align-items: center; min-width: 140px;">
+                        <div
+                            style="display: flex; justify-content: center; align-items: center; width: 100%; margin-right: 1rem;">
+                            <span id="followerCount"
+                                style="font-size: 1rem; font-weight: 600; border-right: 10px">@Model.followersCount</span>
+                            <span id="follow_tag"
+                                style="color: #525252; font-size: 16px; font-weight: 500px; border-right: 10px; margin-left: 10px">
                                 <script>
                                     if (@Model.followersCount == 1) {
                                         document.write("Seguidor")
@@ -49,7 +57,8 @@
                                 </script>
                             </span>
                         </div>
-                        <div class="tiny-seguindo" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-right: 1rem;">
+                        <div class="tiny-seguindo"
+                            style="display: flex; justify-content: center; align-items: center; width: 100%; margin-right: 1rem;">
                             <span style="font-size: 1rem; font-weight: 600;margin-left: 10px">@Model.followingCount</span>
                             <span style="color: #525252; font-size: 16px; font-weight: 500px; margin-left: 10px">
                                 Seguindo
@@ -111,21 +120,23 @@
             <div style="width: 80%; margin:0 auto; border-left: 4px solid #F2F2F2; padding: 10px;">
                 <div>
                     @if (!string.IsNullOrEmpty(Model.PerfilOwner.Linkedin))
-                {
-                    <a style="text-decoration:none" href="https://www.linkedin.com/in/@Model.PerfilOwner.Linkedin/"
-                        target="_blank">
-                        <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
-                    </a>
-                }
-                @if (!string.IsNullOrEmpty(Model.PerfilOwner.GitHub))
-                {
-                    <a href="https://github.com/@Model.PerfilOwner.GitHub/" style="text-decoration:none; margin-left:20px" target="_blank">
-                        <img style="width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
-                    </a>
-                }
+                    {
+                        <a style="text-decoration:none" href="https://www.linkedin.com/in/@Model.PerfilOwner.Linkedin/"
+                            target="_blank">
+                            <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.PerfilOwner.GitHub))
+                    {
+                        <a href="https://github.com/@Model.PerfilOwner.GitHub/" style="text-decoration:none; margin-left:20px"
+                            target="_blank">
+                            <img style="width:30px ;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+                        </a>
+                    }
                 </div>
 
-                <div style="word-break: break-word; margin-top:15px; text-align:justify; font-family: League Spartan; font-size: 20px; fpmt-weight: 400; color:#525252">
+                <div
+                    style="word-break: break-word; margin-top:15px; text-align:justify; font-family: League Spartan; font-size: 20px; fpmt-weight: 400; color:#525252">
                     @Model.PerfilOwner.Descricao
                 </div>
 
@@ -155,11 +166,11 @@
                 @{
                     @if (Model?.PerfilOwner?.Id == Model?.UserProfile?.Id && isLoggedUser)
                     {
-                            <span>Meus Vídeos 📹</span>
+                        <span>Meus Vídeos 📹</span>
                     }
                     else
                     {
-                            <span>Vídeos 📹</span>
+                        <span>Vídeos 📹</span>
                     }
                 }
             </button>
@@ -175,6 +186,18 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="my-videos" role="tabpanel" aria-labelledby="my-videos-tab">
+            @{
+                if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+                {
+                    <div style="display:flex; flex-direction: column; align-items:center; justify-content: center; width: 100%;">
+                        <p id="quant-items" style="margin-bottom: 0;"></p>
+                        <div style="display:flex;">
+                            <label>Exibir vídeos privados</label>
+                            <input type="checkbox" id="checkShowPrivateVideos" style="margin: 0px 0 0 10px;" />
+                        </div>
+                    </div>
+                }
+            }
             <main class="videos-group" id="savedVideosCanal">
                 <div class="d-flex justify-content-center">
                     <div class="spinner-grow" role="status">
@@ -191,30 +214,31 @@
 
 
 @await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTime",
-            new _ModalJoinTime
-        {
-            JoinTime = Model!.JoinTime,
-            IsLogedUser = Model!.IsAuth,
-            requestProfileId = Model.UserProfile.Id
-        })
+    new _ModalJoinTime
+{
+    JoinTime = Model!.JoinTime,
+    IsLogedUser = Model!.IsAuth,
+    requestProfileId = Model.UserProfile.Id
+})
 @await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTimeForRequestHelp",
-                  new _ModalJoinTimeForRequestHelp
-              {
-                  JoinTime = Model.JoinTime,
-                  IsLogedUser = Model.IsAuth,
-                  requestProfileId = Model.UserProfile.Id
-              })
+    new _ModalJoinTimeForRequestHelp
+{
+    JoinTime = Model.JoinTime,
+    IsLogedUser = Model.IsAuth,
+    requestProfileId = Model.UserProfile.Id
+})
 
 @await Html.PartialAsync("Components/TimeSelections/_ModalTimePicker")
-    <link href="/css/timePicker.css" rel="stylesheet" />
+<link href="/css/timePicker.css" rel="stylesheet" />
 
-    @await Html.PartialAsync("Components/ScheduleActions/_FormLiveSchedule",
-        new FormLiveSchedule{
-            ScheduleTimeSelection = Model.ScheduleTimeSelection!,
-            ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
-            ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection!,
-            RelatioTags = Model.RelatioTags!,
-            })
+@await Html.PartialAsync("Components/ScheduleActions/_FormLiveSchedule",
+    new FormLiveSchedule
+{
+    ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+    ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
+    ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection!,
+    RelatioTags = Model.RelatioTags!,
+})
 
 
 @section Scripts {
@@ -260,8 +284,8 @@
 
     <script>
         function compararPorDataDecrescente(a, b) {
-    return new Date(a.startTime) - new Date(b.startTime);
-}
+            return new Date(a.startTime) - new Date(b.startTime);
+        }
         function FollowEventButton(entityKey) {
             const counter = document.querySelector("#like-counter");
             const likeContainer = document.querySelector("#follow-button");
@@ -329,54 +353,72 @@
         videosGroup.style.justifyContent = "center";
         videosGroup.style.alignItems = "center";
 
-        fetch("?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName")
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Erro ao enviar a solicitação POST.");
-                }
-                return response.json();
-            })
-            .then(function (data) {
-                const CONSIDERED_EMPTY = "";
-                let videosPrivates = document.querySelector("#savedVideosCanal");
+        let checkboxPrivate = document.querySelector('#checkShowPrivateVideos');
 
-                if (data.privateLives === CONSIDERED_EMPTY
-                    && data.liveSchedules === CONSIDERED_EMPTY) {
-                    videosPrivates.innerHTML = `
-                                                    <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
-                                                        <span>Sem vídeos no momento</span> @{
-                                                        if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
-                                                        {
-                                                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
+        function getVideos(isPrivate) {
+            const loadingSpin = `<div class="spinner-grow" role="status">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span class="visually-hidden">Loading...</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>`;
+            const videosGroup = document.querySelector(".videos-group");
+            videosGroup.innerHTML = loadingSpin;
+            videosGroup.style.justifyContent = "center";
+            videosGroup.style.alignItems = "center";
 
-                                                            <a class="material-icons OpenNewButtom"
-                                                                style="font-size: 36px; cursor: pointer; margin-right: 0px;"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#liveModal">
-                                                                add_circle
-                                                            </a>
-                                                            <span style="color: #AEAEAE; font-size: 12px">
-                                                                Iniciar live
-                                                                </span>
-                                                            </div>
-                                                        }
-                                                        }
-                                                   <div>
-                                                        `
-                } else {
-                    videosPrivates.innerHTML = data.liveSchedules+data.privateLives;
+            fetch("?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName&isPrivate=" + isPrivate)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    const CONSIDERED_EMPTY = "";
+                    let videosPrivates = document.querySelector("#savedVideosCanal");
+                    let totalVideos = data.countTotal;
 
-                }
+                    if (data.privateLives === CONSIDERED_EMPTY
+                        && data.liveSchedules === CONSIDERED_EMPTY) {
+                        videosPrivates.innerHTML += `
+                                                                                    <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
+                                                                                        <span>Sem vídeos no momento</span> 
+        @{
+            if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+            {
+                                                                                                                                                                                                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
 
-                loadingSpin.style.display = "none";
-                videosGroup.style.justifyContent = "flex-start";
-                videosGroup.style.alignItems = "flex-start";
-            }).catch(function (error) {
-                loadingSpin.style.display = "none";
-                videosGroup.style.justifyContent = "flex-start";
-            });
+                                                                                                                                                                                                    <a class="material-icons OpenNewButtom"
+                                                                                                                                                                                                        style="font-size: 36px; cursor: pointer; margin-right: 0px;"
+                                                                                                                                                                                                        data-bs-toggle="modal"
+                                                                                                                                                                                                        data-bs-target="#liveModal">
+                                                                                                                                                                                                        add_circle
+                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                    <span style="color: #AEAEAE; font-size: 12px">
+                                                                                                                                                                                                        Iniciar live
+                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                    </div>
+            }
+        }
+                                                                                                                                                                                                                                                                                                                                                            <div>
+                                                                                                                                                                                                                                                                                                                                                                `
+                    }
 
+                    videosPrivates.innerHTML += data.liveSchedules + data.privateLives;
+                    document.querySelector('#quant-items').innerHTML = `${data.countTotal} vídeos encontrados`;
+                    videosPrivates.style.justifyContent = "flex-start";
+                    //loadingSpin.style.display = "none";
+                    videosGroup.style.justifyContent = "flex-start";
+                    videosGroup.style.alignItems = "flex-start";
+                }).catch(function (error) {
+                    loadingSpin.style.display = "none";
+                    videosGroup.style.justifyContent = "flex-start";
+                });
+        }
 
+        getVideos(false);
+
+        checkboxPrivate.addEventListener('click', function (event) {
+            getVideos(this.checked);
+        });
     </script>
 
 
@@ -444,7 +486,7 @@
                 .then(function (data) {
                     if (data) {
                         SetItToTry(freeTimeId);
-                    }else{
+                    } else {
                         alert('você já possui eventos marcados nesse horário')
                     }
                 })
@@ -472,65 +514,72 @@
                 }
             }
             prepared += `
-                                                                                                        <div class="" >
-                                                                                                        <h5 style="word-break: break-word; display: flex;align-items: center; justify-content: space-around;">
-                                                                                                            ${renderAvatar(perfil, true)}
-                                                                                                            ${perfil.nome}`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <h5 style="word-break: break-word; display: flex;align-items: center; justify-content: space-around;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ${renderAvatar(perfil, true)}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ${perfil.nome}`
             if (perfil.linkedin) {
                 prepared += `<a style="text-decoration:none"
-                                                                                                         href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
-                                                                                                            <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
-                                                                                                            </a>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                    `
             }
 
             if (perfil.gitHub) {
-                prepared += `<a style="text-decoration:none"
-                                                                                                         href="https://github.com/${perfil.gitHub}/" target="_blank">
-                                                                                                            <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
-                                                                                                            </a>`
+                prepared += `< a style = "text-decoration:none"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             href = "https://github.com/${perfil.gitHub}/" target = "_blank" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        < img style = "width:30px;cursor:pointer" src = "https://eduardoworrel.com/imgs/social/github (1).png" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ a >`
             }
 
-            prepared += `</h5>
-                                                                                                        <h6 style="text-align: center;">
-                                                                                                            ${perfil.bio ?? ""}
-                                                                                                        </h6>
-                                                                                                        <br>
-                                                                                                    `
+            prepared += `</ h5 >
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            < h6 style = "text-align: center;" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ${perfil.bio ?? ""}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </h6>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `
             prepared += `
-                                                                                                                    <div style="text-align: center">
-                                                                                                                        <strong>${time.titulo}</strong>
-                                                                                                                    </div>
-                                                                                                                    <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap">
-                                                                                                                `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                < div style = "text-align: center" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    < strong >${time.titulo}
+                                                                                                                                                                                                                                                                    </strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `
             let match = ""
             let notMatch = ""
             for (let tag of time.tags) {
                 const receive = `
-                                                                                            <small class="tag">${tag.titulo}</small>
-                                                                                            <br>
-                                                                                            `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <small class="tag">${tag.titulo}</small>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `
                 match += receive
             }
 
             prepared += match
             prepared += notMatch
             prepared += `</div>
-                                                                                                                       <br>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <br>
+                                                                                                                                                                                                                                                    `
             prepared += `
-                                                                                                    <h6 style="text-align: center;">
-                                                                                                        <strong>
-                                                                                                            ${new Date(time.startTime).toLocaleString('pt-BR', {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                < h6 style = "text-align: center;" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    < strong >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ${new Date(time.startTime).toLocaleString('pt-BR', {
                 hour12: false
             }).replace(":00", "")
-                } a ${new Date(time.endTime).toLocaleTimeString('pt-BR', {
+                }
+                                                                                                                                                                                                                                                            a ${new Date(time.endTime).toLocaleTimeString('pt-BR', {
                     hour12: false
                 }).replace(":00", "")
                 }
-                                                                                                        <strong>
-                                                                                                    </h6>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </h6>
+                                                                                                                                                                                                                                                    `
 
 
-            prepared += `</div>`
+            prepared += `</ div >`
 
             document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId
 
@@ -550,11 +599,11 @@
                 return;
             }
             if (data[0].timeSelections.length > 2) {
-                prepared += `<div style="text-align: right; font-size: 32px; cursor : pointer">
-                                <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
-                                <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
-                             </div>
-                            `;
+                prepared += `< div style = "text-align: right; font-size: 32px; cursor : pointer" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </div >
+                                                                                                                                                                                                                                                                    `;
             }
             for (const profileWithTimeSelections of data) {
                 result.push(profileWithTimeSelections)
@@ -580,25 +629,25 @@
                 return;
             }
             if (data[0].timeSelections.length > 2) {
-                prepared += `<div style="text-align: right; font-size: 32px; cursor : pointer">
-                                <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
-                                <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
-                             </div>
-                            `;
+                prepared += `< div style = "text-align: right; font-size: 32px; cursor : pointer" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </div >
+                                                                                                                                                                                                                                                                    `;
             }
             let tss = [];
             for (const profileWithTimeSelections of data) {
                 result.push(profileWithTimeSelections)
-                tss  = profileWithTimeSelections.timeSelections
-                const perfil  = profileWithTimeSelections.perfils
+                tss = profileWithTimeSelections.timeSelections
+                const perfil = profileWithTimeSelections.perfils
                 tss.sort(compararPorDataDecrescente);
-                for(ts in tss){
+                for (ts in tss) {
                     let t1 = ts.title
                     let t2 = ts.titulo
                     ts.title = t2
                     ts.titulo = t1
-                    prepared += JoinTimeForRequestedHelp(tss[ts], perfil,"groupHelp canal",ts)
-                    }
+                    prepared += JoinTimeForRequestedHelp(tss[ts], perfil, "groupHelp canal", ts)
+                }
             }
             $("#pedidos-usuario").html(prepared)
             $("#pedidos-usuarioBelow").html(prepared)
@@ -609,71 +658,71 @@
 
         @* let rendered = false;
         function render() {
-            if (rendered) {
-                return;
-            }
-            calendar.render();
-            rendered = true;
+        if (rendered) {
+        return;
+        }
+        calendar.render();
+        rendered = true;
         } *@
 
 
-function activePaginationFor(group, length){
-    const left = document.querySelector(`#${group}-left`);
-    const right = document.querySelector(`#${group}-right`);
-    let page = 1;
-    const size = 2;
-    const lastPage = Math.ceil(length / size);
+            function activePaginationFor(group, length) {
+                const left = document.querySelector(`#${group} -left`);
+                const right = document.querySelector(`#${group} -right`);
+                let page = 1;
+                const size = 2;
+                const lastPage = Math.ceil(length / size);
 
-    if(length <= size){
-        return;
-    }
+                if (length <= size) {
+                    return;
+                }
 
-    right.style.filter = "grayscale(0)";
+                right.style.filter = "grayscale(0)";
 
-    function updatePagination() {
+                function updatePagination() {
 
-        const start = (page - 1) * size;
-        const end = Math.min(start + size, length);
+                    const start = (page - 1) * size;
+                    const end = Math.min(start + size, length);
 
 
-        const items = document.querySelectorAll(`.${group}`);
-        items.forEach(item => {
-            item.style.display = 'none';
-        });
+                    const items = document.querySelectorAll(`.${group}`);
+                    items.forEach(item => {
+                        item.style.display = 'none';
+                    });
 
-        for (let i = start; i < end; i++) {
-            items[i].style.display = 'flex';
-        }
+                    for (let i = start; i < end; i++) {
+                        items[i].style.display = 'flex';
+                    }
 
-        left.style.filter = (page === 1) ? "grayscale(0.8)" : "grayscale(0)";
-        right.style.filter = (page === lastPage) ? "grayscale(0.8)" : "grayscale(0)";
-    }
+                    left.style.filter = (page === 1) ? "grayscale(0.8)" : "grayscale(0)";
+                    right.style.filter = (page === lastPage) ? "grayscale(0.8)" : "grayscale(0)";
+                }
 
-    // Evento para avançar para a próxima página
-    right.addEventListener("click", e =>{
-        if(page < lastPage) {
-            page++;
-            updatePagination();
-        }
-    });
+                // Evento para avançar para a próxima página
+                right.addEventListener("click", e => {
+                    if (page < lastPage) {
+                        page++;
+                        updatePagination();
+                    }
+                });
 
-    // Evento para retroceder para a página anterior
-    left.addEventListener("click", e =>{
-        if(page > 1) {
-            page--;
-            updatePagination();
-        }
-    });
+                // Evento para retroceder para a página anterior
+                left.addEventListener("click", e => {
+                    if (page > 1) {
+                        page--;
+                        updatePagination();
+                    }
+                });
 
-    // Inicializa a paginação
-    updatePagination();
-}
+                // Inicializa a paginação
+                updatePagination();
+            }
     </script>
 }
 
 @*
 Modal para agendar live
- *@
+*@
 <div class="modal fade eventModal" id="eventModalLiveScheduleOnChannel" tabindex="-1" aria-labelledby="eventModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -699,7 +748,8 @@ Modal para agendar live
                         <div class="form-group">
                             <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
                             <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" required
-                                onchange="verificarSelecaoLiveScheduleOnChannel()" class="form-control isSelect2" id="TagsForScheduleLiveOnChannel">
+                                onchange="verificarSelecaoLiveScheduleOnChannel()" class="form-control isSelect2"
+                                id="TagsForScheduleLiveOnChannel">
                                 @foreach (var item in Model.RelatioTags!)
                                 {
                                     <optgroup label="@item.Key">
@@ -725,27 +775,31 @@ Modal para agendar live
                             <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título<span
                                     style='color:firebrick'>*</span></label>
 
-                            <input id="LiveTitulo-SchedOnChannel" required asp-for="ScheduleTimeSelection.Titulo" class="form-control "
-                                placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+                            <input id="LiveTitulo-SchedOnChannel" required asp-for="ScheduleTimeSelection.Titulo"
+                                class="form-control " placeholder="Fazendo [algo legal] com [tecnologias daora]" />
                             <span asp-validation-for="ScheduleTimeSelection.Titulo" id="LiveTitulospan"
                                 class="text-danger"></span>
                         </div>
                         <br>
                         <div class="form-group" id="TituloDescricao-Sched">
-                            <label asp-for="ScheduleLiveForTimeSelection.Descricao" class="control-label">Descrição</label>
-                            <textarea id="LiveDescricao-SchedOnChannel" asp-for="ScheduleLiveForTimeSelection.Descricao" class="form-control "
+                            <label asp-for="ScheduleLiveForTimeSelection.Descricao"
+                                class="control-label">Descrição</label>
+                            <textarea id="LiveDescricao-SchedOnChannel" asp-for="ScheduleLiveForTimeSelection.Descricao"
+                                class="form-control "
                                 placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
-                            <span asp-validation-for="ScheduleLiveForTimeSelection.Descricao" id="LiveDescricaospan" class="text-danger"></span>
+                            <span asp-validation-for="ScheduleLiveForTimeSelection.Descricao" id="LiveDescricaospan"
+                                class="text-danger"></span>
                         </div>
 
                         <br>
 
                         <div class="form-group" id="thumbnailUploadContainer">
                             <label asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="thumb-label"
-                                   class="control-label">Pré-Visualização<span style='color:firebrick'>*</span>
+                                class="control-label">Pré-Visualização<span style='color:firebrick'>*</span>
                             </label>
                             <br>
-                            <input type="file" asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="thumbnailInput" accept="image/*" required />
+                            <input type="file" asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="thumbnailInput"
+                                accept="image/*" required />
                             <br>
                             <br>
                             <div style="text-align: center;">
@@ -776,7 +830,7 @@ Modal para agendar live
 </div>
 
 <script>
-    function backToTimePicker () {
+    function backToTimePicker() {
         $('#eventModalLiveScheduleOnChannel').modal('hide');
         $('#timePickerModal').modal('show');
     }
