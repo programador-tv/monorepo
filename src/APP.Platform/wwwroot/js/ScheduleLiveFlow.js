@@ -66,7 +66,7 @@ function SaveTime (aspForm, _hideEventModal) {
           await createLiveModal(tsId);
 
         calendar.addEvent(content);
-        firstForm = content;
+        const firstForm = content;
         // deve abrir um alert para pessoa decidir se quer ver o modal
         Swal.fire({
           title: 'Live criada com sucesso !',
