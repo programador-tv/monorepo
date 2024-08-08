@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //       return response.json();
     //     })
     //     .then(async function (data) {
-    //       var livePreview = document.querySelector("#destaques")
+    //       const livePreview = document.querySelector("#destaques")
 
     //       if (data.preview) {
     //         livePreview.innerHTML = data.preview;
