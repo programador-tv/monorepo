@@ -13,7 +13,7 @@
         <h4 style="margin- bottom:25px; font-weight:400; font-size: 30px; color:black;"> EDITAR PERFIL</h4>
         <form id="formulario" method="post" enctype="multipart/form-data" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if (!Model.hasPefil)
+            @if (!Model.HasPefil)
             {
                 <div class="alert alert-primary" role="alert">
                     Finalize seu perfil para utilizar os serviços
@@ -148,7 +148,7 @@
 
             <br>
 
-            @if (!Model.hasPefil)
+            @if (!Model.HasPefil)
             {
 
                 <div class="form-group" style="text-align: right;">
