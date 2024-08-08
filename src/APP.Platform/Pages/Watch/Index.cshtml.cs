@@ -456,7 +456,6 @@ namespace APP.Platform.Pages
             
             if (relation != null)
             {
-              // var updateLike = likes.First(e => e.RelatedUserId == userId);
                 relation.IsLiked = !relation.IsLiked;
                 userAlredyLiked = relation.IsLiked;
 
