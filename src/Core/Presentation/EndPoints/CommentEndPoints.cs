@@ -17,6 +17,7 @@ public static class CommentEndPoints
         group.WithOpenApi();
 
         group.MapPut("validate/{id}", ValidateComment);
+        group.MapGet("/getAllByLiveIdAndPerfilId/{liveId}/{perfilId}", GetAllByLiveIdAndPerfilId);
     }
 
     public static async Task<IResult> ValidateComment(
@@ -28,6 +29,24 @@ public static class CommentEndPoints
         {
             await _logic.ValidateComment(id);
             return Results.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
+
+    public static async Task<IResult> GetAllByLiveIdAndPerfilId(
+        [FromServices] ICommentBusinessLogic _logic,
+        Guid liveId,
+        Guid perfilId
+    )
+    {
+        try
+        {
+            var comments = await _logic.GetAllByLiveIdAndPerfilId(liveId, perfilId);
+            return Results.Ok(comments);
         }
         catch (Exception ex)
         {

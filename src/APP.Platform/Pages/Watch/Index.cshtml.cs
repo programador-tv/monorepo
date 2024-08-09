@@ -149,15 +149,13 @@ namespace APP.Platform.Pages
 
             DateTime agora = DateTime.Now;
 
-            var comments =
-                _context
-                    ?.Comments.AsNoTracking()
-                    .Where(e =>
-                        e.LiveId == Guid.Parse(LiveId)
-                        && (e.IsValid || e.PerfilId == UserProfile.Id)
-                    )
-                    .OrderByDescending(x => x.DataCriacao)
-                    .ToList() ?? new List<Comment>();
+            var liveIdGuid = Guid.Parse(LiveId);
+
+            using var responseTask = await client.GetAsync($"api/comments/getAllByLiveIdAndPerfilId/{liveIdGuid}/{UserProfile.Id}");
+
+            responseTask.EnsureSuccessStatusCode();
+
+            var comments = await responseTask.Content.ReadFromJsonAsync<List<Comment>>();
 
             var perfilCommentsId = comments.Select(e => e.PerfilId).ToList();
 

@@ -54,4 +54,10 @@ public sealed class CommentBusinessLogic(
 
         await _publisher.PublishAsync("NotificationsQueue", notification);
     }
+
+    public async Task<List<Comment>> GetAllByLiveIdAndPerfilId(Guid liveId, Guid perfilId)
+    {
+        var comments = await _repository.GetAllByLiveIdAndPerfilId(liveId, perfilId);
+        return comments.ToList();
+    }
 }
