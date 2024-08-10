@@ -80,4 +80,44 @@ public class TimeSelectionEntityTest
 
         Assert.True(timeSelection.NotifiedMentoriaProxima);
     }
+
+    [Fact]
+    public void ChangePreviewImage_ShouldUpdatePreviewImage()
+    {
+        var timeSelection = TimeSelection.Create(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddHours(1),
+            "Teste - Change Preview Image",
+            EnumTipoTimeSelection.FreeTime,
+            TipoAction.Ensinar,
+            Variacao.OneToOne
+        );
+
+        var previewImage = "Nova Preview Image";
+        timeSelection.ChangePreviewImage(previewImage);
+
+        Assert.Equal(previewImage, timeSelection.PreviewImage);
+    }
+
+    [Fact]
+    public void ChangeTituloTemporario_ShouldUpdateTituloTemporario()
+    {
+        var timeSelection = TimeSelection.Create(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddHours(1),
+            "Teste - Change Preview Image",
+            EnumTipoTimeSelection.FreeTime,
+            TipoAction.Ensinar,
+            Variacao.OneToOne
+        );
+
+        var novoTituloTemporario = "Novo Título Temporário";
+        timeSelection.ChangeTituloTemporario(novoTituloTemporario);
+
+        Assert.Equal(novoTituloTemporario, timeSelection.TituloTemporario);
+    }
 }
