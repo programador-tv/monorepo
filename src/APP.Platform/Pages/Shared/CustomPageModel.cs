@@ -7,7 +7,7 @@ namespace APP.Platform.Pages;
 
 public class CustomPageModel : PageModel
 {
-    private Domain.Entities.Perfil Profile = new();
+    private Domain.Entities.Perfil Profile = new(Guid.Empty);
     public Domain.Entities.Perfil UserProfile
     {
         get { return Profile; }

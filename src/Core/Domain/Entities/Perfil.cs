@@ -6,16 +6,16 @@ namespace Domain.Entities;
 
 public sealed class Perfil(
     Guid id,
-    string nome,
-    string? foto,
-    string token,
-    string userName,
-    string? linkedin,
-    string? gitHub,
-    string? bio,
-    string email,
-    string? descricao,
-    ExperienceLevel experiencia
+    string nome = "",
+    string? foto = "",
+    string token = "",
+    string userName = "",
+    string? linkedin = "",
+    string? gitHub = "",
+    string? bio = "",
+    string email = "",
+    string? descricao = "",
+    ExperienceLevel experiencia = 0
 ) : Entity(id)
 {
     public string Nome { get; private set; } = nome;

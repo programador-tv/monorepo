@@ -4,7 +4,6 @@ using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace APP.Platform.Pages
 {
     public sealed class NotificacoesModel(
@@ -14,7 +13,7 @@ namespace APP.Platform.Pages
         Settings settings,
         IPerfilWebService _perfilWebService,
         INotificationWebService _notificationWebService
-        ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
+    ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
     {
         public List<NotificationViewModel>? Notifications { get; set; }
 
@@ -30,27 +29,6 @@ namespace APP.Platform.Pages
             var profileIds = notifications?.Select(x => x.GeradorPerfilId).ToList() ?? [];
 
             var profiles = await _perfilWebService.GetAllById(profileIds) ?? [];
-
-            var profilesLegacy = new List<Domain.Entities.Perfil>();
-
-            foreach (var perfil in profiles)
-            {
-                var perfilLegacy = new Domain.Entities.Perfil
-                {
-                    Id = perfil.Id,
-                    Nome = perfil.Nome,
-                    Foto = perfil.Foto,
-                    Token = perfil.Token,
-                    UserName = perfil.UserName,
-                    Linkedin = perfil.Linkedin,
-                    GitHub = perfil.GitHub,
-                    Bio = perfil.Bio,
-                    Email = perfil.Email,
-                    Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
-                };
-                profilesLegacy.Add(perfilLegacy);
-            }
 
             Notifications = new();
             foreach (
@@ -68,7 +46,7 @@ namespace APP.Platform.Pages
                         Conteudo = notification.Conteudo,
                         ActionLink = notification.ActionLink,
                         SecundaryLink = notification.SecundaryLink,
-                        PerfilGerador = profilesLegacy?.FirstOrDefault(x =>
+                        PerfilGerador = profiles?.FirstOrDefault(x =>
                             x.Id == notification.GeradorPerfilId
                         )
                     }

@@ -6,6 +6,7 @@ namespace Domain.Models.Request;
 
 public sealed class PerfilViewModel
 {
+    public Guid Id { get; set; }
     public string? Nome { get; set; }
     public IFormFile? Foto { get; set; }
     public string? UserName { get; set; }

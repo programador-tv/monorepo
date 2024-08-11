@@ -17,7 +17,9 @@
                         <a asp-page="/Canal/Index" asp-route-usr="@Model.UserProfile.UserName">
                             @await Html.PartialAsync("Components/_PerfilAvatar",
                                 new _PerfilAvatar{
-                                    Perfil = Model.UserProfile,
+                                    Nome = Model.UserProfile.Nome,
+                                    Foto = Model.UserProfile.Foto,
+                                    UserName = Model.UserProfile.UserName,
                                     WithLink = false,
                                     Size = "avatar-lg"
                                 })

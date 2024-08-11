@@ -85,7 +85,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                                 <div style="display: flex;align-items: center;gap: 10px; padding: 10px;">
                                                     @await Html.PartialAsync("Components/_PerfilAvatar",
                                                         new _PerfilAvatar{
-                                                            Perfil = item.Perfil ?? new(),
+                                                            Nome = item.Perfil.Nome,
+                                                            Foto = item.Perfil.Foto,
+                                                            UserName = item.Perfil.UserName,
                                                             WithLink = true,
                                                             Size = "avatar-md"
                                                     })
@@ -118,7 +120,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             case 0:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection"
                                                 })
@@ -126,7 +130,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             case 1:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection-position1"
                                                 });
@@ -134,7 +140,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             case 2:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection-position2"
                                                 });
@@ -316,7 +324,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             <div style="display: flex;align-items: center;gap: 10px; padding: 20px;">
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-md"
                                                 })
@@ -387,7 +397,9 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                     <div style="display: flex;align-items: center;gap: 10px; padding: 10px;">
                                         @await Html.PartialAsync("Components/_PerfilAvatar",
                                             new _PerfilAvatar{
-                                                Perfil = item.Perfil ?? new(),
+                                                Nome = item.Perfil.Nome,
+                                                Foto = item.Perfil.Foto,
+                                                UserName = item.Perfil.UserName,
                                                 WithLink = true,
                                                 Size = "avatar-md"
                                         })

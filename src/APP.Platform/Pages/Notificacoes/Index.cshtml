@@ -30,7 +30,9 @@
                             
                             @await Html.PartialAsync("Components/_PerfilAvatar",
                                 new _PerfilAvatar{
-                                    Perfil = item.PerfilGerador ?? new(),
+                                    Nome = item.PerfilGerador.Nome,
+                                    Foto = item.PerfilGerador.Foto,
+                                    UserName = item.PerfilGerador.UserName,
                                     WithLink = true
                                 })
                                     <p style="flex-grow: 1;"><strong>@item?.PerfilGerador?.Nome:</strong> @item?.Conteudo</p>
@@ -47,7 +49,9 @@
                             
                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                     new _PerfilAvatar{
-                                        Perfil = item.PerfilGerador ?? new(),
+                                        Nome = item.PerfilGerador.Nome,
+                                        Foto = item.PerfilGerador.Foto,
+                                        UserName = item.PerfilGerador.UserName,
                                         WithLink = true
                                     })
                                     

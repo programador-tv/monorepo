@@ -232,35 +232,13 @@ namespace APP.Platform.Pages.ScheduleActions
 
             var perfils = await _perfilWebService.GetAllById(perfilsIds) ?? new();
 
-            var perfilsLegacy = new List<Domain.Entities.Perfil>();
-
-            foreach (var perfil in perfils)
-            {
-                var perfilLegacy = new Domain.Entities.Perfil
-                {
-                    Id = perfil.Id,
-                    Nome = perfil.Nome,
-                    Foto = perfil.Foto,
-                    Token = perfil.Token,
-                    UserName = perfil.UserName,
-                    Linkedin = perfil.Linkedin,
-                    GitHub = perfil.GitHub,
-                    Bio = perfil.Bio,
-                    Email = perfil.Email,
-                    Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
-                };
-
-                perfilsLegacy.Add(perfilLegacy);
-            }
-
             var joinViewModels = joins
                 .Select(j => new JoinTimeViewModel
                 {
                     TimeSelectionId = j.TimeSelectionId,
                     JoinTimeId = j.Id,
                     StatusJoinTime = j.StatusJoinTime,
-                    Perfil = perfilsLegacy.Find(p => p.Id == j.PerfilId)
+                    Perfil = perfils.Find(p => p.Id == j.PerfilId)
                 })
                 .Where(e => e.Perfil != null)
                 .ToList();
@@ -418,12 +396,12 @@ namespace APP.Platform.Pages.ScheduleActions
 
             foreach (var item in attatchFreeTimeList)
             {
-                item.Value.Perfil = perfilsLegacy.Find(e => e.Id == item.Value.PerfilId);
+                item.Value.Perfil = perfils.Find(e => e.Id == item.Value.PerfilId);
             }
 
             foreach (var item in attachHelpList)
             {
-                item.Value.Perfil = perfilsLegacy.Find(e => e.Id == item.Value.PerfilId);
+                item.Value.Perfil = perfils.Find(e => e.Id == item.Value.PerfilId);
             }
 
             var userJoinTimesHtml = await RenderViewAsync(

@@ -21,12 +21,10 @@
         <div class="header-card-meusVideos">
             @await Html.PartialAsync("Components/_PerfilAvatar",
                 new _PerfilAvatar{
-                    Perfil = new(){
                         Nome = Model.NomeCriador,
                         Foto = Model.FotoCriador,
-                        UserName = Model.UserNameCriador
-                    },
-                    WithLink = false
+                        UserName = Model.UserNameCriador,
+                        WithLink = false
                 })
 
             <b class="tree-points" style="width: 80%; display: initial; cursor:pointer;"

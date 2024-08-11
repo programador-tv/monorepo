@@ -16,12 +16,10 @@
         </span>
         @await Html.PartialAsync("Components/_PerfilAvatar",
             new _PerfilAvatar{
-                Perfil = new(){
                     Nome = item.NomeCriador,
                     Foto = item.FotoCriador,
-                    UserName = item.UserNameCriador
-                },
-                WithLink = true
+                    UserName = item.UserNameCriador,
+                    WithLink = true
             })
 
         <div class="divisao-content-card-videos">

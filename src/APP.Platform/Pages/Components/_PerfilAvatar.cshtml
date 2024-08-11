@@ -2,21 +2,21 @@
 @model _PerfilAvatar
 @if(Model.WithLink)
 {
-    <a asp-page="/Canal/Index" asp-route-usr="@Model.Perfil.UserName"
-    title="@(Model.Perfil.UserName)"
+    <a asp-page="/Canal/Index" asp-route-usr="@Model.UserName"
+    title="@(Model.UserName)"
     target="_blank"
     style="cursor: pointer; text-decoration: none; color: inherit;"
     >
         <img onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
             class="@Model.Size link-avatar"
-            alt="@(Model.Perfil.UserName)"
-            src="/@Model.Perfil.Foto"
+            alt="@(Model.UserName)"
+            src="/@Model.Foto"
             >
     </a>
 }else{
      <img onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
         class="@Model.Size"
-        alt="@(Model.Perfil.UserName)"
-        src="/@Model.Perfil.Foto"
+        alt="@(Model.UserName)"
+        src="/@Model.Foto"
         >
 }

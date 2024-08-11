@@ -199,15 +199,10 @@ public class IndexModel(
             {
                 continue;
             }
-            var oldPerfil = new Domain.Entities.Perfil
-            {
-                Nome = perfil.Nome,
-                UserName = perfil.UserName,
-                Foto = perfil.Foto,
-            };
+
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, perfil, views);
 
             lives.Add(liveViewModel);
         }
@@ -246,15 +241,9 @@ public class IndexModel(
                 continue;
             }
 
-            var oldPerfil = new Domain.Entities.Perfil
-            {
-                Nome = perfil.Nome,
-                UserName = perfil.UserName,
-                Foto = perfil.Foto,
-            };
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, perfil, views);
 
             savedVideos.Add(liveViewModel);
         }
@@ -309,15 +298,10 @@ public class IndexModel(
             {
                 continue;
             }
-            var oldPerfil = new Domain.Entities.Perfil
-            {
-                Nome = perfil.Nome,
-                UserName = perfil.UserName,
-                Foto = perfil.Foto,
-            };
+
             var views = liveVisualizations.Count(e => e.LiveId == live.Id);
 
-            var liveViewModel = liveService.BuildLiveViewModels(live, oldPerfil, views);
+            var liveViewModel = liveService.BuildLiveViewModels(live, perfil, views);
             var liveId = liveViewModel.CodigoLive;
 
             var timeSelectionId = backstages
@@ -501,34 +485,13 @@ public class IndexModel(
 
         var perfis = await perfilWebService.GetAllById(perfilsIds) ?? [];
 
-        var perfisLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfil in perfis)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfil.Id,
-                Nome = perfil.Nome,
-                Foto = perfil.Foto,
-                Token = perfil.Token,
-                UserName = perfil.UserName,
-                Linkedin = perfil.Linkedin,
-                GitHub = perfil.GitHub,
-                Bio = perfil.Bio,
-                Email = perfil.Email,
-                Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
-            };
-            perfisLegacy.Add(perfilLegacy);
-        }
-
         foreach (var perfilTimeSelection in timeSelectionGroupByPerfilId)
         {
             var key = perfilTimeSelection.Key ?? Guid.Empty.ToString();
 
             if (key != Guid.Empty.ToString())
             {
-                var mentor = perfisLegacy.First(perfil => perfil.Id.ToString() == key);
+                var mentor = perfis.First(perfil => perfil.Id.ToString() == key);
                 if (mentor == null)
                 {
                     continue;

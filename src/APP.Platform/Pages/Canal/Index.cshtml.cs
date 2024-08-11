@@ -20,14 +20,25 @@ using tags;
 
 namespace APP.Platform.Pages;
 
-public sealed class CanalIndexModel : CustomPageModel
+public sealed class CanalIndexModel(
+    IRazorViewEngine viewEngine,
+    ITempDataProvider tempDataProvider,
+    ApplicationDbContext context,
+    IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor,
+    IMessagePublisher messagePublisher,
+    Settings settings,
+    IPerfilWebService perfilWebService,
+    ILiveService liveService,
+    IFollowService followService
+) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     [BindProperty]
     public JoinTime? JoinTime { get; set; }
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; }
     public Dictionary<JoinTime, TimeSelection>? OldMyEvents { get; set; }
-    private new readonly ApplicationDbContext _context;
-    private new readonly PerfilDbContext _perfilContext;
+
+    private readonly PerfilDbContext _perfilContext;
     public List<PrivateLiveViewModel>? Lives { get; set; }
 
     [BindProperty]
@@ -42,41 +53,10 @@ public sealed class CanalIndexModel : CustomPageModel
     [BindProperty]
     public ScheduleFreeTimeForTimeSelectionRequestModel? ScheduleFreeTimeForTimeSelection { get; set; }
     public Domain.Entities.Perfil? PerfilOwner { get; set; }
-    private readonly IMessagePublisher _messagePublisher;
-    private readonly IRazorViewEngine _viewEngine;
-    private readonly ITempDataProvider _tempDataProvider;
-    private IPerfilWebService _perfilWebService { get; set; }
-    private readonly ILiveService _liveService;
-    private readonly IFollowService _followService;
     public Dictionary<string, List<string>> RelatioTags { get; set; }
     public bool IsFollowing { get; set; }
     public int followersCount { get; set; }
     public int followingCount { get; set; }
-    public IHttpClientFactory _httpClientFactory { get; set; }
-
-    public CanalIndexModel(
-        IRazorViewEngine viewEngine,
-        ITempDataProvider tempDataProvider,
-        ApplicationDbContext context,
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor,
-        IMessagePublisher messagePublisher,
-        Settings settings,
-        IPerfilWebService perfilWebService,
-        ILiveService liveService,
-        IFollowService followService
-    )
-        : base(context, httpClientFactory, httpContextAccessor, settings)
-    {
-        _httpClientFactory = httpClientFactory;
-        _viewEngine = viewEngine;
-        _tempDataProvider = tempDataProvider;
-        _perfilWebService = perfilWebService;
-        _context = context;
-        _messagePublisher = messagePublisher;
-        _liveService = liveService;
-        _followService = followService;
-    }
 
     public async Task<IActionResult> OnGetAsync(string usr)
     {
@@ -98,7 +78,7 @@ public sealed class CanalIndexModel : CustomPageModel
 
         if (UserProfile != null)
         {
-            IsFollowing = await _followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
+            IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
         }
 
         using var responseTaskFollow = await client.GetAsync(
@@ -128,22 +108,22 @@ public sealed class CanalIndexModel : CustomPageModel
             return BadRequest();
         }
 
-        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
-        var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
+        var privateLives = liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
+        var liveSchedules = liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
             privateLives,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
         var liveSchedulesHtml = await RenderVideosService.RenderVideos(
             "Components/_LiveSchedulePreviewGroup",
             liveSchedules,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
 
         return new JsonResult(
@@ -187,7 +167,7 @@ public sealed class CanalIndexModel : CustomPageModel
         MyEvents = new();
         OldMyEvents = new();
 
-        var myJoins = _context
+        var myJoins = context
             .JoinTimes.AsNoTracking()
             .Where(e =>
                 e.PerfilId == UserProfile.Id
@@ -198,19 +178,19 @@ public sealed class CanalIndexModel : CustomPageModel
 
         var myJoinsTimeSelectionsIds = myJoins.Select(e => e.TimeSelectionId).ToList();
 
-        var associatedTimeSelections = _context
+        var associatedTimeSelections = context
             .TimeSelections.AsNoTracking()
             .Where(e => myJoinsTimeSelectionsIds.Contains(e.Id))
             .ToList();
 
         var timeSeletionIsFortags = myJoinsTimeSelectionsIds.Select(e => e.ToString()).ToList();
-        var associatedTags = _context
+        var associatedTags = context
             .Tags.AsNoTracking()
             .Where(e => timeSeletionIsFortags.Contains(e.LiveRelacao))
             .ToList();
 
         var associatedRoomsIds = associatedTimeSelections.Select(e => e.RoomId);
-        var associatedRooms = _context
+        var associatedRooms = context
             .Rooms.AsNoTracking()
             .Where(e => associatedRoomsIds.Contains(e.Id))
             .ToList();
@@ -221,34 +201,13 @@ public sealed class CanalIndexModel : CustomPageModel
             .Select(id => id.Value)
             .ToList();
 
-        var associatedPerfil = await _perfilWebService.GetAllById(perfilTimeSelectionIds) ?? new();
-
-        var associatedPerfilLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfilDomain in associatedPerfil)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfilDomain.Id,
-                Nome = perfilDomain.Nome,
-                Foto = perfilDomain.Foto,
-                Token = perfilDomain.Token,
-                UserName = perfilDomain.UserName,
-                Linkedin = perfilDomain.Linkedin,
-                GitHub = perfilDomain.GitHub,
-                Bio = perfilDomain.Bio,
-                Email = perfilDomain.Email,
-                Descricao = perfilDomain.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia
-            };
-            associatedPerfilLegacy.Add(perfilLegacy);
-        }
+        var associatedPerfil = await perfilWebService.GetAllById(perfilTimeSelectionIds) ?? new();
 
         foreach (var item in associatedTimeSelections)
         {
             var tags = associatedTags.Where(e => e.FreeTimeRelacao == item.Id.ToString()).ToList();
             item.Tags?.AddRange(tags);
-            var perfil = associatedPerfilLegacy.Find(e => e.Id == item.PerfilId);
+            var perfil = associatedPerfil.Find(e => e.Id == item.PerfilId);
             item.Perfil = perfil;
             var code = associatedRooms.Find(e => e.Id == item.RoomId)?.CodigoSala;
             code ??= "";
@@ -333,12 +292,12 @@ public sealed class CanalIndexModel : CustomPageModel
             GetFreeTimeService.ObtemTimeSelectionsByPerfilIdExcludingSet(
                 PerfilOwner.Id,
                 valueSet,
-                _context
+                context
             ) ?? new List<TimeSelection>();
 
         var filteredTimeSelections = GetFreeTimeService.FiltraPelosNaoConflitantes(
             timeSelections,
-            _context,
+            context,
             MyEvents
         );
 
@@ -358,8 +317,8 @@ public sealed class CanalIndexModel : CustomPageModel
 
         var MentorsFreeTime = await GetFreeTimeService.ObtemPerfisRelacionados(
             timeSelectionGroupByPerfilId,
-            _context,
-            _perfilWebService
+            context,
+            perfilWebService
         );
 
         bool isLoggedUsr = true;
@@ -396,7 +355,7 @@ public sealed class CanalIndexModel : CustomPageModel
             return Redirect("/Canal");
         }
 
-        var timeSelection = _context
+        var timeSelection = context
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
@@ -414,7 +373,7 @@ public sealed class CanalIndexModel : CustomPageModel
 
         JoinTime.PerfilId = UserProfile.Id;
 
-        var freeTimeBackstage = _context
+        var freeTimeBackstage = context
             .FreeTimeBackstages.AsNoTracking()
             .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
 
@@ -427,7 +386,7 @@ public sealed class CanalIndexModel : CustomPageModel
             JoinTime.StatusJoinTime = StatusJoinTime.Pendente;
         }
 
-        _context.JoinTimes.Add(JoinTime);
+        context.JoinTimes.Add(JoinTime);
 
         var feedback = new FeedbackJoinTime
         {
@@ -435,9 +394,9 @@ public sealed class CanalIndexModel : CustomPageModel
             JoinTimeId = JoinTime.Id,
             DataTentativaMarcacao = DateTime.Now
         };
-        _context.FeedbackJoinTimes?.Add(feedback);
+        context.FeedbackJoinTimes?.Add(feedback);
 
-        _context.SaveChanges();
+        context.SaveChanges();
 
         if (timeSelection != null && timeSelection.Tipo == EnumTipoTimeSelection.FreeTime)
         {
@@ -455,7 +414,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         else if (timeSelection != null && timeSelection.Tipo == EnumTipoTimeSelection.RequestHelp)
         {
@@ -473,7 +432,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
 
         return Redirect("./?event=" + JoinTime.TimeSelectionId);

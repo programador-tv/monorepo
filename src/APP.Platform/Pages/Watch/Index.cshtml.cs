@@ -164,33 +164,9 @@ namespace APP.Platform.Pages
             var commentsAssociatedPerfils =
                 await _perfilWebService.GetAllById(perfilCommentsId) ?? new();
 
-            var commentsAssociatedPerfilsLegacy = new List<Domain.Entities.Perfil>();
-
-            foreach (var perfil in commentsAssociatedPerfils)
-            {
-                var perfilLegacy = new Domain.Entities.Perfil
-                {
-                    Id = perfil.Id,
-                    Nome = perfil.Nome,
-                    Foto = perfil.Foto,
-                    Token = perfil.Token,
-                    UserName = perfil.UserName,
-                    Linkedin = perfil.Linkedin,
-                    GitHub = perfil.GitHub,
-                    Bio = perfil.Bio,
-                    Email = perfil.Email,
-                    Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
-                };
-
-                commentsAssociatedPerfilsLegacy.Add(perfilLegacy);
-            }
-
             foreach (var item in comments)
             {
-                var associatedPerfil = commentsAssociatedPerfilsLegacy.Find(e =>
-                    e.Id == item.PerfilId
-                );
+                var associatedPerfil = commentsAssociatedPerfils.Find(e => e.Id == item.PerfilId);
                 var time = GetTempoQuePassouFormatado(item.DataCriacao);
 
                 var model = new CommentViewModel

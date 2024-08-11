@@ -35,10 +35,8 @@
 
                     @await Html.PartialAsync("Components/_PerfilAvatar",
                         new _PerfilAvatar{
-                            Perfil = new(){
-                                Nome = presente.Nome,
-                                Foto = presente.Foto
-                            },
+                            Nome = presente.Nome,
+                            Foto = presente.Foto,
                             WithLink = true
                         })
                 }

@@ -9,15 +9,22 @@ using Domain.Models.Request;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using Queue;
+using RTools_NTS.Util;
 
 namespace APP.Platform.Pages
 {
-    public sealed class PerfilModel : CustomPageModel
+    public sealed class PerfilModel(
+        IWebHostEnvironment environment,
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        IMessagePublisher messagePublisher,
+        Settings settings
+    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IMessagePublisher _messagePublisher;
+        private readonly IWebHostEnvironment environment = environment;
 
         [BindProperty]
         public bool hasPefil { get; set; }
@@ -27,21 +34,6 @@ namespace APP.Platform.Pages
 
         [BindProperty]
         public PerfilViewModel? Perfil { get; set; }
-
-        public PerfilModel(
-            IWebHostEnvironment environment,
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            IMessagePublisher messagePublisher,
-            Settings settings
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _httpClientFactory = httpClientFactory;
-            _context = context;
-            _messagePublisher = messagePublisher;
-        }
 
         public IActionResult OnGet()
         {
@@ -55,7 +47,7 @@ namespace APP.Platform.Pages
                 Perfil.GitHub = UserProfile.GitHub;
                 Perfil.Bio = UserProfile.Bio;
                 Perfil.Descricao = UserProfile.Descricao;
-                Perfil.Experiencia = UserProfile.Experiencia;
+                Perfil.Experiencia = (ExperienceLevel)UserProfile.Experiencia;
             }
             return Page();
         }
@@ -98,19 +90,19 @@ namespace APP.Platform.Pages
                     // foto = SaveFoto(Perfil.Foto);
                 }
 
-                var _perfil = new Domain.Entities.Perfil()
-                {
-                    Nome = Perfil.Nome,
-                    UserName = Perfil.UserName,
-                    Foto = string.Empty,
-                    Token = User.Claims.ToArray()[0].Value,
-                    Email = User.Claims.ToArray()[1].Value,
-                    Linkedin = Perfil.Linkedin,
-                    GitHub = Perfil.GitHub,
-                    Bio = Perfil.Bio,
-                    Descricao = Perfil.Descricao,
-                    Experiencia = Perfil.Experiencia
-                };
+                var _perfil = Domain.Entities.Perfil.Create(
+                    new Domain.Contracts.CreatePerfilRequest(
+                        Perfil.Nome,
+                        User.Claims.ToArray()[0].Value,
+                        Perfil.UserName,
+                        Perfil.Linkedin,
+                        Perfil.GitHub,
+                        Perfil.Bio,
+                        User.Claims.ToArray()[1].Value,
+                        Perfil.Descricao,
+                        (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
+                    )
+                );
                 UsernameExist = false;
 
                 var json = JsonSerializer.Serialize(_perfil);
@@ -135,7 +127,7 @@ namespace APP.Platform.Pages
                     ActionLink = "/Sobre"
                 };
 
-                await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+                await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
 
                 if (Perfil.Foto != null)
                 {
@@ -180,14 +172,18 @@ namespace APP.Platform.Pages
                             return OnGet();
                         }
                     }
-
-                    _perfil.Nome = Perfil.Nome;
-                    _perfil.UserName = Perfil.UserName;
-                    _perfil.Linkedin = Perfil.Linkedin;
-                    _perfil.GitHub = Perfil.GitHub;
-                    _perfil.Bio = Perfil.Bio;
-                    _perfil.Descricao = Perfil.Descricao;
-                    _perfil.Experiencia = Perfil.Experiencia;
+                    _perfil.Update(
+                        new Domain.Contracts.UpdatePerfilRequest(
+                            Perfil.Id,
+                            Perfil.Nome,
+                            Perfil.UserName,
+                            Perfil.Linkedin,
+                            Perfil.GitHub,
+                            Perfil.Bio,
+                            Perfil.Descricao,
+                            (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
+                        )
+                    );
 
                     var json = JsonSerializer.Serialize(_perfil);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");

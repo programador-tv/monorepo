@@ -78,7 +78,9 @@
                                                 <div style="display: flex;align-items: center;gap: 10px; padding: 10px;">
                                                     @await Html.PartialAsync("Components/_PerfilAvatar",
                                                         new _PerfilAvatar{
-                                                            Perfil = item.Perfil ?? new(),
+                                                            Nome = item.Perfil.Nome,
+                                                            Foto = item.Perfil.Foto,
+                                                            UserName = item.Perfil.UserName,
                                                             WithLink = true,
                                                             Size = "avatar-md"
                                                     })
@@ -111,7 +113,9 @@
                                             case 0:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection"
                                                 })
@@ -119,7 +123,9 @@
                                             case 1:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection-position1"
                                                 });
@@ -127,7 +133,9 @@
                                             case 2:
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-timeSelection-position2"
                                                 });
@@ -332,7 +340,9 @@
                                             <div style="display: flex;align-items: center;gap: 10px; padding: 20px;">
                                                 @await Html.PartialAsync("Components/_PerfilAvatar",
                                                     new _PerfilAvatar{
-                                                        Perfil = item.Perfil ?? new(),
+                                                        Nome = item.Perfil.Nome,
+                                                        Foto = item.Perfil.Foto,
+                                                        UserName = item.Perfil.UserName,
                                                         WithLink = true,
                                                         Size = "avatar-md"
                                                 })
@@ -403,7 +413,9 @@
                                     <div style="display: flex;align-items: center;gap: 10px; padding: 10px;">
                                         @await Html.PartialAsync("Components/_PerfilAvatar",
                                             new _PerfilAvatar{
-                                                Perfil = item.Perfil ?? new(),
+                                                Nome = item.Perfil.Nome,
+                                                Foto = item.Perfil.Foto,
+                                                UserName = item.Perfil.UserName,
                                                 WithLink = true,
                                                 Size = "avatar-md"
                                         })
