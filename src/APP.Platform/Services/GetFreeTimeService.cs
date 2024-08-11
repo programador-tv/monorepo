@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
@@ -182,6 +183,15 @@ public static class GetFreeTimeService
                     var helpResponses =
                         await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId))
                         ?? [];
+                    var groupedHelpResponse = helpResponses.GroupBy(hlpr => hlpr.PerfilId).Select(hlpr => hlpr.Key).ToList();
+                    var commentOwnerProfiles = await _perfilWebService.GetAllById(groupedHelpResponse);
+                    var joinHelpResponseWithProfile = helpResponses.Select(x => 
+                        new HelpResponseWithProfileData(
+                            x,
+                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.UserName).First(),
+                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.Nome).First(),
+                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.Foto).First()
+                            )).ToList();
                     requesteds.Add(
                         new TimeSelectionForRequestedHelpViewModel()
                         {
@@ -192,7 +202,7 @@ public static class GetFreeTimeService
                             Description = item.Description,
                             Variation = item.Variation,
                             Title = item.Title,
-                            HelpResponses = helpResponses
+                            HelpResponses = joinHelpResponseWithProfile
                         }
                     );
                 }

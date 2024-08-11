@@ -1610,6 +1610,17 @@ body {
     font-weight: bold;
 }
 
+.container-profile-helpResponse {
+    display: flex;
+    flex-direction: row;
+    margin-left: 5px;
+}
+.nome-profile-helpResponse {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .response-text-area {
     display: flex;
     justify-content: center;

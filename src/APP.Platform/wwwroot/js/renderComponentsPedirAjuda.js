@@ -120,13 +120,25 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
 
     let prepared = "";
     for (let item of listHelpResponse) {
-        const qtdTempo = qtdEmMinutosCriada(item.createdAt);
+        const qtdTempo = qtdEmMinutosCriada(item.helpResponse.createdAt);
         let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
+        let profile = { userName: item.profileUserName, nome: item.profileNome, foto: item.profileFoto };
         prepared +=
-            `<div class="container-helpResponse" id="helpResponse-${item.id}">
+            `<div class="container-helpResponse" id="helpResponse-${item.helpResponse.id}">
                 <div class="content-helpResponse">
+                    <div class="container-profile-helpResponse">
+                        <div class="img-profile-helpResponse">
+                            <span>
+                                ${renderAvatar(profile, true)}
+                            </span>
+                        </div>
+                        <div class="nome-profile-helpResponse">
+                            <span>${profile.nome}</span>
+                        </div>
+                    </div>
+
                     <div id="container-description-helpResponse">
-                        <p id="description-helpResponse">${item.conteudo}</p>
+                        <p id="description-helpResponse">${item.helpResponse.conteudo}</p>
                     </div>
 
                     <div id="container-time">
@@ -134,10 +146,10 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
                     </div>
                 </div>
             `
-        if (userLoggedId === perfilId || userLoggedId === item.perfilId) {
+        if (userLoggedId === perfilId || userLoggedId === item.helpResponse.perfilId) {
             botaoDeletar = `
                 <div id="container-btn-deleteResponse">
-                    <span onclick=deleteHelpResponse('${item.id}') id="btn-deleteResponse">🗑️</span>
+                    <span onclick=deleteHelpResponse('${item.helpResponse.id}') id="btn-deleteResponse">🗑️</span>
                 </div>
             `
         }
