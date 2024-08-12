@@ -12,7 +12,7 @@ namespace Domain.Interfaces.Repositories
     {
         Task<List<HelpResponse>> GetAllAsync(Guid timeSelectionId);
         Task<HelpResponse?> GetById(Guid id);
-        Task AddAsync(HelpResponse helpResponse);
+        Task<HelpResponse> AddAsync(HelpResponse helpResponse);
         Task UpdateAsync(HelpResponse helpResponse);
     }
 }

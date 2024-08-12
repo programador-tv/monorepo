@@ -43,8 +43,7 @@ public static class HelpResponseEndPoints
     {
         try
         {
-            await _logic.Add(helpResponse);
-            return Results.Ok();
+            return Results.Ok(await _logic.Add(helpResponse));
         }
         catch (Exception ex)
         {

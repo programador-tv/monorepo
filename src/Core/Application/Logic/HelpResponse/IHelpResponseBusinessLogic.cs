@@ -7,6 +7,6 @@ namespace Application.Logic;
 public interface IHelpResponseBusinessLogic
 {
     Task<List<HelpResponse>> GetAll(Guid timeSelectionId);
-    Task Add(CreateHelpResponse helpResponse);
+    Task<HelpResponse> Add(CreateHelpResponse helpResponse);
     Task Delete(Guid helpResponseId);
 }

@@ -10,10 +10,11 @@ public sealed class HelpResponseRepository(ApplicationDbContext context)
     : GenericRepository<HelpResponse>(context),
         IHelpResponseRepository
 {
-    public async Task AddAsync(HelpResponse helpResponse)
+    public async Task<HelpResponse> AddAsync(HelpResponse helpResponse)
     {
         await DbContext.HelpResponses.AddAsync(helpResponse);
         await DbContext.SaveChangesAsync();
+        return helpResponse;
     }
 
     public async Task UpdateAsync(HelpResponse helpResponse)
