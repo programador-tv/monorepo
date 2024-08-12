@@ -71,6 +71,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  function SaveTime(aspForm, _hideEventModal) {
+    $(".eventModal").modal("hide");
+
+    const formData = new FormData(aspForm);
+    formData.set(
+      "ScheduleTimeSelection.StartTime",
+      `${dateFormRH.value}T${inicioHorarioRH}-03:00`
+    );
+    formData.set(
+      "ScheduleTimeSelection.EndTime",
+      `${dateFormRH.value}T${fimHorarioRH}-03:00`
+    );
+
+    const url = "/ScheduleActions?handler=SaveTime";
+    const options = {
+      method: "POST",
+      body: formData,
+    };
+
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Erro: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const content = data.content;
+        createTimeModal(content.id);
+        calendar.addEvent(content);
+        firstForm = content;
+        alertTimeSelectionCreatedSucessfully(content.id);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }
+
   submitFormRh.addEventListener("submit", (event) => {
     console.log("chamado");
     event.preventDefault();
@@ -126,7 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const dayName = daysOfWeek[dayOfWeek];
     diaResumoRH.innerText = day.toString() + " " + dayName;
 
-    const ulElement = document.getElementById("select2-TagsSelected-container");
+    const ulElement = document.getElementById(
+      "select2-TagsSelectedHelp-container"
+    );
     const liElements = ulElement.querySelectorAll("li");
 
     const mainTag = document.createElement("span");
@@ -213,4 +253,39 @@ document.addEventListener("DOMContentLoaded", function () {
       $(".body-oneToOne-1").addClass("active");
     }, 100);
   });
+
+  let pendentesContainer;
+
+  function createTimeModal(id) {
+    /*codigo de referencia
+     */
+
+    if (!pendentesContainer) {
+      pendentesContainer = document.querySelector("#free-time-pendentes-card");
+    }
+    const semAbertos = document.querySelector("#semAbertos");
+    if (semAbertos) {
+      semAbertos.remove();
+    }
+
+    fetch("/ScheduleActions?handler=PartialFreeTimeModal&timeSelectionId=" + id)
+      .then((response) => response.text())
+      .then((data) => {
+        pendentesContainer.innerHTML += data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    const modalContainer = document.querySelector("#eventModals");
+
+    fetch("/ScheduleActions?handler=PartialFreeTimePanel&timeSelectionId=" + id)
+      .then((response) => response.text())
+      .then((data) => {
+        modalContainer.innerHTML += data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 });

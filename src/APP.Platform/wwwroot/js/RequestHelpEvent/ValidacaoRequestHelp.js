@@ -81,13 +81,15 @@ document.addEventListener("DOMContentLoaded", function () {
         true
       );
       return false;
-    } else if (
-      firstTime.getTime() >= lastTime.getTime() ||
-      lastTime.getTime() - firstTime.getTime() > TWO_HOURS ||
-      lastTime.getTime() - firstTime.getTime() < THIRTY_MINUTES
-    ) {
-      showMessage("Os horários são inválidos.", true);
+    } else if (lastTime.getTime() - firstTime.getTime() > TWO_HOURS) {
+      showMessage("O evento nao pode durar mais de duas horas.", true);
       return false;
+    } else if (firstTime.getTime() >= lastTime.getTime()) {
+      console.log(firstTime.getTime());
+      console.log(lastTime.getTime());
+      showMessage("O horário inicial é maior que o final.", true);
+    } else if (lastTime.getTime() - firstTime.getTime() < THIRTY_MINUTES) {
+      showMessage("O evento não pode durar menos de 30 minutos.", true);
     } else {
       showMessage("", false);
       return true;
@@ -105,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let minutesInt = parseInt(minutesStartRH.value, 10);
 
-    inicioHorario = `${
+    inicioHorarioRH = `${
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
 
@@ -119,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let minutesEndInt = parseInt(minutesEndRH.value, 10);
 
-    fimHorario = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
+    fimHorarioRH = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
 
