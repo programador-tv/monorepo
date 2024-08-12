@@ -136,11 +136,10 @@ body {
   width: 49%;
   height: 240px;
   border-radius: 4px;
-  border: 1px solid #cacaca;
-  box-shadow: 0px 2px 6px 0px #00000030;
+  border: 1px solid #d7d7d7;
+  box-shadow: 1px 2px 4px 0px #57575726;
   flex-wrap: wrap;
-  background: #f3f2ef;
-  padding: 15px;
+  background: #FEFBFB;
   cursor: pointer;
 }
 .item-preview-ts:hover {
@@ -169,7 +168,6 @@ body {
   color: #373737;
   height: 24px;
   width: fit-content;
-  margin: 5px;
   padding: 4px 12px;
 }
 

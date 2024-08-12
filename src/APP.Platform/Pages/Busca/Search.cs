@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Models.ViewModels;
+using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 
 namespace APP.Platform.Pages
@@ -8,19 +9,21 @@ namespace APP.Platform.Pages
     {
         private readonly ApplicationDbContext _context;
         private readonly PerfilDbContext _perfilContext;
+        private IPerfilWebService _perfilWebService { get; set; }
         public List<Live> Lives = new List<Live>();
-        public List<Domain.Entities.Perfil> Perfils = new List<Domain.Entities.Perfil>();
-
+        public List<Domain.Entities.Perfil> Perfils = new();
         public IHttpClientFactory _httpClientFactory { get; set; }
 
         public Search(
             ApplicationDbContext context,
             IHttpClientFactory httpClientFactory,
+            IPerfilWebService perfilWebService,
             string key
         )
         {
             _httpClientFactory = httpClientFactory;
             _context = context;
+            _perfilWebService = perfilWebService;
 
             foreach (var word in key.Trim().Split(' '))
             {
@@ -39,19 +42,27 @@ namespace APP.Platform.Pages
 
         public async Task ProcessKeywordForChannels(string keyword)
         {
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var perfilsResponse = await _perfilWebService.GetByKeyword(keyword);
 
-            using var responseTask = await client.GetAsync("api/perfils/Contains/" + keyword);
-
-            if (!responseTask.IsSuccessStatusCode)
+            foreach (var perfil in perfilsResponse)
             {
-                return;
+                var perfilLegacy = new Domain.Entities.Perfil
+                {
+                    Id = perfil.Id,
+                    Nome = perfil.Nome,
+                    Foto = perfil.Foto,
+                    Token = perfil.Token,
+                    UserName = perfil.UserName,
+                    Linkedin = perfil.Linkedin,
+                    GitHub = perfil.GitHub,
+                    Bio = perfil.Bio,
+                    Email = perfil.Email,
+                    Descricao = perfil.Descricao,
+                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                };
+                Perfils.Add(perfilLegacy);
             }
-            var perfils = await responseTask.Content.ReadFromJsonAsync<
-                List<Domain.Entities.Perfil>
-            >();
 
-            Perfils.AddRange(perfils);
             foreach (var perfil in Perfils)
             {
                 Lives.AddRange(SearchByUserId(perfil.Id));
