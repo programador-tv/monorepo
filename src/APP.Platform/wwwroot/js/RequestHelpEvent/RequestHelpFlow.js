@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
       ? "0" + minutesStartRH.value
       : minutesStartRH.value
   }`;
-  console.log(inicioHorarioRH);
 
   let hoursEndRH = document.getElementById("hoursEndRH");
   let minutesEndRH = document.getElementById("minutesEndRH");
@@ -23,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let fimHorarioRH = `${
     hoursEndRH.value < 10 ? "0" + hoursEndRH.value : hoursEndRH.value
   }:${minutesEndRH.value < 10 ? "0" + minutesEndRH.value : minutesEndRH.value}`;
-  console.log(inicioHorarioRH);
 
   let tituloResumoRH = document.getElementById("tituloResumoRH");
   let horariosResumoRH = document.getElementById("horarios-resumoRH");
@@ -110,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   submitFormRh.addEventListener("submit", (event) => {
-    console.log("chamado");
     event.preventDefault();
     const selectElementRH = document.getElementById("TagsSelectedHelp");
     const selectedOptionsRH = selectElement.selectedOptions;
@@ -128,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Passa da etapa 1 para a etapa 2
   $("#btnRequestHelp1").click(() => {
-    console.log("click botao 1");
     switchStep(".body-requestHelp-1", ".body-requestHelp-2");
   });
 
@@ -191,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTimeStartRH() {
     let hoursStartInt = parseInt(hoursStartRH.value, 10);
-    console.log(isAmStartRH.value);
     if (isAmStartRH.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStartRH.value === "AM" && hoursStartInt === 12) {
@@ -204,12 +199,10 @@ document.addEventListener("DOMContentLoaded", function () {
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
 
-    console.log(inicioHorarioRH);
   }
 
   function updateTimeEndRH() {
     let hoursEndInt = parseInt(hoursEndRH.value, 10);
-    console.log(isAmEndRH.value);
     if (isAmEndRH.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEndRH.value === "AM" && hoursEndInt === 12) {
@@ -222,27 +215,20 @@ document.addEventListener("DOMContentLoaded", function () {
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
 
-    console.log(fimHorarioRH);
   }
 
   // Passa da etapa 3 para a etapa 2
   $("#btnRequestHBack1").click(() => {
-    console.log("click botao 1");
-
     switchStep(".body-requestHelp-2", ".body-requestHelp-1");
   });
 
   // Passa da etapa 2 para a etapa 1
   $("#btnRequestHBack2").click(() => {
-    console.log("click botao 1");
-
     switchStep(".body-requestHelp-3", ".body-requestHelp-2");
     modalTagsRH.innerHTML = "";
   });
 
   $("#btnRequestHBack3").click(() => {
-    console.log("click botao 1");
-
     switchStep(".body-requestHelp-4", ".body-requestHelp-3");
   });
 

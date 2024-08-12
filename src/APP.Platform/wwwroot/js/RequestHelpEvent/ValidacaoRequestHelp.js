@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM totalmente carregado e analisado.");
-
   let hoursStartRH = document.getElementById("hoursStartRH");
   let minutesStartRH = document.getElementById("minutesStartRH");
   let isAmStartRH = document.getElementById("ampmStartRH");
@@ -66,8 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEndDate.setHours(lastTime.getHours());
     eventEndDate.setMinutes(lastTime.getMinutes());
 
-    console.log(eventDate);
-
     if (date === "") {
       showMessage("Data inválida.", true);
       return false;
@@ -87,8 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
       showMessage("O evento nao pode durar mais de duas horas.", true);
       return false;
     } else if (firstTime.getTime() >= lastTime.getTime()) {
-      console.log(firstTime.getTime());
-      console.log(lastTime.getTime());
       showMessage("O horário inicial é maior que o final.", true);
     } else if (lastTime.getTime() - firstTime.getTime() < THIRTY_MINUTES) {
       showMessage("O evento não pode durar menos de 30 minutos.", true);
@@ -100,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const validateDatesRH = () => {
     let hoursStartInt = parseInt(hoursStartRH.value, 10);
-    console.log(isAmStartRH.value);
     if (isAmStartRH.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStartRH.value === "AM" && hoursStartInt === 12) {
@@ -114,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
 
     let hoursEndInt = parseInt(hoursEndRH.value, 10);
-    console.log(isAmEndRH.value);
     if (isAmEndRH.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEndRH.value === "AM" && hoursEndInt === 12) {
@@ -171,8 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const validateFirstModalRH = () => {
-    console.log(validateEmptyTagsRH());
-    console.log(validateEmptyTagsRH());
     if (validateEventNameRH() && validateEmptyTagsRH()) {
       primeiroBotaoRH.disabled = false;
     } else {
@@ -181,11 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const validateSecondModalRH = () => {
-    console.log(descriptionRH.value);
-
     if (descriptionRH.value.length < 50) {
-      console.log(descriptionRH.value);
-      console.log(descriptionRH.value);
       btnNext2.disabled = true;
     } else {
       btnNext2.disabled = false;
