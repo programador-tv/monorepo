@@ -21,12 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let dateFormRH = document.getElementById("dateTimeRH");
   let btnNext3 = document.getElementById("btnRequestHelp3");
+  let btnNext2 = document.getElementById("btnRequestHelp2");
   let errorSpanDateRH = document.getElementById("errorMsgDateRH");
   let errorSpanTimeRH = document.getElementById("errorMsgTimeRH");
   let primeiroBotaoRH = document.getElementById("btnRequestHelp1");
   let tituloMentoriaRH = document.getElementById(
     "TimeSelectionMentoriaTituloRH"
   );
+  let descriptionRH = document.getElementById("descriptionRH");
 
   if (
     !dateFormRH ||
@@ -178,11 +180,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  const validateSecondModalRH = () => {
+    console.log(descriptionRH.value);
+
+    if (descriptionRH.value.length < 50) {
+      console.log(descriptionRH.value);
+      console.log(descriptionRH.value);
+      btnNext2.disabled = true;
+    } else {
+      btnNext2.disabled = false;
+    }
+  };
   dateFormRH.addEventListener("change", validateDatesRH);
   tituloMentoriaRH.addEventListener("input", validateFirstModalRH);
   $("#TagsSelectedHelp").on("select2:select", validateFirstModalRH);
   $("#TagsSelectedHelp").on("select2:unselect", validateFirstModalRH);
 
+  descriptionRH.addEventListener("input", validateSecondModalRH);
   hoursStartRH.addEventListener("change", validateDatesRH);
   minutesStartRH.addEventListener("change", validateDatesRH);
   isAmStartRH.addEventListener("change", validateDatesRH);
@@ -190,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEndRH.addEventListener("change", validateDatesRH);
   isAmEndRH.addEventListener("change", validateDatesRH);
 
+  validateSecondModalRH();
   validateDatesRH();
   validateFirstModalRH();
 });

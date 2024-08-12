@@ -13,7 +13,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <!-- One -->
-            <div class="modal-select active body-requestHelp-1">
+            <div class="modal-selectRH active body-requestHelp-1">
               <div class="modalTitleHeaderDiv">
                 <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
                   Criação de Card de Ajuda
@@ -111,7 +111,7 @@
             </div>
   
             <!-- Two -->
-            <div class="modal-select body-requestHelp-2">
+            <div class="modal-selectRH body-requestHelp-2">
               <div class="modalTitleHeaderDiv">
                 <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
                   Criação de Card de Ajuda
@@ -153,8 +153,8 @@
                         asp-for="ScheduleTimeSelection.Titulo"
                         class="control-label oneToOneLabel">
                         Descrição
-                         <span asp-for="ScheduleTimeSelection.Descricao" style="color: firebrick">*</span></label>
-                      <textarea rows="4" asp-for="ScheduleTimeSelection.Descricao"></textarea>
+                         <span asp-for="ScheduleTimeSelection.Descricao" style="color: firebrick">*</span> <small style="font-size: 12px; color: #525252;, font-weight: 400;">(mínimo de 50 caracteres)</small></label>
+                      <textarea id="descriptionRH"  rows="4" asp-for="ScheduleTimeSelection.Descricao"></textarea>
                     </div>
                       <div class="request-help-input-div">
                         <label
@@ -187,7 +187,7 @@
             </div>
   
             @* Threo *@
-            <div class="modal-select body-requestHelp-3">
+            <div class="modal-selectRH body-requestHelp-3">
               <div class="modalTitleHeaderDiv">
                 <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
                   Criação de Card de Ajuda
@@ -353,7 +353,7 @@
               </div>
             </div>
   
-            <div class="modal-select body-requestHelp-4">
+            <div class="modal-selectRH body-requestHelp-4">
               <div class="modalTitleHeaderDiv">
                 <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
                   Criação de Card de Ajuda

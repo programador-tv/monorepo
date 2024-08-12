@@ -1844,11 +1844,13 @@ body {
   color: #437ae2;
 }
 
-.modal-select {
+.modal-select,
+.modal-selectRH {
   display: none;
 }
 
-.modal-select.active {
+.modal-select.active,
+.modal-selectRH.active {
   display: block;
 }
 

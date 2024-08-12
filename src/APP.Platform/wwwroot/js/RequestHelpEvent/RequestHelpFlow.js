@@ -247,10 +247,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Se qualquer modal fechar, o display deve ser do body 1
-  $("#eventModalOneToOne").on("hidden.bs.modal", () => {
+  $("#eventModalRequestHelp").on("hidden.bs.modal", () => {
     setTimeout(() => {
-      $(".modal-select").removeClass("active");
-      $(".body-oneToOne-1").addClass("active");
+      $(".modal-selectRH").removeClass("active");
+      $(".body-requestHelp-1").addClass("active");
     }, 100);
   });
 
