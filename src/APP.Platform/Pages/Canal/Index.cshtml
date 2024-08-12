@@ -189,8 +189,7 @@
             @{
                 if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
                 {
-                    <div style="display:flex; flex-direction: column; align-items:center; justify-content: center; width: 100%;">
-                        <p id="quant-items" style="margin-bottom: 0;"></p>
+                    <div style="display:flex; flex-direction: column; align-items:end; justify-content: center; width: 100%;">
                         <div style="display:flex;">
                             <label>Exibir vídeos privados</label>
                             <input type="checkbox" id="checkShowPrivateVideos" style="margin: 0px 0 0 10px;" />
@@ -334,29 +333,12 @@
                     if (data.privateLives === CONSIDERED_EMPTY && data.liveSchedules === CONSIDERED_EMPTY) {
                         videosPrivates.innerHTML += `<div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
                     <span>Sem vídeos no momento</span> 
-        @{
-            if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
-            {
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
-
-                    <a class="material-icons OpenNewButtom"
-                        style="font-size: 36px; cursor: pointer; margin-right: 0px;"
-                        data-bs-toggle="modal"
-                        data-bs-target="#liveModal">
-                        add_circle
-                    </a>
-                    <span style="color: #AEAEAE; font-size: 12px">
-                        Iniciar live
-                        </span>
-                    </div>
-            }
-        }
+        
                                                                                                                                                                                                                                                                                                                                                             <div>
                                                                                                                                                                                                                                                                                                                                                                 `
                     }
 
                     videosPrivates.innerHTML += data.liveSchedules + data.privateLives;
-                    document.querySelector('#quant-items').innerHTML = `${data.countTotal} vídeos encontrados`;
                     videosPrivates.style.justifyContent = "flex-start";
                     document.querySelector(".spinner-grow").style.display = "none";
                     videosGroup.style.justifyContent = "flex-start";
