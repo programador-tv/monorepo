@@ -190,10 +190,6 @@ function sendComment() {
             throw new Error("Erro ao enviar comentário");
         }
         document.getElementById("contentHelpResponse").value = "";
-        showsCommentMessageSent();
-        setTimeout(() => {
-            $("#container-msg-helpResponse").html("");
-        }, 3000)
         return response.json();
     }).then(function (data) {
         let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
@@ -247,21 +243,6 @@ function deleteHelpResponse(helpResponseId) {
         }
         time.helpResponses = time.helpResponses.filter(e => e.helpResponse.id != helpResponseId);
     });
-}
-
-
-function showsCommentMessageSent() {
-    let prepared = "";
-
-    prepared += `
-        <div class="content-msg-helpResponse">
-            <div class="alert alert-success" role="alert">
-                Você contribuiu com o pedido de ajuda através de um comentário.
-            </div>
-        </div>
-    `;
-
-    $("#container-msg-helpResponse").html(prepared);
 }
 
 

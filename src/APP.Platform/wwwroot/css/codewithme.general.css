@@ -2037,12 +2037,3 @@ body {
 #container-description-helpResponse p {
     padding: 15px;
 }
-
-#container-msg-helpResponse {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-.content-msg-helpResponse {
-    width: 90%;
-}
