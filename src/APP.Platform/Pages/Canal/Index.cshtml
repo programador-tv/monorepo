@@ -283,6 +283,63 @@
     <script defer src="~/js/renderComponentsPedirAjuda.js"></script>
 
     <script>
+        function getVideos(isPrivate) {
+            const loadingSpin = `<div class="spinner-grow" role="status">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span class="visually-hidden">Loading...</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>`;
+            const videosGroup = document.querySelector(".videos-group");
+            videosGroup.innerHTML = loadingSpin;
+            videosGroup.style.justifyContent = "center";
+            videosGroup.style.alignItems = "center";
+
+            fetch("?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName&isPrivate=" + isPrivate)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("Erro ao enviar a solicitação POST.");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    const CONSIDERED_EMPTY = "";
+                    let videosPrivates = document.querySelector("#savedVideosCanal");
+                    let totalVideos = data.countTotal;
+
+                    if (data.privateLives === CONSIDERED_EMPTY && data.liveSchedules === CONSIDERED_EMPTY) {
+                        videosPrivates.innerHTML += `<div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
+                    <span>Sem vídeos no momento</span> 
+        @{
+            if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+            {
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
+
+                    <a class="material-icons OpenNewButtom"
+                        style="font-size: 36px; cursor: pointer; margin-right: 0px;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#liveModal">
+                        add_circle
+                    </a>
+                    <span style="color: #AEAEAE; font-size: 12px">
+                        Iniciar live
+                        </span>
+                    </div>
+            }
+        }
+                                                                                                                                                                                                                                                                                                                                                            <div>
+                                                                                                                                                                                                                                                                                                                                                                `
+                    }
+
+                    videosPrivates.innerHTML += data.liveSchedules + data.privateLives;
+                    document.querySelector('#quant-items').innerHTML = `${data.countTotal} vídeos encontrados`;
+                    videosPrivates.style.justifyContent = "flex-start";
+                    document.querySelector(".spinner-grow").style.display = "none";
+                    videosGroup.style.justifyContent = "flex-start";
+                    videosGroup.style.alignItems = "flex-start";
+                }).catch(function (error) {
+                    loadingSpin.style.display = "none";
+                    videosGroup.style.justifyContent = "flex-start";
+                });
+        }
+
         function compararPorDataDecrescente(a, b) {
             return new Date(a.startTime) - new Date(b.startTime);
         }
@@ -355,65 +412,7 @@
 
         let checkboxPrivate = document.querySelector('#checkShowPrivateVideos');
 
-        function getVideos(isPrivate) {
-            const loadingSpin = `<div class="spinner-grow" role="status">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span class="visually-hidden">Loading...</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>`;
-            const videosGroup = document.querySelector(".videos-group");
-            videosGroup.innerHTML = loadingSpin;
-            videosGroup.style.justifyContent = "center";
-            videosGroup.style.alignItems = "center";
-
-            fetch("?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName&isPrivate=" + isPrivate)
-                .then(function (response) {
-                    if (!response.ok) {
-                        throw new Error("Erro ao enviar a solicitação POST.");
-                    }
-                    return response.json();
-                })
-                .then(function (data) {
-                    const CONSIDERED_EMPTY = "";
-                    let videosPrivates = document.querySelector("#savedVideosCanal");
-                    let totalVideos = data.countTotal;
-
-                    if (data.privateLives === CONSIDERED_EMPTY
-                        && data.liveSchedules === CONSIDERED_EMPTY) {
-                        videosPrivates.innerHTML += `
-                                                                                    <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
-                                                                                        <span>Sem vídeos no momento</span> 
-        @{
-            if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
-            {
-                                                                                                                                                                                                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
-
-                                                                                                                                                                                                    <a class="material-icons OpenNewButtom"
-                                                                                                                                                                                                        style="font-size: 36px; cursor: pointer; margin-right: 0px;"
-                                                                                                                                                                                                        data-bs-toggle="modal"
-                                                                                                                                                                                                        data-bs-target="#liveModal">
-                                                                                                                                                                                                        add_circle
-                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                    <span style="color: #AEAEAE; font-size: 12px">
-                                                                                                                                                                                                        Iniciar live
-                                                                                                                                                                                                        </span>
-                                                                                                                                                                                                    </div>
-            }
-        }
-                                                                                                                                                                                                                                                                                                                                                            <div>
-                                                                                                                                                                                                                                                                                                                                                                `
-                    }
-
-                    videosPrivates.innerHTML += data.liveSchedules + data.privateLives;
-                    document.querySelector('#quant-items').innerHTML = `${data.countTotal} vídeos encontrados`;
-                    videosPrivates.style.justifyContent = "flex-start";
-                    //loadingSpin.style.display = "none";
-                    videosGroup.style.justifyContent = "flex-start";
-                    videosGroup.style.alignItems = "flex-start";
-                }).catch(function (error) {
-                    loadingSpin.style.display = "none";
-                    videosGroup.style.justifyContent = "flex-start";
-                });
-        }
-
+        
         getVideos(false);
 
         checkboxPrivate.addEventListener('click', function (event) {

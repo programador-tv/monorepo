@@ -129,8 +129,15 @@ public sealed class CanalIndexModel : CustomPageModel
         }
 
         var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
+        Console.BackgroundColor = ConsoleColor.DarkYellow;
+        foreach (var item in privateLives)
+        {
+            Console.WriteLine($"{item.Titulo} - {item.Visibility}");
+        }
+        Console.BackgroundColor = ConsoleColor.Black;
+        
         var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
-        var countTotal = _context.Lives.Count(e => e.PerfilId == perfilOwner.Id);
+        var countTotal = _context.Lives.Count(e => e.PerfilId == perfilOwner.Id && e.Visibility == !isPrivate);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
