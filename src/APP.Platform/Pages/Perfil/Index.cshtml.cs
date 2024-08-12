@@ -4,14 +4,10 @@ using System.Text.Json;
 using Background;
 using Domain.Entities;
 using Domain.Enums;
-using Domain.Interfaces;
 using Domain.Models.Request;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Models;
 using Queue;
-using RTools_NTS.Util;
 
 namespace APP.Platform.Pages
 {
@@ -98,7 +94,7 @@ namespace APP.Platform.Pages
                         Perfil.Linkedin,
                         Perfil.GitHub,
                         Perfil.Bio,
-                        User.Claims.ToArray()[1].Value,
+                        Perfil.Email,
                         Perfil.Descricao,
                         (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
                     )

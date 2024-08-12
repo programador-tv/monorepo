@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using System.Text;
-using System.Text.Json;
 using Background;
 using ClassLib.Follow.Models.ViewModels;
 using Domain.Entities;
@@ -29,6 +27,7 @@ public sealed class CanalIndexModel(
     IMessagePublisher messagePublisher,
     Settings settings,
     IPerfilWebService perfilWebService,
+    PerfilDbContext perfilContext,
     ILiveService liveService,
     IFollowService followService
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
@@ -38,7 +37,6 @@ public sealed class CanalIndexModel(
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; }
     public Dictionary<JoinTime, TimeSelection>? OldMyEvents { get; set; }
 
-    private readonly PerfilDbContext _perfilContext;
     public List<PrivateLiveViewModel>? Lives { get; set; }
 
     [BindProperty]
@@ -167,7 +165,7 @@ public sealed class CanalIndexModel(
         MyEvents = new();
         OldMyEvents = new();
 
-        var myJoins = context
+        var myJoins = _context
             .JoinTimes.AsNoTracking()
             .Where(e =>
                 e.PerfilId == UserProfile.Id
@@ -178,19 +176,19 @@ public sealed class CanalIndexModel(
 
         var myJoinsTimeSelectionsIds = myJoins.Select(e => e.TimeSelectionId).ToList();
 
-        var associatedTimeSelections = context
+        var associatedTimeSelections = _context
             .TimeSelections.AsNoTracking()
             .Where(e => myJoinsTimeSelectionsIds.Contains(e.Id))
             .ToList();
 
         var timeSeletionIsFortags = myJoinsTimeSelectionsIds.Select(e => e.ToString()).ToList();
-        var associatedTags = context
+        var associatedTags = _context
             .Tags.AsNoTracking()
             .Where(e => timeSeletionIsFortags.Contains(e.LiveRelacao))
             .ToList();
 
         var associatedRoomsIds = associatedTimeSelections.Select(e => e.RoomId);
-        var associatedRooms = context
+        var associatedRooms = _context
             .Rooms.AsNoTracking()
             .Where(e => associatedRoomsIds.Contains(e.Id))
             .ToList();
@@ -292,12 +290,12 @@ public sealed class CanalIndexModel(
             GetFreeTimeService.ObtemTimeSelectionsByPerfilIdExcludingSet(
                 PerfilOwner.Id,
                 valueSet,
-                context
+                _context
             ) ?? new List<TimeSelection>();
 
         var filteredTimeSelections = GetFreeTimeService.FiltraPelosNaoConflitantes(
             timeSelections,
-            context,
+            _context,
             MyEvents
         );
 
@@ -317,7 +315,7 @@ public sealed class CanalIndexModel(
 
         var MentorsFreeTime = await GetFreeTimeService.ObtemPerfisRelacionados(
             timeSelectionGroupByPerfilId,
-            context,
+            _context,
             perfilWebService
         );
 
@@ -355,7 +353,7 @@ public sealed class CanalIndexModel(
             return Redirect("/Canal");
         }
 
-        var timeSelection = context
+        var timeSelection = _context
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
@@ -373,7 +371,7 @@ public sealed class CanalIndexModel(
 
         JoinTime.PerfilId = UserProfile.Id;
 
-        var freeTimeBackstage = context
+        var freeTimeBackstage = _context
             .FreeTimeBackstages.AsNoTracking()
             .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
 
@@ -386,7 +384,7 @@ public sealed class CanalIndexModel(
             JoinTime.StatusJoinTime = StatusJoinTime.Pendente;
         }
 
-        context.JoinTimes.Add(JoinTime);
+        _context.JoinTimes.Add(JoinTime);
 
         var feedback = new FeedbackJoinTime
         {
@@ -394,9 +392,9 @@ public sealed class CanalIndexModel(
             JoinTimeId = JoinTime.Id,
             DataTentativaMarcacao = DateTime.Now
         };
-        context.FeedbackJoinTimes?.Add(feedback);
+        _context.FeedbackJoinTimes?.Add(feedback);
 
-        context.SaveChanges();
+        _context.SaveChanges();
 
         if (timeSelection != null && timeSelection.Tipo == EnumTipoTimeSelection.FreeTime)
         {
