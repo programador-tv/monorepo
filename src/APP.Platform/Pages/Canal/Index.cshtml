@@ -175,6 +175,32 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="my-videos" role="tabpanel" aria-labelledby="my-videos-tab">
+
+      @* div inicia oculta e após verificação aparece na tela *@
+         <div id="msgSemVideoNoMomento" style="display: none;">
+                 <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
+                      <span>Sem vídeos no momento</span>
+                 </div>                                      
+         </div>
+        
+        @* div do botão adicionar nova live *@
+         <div id="botIniciarLive">
+            @{  
+               if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+                     {
+                         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
+                              <a class="material-icons OpenNewButtom"
+                                   style="font-size: 36px; cursor: pointer; margin-right: 0px;"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#liveModal">
+                                     add_circle
+                              </a>
+                                <span style="color: #AEAEAE; font-size: 12px">Iniciar live</span>
+                         </div>
+                      }
+                }
+         </div>
+
             <main class="videos-group" id="savedVideosCanal">
                 <div class="d-flex justify-content-center">
                     <div class="spinner-grow" role="status">
@@ -251,6 +277,7 @@
             flex-wrap: wrap;
             min-height: 120px;
         }
+
     </style>
 
 
@@ -338,32 +365,21 @@
             })
             .then(function (data) {
                 const CONSIDERED_EMPTY = "";
-                let videosPrivates = document.querySelector("#savedVideosCanal");
 
+                let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
+                let videosPrivates = document.querySelector("#savedVideosCanal");
+                
+                //verifica se não tem vídeos adicionados
                 if (data.privateLives === CONSIDERED_EMPTY
                     && data.liveSchedules === CONSIDERED_EMPTY) {
-                    videosPrivates.innerHTML = `
-                                                    <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
-                                                        <span>Sem vídeos no momento</span> @{
-                                                        if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
-                                                        {
-                                                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
+                    // mostra msg "Sem vídeos no momento na tela"
+                    msgSemVideo.style.display = "block";
 
-                                                            <a class="material-icons OpenNewButtom"
-                                                                style="font-size: 36px; cursor: pointer; margin-right: 0px;"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#liveModal">
-                                                                add_circle
-                                                            </a>
-                                                            <span style="color: #AEAEAE; font-size: 12px">
-                                                                Iniciar live
-                                                                </span>
-                                                            </div>
-                                                        }
-                                                        }
-                                                   <div>
-                                                        `
+                //caso tenha vídeos adicionados
                 } else {
+                     // oculta msg "Sem vídeos no momento"
+                     msgSemVideo.style.display = "none";
+                     // mostra vídeos adicionadas
                     videosPrivates.innerHTML = data.liveSchedules+data.privateLives;
 
                 }

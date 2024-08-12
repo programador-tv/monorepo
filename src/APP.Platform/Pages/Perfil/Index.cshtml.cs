@@ -20,10 +20,9 @@ namespace APP.Platform.Pages
         Settings settings
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private readonly IWebHostEnvironment environment = environment;
 
         [BindProperty]
-        public bool hasPefil { get; set; }
+        public bool HasPefil { get; set; }
 
         [BindProperty]
         public bool UsernameExist { get; set; }
@@ -31,12 +30,14 @@ namespace APP.Platform.Pages
         [BindProperty]
         public PerfilViewModel? Perfil { get; set; }
 
+        public IWebHostEnvironment Environment { get; } = environment;
+
         public IActionResult OnGet()
         {
             Perfil = new();
             if (UserProfile != null)
             {
-                hasPefil = true;
+                HasPefil = true;
                 Perfil.Nome = UserProfile.Nome;
                 Perfil.UserName = UserProfile.UserName;
                 Perfil.Linkedin = UserProfile.Linkedin;
