@@ -20,7 +20,6 @@ namespace APP.Platform.Pages
         Settings settings
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-
         [BindProperty]
         public bool HasPefil { get; set; }
 

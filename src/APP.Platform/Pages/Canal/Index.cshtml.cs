@@ -82,7 +82,6 @@ public sealed class CanalIndexModel(
 
         PerfilOwner = perfilOwner;
 
-
         if (UserProfile != null)
         {
             IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
