@@ -198,6 +198,32 @@
                     </div>
                 }
             }
+
+      @* div inicia oculta e após verificação aparece na tela *@
+         <div id="msgSemVideoNoMomento" style="display: none;">
+                 <div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
+                      <span>Sem vídeos no momento</span>
+                 </div>                                      
+         </div>
+        
+        @* div do botão adicionar nova live *@
+         <div id="botIniciarLive">
+            @{  
+               if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+                     {
+                         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; margin-top: 1rem;">
+                              <a class="material-icons OpenNewButtom"
+                                   style="font-size: 36px; cursor: pointer; margin-right: 0px;"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#liveModal">
+                                     add_circle
+                              </a>
+                                <span style="color: #AEAEAE; font-size: 12px">Iniciar live</span>
+                         </div>
+                      }
+                }
+         </div>
+
             <main class="videos-group" id="savedVideosCanal">
                 <div class="d-flex justify-content-center">
                     <div class="spinner-grow" role="status">
@@ -275,6 +301,7 @@
             flex-wrap: wrap;
             min-height: 120px;
         }
+
     </style>
 
 

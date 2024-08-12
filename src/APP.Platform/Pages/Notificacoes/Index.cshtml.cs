@@ -6,27 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APP.Platform.Pages
 {
-    public sealed class NotificacoesModel : CustomPageModel
+    public sealed class NotificacoesModel(
+        ApplicationDbContext _context,
+        IHttpClientFactory _httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        Settings settings,
+        IPerfilWebService _perfilWebService,
+        INotificationWebService _notificationWebService
+    ) : CustomPageModel(_context, _httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private IPerfilWebService _perfilWebService { get; set; }
-        private readonly INotificationWebService _notificationWebService;
-
-        public NotificacoesModel(
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            Settings settings,
-            IPerfilWebService perfilWebService,
-            INotificationWebService notificationWebService
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _context = context;
-            _perfilWebService = perfilWebService;
-            _notificationWebService = notificationWebService;
-        }
-
         public List<NotificationViewModel>? Notifications { get; set; }
 
         public async Task<ActionResult> OnGet()

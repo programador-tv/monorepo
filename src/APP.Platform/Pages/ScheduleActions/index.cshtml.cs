@@ -456,6 +456,11 @@ namespace APP.Platform.Pages.ScheduleActions
                 attatchFreeTimeList.Add(kvp.Key, kvp.Value);
             }
 
+            var userLivesPanelHtml = await RenderViewAsync(
+                "Components/TimeSelections/_ModalLivesPanel",
+                new ModalLivesPanel { TimeSelections = livesList }
+            );
+
             userTimeSelectionHtml += await RenderViewAsync(
                 "Components/ModalJoinTime/_ModalJoinTimeEvent",
                 new _ModalJoinTimeEvent { JoinEvent = attatchFreeTimeList }
@@ -481,7 +486,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     TimeSelectionPanelModals = userFreeTimesHtml,
                     JoinTimeModalsPanel = userJoinTimesHtml,
                     RequestHelpModalsPanel = userRequestHelpListHtml,
-                    SolvedHelpModalsPanel = userSolvedHelpListHtml
+                    SolvedHelpModalsPanel = userSolvedHelpListHtml,
+                    LivesModalsPanel = userLivesPanelHtml
                 }
             );
         }
@@ -845,14 +851,26 @@ namespace APP.Platform.Pages.ScheduleActions
 
         public async Task<IActionResult> OnGetAcceptance(string id)
         {
-#warning se vem o id do front, provavelmente os dados buscados aqui ja estão disponiveis la
+#warning se vem o id(token) do front, provavelmente os dados buscados aqui ja estão disponiveis la
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
-            using var byIdResponse = await client.GetAsync($"api/perfils/" + id);
+            var perfilResponse = await _perfilWebService.GetByToken(id);
 
-            var result = await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+            var perfilLegacy = new Domain.Entities.Perfil
+            {
+                Id = perfilResponse.Id,
+                Nome = perfilResponse.Nome,
+                Foto = perfilResponse.Foto,
+                Token = perfilResponse.Token,
+                UserName = perfilResponse.UserName,
+                Linkedin = perfilResponse.Linkedin,
+                GitHub = perfilResponse.GitHub,
+                Bio = perfilResponse.Bio,
+                Email = perfilResponse.Email,
+                Descricao = perfilResponse.Descricao,
+                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            };
 
-            return new JsonResult(result);
+            return new JsonResult(perfilLegacy);
         }
 
         public async Task<IActionResult> OnPostSetAluno(Guid joinId)

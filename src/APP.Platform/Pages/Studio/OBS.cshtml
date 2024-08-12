@@ -75,6 +75,9 @@
         <div class="alert alert-primary" role="alert">
             A live se encerrará automaticamente alguns segundos após você encerrar a transmissão
         </div>
+
+        @await Html.PartialAsync("_InternetConnectionQuality")
+
         <div class="buttons-studio" style="margin-top: 20px;">
             
             <a class="button "
