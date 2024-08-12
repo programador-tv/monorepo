@@ -20,7 +20,7 @@ function enviarTagsParaAPI (tags) {
 
 function verificarSelecaoLiveScheduleOnChannel () {
     let selectedTags = [];
-    for (let i = 0; i < selectElementScheduleLiveOnChannel.options.length; i++) {
+    for (var i = 0; i < selectElementScheduleLiveOnChannel.options.length; i++) {
         if (selectElementScheduleLiveOnChannel.options[i].selected) {
             selectedTags.push(selectElementScheduleLiveOnChannel.options[i].value);
         }
@@ -38,8 +38,8 @@ document.getElementById('btnPrepararChatGPT-SchedOnChannel').addEventListener('c
     event.preventDefault();
 
     let selectedTags = [];
-    for (let i = 0; i < selectElementScheduleLiveOnChannel.options.length; i++) {
-        const option = selectElementScheduleLiveOnChannel.options[i];
+    for (var i = 0; i < selectElementScheduleLiveOnChannel.options.length; i++) {
+        var option = selectElementScheduleLiveOnChannel.options[i];
         if (option.selected) {
             selectedTags.push(option.value);
         }

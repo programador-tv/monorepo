@@ -829,26 +829,14 @@ namespace APP.Platform.Pages.ScheduleActions
 
         public async Task<IActionResult> OnGetAcceptance(string id)
         {
-#warning se vem o id(token) do front, provavelmente os dados buscados aqui ja estão disponiveis la
+#warning se vem o id do front, provavelmente os dados buscados aqui ja estão disponiveis la
 
-            var perfilResponse = await _perfilWebService.GetByToken(id);
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+            using var byIdResponse = await client.GetAsync($"api/perfils/" + id);
 
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfilResponse.Id,
-                Nome = perfilResponse.Nome,
-                Foto = perfilResponse.Foto,
-                Token = perfilResponse.Token,
-                UserName = perfilResponse.UserName,
-                Linkedin = perfilResponse.Linkedin,
-                GitHub = perfilResponse.GitHub,
-                Bio = perfilResponse.Bio,
-                Email = perfilResponse.Email,
-                Descricao = perfilResponse.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-            };
+            var result = await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
-            return new JsonResult(perfilLegacy);
+            return new JsonResult(result);
         }
 
         public async Task<IActionResult> OnPostSetAluno(Guid joinId)

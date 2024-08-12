@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Text;
+using System.Text.Json;
 using Background;
 using ClassLib.Follow.Models.ViewModels;
 using Domain.Entities;
@@ -63,23 +65,15 @@ public sealed class CanalIndexModel(
             return Redirect("../Perfil");
         }
 
-        var perfilResponse = await _perfilWebService.GetByUsername(usr);
+        var client = _httpClientFactory.CreateClient("CoreAPI");
+        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
 
-        var perfilOwner = new Domain.Entities.Perfil
+        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+
+        if (perfilOwner == null)
         {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-        };
-
+            return Redirect("../Index");
+        }
         PerfilOwner = perfilOwner;
 
         if (UserProfile != null)
@@ -87,11 +81,10 @@ public sealed class CanalIndexModel(
             IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
         }
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
-
         using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
         );
+
         responseTaskFollow.EnsureSuccessStatusCode();
 
         var followInformation =
@@ -105,22 +98,10 @@ public sealed class CanalIndexModel(
 
     public async Task<ActionResult> OnGetAfterloadCanal(string usr)
     {
-        var perfilResponse = await _perfilWebService.GetByUsername(usr);
+        var client = _httpClientFactory.CreateClient("CoreAPI");
+        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
 
-        var perfilOwner = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-        };
+        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
         if (perfilOwner == null)
         {
@@ -295,28 +276,15 @@ public sealed class CanalIndexModel(
 
         await GetMyEvents();
 
-        var perfilResponse = await _perfilWebService.GetById(id);
+        var client = _httpClientFactory.CreateClient("CoreAPI");
+        using var responseTask = await client.GetAsync("api/perfils/" + id);
 
-        var perfil = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-        };
+        var perfil = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
-        if (perfil == null)
+        if (responseTask.StatusCode != HttpStatusCode.OK || perfil == null)
         {
             return BadRequest();
         }
-
         PerfilOwner = perfil;
         HashSet<TimeSelection> valueSet = new HashSet<TimeSelection>(MyEvents!.Values);
 
@@ -391,29 +359,10 @@ public sealed class CanalIndexModel(
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var perfilResponse = await _perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
-
-        var perfil = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-        };
-
-        if (perfil == null)
-        {
-            return BadRequest();
-        }
-
-        var channelUserName = perfil.UserName;
+        var client = _httpClientFactory.CreateClient("CoreAPI");
+        using var byIdResponse = await client.GetAsync($"api/perfils/" + timeSelection?.PerfilId);
+        var channelUserName =
+            await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
         if (UserProfile.Id == Guid.Empty)
         {

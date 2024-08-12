@@ -4,9 +4,12 @@ using System.Text.Json;
 using Background;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Interfaces;
 using Domain.Models.Request;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using Queue;
 
 namespace APP.Platform.Pages
@@ -20,8 +23,10 @@ namespace APP.Platform.Pages
         Settings settings
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
+        private readonly IWebHostEnvironment environment = environment;
+
         [BindProperty]
-        public bool HasPefil { get; set; }
+        public bool hasPefil { get; set; }
 
         [BindProperty]
         public bool UsernameExist { get; set; }
@@ -29,14 +34,12 @@ namespace APP.Platform.Pages
         [BindProperty]
         public PerfilViewModel? Perfil { get; set; }
 
-        public IWebHostEnvironment Environment { get; } = environment;
-
         public IActionResult OnGet()
         {
             Perfil = new();
             if (UserProfile != null)
             {
-                HasPefil = true;
+                hasPefil = true;
                 Perfil.Nome = UserProfile.Nome;
                 Perfil.UserName = UserProfile.UserName;
                 Perfil.Linkedin = UserProfile.Linkedin;

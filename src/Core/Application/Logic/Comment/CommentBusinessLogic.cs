@@ -15,16 +15,16 @@ public sealed class CommentBusinessLogic(
     IBocaSujaWebService bocaSujaWebService
 ) : ICommentBusinessLogic
 {
-    public async Task ValidateComment(string notificationId)
+    public async Task ValidateComment(string commentId)
     {
-        var comment = await _repository.GetById(notificationId);
+        var comment = await _repository.GetById(commentId);
 
         var live =
             await _liveRepository.GetByIdAsync(comment.LiveId)
-            ?? throw new ArgumentException(notificationId);
+            ?? throw new ArgumentException(commentId);
         var liveOwner =
             await _perfilRepository.GetByIdAsync(live.PerfilId)
-            ?? throw new ArgumentException(notificationId);
+            ?? throw new ArgumentException(commentId);
 
         var result = await bocaSujaWebService.Validate(
             comment.Content ?? string.Empty,

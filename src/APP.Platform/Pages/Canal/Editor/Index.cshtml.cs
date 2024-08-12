@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
-using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,7 +34,6 @@ public sealed class EditorIndexModel : CustomPageModel
     public bool IsUsrCanal { get; set; }
 
     public Domain.Entities.Perfil? Perfil { get; set; }
-    private IPerfilWebService _perfilWebService { get; set; }
 
     public Dictionary<string, List<string>> RelatioTags { get; set; }
 
@@ -43,14 +41,12 @@ public sealed class EditorIndexModel : CustomPageModel
         ApplicationDbContext context,
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
-        IPerfilWebService perfilWebService,
         Settings settings
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
         _httpClientFactory = httpClientFactory;
         _context = context;
-        _perfilWebService = perfilWebService;
 
         RelatioTags = DataTags.GetTags();
     }
@@ -76,21 +72,9 @@ public sealed class EditorIndexModel : CustomPageModel
                 return Redirect("../");
             }
 
-            var perfilResponse = await _perfilWebService.GetById(live.PerfilId);
-            var owner = new Domain.Entities.Perfil
-            {
-                Id = perfilResponse.Id,
-                Nome = perfilResponse.Nome,
-                Foto = perfilResponse.Foto,
-                Token = perfilResponse.Token,
-                UserName = perfilResponse.UserName,
-                Linkedin = perfilResponse.Linkedin,
-                GitHub = perfilResponse.GitHub,
-                Bio = perfilResponse.Bio,
-                Email = perfilResponse.Email,
-                Descricao = perfilResponse.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
-            };
+            using var byIdResponse = await client.GetAsync($"api/perfils/" + live.PerfilId);
+
+            var owner = await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
 
             if (owner != null && owner.Id != live.PerfilId)
             {
