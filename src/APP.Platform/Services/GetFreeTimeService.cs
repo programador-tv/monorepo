@@ -183,15 +183,27 @@ public static class GetFreeTimeService
                     var helpResponses =
                         await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId))
                         ?? [];
-                    var groupedHelpResponse = helpResponses.GroupBy(hlpr => hlpr.PerfilId).Select(hlpr => hlpr.Key).ToList();
-                    var commentOwnerProfiles = await _perfilWebService.GetAllById(groupedHelpResponse);
-                    var joinHelpResponseWithProfile = helpResponses.Select(x => 
-                        new HelpResponseWithProfileData(
-                            x,
-                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.UserName).First(),
-                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.Nome).First(),
-                            commentOwnerProfiles.Where(p => p.Id == x.PerfilId).Select(p => p.Foto).First()
-                            )).ToList();
+                    var groupedHelpResponse = helpResponses
+                        .GroupBy(hlpr => hlpr.PerfilId)
+                        .Select(hlpr => hlpr.Key)
+                        .ToList();
+                    var commentOwnerProfiles = await _perfilWebService.GetAllById(
+                        groupedHelpResponse
+                    );
+                    var joinHelpResponseWithProfile = helpResponses
+                        .Select(helpResponse =>
+                        {
+                            var commentOwner = commentOwnerProfiles
+                                .Where(p => p.Id == helpResponse.PerfilId)
+                                .First();
+                            return new HelpResponseWithProfileData(
+                                helpResponse,
+                                commentOwner.UserName,
+                                commentOwner.Nome,
+                                commentOwner.Foto
+                            );
+                        })
+                        .ToList();
                     requesteds.Add(
                         new TimeSelectionForRequestedHelpViewModel()
                         {

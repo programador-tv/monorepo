@@ -211,7 +211,20 @@ function deleteHelpResponse(helpResponseId) {
             throw new Error("Erro ao deletar comentário.");
         }
         document.getElementById(`helpResponse-${helpResponseId}`).remove();
-    })
+        let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
+
+        let time;
+        for (let element of result) {
+            for (let item of element.timeSelections) {
+                if (item.timeSelectionId == freetimeId) {
+                    time = item
+                    perfil = element.perfils
+                    break;
+                }
+            }
+        }
+        time.helpResponses = time.helpResponses.filter(e => e.helpResponse.id != helpResponseId);
+    });
 }
 
 
