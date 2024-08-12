@@ -77,13 +77,13 @@ document.addEventListener("DOMContentLoaded", function () {
         true
       );
       return false;
-    } else if (
-      firstTime.getTime() >= lastTime.getTime() ||
-      lastTime.getTime() - firstTime.getTime() > TWO_HOURS ||
-      lastTime.getTime() - firstTime.getTime() < THIRTY_MINUTES
-    ) {
-      showMessage("Os horários são inválidos.", true);
+    } else if (lastTime.getTime() - firstTime.getTime() > TWO_HOURS) {
+      showMessage("O evento nao pode durar mais de duas horas.", true);
       return false;
+    } else if (firstTime.getTime() >= lastTime.getTime()) {
+      showMessage("O horário inicial é maior que o final.", true);
+    } else if (lastTime.getTime() - firstTime.getTime() < THIRTY_MINUTES) {
+      showMessage("O evento não pode durar menos de 30 minutos.", true);
     } else {
       showMessage("", false);
       return true;

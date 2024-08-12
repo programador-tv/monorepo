@@ -136,11 +136,10 @@ body {
   width: 49%;
   height: 240px;
   border-radius: 4px;
-  border: 1px solid #cacaca;
-  box-shadow: 0px 2px 6px 0px #00000030;
+  border: 1px solid #d7d7d7;
+  box-shadow: 1px 2px 4px 0px #57575726;
   flex-wrap: wrap;
-  background: #f3f2ef;
-  padding: 15px;
+  background: #FEFBFB;
   cursor: pointer;
 }
 .item-preview-ts:hover {
@@ -165,12 +164,25 @@ body {
   justify-content: center;
   font-size: 12px;
   border-radius: 20px;
-  border: 1px solid #878787;
-  color: #878787;
+	background-color: #D7D7D7;
+  color: #373737;
   height: 24px;
   width: fit-content;
-  margin: 5px;
   padding: 4px 12px;
+}
+
+.tag-capacitacao[data-mapTipo="0"],
+.tag-capacitacao[data-mapTipo="1"] {
+	background-color: #DAE6FF;
+	color: #437AE2;
+}
+.tag-capacitacao[data-mapTipo="3"] {
+	background-color: #FEFFDA;
+	color: #604002;
+}
+.tag-duvida {
+	background-color: #EEDAFF;
+	color: #674486;
 }
 
 .tag-aprender {
@@ -280,6 +292,8 @@ body {
   height: 160px;
   border-radius: 50%;
   border: 1px solid lightgray;
+  z-index: 999;
+  position: relative;
 }
 
 .avatar-busca {

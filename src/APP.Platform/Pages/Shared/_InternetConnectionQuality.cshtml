@@ -1,0 +1,74 @@
+<div id="connection-quality-alert" class="alert alert-primary" role="alert">
+    Qualidade da transmissão: <span id="connection-quality"></span>
+</div>
+<script>
+    async function getInternetSpeed(callback) {
+        const image = new Image();
+        const startTime = new Date().getTime();
+        const cacheBuster = "?nnn=" + startTime;
+        image.src = "https://www.gstatic.com/webp/gallery/1.jpg" + cacheBuster;
+
+        image.onload = function () {
+            const endTime = new Date().getTime();
+            const duration = (endTime - startTime) / 1000;
+
+            if (duration > 0) {
+                const bitsLoaded = 44 * 1024 * 8; // Tamanho da imagem usada para o teste -> 44kb, alterar caso a imagem tenha outro tamanho.
+                const speedBps = bitsLoaded / duration;
+                const speedKbps = speedBps / 1024;
+                const speedMbps = speedKbps / 1024;
+
+                callback(speedMbps);
+            } else {
+                console.error('Duração muito curta para medir a velocidade da internet.');
+                callback(null);
+            }
+        };
+
+        image.onerror = function () {
+            console.error('Erro ao carregar a imagem para medir a velocidade.');
+            callback(null);
+        };
+    }
+
+    function getQualityBasedOnSpeed(speedMbps) {
+        if (speedMbps > 5) {
+            return 'Alta';
+        } else if (speedMbps > 2) {
+            return 'Média';
+        } else {
+            return 'Baixa';
+        }
+    }
+
+    function initInternetSpeedTest() {
+        getInternetSpeed(function (speedMbps) {
+            if (speedMbps !== null) {
+                const quality = getQualityBasedOnSpeed(speedMbps);
+                console.log(speedMbps)
+
+                const qualityElement = document.getElementById("connection-quality");
+                if (qualityElement) {
+                    qualityElement.textContent = quality;
+                }
+            } else {
+                console.error('Erro ao medir a velocidade da internet.');
+            }
+        });
+    }
+
+    function handleOffline() {
+        const qualityElement = document.getElementById("connection-quality");
+        if (qualityElement) {
+            qualityElement.textContent = 'Sem conexão';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        initInternetSpeedTest();
+
+        window.addEventListener('offline', () => {
+            handleOffline();
+        });
+    });
+</script>

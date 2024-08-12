@@ -100,8 +100,8 @@ let intervalId;
 let keyPressed = false;
 
 function validateTimeOverlap(timeSelection) {
-  for (var i = 0; i < asyncEvents.length; i++) {
-    var item = asyncEvents[i];
+  for (let i = 0; i < asyncEvents.length; i++) {
+    const item = asyncEvents[i];
     if (item.start <= timeSelection.start && item.end > timeSelection.start) {
       return false;
     }
