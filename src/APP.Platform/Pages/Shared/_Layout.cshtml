@@ -725,12 +725,6 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
         </script>
     }
 
-    <script>
-        function openTimePickerForHelp() {
-            $("#tipoTempoLivre").val("requestHelp");
-            $("#timePickerModal").modal("show");
-        }
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
     <script defer src="~/js/EventActions.js"></script>
     @if (SignInManager.IsSignedIn(User))

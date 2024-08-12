@@ -1,3 +1,7 @@
+@{
+    bool isAuth = User.Identity.IsAuthenticated;
+}
+
 @inject SignInManager<IdentityUser> SignInManager
     <div class="modal fade timeSelection-x" id="ajudarModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 955px;">
@@ -148,10 +152,18 @@
 </style>
 <script defer src="/js/TabBsHandler.js"></script>
 <script>
+    //PM- Lógica de abrir modais
     function openOneToOne() {
-          $("#tipoTempoLivre").val("1:1");
-          openTimePicker()
+    var isAuthenticated = @isAuth.ToString().ToLower();
+    console.log(isAuthenticated)
+
+    if (isAuthenticated) {
+        $('#eventModalOneToOne').modal('show');
+    } else {
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+        loginCallbackOneToOne();
     }
+}
     function openCursosAndEventos() {
           $("#tipoTempoLivre").val("cursos");
           openTimePicker()
@@ -160,4 +172,8 @@
             $("#ajudarModal").modal("hide");
             $("#timePickerModal").modal("show");
     }
+     function openTimePickerForHelp() {
+            $("#tipoTempoLivre").val("requestHelp");
+            $("#timePickerModal").modal("show");
+        }
 </script>
