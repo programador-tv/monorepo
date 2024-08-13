@@ -415,7 +415,7 @@ namespace APP.Platform.Pages
 
             if (userNotify == null)
             {
-                userNotify = new NotifyUserLiveEarly
+                userNotify =  new NotifyUserLiveEarly
                 {
                     LiveId = Guid.Parse(LiveId!),
                     PerfilId = UserProfile.Id,
@@ -450,16 +450,16 @@ namespace APP.Platform.Pages
 
             responseTask.EnsureSuccessStatusCode();
 
-            var likes = await responseTask.Content.ReadFromJsonAsync<List<Like>>();
+            var likes = await responseTask.Content.ReadFromJsonAsync<List<Like>>()??[];
 
             var relation = likes.Find(e => e.RelatedUserId == userId);
+            
             if (relation != null)
             {
-                var updateLike = likes.First(e => e.RelatedUserId == userId);
-                updateLike.IsLiked = !updateLike.IsLiked;
-                userAlredyLiked = updateLike.IsLiked;
+                relation.IsLiked = !relation.IsLiked;
+                userAlredyLiked = relation.IsLiked;
 
-                _context.Likes.Update(updateLike);
+                _context.Likes.Update(relation); 
             }
             else
             {
