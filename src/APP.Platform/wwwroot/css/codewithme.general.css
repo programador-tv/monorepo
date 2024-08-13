@@ -1858,11 +1858,13 @@ body {
   color: #437ae2;
 }
 
-.modal-select {
+.modal-select,
+.modal-selectRH {
   display: none;
 }
 
-.modal-select.active {
+.modal-select.active,
+.modal-selectRH.active {
   display: block;
 }
 
@@ -1877,6 +1879,7 @@ body {
 .modal-body {
   padding: 0;
   max-height: 700px;
+  min-height: 510px;
 }
 
 .date-input-div {
