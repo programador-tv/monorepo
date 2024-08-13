@@ -198,7 +198,7 @@ function sendComment() {
             for (let item of element.timeSelections) {
                 if (item.timeSelectionId == freetimeId) {
                     time = item
-                    perfil = element.perfils
+                    var perfil = element.perfils
                     break;
                 }
             }

@@ -193,9 +193,9 @@ public static class GetFreeTimeService
                     var joinHelpResponseWithProfile = helpResponses
                         .Select(helpResponse =>
                         {
-                            var commentOwner = commentOwnerProfiles
-                                .Where(p => p.Id == helpResponse.PerfilId)
-                                .First();
+                            var commentOwner = commentOwnerProfiles.First(p =>
+                                p.Id == helpResponse.PerfilId
+                            );
                             return new HelpResponseWithProfileData(
                                 helpResponse,
                                 commentOwner.UserName,
