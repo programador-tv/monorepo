@@ -328,7 +328,6 @@
                 .then(function (data) {
                     const CONSIDERED_EMPTY = "";
                     let videosPrivates = document.querySelector("#savedVideosCanal");
-                    let totalVideos = data.countTotal;
 
                     if (data.privateLives === CONSIDERED_EMPTY && data.liveSchedules === CONSIDERED_EMPTY) {
                         videosPrivates.innerHTML += `<div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
