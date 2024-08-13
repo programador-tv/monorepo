@@ -149,9 +149,8 @@ namespace APP.Platform.Pages
 
             DateTime agora = DateTime.Now;
 
-            var liveIdGuid = Guid.Parse(LiveId);
-
-            using var responseTask = await client.GetAsync($"api/comments/getAllByLiveIdAndPerfilId/{liveIdGuid}/{UserProfile.Id}");
+     
+            using var responseTask = await client.GetAsync($"api/comments/getAllByLiveIdAndPerfilId/{LiveId}/{UserProfile.Id}");
 
             responseTask.EnsureSuccessStatusCode();
 
