@@ -459,7 +459,7 @@ namespace APP.Platform.Pages
                 relation.IsLiked = !relation.IsLiked;
                 userAlredyLiked = relation.IsLiked;
 
-                _context.Likes.Update (relation);
+                _context.Likes.Update(relation);
             }
             else
             {

@@ -4,6 +4,6 @@
   },
   "scripts": {
     "prepare": "husky",
-    "committing": "dotnet csharpier ."
+    "format": "dotnet csharpier ."
   }
 }

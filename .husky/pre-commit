@@ -1,1 +1,1 @@
-npm run committing
+npm run format && git add .
