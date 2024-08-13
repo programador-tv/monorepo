@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
             // // createLiveModal();
             // calendar.addEvent(content);
-            // // const firstForm = content;
+            // // let firstForm = content;
             setTimeout(() => {
               location.reload();
             }, 2000);
