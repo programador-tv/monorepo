@@ -188,19 +188,6 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             style="width: fit-content; font-size: 13px; padding: 5px;" onclick="showInteressados('@data.Key.Id')"
                                             id="select-interested"> Selecionar Interessados
                                             </button>
-                                       @*  }else{
-                                            @if(data.Value.Count > 0 && data.Key?.Status == StatusTimeSelection.Pendente && data.Value.Any(joinTime => joinTime.StatusJoinTime == StatusJoinTime.Marcado))
-                                            {
-                                              <form  asp-page-handler="TimeSelectionStatusMarcado" style="margin-left: auto;justify-content: end;display: flex;" >
-                                                <input type="hidden" name="id" value="@data.Key?.Id">
-                                                <button
-                                                    type="submit"
-                                                    class="button-capacitacao"
-                                                    style="width: fit-content;margin: 20px;">
-                                                    Encerrar inscrições e confirmar sala
-                                                </button>
-                                                </form>
-                                            } *@
                                         }
                                     </nav>
                                     }
@@ -272,17 +259,32 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                         Cancelar Orientação
                                     </div>
                                 </form>
-                               
-                                    @if(tempoRestanteEmHoras <= 1)
+
+                                    @if (tempoRestanteEmHoras <= 1)
+                                    {
+                                        @if (data.Key.Ilimitado || data.Key?.Status == StatusTimeSelection.Marcado || data.Key?.Status == StatusTimeSelection.ConclusaoPendente)
+                                        {
+                                            <button id="entrar-sala"
+                                                    class="button botao-entrar-active button-right"
+                                                    onclick="window.open('@data.Key?.LinkSala', '_blank');">
+                                                Entrar na Sala
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button id="entrar-sala"
+                                                    class="button botao-entrar button-right"
+                                                    desabled>
+                                                Entrar na Sala
+                                            </button>
+                                        }
+
+                                    }
+                                    else
                                     {
                                         <button id="entrar-sala"
-                                                class="button botao-entrar-active button-right"
-                                                onclick="window.open('@data.Key.LinkSala', '_blank');">
-                                            Entrar na Sala
-                                        </button>
-                                    }else{
-                                        <button id="entrar-sala"
-                                                class="button botao-entrar button-right">
+                                                class="button botao-entrar button-right"
+                                                desabled>
                                             Entrar na Sala
                                         </button>
                                     }
