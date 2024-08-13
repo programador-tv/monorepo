@@ -136,11 +136,10 @@ body {
   width: 49%;
   height: 240px;
   border-radius: 4px;
-  border: 1px solid #cacaca;
-  box-shadow: 0px 2px 6px 0px #00000030;
+  border: 1px solid #d7d7d7;
+  box-shadow: 1px 2px 4px 0px #57575726;
   flex-wrap: wrap;
-  background: #f3f2ef;
-  padding: 15px;
+  background: #FEFBFB;
   cursor: pointer;
 }
 .item-preview-ts:hover {
@@ -169,7 +168,6 @@ body {
   color: #373737;
   height: 24px;
   width: fit-content;
-  margin: 5px;
   padding: 4px 12px;
 }
 
@@ -1595,4 +1593,359 @@ body {
   100% {
     transform: translateX(100%);
   }
+}
+
+.btnModalClose {
+  position: absolute;
+  right: 20px;
+}
+
+.modalTitleHeaderDiv {
+  margin: auto;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.modalTitleHeader {
+  font-size: 20px;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+.progressBall {
+  border-radius: 50%;
+  color: #fff;
+  background-color: #437ae2;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  align-content: center;
+}
+
+.progressBallNext {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #437ae2;
+  align-content: center;
+  text-align: center;
+  color: #437ae2;
+}
+
+.progressOneToOne {
+  padding-top: 1.2rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressRectangle {
+  width: 50px;
+  height: 2px;
+  color: #437ae2;
+  background-color: #437ae2;
+  margin-inline: 15px;
+}
+
+.progressOneToOneText {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressTextBox {
+  width: 56px;
+  height: 65px;
+  margin-inline: 30px;
+  text-align: center;
+}
+
+.progressText {
+  color: #437ae2;
+  font-weight: 500px;
+}
+
+.oneToOneTextHeader {
+  margin: auto;
+  max-width: 256px;
+  display: flex;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 23px;
+}
+
+.oneToOneLabel {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1c1c1c;
+}
+
+.selected-tag {
+  display: inline-block;
+  font-size: 12px;
+  background-color: #d7d7d7;
+  border-radius: 5%;
+  padding: 0.1rem;
+  margin: 0.2rem;
+}
+
+.oneToOneButton {
+  background: #437ae2;
+  font-size: 20px;
+  color: #f2f2f2;
+}
+
+.datePickerFlexDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.datePickerFlexItem {
+  width: 50%;
+  padding: 20px;
+  padding-left: 32px;
+
+  padding-top: 0;
+  align-self: baseline;
+  font-size: 16px;
+
+  flex: 1;
+}
+
+.body-oneToOne-2 {
+  display: none;
+}
+
+.body-oneToOne-3 {
+  display: none;
+}
+
+.form-group {
+  max-height: 300px; /* Defina a altura máxima para o container rolável */
+  overflow-y: auto; /* Habilita a rolagem vertical */
+}
+
+.form-control.isSelect2 {
+  width: 100%; /* Garante que o select ocupe 100% da largura disponível */
+}
+
+.form-group-modal {
+  max-height: 100% !important;
+}
+
+.btn-modal-first {
+  margin-right: 32px;
+  margin-top: 63px;
+}
+
+.modal-input-padding {
+  padding-inline: 15px;
+}
+.one-to-one-input {
+  height: 32px;
+}
+
+#TituloMentoria {
+  margin-bottom: 23px;
+}
+
+.btn-conferir-informacao {
+  padding-inline: 2rem;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.btn-criar-modal {
+  padding-inline: 2rem;
+  margin-top: 26px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.conferir-info-header {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.conferir-info-modal {
+  background-color: #f2f2f2;
+  margin-top: 30px;
+}
+
+.conferir-info-titulo {
+  font-weight: 600;
+  font-size: 22px;
+  color: #437ae2;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.resumo-one-to-one {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  padding-inline: 100px;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 400px;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding-bottom: 30px;
+}
+
+.modal-tag-main {
+  background-color: #437ae2;
+  border: 1px solid #437ae2;
+  padding: 4px 12px 4px 12px;
+  border-radius: 20px;
+  color: #fff;
+  margin: 5px;
+}
+
+.btn-avancar:hover {
+  background: #2559bb;
+  color: #fff;
+}
+.modal-tag {
+  background-color: #ffffff;
+  border: 1px solid #878787;
+  padding: 4px 12px 4px 12px;
+  color: #525252;
+  margin: 5px;
+  border-radius: 14px;
+}
+
+.btn-voltar {
+  width: 152px;
+  height: 46px;
+  border-radius: 2px 0px 0px 0px;
+  background: #fefbfb;
+  border: 1px solid #525252;
+  box-shadow: 3px 2px 8px 0px #11185533;
+  font-family: "League Spartan", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: 0.0125em;
+  text-align: center;
+  color: #525252;
+}
+
+.btn-voltar:hover {
+  border: 1px solid #2559bb;
+  color: #2559bb;
+}
+
+.btn-voltar:active {
+  border: 1px solid #437ae2;
+  color: #437ae2;
+}
+
+.modal-select,
+.modal-selectRH {
+  display: none;
+}
+
+.modal-select.active,
+.modal-selectRH.active {
+  display: block;
+}
+
+#errorMsg {
+  position: absolute;
+  padding: 5px;
+  width: 12.8rem;
+  text-align: center;
+  display: none;
+}
+
+.modal-body {
+  padding: 0;
+  max-height: 700px;
+  min-height: 510px;
+}
+
+.date-input-div {
+  padding-bottom: 35px;
+}
+
+.alert-below-input {
+  font-size: 12px;
+  color: #d82b2b;
+  position: absolute;
+  display: none;
+  padding-right: 10px;
+  padding-left: 5px;
+}
+
+.selectTime {
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  border-radius: 4px;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+}
+.selectTime select {
+  width: 23%;
+  border: 0;
+  font-size: 1.1rem;
+  padding-block: 3px;
+  vertical-align: middle;
+  color: #878787;
+}
+
+.selectTime span {
+  align-content: center;
+  vertical-align: middle;
+  color: #878787;
+}
+
+.selectTimePicker {
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  border-radius: 4px;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+}
+.selectTimePicker input {
+  color: #878787;
+  font-size: 1.1rem;
+}
+
+.dateTime-newPicker {
+  text-align: center;
+  border-radius: 4px;
+  border: 0.57px solid #878787;
+  box-shadow: 1.7px 1.13px 3.4px 0px #00b4d833;
+  font-size: 1.1rem;
+  color: #878787;
+}
+
+.datePickerFlexTime {
+  width: 46%;
+  padding-right: 33px;
+}
+
+.request-help-input-div {
+  display: flex;
+  flex-direction: column;
 }

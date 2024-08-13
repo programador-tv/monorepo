@@ -1,7 +1,450 @@
 ﻿@using Domain.Enums
+ @inject SignInManager<IdentityUser>  SignInManager
+     @model FormsRequestHelp
+  <div
+    class="modal fade eventModal"
+    id="eventModalRequestHelp"
+    tabindex="-1"
+    aria-labelledby="eventModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <form id="saveTimeFormHelp" method="post">
+        <div class="modal-content">
+          <div class="modal-body">
+            <!-- One -->
+            <div class="modal-selectRH active body-requestHelp-1">
+              <div class="modalTitleHeaderDiv">
+                <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                  Criação de Card de Ajuda
+                </h5>
+              </div>
+              <div class="progressOneToOne">
+                <div class="progressBall">
+                  <img
+                    src="~/Pictures/Icons/checkModalIcon.svg"
+                    alt="check icon"
+                  />
+                </div>
+                <div class="progressRectangle"></div>
+                <div class="progressBallNext">2</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBallNext">3</div>
+              </div>
+              <div class="progressOneToOneText">
+                <div class="progressTextBox">
+                  <p class="progressText">Titulo e Descrição</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Data e Hora</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Concluir</p>
+                </div>
+              </div>
+              <div
+                class="tab-pane active"
+                id="timeTab"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                
+                <div class="form-group form-group-modal">
+                  <strong class="oneToOneTextHeader">
+                    Escolha seu titulo e suas tags de acordo com o assunto que
+                    deseja.
+                  </strong>
+                  <div class="modal-input-padding">
+                    <div id="TituloMentoria">
+                      <label
+                        asp-for="ScheduleTimeSelection.Titulo"
+                        class="control-label oneToOneLabel"
+                      >
+                        Título da Sessão
+                        <span style="color: firebrick">*</span>
+                      </label>
+                      <input
+                        id="TimeSelectionMentoriaTituloRH"
+                        asp-for="ScheduleTimeSelection.Titulo"
+                        class="form-control one-to-one-input"
+                      />
+                    </div>
+                    <label
+                      asp-for="ScheduleTimeSelection.TagsSelected"
+                      class="control-label oneToOneLabel"
+                    >
+                      Tags
+                      <span style="color: firebrick">*</span>
+                    </label>
+                    <select
+                      multiple="multiple"
+                      asp-for="ScheduleTimeSelection.TagsSelected"
+                      class="form-control isSelect2"
+                      required
+                      id="TagsSelectedHelp"
+                    >
+                      @foreach (var item in Model.RelatioTags) {
+                      <optgroup label="@item.Key">
+                        @foreach (var subItem in Model.RelatioTags[item.Key]) {
+                        <option value="@subItem">@subItem</option>
+                        }
+                      </optgroup>
+                      }
+                    </select>
+                    <div id="selected-tags-container"></div>
+                  </div>
+                  <div style="text-align: end ">
+                    <button
+                      id="btnRequestHelp1"
+                      type="button"
+                      class="btn btn-modal-first oneToOneButton action btn-avancar"
+                    >
+                      Descrição da Sessão
+                    </button>
+                  </div>
+                </div>
+  
+                
+  
+                <br />
+              </div>
+            </div>
+  
+            <!-- Two -->
+            <div class="modal-selectRH body-requestHelp-2">
+              <div class="modalTitleHeaderDiv">
+                <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                  Criação de Card de Ajuda
+                </h5>
+              </div>
+              <div class="progressOneToOne">
+                <div class="progressBall">
+                  <img
+                    src="~/Pictures/Icons/checkModalIcon.svg"
+                    alt="check icon"
+                  />
+                </div>
+                <div class="progressRectangle"></div>
+                <div class="progressBallNext">2</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBallNext">3</div>
+              </div>
+              <div class="progressOneToOneText">
+                <div class="progressTextBox">
+                  <p class="progressText">Titulo e Descrição</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Data e Hora</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Concluir</p>
+                </div>
+              </div>
+              <div
+                class="tab-pane active"
+                id="timeTab"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <div class="form-group form-group-modal">
+                  <div class="modal-input-padding">
+                    <div class="request-help-input-div">
+                      <label
+                        asp-for="ScheduleTimeSelection.Titulo"
+                        class="control-label oneToOneLabel">
+                        Descrição
+                         <span asp-for="ScheduleTimeSelection.Descricao" style="color: firebrick">*</span> <small style="font-size: 12px; color: #525252;, font-weight: 400;">(mínimo de 50 caracteres)</small></label>
+                      <textarea id="descriptionRH"  rows="4" asp-for="ScheduleTimeSelection.Descricao"></textarea>
+                    </div>
+                      <div class="request-help-input-div">
+                        <label
+                          asp-for="ScheduleTimeSelection.ImageFile"
+                          style="margin-top: 20px;"
+                          class="control-label oneToOneLabel">Imagem <small style="font-size: 12px; color: #525252;, font-weight: 400;">(opcional)</small></label>
+                        <input type="file" asp-for="ScheduleTimeSelection.ImageFile" />
+                      </div>
+                    <div style="
+    margin-bottom: 0; padding-inline: 1.4rem;" class="btn-conferir-informacao">
+                      <button
+                        id="btnRequestHBack1"
+                        type="button"
+                        class="btn btn-voltar action"
+                      >
+                        Voltar Etapa
+                      </button>
+                      <button
+                        id="btnRequestHelp2"
+                        type="button"
+                        class="btn btn-avancar oneToOneButton action"
+                      >
+                        Definir Data e Hora
+                      </button>
+                    </div>
+                  </div>
+                  @* PM- aqui vai ser diferente *@
+                </div>
+              </div>
+            </div>
+  
+            @* Threo *@
+            <div class="modal-selectRH body-requestHelp-3">
+              <div class="modalTitleHeaderDiv">
+                <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                  Criação de Card de Ajuda
+                </h5>
+              </div>
+              <div class="progressOneToOne">
+                <div class="progressBall" style="color: #fff">1</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBall">
+                  <img
+                    src="~/Pictures/Icons/checkModalIcon.svg"
+                    alt="check icon"
+                  />
+                </div>
+                <div class="progressRectangle"></div>
+                <div class="progressBallNext">3</div>
+              </div>
+              <div class="progressOneToOneText">
+                <div class="progressTextBox">
+                  <p class="progressText">Titulo e Descrição</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Data e Hora</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Concluir</p>
+                </div>
+              </div>
+              <div class="datePickerFlexDiv">
+                <div class="datePickerFlexItem">
+                  <h2 style="font-size: 16px">
+                    Escolha o horario e a data que se encontra disponível
+                  </h2>
+                </div>
+                <div class="datePickerFlexTime">
+                  <div class="date-picker date-input-div">
+                    <div class="text-container">
+                      <p class="time-picker-text">
+                        Data
+                        <span style="color: firebrick">*</span>
+                      </p>
+                      <div
+                        style="margin-top: 28px"
+                        class="alert-below-input"
+                        id="errorMsgDateRH"
+                      ></div>
+                    </div>
+                    <input type="date" class="dateTime-newPicker" id="dateTimeRH" />
+                  </div>
+                  <div class="date-input-div">
+                    <label class="time-picker-text"
+                      >Horário de Início
+                      <span style="color: firebrick">*</span>
+                    </label>
+                    <div class="selectTime">
+                      <select
+                        name="hoursStartRH"
+                        id="hoursStartRH"
+                        class="bg-transparent text-xl appearance-none outline-none"
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">10</option>
+                        <option value="12">12</option>
+                      </select>
+                      <span class="text-xl mr-3">:</span>
+                      <select
+                        name="minutesStartRH"
+                        id="minutesStartRH"
+                        class="bg-transparent text-xl appearance-none outline-none mr-4"
+                      >
+                        <option value="0">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                      </select>
+                      <select
+                        name="ampmStartRH"
+                        id="ampmStartRH"
+                        class="bg-transparent text-xl appearance-none outline-none"
+                      >
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                      </select>
+                      <span class="material-symbols-outlined"> schedule </span>
+                    </div>
+                    <div class="alert-below-input" id="errorMsgTimeRH"></div>
+                  </div>
+                  <div class="date-input-div">
+                    <label class="time-picker-text"
+                      >Horário de Término
+                      <span style="color: firebrick">*</span>
+                    </label>
+                    <div>
+                      <div class="selectTime">
+                        <select
+                          name="hoursEndRH"
+                          id="hoursEndRH"
+                          class="bg-transparent text-xl appearance-none outline-none"
+                        >
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">10</option>
+                          <option value="12">12</option>
+                        </select>
+                        <span class="text-xl mr-3">:</span>
+                        <select
+                          name="minutesEndRH"
+                          id="minutesEndRH"
+                          class="bg-transparent text-xl appearance-none outline-none mr-4"
+                        >
+                          <option value="0">00</option>
+                          <option value="15">15</option>
+                          <option value="30">30</option>
+                          <option value="45">45</option>
+                        </select>
+                        <select
+                          name="ampmEndRH"
+                          id="ampmEndRH"
+                          class="bg-transparent text-xl appearance-none outline-none"
+                        >
+                          <option value="am">AM</option>
+                          <option value="pm">PM</option>
+                        </select>
+                        <span class="material-symbols-outlined"> schedule </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alert-below-input" id="errorMsg"></div>
+                </div>
+              </div>
+              <div style="margin-top: 0" class="btn-conferir-informacao">
+                <button
+                  id="btnRequestHBack2"
+                  type="button"
+                  class="btn btn-voltar action"
+                >
+                  Voltar Etapa
+                </button>
+                <button
+                  id="btnRequestHelp3"
+                  type="button"
+                  class="btn btn-avancar oneToOneButton action"
+                >
+                  Conferir Informações
+                </button>
+              </div>
+            </div>
+  
+            <div class="modal-selectRH body-requestHelp-4">
+              <div class="modalTitleHeaderDiv">
+                <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                  Criação de Card de Ajuda
+                </h5>
+              </div>
+              <div class="progressOneToOne">
+                <div class="progressBall">1</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBall">2</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBall">
+                  <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
+                </div>
+              </div>
+              <div class="progressOneToOneText">
+                <div class="progressTextBox">
+                  <p class="progressText">Titulo e Descrição</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Data e Hora</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Concluir</p>
+                </div>
+              </div>
+              <div
+                class="tab-pane active"
+                id="timeTab3"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <div class="conferir-info-header">
+                  Conferir todas as informações
+                </div>
+                <div class="conferir-info-modal">
+                  <p class="conferir-info-titulo" id="tituloResumoRH"></p>
+                  <p class="resumo-one-to-one">
+                    <span>
+                      <span class="material-symbols-outlined" style="font-size: 14px;
+    margin-right: 5px;">
+                      calendar_today
+                      </span>
+                      <span id="dia-resumoRH" class="resumo-span"></span>
+                    </span>
+                    <span>
+                      <span class="material-symbols-outlined" style="font-size: 14px;
+    margin-right: 5px;">
+                      schedule
+                      </span>
+                    <span id="horarios-resumoRH"></span>
+                    </span>
+                    
+                  </p>
+                  <div class="modal-tags" id="modal-tagsRH">
+                    
+                  </div>
+                </div>
+                <div class="btn-criar-modal">
+                  <button
+                    id="btnRequestHBack3"
+                    type="button"
+                    class="btn btn-voltar action"
+                  >
+                    Voltar Etapa
+                  </button>
+                  <button
+                    id="btnRequestHelp4"
+                    type="submit"
+                    class="btn oneToOneButton action btn-avancar"
+                  >
+                    Criar Sessão
+                  </button>
+                </div>
+              </div>
+            </div>
+  
+  
+          </div>
+        </div>
+      
+      <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.PedirAjuda">
+       <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.RequestHelp" />
+      </form>
+      
+    </div>
+    <script src="~/js/RequestHelpEvent/ValidacaoRequestHelp.js" asp-append-version="true"></script>
+  </div>
+    <!-- @using Domain.Enums
 @inject SignInManager<IdentityUser> SignInManager
 
-@model FormsRequestHelp
+ FormsRequestHelp
 <div class="modal fade eventModal" id="eventModalRequestHelp" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -11,7 +454,11 @@
             </div>
             <div class="modal-body">
                 <form id="saveTimeFormHelp" method="post">
+
+
                     <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.PedirAjuda">
+
+
                     <br>
                     <br>
                     <div class="form-group">
@@ -67,4 +514,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
