@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM totalmente carregado e analisado.");
-
   let formInicio = document.getElementById("startTime");
   let hoursStart = document.getElementById("hoursStart");
   let minutesStart = document.getElementById("minutesStart");
@@ -60,8 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEndDate.setHours(lastTime.getHours());
     eventEndDate.setMinutes(lastTime.getMinutes());
 
-    console.log(eventDate);
-
     if (date === "") {
       showMessage("Data inválida.", true);
       return false;
@@ -92,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const validateDates = () => {
     let hoursStartInt = parseInt(hoursStart.value, 10);
-    console.log(isAmStart.value);
     if (isAmStart.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
@@ -106,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
 
     let hoursEndInt = parseInt(hoursEnd.value, 10);
-    console.log(isAmEnd.value);
     if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {

@@ -10,6 +10,14 @@ function loginCallbackOneToOne() {
     "?callbackValue=1:1";
 }
 
+function loginCallbackRequestHelp() {
+  console.log("rh chamando");
+  window.location.href =
+    "/Identity/Account/Login?returnUrl=" +
+    encodeURIComponent(window.location.pathname) +
+    "?callbackValue=requestHelp";
+}
+
 function loginCallback() {
   const callbackValue = $("#tipoTempoLivre").val();
   window.location.href =
@@ -36,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   } else if (callbackValue === "1:1") {
     $("#eventModalOneToOne").modal("show");
+  } else if (callbackValue === "requestHelp") {
+    $("#eventModalRequestHelp").modal("show");
   } else if (callbackValue !== "liveModal") {
     $("#timePickerModal").modal("show");
     $("#tipoTempoLivre").val(callbackValue);
