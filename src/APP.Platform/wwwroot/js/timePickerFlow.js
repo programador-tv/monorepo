@@ -299,9 +299,9 @@ function preventInvalidCharacter(input, inputLocation, maxValue, event) {
   }
   let strValue = String(input.value);
   if (strValue.length == 2) {
-    const strNewValue = event.key.padStart(2, strValue.charAt(1))
+    let strNewValue = event.key.padStart(2, strValue.charAt(1))
     if (strValue.charAt(1) === "0") {
-      const strNewValue = "0" + event.key;
+      strNewValue = "0" + event.key;
     }
     if (parseInt(strNewValue) > maxValue) {
       event.preventDefault();
