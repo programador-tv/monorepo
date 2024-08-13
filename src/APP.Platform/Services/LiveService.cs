@@ -36,7 +36,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
     )
     {
         List<Live> lives;
-        if (perfilLogInId == perfilOwner.Id && perfilOwner.Id == perfilLogInId)
+        if (perfilOwner.Id == perfilLogInId)
         {
             lives = context
                 .Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility == !isPrivate)
