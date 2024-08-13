@@ -188,7 +188,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                             style="width: fit-content; font-size: 13px; padding: 5px;" onclick="showInteressados('@data.Key.Id')"
                                             id="select-interested"> Selecionar Interessados
                                             </button>
-                                        }else{
+                                       @*  }else{
                                             @if(data.Value.Count > 0 && data.Key?.Status == StatusTimeSelection.Pendente && data.Value.Any(joinTime => joinTime.StatusJoinTime == StatusJoinTime.Marcado))
                                             {
                                               <form  asp-page-handler="TimeSelectionStatusMarcado" style="margin-left: auto;justify-content: end;display: flex;" >
@@ -200,7 +200,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                                     Encerrar inscrições e confirmar sala
                                                 </button>
                                                 </form>
-                                            }
+                                            } *@
                                         }
                                     </nav>
                                     }
@@ -272,14 +272,20 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                         Cancelar Orientação
                                     </div>
                                 </form>
-                                
-                               <button
-                                        id="entrar-sala"
-                                        class="button botao-entrar-active button-right"
-                                        onclick="window.open('@data.Key.LinkSala', '_blank');"
-                                        >
+                               
+                                    @if(tempoRestanteEmHoras <= 1)
+                                    {
+                                        <button id="entrar-sala"
+                                                class="button botao-entrar-active button-right"
+                                                onclick="window.open('@data.Key.LinkSala', '_blank');">
                                             Entrar na Sala
                                         </button>
+                                    }else{
+                                        <button id="entrar-sala"
+                                                class="button botao-entrar button-right">
+                                            Entrar na Sala
+                                        </button>
+                                    }
                             </div>
                         </div>
                     </div>
@@ -406,7 +412,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                             }
                         }
                     </div> 
-                    @if(data.Value.Count > 0 && data.Key?.Status == StatusTimeSelection.Pendente && data.Value.Any(joinTime => joinTime.StatusJoinTime == StatusJoinTime.Marcado))
+                  @*   @if(data.Value.Count > 0 && data.Key?.Status == StatusTimeSelection.Pendente && data.Value.Any(joinTime => joinTime.StatusJoinTime == StatusJoinTime.Marcado))
                     {
                         <form  asp-page-handler="TimeSelectionStatusMarcado" style="margin-left: auto;justify-content: end;display: flex;" >
                                 <input type="hidden" name="id" value="@data.Key?.Id">
@@ -417,7 +423,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                     Encerrar inscrições e confirmar sala
                                 </button>
                             </form>
-                    }
+                    } *@
                 </div>
             </div>
         </div>

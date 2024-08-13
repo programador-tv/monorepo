@@ -348,6 +348,10 @@ namespace APP.Platform.Pages.ScheduleActions
 
                 time.Key.MaxParticipants = max;
                 time.Key.Ilimitado = freeTimeBackstage?.Ilimitado ?? false;
+                if(time.Key.Ilimitado)
+                {
+                    time.Key.RoomId = CreatePrivateRoom(time.Key, time.Key.PerfilId ?? Guid.Empty);
+                }
             }
 
             var RhListIds = requestHelpList.Keys.Select(kvp => kvp.Id).ToList();
