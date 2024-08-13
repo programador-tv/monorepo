@@ -415,7 +415,7 @@ namespace APP.Platform.Pages
 
             if (userNotify == null)
             {
-                userNotify = new NotifyUserLiveEarly
+                userNotify =  new NotifyUserLiveEarly
                 {
                     LiveId = Guid.Parse(LiveId!),
                     PerfilId = UserProfile.Id,
