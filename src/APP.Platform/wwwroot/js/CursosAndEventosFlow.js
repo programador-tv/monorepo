@@ -41,7 +41,6 @@ function SaveTime(aspForm, _hideEventModal) {
       const content = eventData.content;
       if (content !== undefined) {
           if (content.tipo == 0) {
-            const timeSelectionIdForLive = content.id;
             content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
              await createLiveModal(content.id);
           } else {
