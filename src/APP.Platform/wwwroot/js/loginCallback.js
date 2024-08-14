@@ -2,6 +2,22 @@
     return (new URLSearchParams(window.location.search)).get(param);
 }
 
+function loginCallbackOneToOne() {
+  console.log("loginCallbackOneToOne chamando");
+  window.location.href =
+    "/Identity/Account/Login?returnUrl=" +
+    encodeURIComponent(window.location.pathname) +
+    "?callbackValue=1:1";
+}
+
+function loginCallbackRequestHelp() {
+  console.log("rh chamando");
+  window.location.href =
+    "/Identity/Account/Login?returnUrl=" +
+    encodeURIComponent(window.location.pathname) +
+    "?callbackValue=requestHelp";
+}
+
 function loginCallback() {
     const callbackValue = $("#tipoTempoLivre").val();
     window.location.href = "/Identity/Account/Login?returnUrl=" +
@@ -22,17 +38,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const callbackValue = getQueryParam('callbackValue');
     const isValidCallback = validCalllbackValue(callbackValue);
 
-    if (!isValidCallback
-        && callbackValue === ""
-        || callbackValue == null
-    ) {
-        return;
-    }
-    else if (callbackValue !== "liveModal") {
-        $("#timePickerModal").modal("show");
-        $("#tipoTempoLivre").val(callbackValue);
-    }
-    else if (callbackValue === "liveModal") {
-        $("#liveModal").modal("show");
-    }
+  if ((!isValidCallback && callbackValue === "") || callbackValue == null) {
+    return;
+  } else if (callbackValue === "1:1") {
+    $("#eventModalOneToOne").modal("show");
+  } else if (callbackValue === "requestHelp") {
+    $("#eventModalRequestHelp").modal("show");
+  } else if (callbackValue !== "liveModal") {
+    $("#timePickerModal").modal("show");
+    $("#tipoTempoLivre").val(callbackValue);
+  } else if (callbackValue === "liveModal") {
+    $("#liveModal").modal("show");
+  }
 });

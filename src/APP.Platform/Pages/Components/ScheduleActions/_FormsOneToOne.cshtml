@@ -3,62 +3,68 @@
 @model FormsOneToOne
 <div class="modal fade eventModal" id="eventModalOneToOne" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="eventModalLabel">1:1</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        @* <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="time-tab" data-bs-toggle="tab" data-bs-target="#timeTab" type="button" role="tab" aria-controls="time" aria-selected="true">Tempo disponível</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="live-tab" data-bs-toggle="tab" data-bs-target="#liveTab" type="button" role="tab" aria-controls="live" aria-selected="false">Agendar Live</button>
-        </li>
-        </ul> *@
-        <!-- Tab panes -->
-        @* <div class="tab-content"> *@
-        <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
-
-            <form id="saveTimeForm" method="post" >
-                <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.OneToOne">
-                <br>
-              @* <div class="numberMaxMentees"  style="flex-direction:row;">
-                <label for="maxParticipants" style="display: flex; align-items: center; justify-content: center; margin-right:5%;" title="Número de alunos para mentoria: 1 a 5">
-                   <strong>Selecione o número de alunos para mentoria:</strong></label>
-
-                <div class="numberMentees-picker">
-
-                    <div class="arrowContainer upHHContainer">
-                      <i class="material-icons mdc-button__icon numberMenteesUp">
-                          expand_less
-                      </i>
-                    </div>
-                        <input type="number" class="time-picker-inputs" id="maxParticipants" min="1"
-                            max="5"
-                            maxlength="1"
-                            placeholder="1"
-                            value="1"
-                            asp-for="ScheduleFreeTimeForTimeSelection.MaximumOfPeople.MaxParticipants" required />
-                            <div class="arrowContainer downHHContainer">
-                            <i class="material-icons mdc-button__icon numberMenteesDown">
-                                keyboard_arrow_down
-                            </i>
-                            </div>
-
-                </div>
-
-              </div> *@
-
-                <br>
-                <div class="form-group">
-                    <strong>
-                        Escolha quais áreas de conhecimento voce está disposto
-                        a ensinar ou falar sobre neste tempo disponível
-                    </strong><span style='color:firebrick'>*</span>
-                    <br>
-                    <select multiple="multiple"
+    <form id="saveTimeForm" method="post">
+      <div class="modal-content">
+        <div class="modal-body event-modal">
+          <!-- One -->
+          <div class="modal-select active body-oneToOne-1">
+            <div class="modalTitleHeaderDiv">
+              <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                Criação de Colaboração 1:1
+              </h5>
+            </div>
+            <div class="progressOneToOne">
+              <div class="progressBall">
+                <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
+              </div>
+              <div class="progressRectangle"></div>
+              <div class="progressBallNext">2</div>
+              <div class="progressRectangle"></div>
+              <div class="progressBallNext">3</div>
+            </div>
+            <div class="progressOneToOneText">
+              <div class="progressTextBox">
+                <p class="progressText">Titulo e Descrição</p>
+              </div>
+              <div class="progressTextBox">
+                <p class="progressText">Data e Hora</p>
+              </div>
+              <div class="progressTextBox">
+                <p class="progressText">Concluir</p>
+              </div>
+            </div>
+            <div
+              class="tab-pane active"
+              id="timeTab"
+              role="tabpanel"
+              aria-labelledby="home-tab"
+            >
+              <input
+                type="hidden"
+                asp-for="ScheduleTimeSelection.Variacao"
+                value="@Variacao.OneToOne"
+              />
+              <div class="form-group form-group-modal">
+                <strong class="oneToOneTextHeader">
+                  Escolha seu titulo e suas tags de acordo com o assunto que
+                  deseja.
+                </strong>
+                <div class="modal-input-padding">
+                  <div id="TituloMentoria">
+                    <label
+                      asp-for="ScheduleTimeSelection.Titulo"
+                      class="control-label oneToOneLabel"
+                    >
+                      Título da Sessão
+                      <span style="color: firebrick">*</span>
+                    </label>
+                    <input
+                      id="TimeSelectionMentoriaTitulo"
+                      asp-for="ScheduleTimeSelection.Titulo"
+                      class="form-control one-to-one-input"
+                    />
+                  </div>
+                  <label
                     asp-for="ScheduleTimeSelection.TagsSelected"
                     class=" form-control isSelect2"
                     required

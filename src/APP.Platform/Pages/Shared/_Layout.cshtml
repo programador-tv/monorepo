@@ -562,32 +562,31 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
     
     @if (route == "/Index")
     {
-      #warning deve ser enviado para o page correspondente
-      <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+      @* <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <div class="modal-body">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 @if (SignInManager.IsSignedIn(User)){
+                    @if (SignInManager.IsSignedIn(User)){
 
-                    @await Html.PartialAsync("Components/Room/_FormNewRoom",
-                    new _FormNewRoomModel {
-                        Room = new Room(),
-                        TagsSelected = new List<string>(),
-                        RelatioTags = DataTags.GetTags()
-                    })
+                        @await Html.PartialAsync("Components/Room/_FormNewRoom",
+                        new _FormNewRoomModel {
+                            Room = new Room(),
+                            TagsSelected = new List<string>(),
+                            RelatioTags = DataTags.GetTags()
+                        })
 
-                 }else{
-                    @await Html.PartialAsync("Components/Room/_FakeFormNewRoom")
-                 }
+                    }else{
+                        @await Html.PartialAsync("Components/Room/_FakeFormNewRoom")
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
       <div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
