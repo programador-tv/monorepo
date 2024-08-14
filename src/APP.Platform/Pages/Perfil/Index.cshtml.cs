@@ -97,7 +97,7 @@ namespace APP.Platform.Pages
                         Perfil.Linkedin,
                         Perfil.GitHub,
                         Perfil.Bio,
-                        Perfil.Email,
+                        User.Claims.ToArray()[1].Value,
                         Perfil.Descricao,
                         (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
                     )

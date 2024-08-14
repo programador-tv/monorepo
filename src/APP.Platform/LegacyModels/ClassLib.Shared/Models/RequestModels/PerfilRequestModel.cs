@@ -13,7 +13,6 @@ public sealed class PerfilViewModel
     public string? Linkedin { get; set; }
     public string? GitHub { get; set; }
     public string? Bio { get; set; }
-    public string Email { get; internal set; }
     public string? Descricao { get; set; }
 
     [Required(ErrorMessage = "Selecione o nível de experiência")]
