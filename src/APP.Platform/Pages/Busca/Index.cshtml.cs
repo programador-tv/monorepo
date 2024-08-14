@@ -23,8 +23,6 @@ public sealed class BuscaIndexModel(
     IPerfilWebService perfilWebService
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
-    private readonly IFollowService followService = followService;
-
     public List<LiveViewModel> Lives { get; set; } = new();
 
     [BindProperty]
@@ -59,7 +57,7 @@ public sealed class BuscaIndexModel(
             .Select(e => e.PerfilId)
             .ToList();
 
-        var perfilsResponse = await perfilWebService.GetAllById(remainProfileIds) ?? new();
+        var perfilsResponse = await perfilWebService.GetAllById(remainProfileIds) ?? [];
 
         perfils.AddRange(perfilsResponse);
 

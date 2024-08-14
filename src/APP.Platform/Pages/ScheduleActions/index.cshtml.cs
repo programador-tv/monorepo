@@ -100,6 +100,8 @@ namespace APP.Platform.Pages.ScheduleActions
         private readonly IHttpClientFactory _httpClientFactory;
         private IPerfilWebService _perfilWebService { get; set; }
 
+        private const string coreApi = "CoreAPI";
+
         public ScheduleActionsModel(
             IRazorViewEngine viewEngine,
             ITempDataProvider tempDataProvider,
@@ -330,7 +332,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
             var RhListIds = requestHelpList.Keys.Select(kvp => kvp.Id).ToList();
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var client = _httpClientFactory.CreateClient(coreApi);
 
             var json = JsonSerializer.Serialize(RhListIds);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -796,7 +798,7 @@ namespace APP.Platform.Pages.ScheduleActions
                 UrlAlias = _aliasService.AliasGeneratorAsync(Live?.Titulo!).Result,
             };
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var client = _httpClientFactory.CreateClient(coreApi);
             var content = Serializer<Live>(newLive);
             using var responseTask = await client.PostAsync($"api/lives", content);
 
@@ -831,7 +833,7 @@ namespace APP.Platform.Pages.ScheduleActions
         {
 #warning se vem o id do front, provavelmente os dados buscados aqui ja estão disponiveis la
 
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var client = _httpClientFactory.CreateClient(coreApi);
             using var byIdResponse = await client.GetAsync($"api/perfils/" + id);
 
             var result = await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
@@ -1151,7 +1153,7 @@ namespace APP.Platform.Pages.ScheduleActions
             {
                 return new JsonResult(new { });
             }
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var client = _httpClientFactory.CreateClient(coreApi);
 
             ProcessTimeSelection.ApplyBrazilianTimezone(TimeSelection);
 

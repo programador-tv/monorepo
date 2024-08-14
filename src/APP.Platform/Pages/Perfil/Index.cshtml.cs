@@ -23,8 +23,6 @@ namespace APP.Platform.Pages
         Settings settings
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private readonly IWebHostEnvironment environment = environment;
-
         [BindProperty]
         public bool hasPefil { get; set; }
 

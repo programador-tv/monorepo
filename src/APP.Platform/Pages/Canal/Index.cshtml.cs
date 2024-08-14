@@ -58,6 +58,8 @@ public sealed class CanalIndexModel(
     public int followersCount { get; set; }
     public int followingCount { get; set; }
 
+    private const string coreApi = "CoreAPI";
+
     public async Task<IActionResult> OnGetAsync(string usr)
     {
         if (IsAuthenticatedWithoutProfile())
@@ -65,7 +67,7 @@ public sealed class CanalIndexModel(
             return Redirect("../Perfil");
         }
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
 
         var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
@@ -98,7 +100,7 @@ public sealed class CanalIndexModel(
 
     public async Task<ActionResult> OnGetAfterloadCanal(string usr)
     {
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
 
         var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
@@ -147,7 +149,7 @@ public sealed class CanalIndexModel(
             return new JsonResult(new { });
         }
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync(
             $"api/follow/toggleFollow/{UserProfile.Id}/{entityKey}"
         );
@@ -201,7 +203,7 @@ public sealed class CanalIndexModel(
             .Select(id => id.Value)
             .ToList();
 
-        var associatedPerfil = await perfilWebService.GetAllById(perfilTimeSelectionIds) ?? new();
+        var associatedPerfil = await perfilWebService.GetAllById(perfilTimeSelectionIds) ?? [];
 
         foreach (var item in associatedTimeSelections)
         {
@@ -276,7 +278,7 @@ public sealed class CanalIndexModel(
 
         await GetMyEvents();
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync("api/perfils/" + id);
 
         var perfil = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
@@ -359,7 +361,7 @@ public sealed class CanalIndexModel(
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var byIdResponse = await client.GetAsync($"api/perfils/" + timeSelection?.PerfilId);
         var channelUserName =
             await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();

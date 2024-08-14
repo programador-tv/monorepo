@@ -9,7 +9,7 @@ namespace APP.Platform.Pages
         private readonly ApplicationDbContext _context;
         private readonly PerfilDbContext _perfilContext;
         public List<Live> Lives = new List<Live>();
-        public List<Domain.Entities.Perfil> Perfils = new List<Domain.Entities.Perfil>();
+        public List<Domain.Entities.Perfil> Perfils { get; set; } = [];
 
         public IHttpClientFactory _httpClientFactory { get; set; }
 
