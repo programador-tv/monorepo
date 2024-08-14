@@ -376,8 +376,8 @@ function displayTotalTime() {
     parseInt(lastPickerMinutesInput.value) -
     parseInt(firstPickerMinutesInput.value);
   const totalTime = deltaH * 60 + deltaM;
-  finalM = totalTime % 60;
-  finalH = (totalTime - finalM) / 60;
+  const finalM = totalTime % 60;
+  const finalH = (totalTime - finalM) / 60;
   if (totalTime > 120) {
     showMessage("Não é possível criar um evento com mais de duas horas.", true);
     displayTimeAlert.innerHTML =
