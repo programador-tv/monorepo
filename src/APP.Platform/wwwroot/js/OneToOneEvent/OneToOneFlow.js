@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const content = eventData.content;
         if (content !== undefined) {
           if (content.tipo == 0) {
-            timeSelectionIdForLive = content.id;
+            const timeSelectionIdForLive = content.id;
             content.backgroundColor = "rgba(222, 164, 156, 0.45)";
             await createLiveModal(content.id);
           } else {
