@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const content = data.content;
         createTimeModal(content.id);
         calendar.addEvent(content);
-        firstForm = content;
         alertTimeSelectionCreatedSucessfully(content.id);
       })
       .catch(function (error) {

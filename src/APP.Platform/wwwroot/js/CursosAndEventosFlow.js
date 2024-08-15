@@ -47,7 +47,6 @@ function SaveTime(aspForm, _hideEventModal) {
             createTimeModal(content.id)
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
 
