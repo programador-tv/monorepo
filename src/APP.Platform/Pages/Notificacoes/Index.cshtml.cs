@@ -46,7 +46,9 @@ namespace APP.Platform.Pages
                         Conteudo = notification.Conteudo,
                         ActionLink = notification.ActionLink,
                         SecundaryLink = notification.SecundaryLink,
-                        PerfilGerador = profiles?.Find(x => x.Id == notification.GeradorPerfilId)
+                        PerfilGerador = profiles?.Find(x =>
+                            x.Id == notification.GeradorPerfilId
+                        )
                     }
                 );
             }
