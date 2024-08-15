@@ -36,7 +36,6 @@ public static class CommentEndPoints
         }
     }
 
-
     public static async Task<IResult> GetAllByLiveIdAndPerfilId(
         [FromServices] ICommentBusinessLogic _logic,
         Guid liveId,
