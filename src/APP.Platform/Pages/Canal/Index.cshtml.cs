@@ -98,7 +98,7 @@ public sealed class CanalIndexModel(
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr)
+    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
     {
         var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
@@ -110,8 +110,10 @@ public sealed class CanalIndexModel(
             return BadRequest();
         }
 
+
         var privateLives = liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
         var liveSchedules = liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
+
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
@@ -129,7 +131,12 @@ public sealed class CanalIndexModel(
         );
 
         return new JsonResult(
-            new { privateLives = savedVideosHtml, liveSchedules = liveSchedulesHtml }
+            new
+            {
+                privateLives = savedVideosHtml,
+                liveSchedules = liveSchedulesHtml,
+                isPrivateVideosChecked = isPrivate
+            }
         );
     }
 

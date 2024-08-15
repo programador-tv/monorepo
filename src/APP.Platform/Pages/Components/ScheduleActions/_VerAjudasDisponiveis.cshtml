@@ -6,11 +6,7 @@
             <div class="modal-body" style="padding: 32px 1rem 8px;">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <h4 class="tittle-newDesign">🛠️ Capacitação</h4> *@
-            <section
-            class="nav nav-tabs"
-            style="display: flex;
-                        flex-wrap: wrap;
-                        padding-top: 1rem; border-bottom: 2px solid aliceblue;" >
+            <section class="nav nav-tabs d-flex flex-wrap pt-3">
 
                 <div style="cursor: pointer; display: flex;
                     justify-content: space-between;
@@ -143,14 +139,14 @@
 </div> *@
 <style>
     .nav-tabs {
-        border: none;
+        border-bottom: 2px solid aliceblue;
     }
     .button-revamp {
         box-sizing: border-box;
         padding: 8px 8px !important;
         border-radius: 0px !important;
         transition: 0.3s all;
-
+				color: #437AE2;
         background: transparent;
         border-bottom: 3px solid transparent;
     }
@@ -161,8 +157,16 @@
     }
     .button-revamp:hover {
 
-        border-bottom: 3px solid navy;
-        color: rgb(147, 147, 167);
+
+    .button-revamp:hover {
+        color: #1e53b7;
+    }
+		.button-revamp.active .count-tab-events{
+        background-color: navy;
+    }
+		.button-revamp:hover .count-tab-events{
+        background-color: #1e53b7;
+
     }
     #groupOneToOne-left, #groupOneToOne-right,
     #groupCursos-left, #groupCursos-right,

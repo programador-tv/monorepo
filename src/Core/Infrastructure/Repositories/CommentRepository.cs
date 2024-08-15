@@ -18,4 +18,16 @@ public sealed class CommentRepository(ApplicationDbContext context)
         DbContext.Comments.Update(comment);
         await DbContext.SaveChangesAsync();
     }
+
+    public async Task<List<Comment>> GetAllByLiveIdAndPerfilId(Guid liveId, Guid perfilId)
+    {
+        var response = await DbContext.Comments
+        .AsNoTracking()
+        .Where(comment => comment.LiveId == liveId
+        && (comment.IsValid || comment.PerfilId == perfilId))
+        .OrderByDescending(comment => comment.DataCriacao)
+        .ToListAsync();
+
+        return response.Any() ? response : new List<Comment>();
+    }
 }
