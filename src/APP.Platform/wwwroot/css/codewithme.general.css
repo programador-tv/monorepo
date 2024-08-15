@@ -103,7 +103,7 @@ body {
 
 .count-tab-events {
   border-radius: 50%;
-  background-color: navy;
+  background-color: #437AE2;
   color: white;
   font-size: 11px;
   height: 17px;
@@ -427,7 +427,6 @@ body {
 
 .action {
   background-color: #b5dcf0;
-  color: #2e2e2e;
 }
 
 .update {

@@ -298,7 +298,9 @@ function preventInvalidCharacter(input, inputLocation, maxValue, event) {
   }
   let strValue = String(input.value);
   if (strValue.length == 2) {
-    strNewValue = event.key.padStart(2, strValue.charAt(1))
+
+    let strNewValue = event.key.padStart(2, strValue.charAt(1))
+
     if (strValue.charAt(1) === "0") {
       strNewValue = "0" + event.key;
     }
@@ -367,11 +369,16 @@ function valueListener() {
 
 function displayTotalTime() {
 
-  const deltaH = parseInt(lastPickerHoursInput.value) - parseInt(firstPickerHoursInput.value);
-  const deltaM = parseInt(lastPickerMinutesInput.value) - parseInt(firstPickerMinutesInput.value);
-  const totalTime = (deltaH * 60) + deltaM;
-  finalM = totalTime % 60;
-  finalH = (totalTime - finalM) / 60;
+  const deltaH =
+    parseInt(lastPickerHoursInput.value) -
+    parseInt(firstPickerHoursInput.value);
+  const deltaM =
+    parseInt(lastPickerMinutesInput.value) -
+    parseInt(firstPickerMinutesInput.value);
+  const totalTime = deltaH * 60 + deltaM;
+  const finalM = totalTime % 60;
+  const finalH = (totalTime - finalM) / 60;
+
   if (totalTime > 120) {
     showMessage("Não é possível criar um evento com mais de duas horas.", true)
     displayTimeAlert.innerHTML = ("Duração total: " + finalH + "h") + (finalM > 0 ? " e " + finalM + "min" : "");

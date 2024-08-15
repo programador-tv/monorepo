@@ -88,34 +88,132 @@
                 <input type="hidden" class="startLive" asp-for="ScheduleTimeSelection.StartTime" />
                 <input type="hidden" class="endLive" asp-for="ScheduleTimeSelection.EndTime" />
 
-                <br>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn button action">Salvar</button>
+              <br />
+            </div>
+          </div>
+
+          <!-- Two -->
+          <div class="modal-select body-oneToOne-2">
+            <div class="modalTitleHeaderDiv">
+              <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                Criação de Colaboração 1:1
+              </h5>
+            </div>
+            <div class="progressOneToOne">
+              <div class="progressBall" style="color: #fff">1</div>
+              <div class="progressRectangle"></div>
+              <div class="progressBall">
+                <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
+              </div>
+              <div class="progressRectangle"></div>
+              <div class="progressBallNext">3</div>
+            </div>
+            <div class="progressOneToOneText">
+              <div class="progressTextBox">
+                <p class="progressText">Titulo e Descrição</p>
+              </div>
+              <div class="progressTextBox">
+                <p class="progressText">Data e Hora</p>
+              </div>
+              <div class="progressTextBox">
+                <p class="progressText">Concluir</p>
+              </div>
+            </div>
+            <div class="datePickerFlexDiv">
+              <div class="datePickerFlexItem">
+                <h2 style="font-size: 16px">
+                  Escolha o horario e a data que se encontra disponível
+                </h2>
+              </div>
+              <div class="datePickerFlexTime">
+                <div class="date-picker date-input-div">
+                  <div class="text-container">
+                    <p class="time-picker-text">Data 
+                      <span style="color: firebrick">*</span>
+                    </p>
+                    <div
+                      style="margin-top: 28px"
+                      class="alert-below-input"
+                      id="errorMsgDate"
+                    ></div>
+                  </div>
+                  <input
+                    type="date"
+                    class="dateTime-newPicker"
+                    id="dateTime"
+                  />
                 </div>
-            </form>
+                <div class="date-input-div">
+                  <label class="time-picker-text">Horário de Início
+                      <span style="color: firebrick">*</span>
+                  </label>
+                  <div class="selectTime">
+<select name="hoursStart" id="hoursStart" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+    <span class="text-xl mr-3">:</span>
+    <select name="minutesStart" id="minutesStart" class="bg-transparent text-xl appearance-none outline-none mr-4">
+      <option value="0">00</option>
+      <option value="15">15</option>
+      <option value="30">30</option>
+      <option value="45">45</option>
+    </select>
+    <select name="ampmStart" id="ampmStart" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="am">AM</option>
+      <option value="pm">PM</option>
+    </select>
+    <span class="material-symbols-outlined">
+schedule
+</span>
+                  </div>
+                  <div class="alert-below-input" id="errorMsgTime"></div>
+                </div>
+                <div class="date-input-div">
+                  <label class="time-picker-text">Horário de Término
+                      <span style="color: firebrick">*</span>
+                  </label>
+                  <div>
+                    <div class="selectTime">
+<select name="hoursEnd" id="hoursEnd" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+    <span class="text-xl mr-3">:</span>
+    <select name="minutesEnd" id="minutesEnd" class="bg-transparent text-xl appearance-none outline-none mr-4">
+      <option value="0">00</option>
+      <option value="15">15</option>
+      <option value="30">30</option>
+      <option value="45">45</option>
+    </select>
+    <select name="ampmEnd" id="ampmEnd" class="bg-transparent text-xl appearance-none outline-none">
+      <option value="am">AM</option>
+      <option value="pm">PM</option>
+    </select>
+    <span class="material-symbols-outlined">
+schedule
+</span>
 
-        </div>
-
-        @* temp *@
-       
-            @* <div class="tab-pane" id="liveTab" role="tabpanel" aria-labelledby="profile-tab">
-                <form id="saveLiveForm" method="post">
-                    <div class="form-group">
-                        <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
-                        <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" onchange="verificarSelecaoLiveAgenda()"
-                                class="form-control"
-                                required
-                                id="TagsForLive">
-                            @foreach (var item in Model.RelatioTags)
-                            {
-                                <optgroup label="@item.Key">
-                                    @foreach (var subItem in Model.RelatioTags[item.Key])
-                                    {
-                                        <option value="@subItem">@subItem</option>
-                                    }
-                                </optgroup>
-                            }
-                        </select>
                     </div>
                     <br>
                     <button id="prepararChatGPT"
