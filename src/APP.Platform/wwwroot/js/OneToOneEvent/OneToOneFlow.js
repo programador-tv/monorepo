@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let inicioHorario = `${
     hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
   }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
-  console.log(inicioHorario);
 
   let hoursEnd = document.getElementById("hoursEnd");
   let minutesEnd = document.getElementById("minutesEnd");
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let fimHorario = `${
     hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value
   }:${minutesEnd.value < 10 ? "0" + minutesEnd.value : minutesEnd.value}`;
-  console.log(inicioHorario);
 
   let tituloResumo = document.getElementById("tituloResumo");
   let horariosResumo = document.getElementById("horarios-resumo");
@@ -56,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const content = eventData.content;
         if (content !== undefined) {
           if (content.tipo == 0) {
-            timeSelectionIdForLive = content.id;
             content.backgroundColor = "rgba(222, 164, 156, 0.45)";
             await createLiveModal(content.id);
           } else {
@@ -111,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTimeStart() {
     let hoursStartInt = parseInt(hoursStart.value, 10);
-    console.log(isAmStart.value);
     if (isAmStart.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
@@ -123,13 +119,10 @@ document.addEventListener("DOMContentLoaded", function () {
     inicioHorario = `${
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
-
-    console.log(inicioHorario);
   }
 
   function updateTimeEnd() {
     let hoursEndInt = parseInt(hoursEnd.value, 10);
-    console.log(isAmEnd.value);
     if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
@@ -141,12 +134,9 @@ document.addEventListener("DOMContentLoaded", function () {
     fimHorario = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
-
-    console.log(fimHorario);
   }
 
   saveTimeForm.addEventListener("submit", (event) => {
-    console.log("chamado");
     event.preventDefault();
     const selectElement = document.getElementById("TagsSelected");
     const selectedOptions = selectElement.selectedOptions;
@@ -225,8 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
       $(".body-oneToOne-1").addClass("active");
     }, 100);
   });
-
-  console.log(saveTimeForm);
   let dateTime = document.getElementById("dateTime");
 
   let pendentesContainer;

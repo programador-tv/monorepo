@@ -103,7 +103,7 @@ body {
 
 .count-tab-events {
   border-radius: 50%;
-  background-color: navy;
+  background-color: #437AE2;
   color: white;
   font-size: 11px;
   height: 17px;
@@ -139,7 +139,7 @@ body {
   border: 1px solid #d7d7d7;
   box-shadow: 1px 2px 4px 0px #57575726;
   flex-wrap: wrap;
-  background: #FEFBFB;
+  background: #fefbfb;
   cursor: pointer;
 }
 .item-preview-ts:hover {
@@ -164,7 +164,7 @@ body {
   justify-content: center;
   font-size: 12px;
   border-radius: 20px;
-	background-color: #D7D7D7;
+  background-color: #d7d7d7;
   color: #373737;
   height: 24px;
   width: fit-content;
@@ -173,16 +173,16 @@ body {
 
 .tag-capacitacao[data-mapTipo="0"],
 .tag-capacitacao[data-mapTipo="1"] {
-	background-color: #DAE6FF;
-	color: #437AE2;
+  background-color: #dae6ff;
+  color: #437ae2;
 }
 .tag-capacitacao[data-mapTipo="3"] {
-	background-color: #FEFFDA;
-	color: #604002;
+  background-color: #feffda;
+  color: #604002;
 }
 .tag-duvida {
-	background-color: #EEDAFF;
-	color: #674486;
+  background-color: #eedaff;
+  color: #674486;
 }
 
 .tag-aprender {
@@ -426,7 +426,6 @@ body {
 
 .action {
   background-color: #b5dcf0;
-  color: #2e2e2e;
 }
 
 .update {
@@ -1858,11 +1857,13 @@ body {
   color: #437ae2;
 }
 
-.modal-select {
+.modal-select,
+.modal-selectRH {
   display: none;
 }
 
-.modal-select.active {
+.modal-select.active,
+.modal-selectRH.active {
   display: block;
 }
 
@@ -1874,9 +1875,10 @@ body {
   display: none;
 }
 
-.modal-body {
+.modal-body.event-modal {
   padding: 0;
   max-height: 700px;
+  min-height: 510px;
 }
 
 .date-input-div {
@@ -1940,4 +1942,9 @@ body {
 .datePickerFlexTime {
   width: 46%;
   padding-right: 33px;
+}
+
+.request-help-input-div {
+  display: flex;
+  flex-direction: column;
 }
