@@ -2,7 +2,7 @@
 @using Models
 @model ModalLivesPanel
 
-<div class="row">
+
   @foreach(var item in Model.TimeSelections)
   {
     var timeDelta = item.StartTime - DateTime.Now;
@@ -21,4 +21,3 @@
       </div>
     </div>
   }
-</div>
