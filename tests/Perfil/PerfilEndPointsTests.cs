@@ -3,6 +3,7 @@ using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enumerables;
 using Domain.Enums;
+using Infrastructure.FileHandling;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -156,11 +157,13 @@ public class PerfilsEndPointsTests
         fileMock.Setup(_ => _.ContentType).Returns("image/jpeg");
         var file = fileMock.Object;
 
+        var mockSaveFile = new Mock<ISaveFile>();
+
         mockLogic
             .Setup(logic => logic.UpdateFotoPerfil(id, It.IsAny<string>()))
             .Returns(Task.CompletedTask);
 
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file);
+        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file,mockSaveFile.Object);
 
         Assert.IsType<Ok>(result);
     }
@@ -254,8 +257,9 @@ public class PerfilsEndPointsTests
         file.Setup(f => f.ContentType).Returns("application/pdf"); // Set a non-image content type
         var id = Guid.NewGuid();
 
+        var mockSaveFile = new Mock<ISaveFile>();
         // Act
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object);
+        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object, mockSaveFile.Object);
 
         // Assert
         Assert.IsType<BadRequest<string>>(result);
@@ -271,12 +275,17 @@ public class PerfilsEndPointsTests
         file.Setup(f => f.ContentType).Returns("image/png"); // Set an image content type
         var id = Guid.NewGuid();
 
+        var mockSaveFile = new Mock<ISaveFile>();
+
         mockLogic
             .Setup(logic => logic.UpdateFotoPerfil(id, It.IsAny<string>()))
             .ThrowsAsync(new Exception("Erro durante a atualização da foto"));
 
+        
         // Act
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object);
+        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object, mockSaveFile.Object);
+
+
 
         // Assert
         Assert.IsType<BadRequest<string>>(result);
