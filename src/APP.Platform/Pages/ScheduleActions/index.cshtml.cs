@@ -634,6 +634,39 @@ namespace APP.Platform.Pages.ScheduleActions
             );
         }
 
+        public IActionResult OnGetPartialLivePanel(string timeSelectionId)
+        {
+            _ensinarService.GetTimeSelectionItem(
+                Guid.Parse(timeSelectionId),
+                UserProfile,
+                _meetUrl,
+                TimeSelectionsCheckedUsers,
+                OldTimeSelectionList,
+                TimeSelectionList
+            );
+
+            if (TimeSelectionList.Count != 1)
+            {
+                return BadRequest();
+            }
+            
+            var timeSelectionAndJoinTimes = TimeSelectionList.First();
+            _ensinarService.CheckActionNeedAndUpdateTime(timeSelectionAndJoinTimes);
+
+            var timeDelta = timeSelectionAndJoinTimes.Key!.StartTime - DateTime.Now;
+            string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+            return Partial(
+                "Components/TimeSelections/_LivesCard",
+                new LivesCardPageModel
+                {
+                    Id = timeSelectionAndJoinTimes.Key.Id,
+                    Titulo = timeSelectionAndJoinTimes.Key.TituloTemporario ?? string.Empty,
+                    TempoRestante = tempoRestante,
+                }
+            );
+        }
+
         public IActionResult OnGetPartialFreeTimePanel(string timeSelectionId)
         {
             _ensinarService.GetTimeSelectionItem(
