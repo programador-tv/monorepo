@@ -110,7 +110,7 @@ public sealed class CanalIndexModel(
             return BadRequest();
         }
 
-        var privateLives = liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
+        var privateLives = liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
         var liveSchedules = liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
