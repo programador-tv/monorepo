@@ -376,7 +376,6 @@ function displayTotalTime() {
     const deltaM =
         parseInt(lastPickerMinutesInput.value) -
         parseInt(firstPickerMinutesInput.value);
-
     const totalTime = deltaH * 60 + deltaM;
     const finalM = totalTime % 60;
     const finalH = (totalTime - finalM) / 60;
