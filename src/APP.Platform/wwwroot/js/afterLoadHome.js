@@ -259,6 +259,10 @@ function loadPedidosAjudaParaTag(data) {
     prepared =
       "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem pedidos de ajuda no momento </div>";
     $("#pedidosPanel").html(prepared);
+
+    activePaginationFor("groupOneToOne", 0);
+    activePaginationFor("groupCursos", 0);
+    activePaginationFor("groupHelp", 0);
   } else {
     let pedidosDeAjuda = "";
     let groupHelp = [];
@@ -325,6 +329,9 @@ function activePaginationFor(group, length) {
   let page = 1;
   const size = 2;
   const lastPage = Math.ceil(length / size);
+
+  console.log(length);
+  console.log(group);
 
   if (length <= size) {
     right.style.filter = "grayscale(0.8)";
