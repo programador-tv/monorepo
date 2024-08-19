@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     if (!ulElementForTags) {
       console.error(
-        "Elemento 'select2-TagsSelectedCursosAndEventos-container' não encontrado."
+        "Elemento 'select2-TagsSelectedCursosAndEventos-container' não encontradoo."
       );
       return false;
     }
