@@ -103,7 +103,7 @@ body {
 
 .count-tab-events {
   border-radius: 50%;
-  background-color: #437AE2;
+  background-color: #437ae2;
   color: white;
   font-size: 11px;
   height: 17px;
@@ -1858,12 +1858,14 @@ body {
 }
 
 .modal-select,
-.modal-selectRH {
+.modal-selectRH,
+.modal-selectCE {
   display: none;
 }
 
 .modal-select.active,
-.modal-selectRH.active {
+.modal-selectRH.active,
+.modal-selectCE.active {
   display: block;
 }
 
