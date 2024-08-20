@@ -68,7 +68,8 @@ public class HelpResponseRepositoryTest
 
         await _repository.AddAsync(helpResponse);
 
-        var result = await _context.HelpResponses.FirstOrDefaultAsync() ?? throw new ArgumentNullException();
+        var result =
+            await _context.HelpResponses.FirstOrDefaultAsync() ?? throw new ArgumentNullException();
         result.DeleteResponse();
 
         await _repository.UpdateAsync(result);

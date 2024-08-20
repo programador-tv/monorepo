@@ -149,8 +149,9 @@ namespace APP.Platform.Pages
 
             DateTime agora = DateTime.Now;
 
-     
-            using var responseTask = await client.GetAsync($"api/comments/getAllByLiveIdAndPerfilId/{LiveId}/{UserProfile.Id}");
+            using var responseTask = await client.GetAsync(
+                $"api/comments/getAllByLiveIdAndPerfilId/{LiveId}/{UserProfile.Id}"
+            );
 
             responseTask.EnsureSuccessStatusCode();
 

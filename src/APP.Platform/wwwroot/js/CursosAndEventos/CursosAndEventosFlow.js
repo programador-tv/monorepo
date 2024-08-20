@@ -70,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
             createTimeModal(content.id);
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
       })
