@@ -1950,3 +1950,97 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+
+#help-response {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#help-response p {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.response-text-area {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.response-text-area textarea {
+    width: 90%;
+}
+
+.btn-add-helpResponse {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    margin: 10px;
+}
+
+#space-helpResponses {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.container-helpResponse {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid grey;
+    border-radius: 15px;
+    width: 90%;
+    margin: 10px;
+}
+
+.content-helpResponse {
+    width: 100%;
+    padding: 5px;
+}
+
+
+#container-btn-deleteResponse {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 5px;
+}
+#container-btn-deleteResponse span {
+    cursor: pointer;
+}
+
+#container-time {
+    display: flex;
+    justify-content: flex-end;
+    height: 20px;
+}
+
+.msg-offeredHelp {
+    width: 100%;
+    background-color: limegreen;
+}
+
+.msg-offeredHelp p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: antiquewhite;
+    height: 100%;
+}
+
+#container-description-helpResponse p {
+    padding: 15px;
+}
+
+#container-msg-helpResponse {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.content-msg-helpResponse {
+    width: 90%;
+}
