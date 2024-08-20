@@ -13,10 +13,11 @@ public sealed class HelpResponseWebService(CoreClient client) : IHelpResponseWeb
 {
     const string baseRoute = "api/help-response";
 
-    public async Task Add(CreateHelpResponse helpResponse)
+    public async Task<HelpResponse> Add(CreateHelpResponse helpResponse)
     {
         var route = Path.Combine(baseRoute, string.Empty);
-        await client.PostAsync(route, helpResponse);
+        var helpResponseCreated = await client.PostAsync<HelpResponse>(route, helpResponse);
+        return helpResponseCreated;
     }
 
     public async Task Update(Guid helpResponseId)

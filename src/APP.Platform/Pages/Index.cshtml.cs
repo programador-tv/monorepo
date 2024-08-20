@@ -10,6 +10,7 @@ using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -967,8 +968,15 @@ public class IndexModel(
         var perfilId = UserProfile.Id;
         var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
 
-        await helpResponseWebService.Add(request);
-        return new EmptyResult();
+        var response = await helpResponseWebService.Add(request);
+        return new JsonResult(
+            new HelpResponseWithProfileData(
+                response,
+                UserProfile.UserName,
+                UserProfile.Nome,
+                UserProfile.Foto
+            )
+        );
     }
 
     public async Task<IActionResult> OnPostDeleteHelpResponse(string helpResponseId)

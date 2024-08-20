@@ -8,14 +8,15 @@ namespace Application.Logic;
 public sealed class HelpResponseBusinessLogic(IHelpResponseRepository _repository)
     : IHelpResponseBusinessLogic
 {
-    public async Task Add(CreateHelpResponse helpResponse)
+    public async Task<HelpResponse> Add(CreateHelpResponse helpResponse)
     {
         var createdHelpResponse = HelpResponse.Create(
             helpResponse.timeSelectionId,
             helpResponse.perfilId,
             helpResponse.Conteudo
         );
-        await _repository.AddAsync(createdHelpResponse);
+        var helpResponseCreated = await _repository.AddAsync(createdHelpResponse);
+        return helpResponseCreated;
     }
 
     public async Task Delete(Guid helpResponseId)
