@@ -16,7 +16,7 @@ public class TimeSelectionWorkerTests
         var fakeHandler = new FakeHttpMessageHandler(fakeResponse);
         var fakeHttpClient = new HttpClient(fakeHandler)
         {
-            BaseAddress = new Uri("http://example.com/")
+            BaseAddress = new Uri("http://example.com/"),
         };
 
         var mockTimeSelectionWebService = new Mock<ITimeSelectionWebService>();

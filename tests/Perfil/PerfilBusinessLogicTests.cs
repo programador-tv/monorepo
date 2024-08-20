@@ -49,7 +49,7 @@ public class PerfilBusinessLogicTests
                     Descricao: "Teste de descrição",
                     Experiencia: ExperienceLevel.Entre1E3Anos
                 )
-            )
+            ),
         };
         _mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(perfis);
 
@@ -135,7 +135,7 @@ public class PerfilBusinessLogicTests
                     Descricao: "Teste de descrição",
                     Experiencia: ExperienceLevel.Entre1E3Anos
                 )
-            )
+            ),
         };
         _mockRepository
             .Setup(repo => repo.GetWhenContainsAsync(It.IsAny<string>()))
@@ -346,7 +346,7 @@ public class PerfilBusinessLogicTests
                     Descricao: "Teste de descrição",
                     Experiencia: ExperienceLevel.Entre1E3Anos
                 )
-            )
+            ),
         };
         _mockRepository
             .Setup(repo => repo.GetByIdsAsync(It.IsAny<List<Guid>>()))

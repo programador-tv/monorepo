@@ -17,7 +17,7 @@ public class NotificationEntityTest
             DataCriacao = DateTime.Now,
             Conteudo = "Obrigado por finalizar seu cadastro, agora você pode criar e participar de salas de estudo e compartilhar seus conhecimentos ao vivo. Saiba mais sobre o projeto clicando em ver",
             ActionLink = "https://programador.tv/Sobre",
-            SecundaryLink = "_blank"
+            SecundaryLink = "_blank",
         };
 
         var notification = Notification.Create(

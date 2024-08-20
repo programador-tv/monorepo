@@ -59,7 +59,7 @@ public static class GetFreeTimeService
                 Bio = perfil.Bio,
                 Email = perfil.Email,
                 Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
             };
             perfisLegacy.Add(perfilLegacy);
         }
@@ -84,10 +84,10 @@ public static class GetFreeTimeService
                             StartTime = e.StartTime,
                             EndTime = e.EndTime,
                             Titulo = e.Titulo,
-                            Variacao = e.Variacao
+                            Variacao = e.Variacao,
                         })
                         .ToList(),
-                    Perfils = mentor
+                    Perfils = mentor,
                 };
                 timeSelectionIds.AddRange(
                     mentorFreeTime.TimeSelections.Select(s => s.TimeSelectionId).ToList()
@@ -160,7 +160,7 @@ public static class GetFreeTimeService
                 Bio = perfil.Bio,
                 Email = perfil.Email,
                 Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
             };
             perfisLegacy.Add(perfilLegacy);
         }
@@ -189,7 +189,7 @@ public static class GetFreeTimeService
                             Title = e.Title,
                         })
                         .ToList(),
-                    Perfils = requesterPerfils
+                    Perfils = requesterPerfils,
                 };
                 timeSelectionIds.AddRange(
                     requestedHelp.TimeSelections.Select(s => s.TimeSelectionId).ToList()
@@ -284,7 +284,7 @@ public static class GetFreeTimeService
                 PerfilId = e.PerfilId.ToString() ?? Guid.Empty.ToString(),
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
-                Titulo = e.TituloTemporario
+                Titulo = e.TituloTemporario,
             })
             .ToList();
 
@@ -318,7 +318,7 @@ public static class GetFreeTimeService
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Variation = (int)e.Variacao,
-                Title = e.TituloTemporario
+                Title = e.TituloTemporario,
             })
             .ToList();
 
@@ -432,7 +432,7 @@ public static class GetFreeTimeService
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Variation = (int)e.Variacao,
-                Title = e.TituloTemporario
+                Title = e.TituloTemporario,
             })
             .ToList();
     }

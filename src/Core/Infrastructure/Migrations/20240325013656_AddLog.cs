@@ -25,7 +25,7 @@ namespace Infrastructure.Migrations
                     ),
                     Exception = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Properties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LogEvent = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LogEvent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {

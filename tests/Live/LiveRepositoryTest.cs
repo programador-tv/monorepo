@@ -106,7 +106,7 @@ public class LiveRepositoryTests
         {
             NotifyUserLiveEarly.Create(live.Id, Guid.NewGuid(), true, false),
             NotifyUserLiveEarly.Create(live.Id, Guid.NewGuid(), true, false),
-            NotifyUserLiveEarly.Create(live.Id, Guid.NewGuid(), true, false)
+            NotifyUserLiveEarly.Create(live.Id, Guid.NewGuid(), true, false),
         };
 
         await _context.Lives.AddAsync(live);

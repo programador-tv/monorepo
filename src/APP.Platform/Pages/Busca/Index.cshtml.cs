@@ -88,7 +88,7 @@ public sealed class BuscaIndexModel : CustomPageModel
                 Bio = perfil.Bio,
                 Email = perfil.Email,
                 Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
             };
 
             perfilsResponseLegacy.Add(perfilLegacy);
@@ -145,7 +145,7 @@ public sealed class BuscaIndexModel : CustomPageModel
                     Foto = perfil.Foto,
                     Bio = perfil.Bio,
                     Followers = followersCount,
-                    isFollowing = isFollowing
+                    isFollowing = isFollowing,
                 }
             );
         }

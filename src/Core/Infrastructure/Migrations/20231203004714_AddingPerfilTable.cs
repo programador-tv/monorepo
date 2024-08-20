@@ -25,7 +25,7 @@ namespace Infrastructure.Migrations
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Experiencia = table.Column<int>(type: "int", nullable: false)
+                    Experiencia = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

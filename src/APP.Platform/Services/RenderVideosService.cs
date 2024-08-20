@@ -35,7 +35,7 @@ namespace Platform.Services
                     new ModelStateDictionary()
                 )
                 {
-                    Model = model
+                    Model = model,
                 };
 
                 var viewContext = new ViewContext(

@@ -158,7 +158,7 @@ namespace APP.Platform.Services
             {
                 foreach (var t in tagsSelected)
                 {
-                    var tag = new Tag { Titulo = t, FreeTimeRelacao = id, };
+                    var tag = new Tag { Titulo = t, FreeTimeRelacao = id };
                     tags.Add(tag);
                 }
             }

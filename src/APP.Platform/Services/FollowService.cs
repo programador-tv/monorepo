@@ -26,7 +26,7 @@ public class FollowService : IFollowService
             {
                 FollowerId = followerId,
                 FollowingId = followingId,
-                Active = true
+                Active = true,
             };
 
             _applicationDbContext.Follows.Add(newFollow);

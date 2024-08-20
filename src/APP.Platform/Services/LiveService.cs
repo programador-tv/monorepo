@@ -32,19 +32,41 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
     public List<PrivateLiveViewModel> RenderPrivateLives(
         Perfil perfilOwner,
         Guid perfilLogInId,
-        bool isPrivate
+        bool isPrivate,
+        int pageNumber,
+        int pageSize
     )
     {
         List<Live> lives;
+
+        // Calcula o número de itens a pular baseado na página atual
+        int skip = (pageNumber - 1) * pageSize;
+
         if (perfilOwner.Id == perfilLogInId)
         {
             lives = context
-                .Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility == !isPrivate)
+                .Lives.Where(e =>
+                    e.PerfilId == perfilOwner.Id
+                    && e.Visibility == !isPrivate
+                    && (
+                        e.StatusLive == StatusLive.Iniciada
+                        || e.StatusLive == StatusLive.Encerrada
+                        || e.StatusLive == StatusLive.Finalizada
+                    )
+                )
+                // Paginação das lives
+                .Skip(skip)
+                .Take(pageSize)
                 .ToList();
         }
         else
         {
-            lives = context.Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility).ToList();
+            lives = context
+                .Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility)
+                // Paginação das lives
+                .Skip(skip)
+                .Take(pageSize)
+                .ToList();
         }
 
         var privateLives = new List<PrivateLiveViewModel>();
@@ -80,6 +102,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
                 }
             );
         }
+
         return privateLives;
     }
 

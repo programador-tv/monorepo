@@ -72,7 +72,7 @@ public class EnsinarService : IEnsinarService
                 End = ts.EndTime,
                 Status = ts.Status,
                 Tipo = ts.Tipo,
-                ActionNeeded = ts.ActionNeeded
+                ActionNeeded = ts.ActionNeeded,
             })
             .ToList();
     }
@@ -266,7 +266,7 @@ public class EnsinarService : IEnsinarService
         {
             Perfil = perfil,
             JoinTimeId = joinTimeId,
-            StatusJoinTime = statusJoinTime
+            StatusJoinTime = statusJoinTime,
         };
     }
 

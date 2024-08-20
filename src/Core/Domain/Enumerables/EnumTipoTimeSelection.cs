@@ -4,6 +4,6 @@
     {
         Live,
         FreeTime,
-        RequestHelp
+        RequestHelp,
     }
 }

@@ -3,6 +3,6 @@
     public enum TipoAction
     {
         Ensinar = 0,
-        Aprender = 1
+        Aprender = 1,
     }
 }

@@ -34,9 +34,9 @@ public sealed class HLSProcessManager
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
             },
-            EnableRaisingEvents = true
+            EnableRaisingEvents = true,
         };
     }
 

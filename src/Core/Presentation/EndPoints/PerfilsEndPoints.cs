@@ -71,7 +71,7 @@ public static class PerfilsEndPoints
             return Results.BadRequest("O arquivo enviado não é uma imagem.");
         }
         try
-        {       
+        {
             var uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             var filePath = saveFile.BuildPathFileSave(uniqueFileName, "profile");
             await saveFile.SaveImageFile(file, filePath);

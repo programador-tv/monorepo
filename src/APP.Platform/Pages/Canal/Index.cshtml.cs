@@ -99,7 +99,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         PerfilOwner = perfilOwner;
@@ -120,7 +120,12 @@ public sealed class CanalIndexModel : CustomPageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
+    public async Task<ActionResult> OnGetAfterloadCanal(
+        string usr,
+        bool isPrivate,
+        int pageNumber = 1,
+        int pageSize = 10
+    )
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
@@ -136,7 +141,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfilOwner == null)
@@ -144,16 +149,23 @@ public sealed class CanalIndexModel : CustomPageModel
             return BadRequest();
         }
 
-        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
+        var pagedPrivateLives = _liveService.RenderPrivateLives(
+            perfilOwner,
+            UserProfile.Id,
+            isPrivate,
+            pageNumber,
+            pageSize
+        );
         var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
-            privateLives,
+            pagedPrivateLives,
             _viewEngine,
             PageContext,
             _tempDataProvider
         );
+
         var liveSchedulesHtml = await RenderVideosService.RenderVideos(
             "Components/_LiveSchedulePreviewGroup",
             liveSchedules,
@@ -167,7 +179,7 @@ public sealed class CanalIndexModel : CustomPageModel
             {
                 privateLives = savedVideosHtml,
                 liveSchedules = liveSchedulesHtml,
-                isPrivateVideosChecked = isPrivate
+                isPrivateVideosChecked = isPrivate,
             }
         );
     }
@@ -260,7 +272,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 Bio = perfilDomain.Bio,
                 Email = perfilDomain.Email,
                 Descricao = perfilDomain.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia,
             };
             associatedPerfilLegacy.Add(perfilLegacy);
         }
@@ -352,7 +364,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfil == null)
@@ -384,7 +396,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Titulo = e.TituloTemporario,
-                Variacao = (int)e.Variacao
+                Variacao = (int)e.Variacao,
             })
             .ToList();
 
@@ -448,7 +460,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfil == null)
@@ -486,7 +498,7 @@ public sealed class CanalIndexModel : CustomPageModel
         {
             Id = Guid.NewGuid(),
             JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now
+            DataTentativaMarcacao = DateTime.Now,
         };
         _context.FeedbackJoinTimes?.Add(feedback);
 
@@ -505,7 +517,7 @@ public sealed class CanalIndexModel : CustomPageModel
                     em receber mentoria {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
@@ -523,7 +535,7 @@ public sealed class CanalIndexModel : CustomPageModel
                     em oferecer orientação para o pedido de ajuda: {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
