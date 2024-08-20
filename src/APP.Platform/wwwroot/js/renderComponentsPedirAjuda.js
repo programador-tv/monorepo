@@ -99,9 +99,172 @@ function SetItToTryRequestedHelp(freetimeId) {
     document.querySelector("#timeSelectionJoinTime").value = freetimeId
     setTimeout(() => {
         renderRequestedHelpSelected(perfil, time)
+        renderRequestedHelpResponse(time.helpResponses, time.perfilId)
         $("#eventModal").modal("hide")
         $("#matcHelphModal").modal("show")
     }, 300)
+}
+
+function renderRequestedHelpResponse(listHelpResponse, perfilId) {
+    const userLoggedId = document.getElementById("requestProfileId").value;
+    if (userLoggedId !== perfilId) {
+        let prepareFormHelpResponse = `
+            <p>Comentar</p>
+            <div class="response-text-area">
+                <textarea class="form-control" id="contentHelpResponse"></textarea>
+            </div>
+
+            <div class="btn-add-helpResponse">
+                <button id="btn-sendComment" onclick="sendComment()" type="button" class="button button-capacitacao">Enviar comentário</button>
+            </div>
+        `
+        $("#help-response").html(prepareFormHelpResponse)
+    }
+
+    let prepared = "";
+    for (let item of listHelpResponse) {
+        const qtdTempo = qtdEmMinutosCriada(item.helpResponse.createdAt);
+        let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
+        let profile = { userName: item.profileUserName, nome: item.profileNome, foto: item.profileFoto };
+        prepared +=
+            `<div class="container-helpResponse" id="helpResponse-${item.helpResponse.id}">
+                <div class="content-helpResponse">
+                    <div class="container-profile-helpResponse">
+                        <div class="img-profile-helpResponse">
+                            <span>
+                                ${renderAvatar(profile, true)}
+                            </span>
+                        </div>
+                        <div class="nome-profile-helpResponse">
+                            <span>${profile.nome}</span>
+                        </div>
+                    </div>
+
+                    <div id="container-description-helpResponse">
+                        <p id="description-helpResponse">${item.helpResponse.conteudo}</p>
+                    </div>
+
+                    <div id="container-time">
+                        <p>${qtdTempo.valor}${qtdTempo.tag}</p>
+                    </div>
+                </div>
+            `
+        if (userLoggedId === perfilId || userLoggedId === item.helpResponse.perfilId) {
+            botaoDeletar = `
+                <div id="container-btn-deleteResponse">
+                    <span onclick=deleteHelpResponse('${item.helpResponse.id}') id="btn-deleteResponse">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                          <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                        </svg>
+                    </span>
+                </div>
+            `
+        }
+        prepared += `
+            ${botaoDeletar}
+        </div>`
+    }
+
+    $("#space-helpResponses").html(prepared)
+}
+
+function sendComment() {
+    const url = '?handler=HelpResponse';
+    const formData = new FormData();
+    if (!formData.has("__RequestVerificationToken")) {
+        const token = document.querySelector("#forgery input").value
+        formData.append("__RequestVerificationToken", token)
+    }
+    let timeSelectionId = document.getElementById("timeSelectionJoinTime").value;
+    let contentHelpResponse = document.getElementById("contentHelpResponse").value;
+    formData.append("timeSelectionId", timeSelectionId);
+    formData.append("content", contentHelpResponse);
+
+    const options = {
+        method: "POST",
+        body: formData,
+    };
+
+    fetch(url, options).then(function (response) {
+        if (!response.ok) {
+            throw new Error("Erro ao enviar comentário");
+        }
+        document.getElementById("contentHelpResponse").value = "";
+        return response.json();
+    }).then(function (data) {
+        let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
+        let time;
+        for (let element of result) {
+            for (let item of element.timeSelections) {
+                if (item.timeSelectionId == freetimeId) {
+                    time = item
+                    break;
+                }
+            }
+        }
+        time.helpResponses.unshift(data);
+        renderRequestedHelpResponse(time.helpResponses, time.perfilId)
+    });
+}
+
+
+function deleteHelpResponse(helpResponseId) {
+    const url = '?handler=DeleteHelpResponse';
+    const formData = new FormData();
+
+    if (!formData.has("__RequestVerificationToken")) {
+        const token = document.querySelector("#forgery input").value
+        formData.append("__RequestVerificationToken", token)
+    }
+    formData.append("helpResponseId", helpResponseId);
+
+    const options = {
+        method: "POST",
+        body: formData,
+    }
+
+    fetch(url, options).then(function (response) {
+        if (!response.ok) {
+            throw new Error("Erro ao deletar comentário.");
+        }
+        document.getElementById(`helpResponse-${helpResponseId}`).remove();
+        let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
+
+        let time;
+        for (let element of result) {
+            for (let item of element.timeSelections) {
+                if (item.timeSelectionId == freetimeId) {
+                    time = item
+                    break;
+                }
+            }
+        }
+        time.helpResponses = time.helpResponses.filter(e => e.helpResponse.id != helpResponseId);
+    });
+}
+
+
+function qtdEmMinutosCriada(date) {
+    const datetimeAtual = Date.now();
+    const dataAtual = new Date(datetimeAtual).toISOString();
+    const createdAt = new Date(date).toISOString();
+
+    const diferencaEmMilissegundos = Date.parse(dataAtual) - Date.parse(createdAt)
+    const diferencaSegundos = Math.floor(diferencaEmMilissegundos / 1000);
+    const diferencaMinutos = Math.floor(diferencaSegundos / 60);
+
+    if (diferencaMinutos < 60) {
+        return diferencaMinutos == 0
+            ? { tag: "Agora", valor: "" } : { tag: "min atrás", valor: diferencaMinutos }
+    }
+    else {
+        const diferencaHoras = Math.floor(diferencaMinutos / 60);
+        const diferencaDias = Math.floor(diferencaHoras / 24);
+
+        return diferencaHoras > 48
+            ? { tag: "D atrás", valor: diferencaDias } : { tag: "h atrás", valor: diferencaHoras }
+    }
+
 }
 
 function renderRequestedHelpSelected(perfil, time) {

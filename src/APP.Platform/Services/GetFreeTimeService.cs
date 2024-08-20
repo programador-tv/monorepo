@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
@@ -129,7 +130,8 @@ public static class GetFreeTimeService
         > timeSelectionGroupByPerfilId,
         ApplicationDbContext _context,
         IHttpClientFactory httpClientFactory,
-        IPerfilWebService _perfilWebService
+        IPerfilWebService _perfilWebService,
+        IHelpResponseWebService _helpResponseWebService
     )
     {
         var RequestedHelp = new List<RequestedHelpViewModel>();
@@ -174,6 +176,47 @@ public static class GetFreeTimeService
                 if (requesterPerfils == null)
                 {
                     continue;
+                }
+                var requesteds = new List<TimeSelectionForRequestedHelpViewModel>();
+                foreach (var item in PerfilTimeSelection)
+                {
+                    var helpResponses =
+                        await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId))
+                        ?? [];
+                    var groupedHelpResponse = helpResponses
+                        .GroupBy(hlpr => hlpr.PerfilId)
+                        .Select(hlpr => hlpr.Key)
+                        .ToList();
+                    var commentOwnerProfiles = await _perfilWebService.GetAllById(
+                        groupedHelpResponse
+                    );
+                    var joinHelpResponseWithProfile = helpResponses
+                        .Select(helpResponse =>
+                        {
+                            var commentOwner = commentOwnerProfiles.First(p =>
+                                p.Id == helpResponse.PerfilId
+                            );
+                            return new HelpResponseWithProfileData(
+                                helpResponse,
+                                commentOwner.UserName,
+                                commentOwner.Nome,
+                                commentOwner.Foto
+                            );
+                        })
+                        .ToList();
+                    requesteds.Add(
+                        new TimeSelectionForRequestedHelpViewModel()
+                        {
+                            TimeSelectionId = item.TimeSelectionId,
+                            PerfilId = item.PerfilId.ToString(),
+                            StartTime = item.StartTime,
+                            EndTime = item.EndTime,
+                            Description = item.Description,
+                            Variation = item.Variation,
+                            Title = item.Title,
+                            HelpResponses = joinHelpResponseWithProfile
+                        }
+                    );
                 }
                 var requestedHelp = new RequestedHelpViewModel
                 {
