@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((eventData) => {
           const content = eventData.content;
           if (content !== undefined) {
-            // timeSelectionIdForLive = content.id;
+            // const timeSelectionIdForLive = content.id;
             // content.backgroundColor = 'rgba(222, 164, 156, 0.45)';
             // // createLiveModal();
             // calendar.addEvent(content);
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //       return response.json();
     //     })
     //     .then(async function (data) {
-    //       var livePreview = document.querySelector("#destaques")
+    //       const livePreview = document.querySelector("#destaques")
 
     //       if (data.preview) {
     //         livePreview.innerHTML = data.preview;

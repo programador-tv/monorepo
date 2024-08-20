@@ -1,3 +1,7 @@
+@{
+    bool isAuth = User.Identity.IsAuthenticated;
+}
+
 @inject SignInManager<IdentityUser> SignInManager
     <div class="modal fade timeSelection-x" id="ajudarModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 955px;">
@@ -148,16 +152,41 @@
 </style>
 <script defer src="/js/TabBsHandler.js"></script>
 <script>
+    var isAuthenticated = @isAuth.ToString().ToLower();
+    //PM- Lógica de abrir modais
     function openOneToOne() {
-          $("#tipoTempoLivre").val("1:1");
-          openTimePicker()
+    if (isAuthenticated) {
+        $('#eventModalOneToOne').modal('show');
+    } else {
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+
+        window.location.href = "/Identity/Account/Login";
+
+        loginCallbackOneToOne();
+
     }
+}
     function openCursosAndEventos() {
-          $("#tipoTempoLivre").val("cursos");
-          openTimePicker()
+        if(isAuthenticated){
+            $('#eventModalCustosAndEventos').modal('show')
+        } else{
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+        window.location.href = "/Identity/Account/Login";
+        loginCallbackCursosAndEventos();
+        }
     }
     function openTimePicker(){
             $("#ajudarModal").modal("hide");
             $("#timePickerModal").modal("show");
     }
+     function openTimePickerForHelp() {
+         if (isAuthenticated) {
+         $("#eventModalRequestHelp").modal("show");
+    } else {
+        alert("Você precisa estar logado para acessar esta funcionalidade.");
+        window.location.href = "/Identity/Account/Login"; 
+        loginCallbackRequestHelp();
+    }
+        }
 </script>
+

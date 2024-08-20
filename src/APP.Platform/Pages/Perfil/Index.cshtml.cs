@@ -13,42 +13,31 @@ using Queue;
 
 namespace APP.Platform.Pages
 {
-    public sealed class PerfilModel : CustomPageModel
+    public sealed class PerfilModel(
+        IWebHostEnvironment environment,
+        ApplicationDbContext context,
+        IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
+        IMessagePublisher messagePublisher,
+        Settings settings
+    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
-        private new readonly ApplicationDbContext _context;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IMessagePublisher _messagePublisher;
-
         [BindProperty]
-        public bool hasPefil { get; set; }
+        public bool HasPefil { get; set; }
 
         [BindProperty]
         public bool UsernameExist { get; set; }
 
         [BindProperty]
         public PerfilViewModel? Perfil { get; set; }
-
-        public PerfilModel(
-            IWebHostEnvironment environment,
-            ApplicationDbContext context,
-            IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            IMessagePublisher messagePublisher,
-            Settings settings
-        )
-            : base(context, httpClientFactory, httpContextAccessor, settings)
-        {
-            _httpClientFactory = httpClientFactory;
-            _context = context;
-            _messagePublisher = messagePublisher;
-        }
+        public IWebHostEnvironment Environment { get; } = environment;
 
         public IActionResult OnGet()
         {
             Perfil = new();
             if (UserProfile != null)
             {
-                hasPefil = true;
+                HasPefil = true;
                 Perfil.Nome = UserProfile.Nome;
                 Perfil.UserName = UserProfile.UserName;
                 Perfil.Linkedin = UserProfile.Linkedin;
@@ -135,7 +124,7 @@ namespace APP.Platform.Pages
                     ActionLink = "/Sobre"
                 };
 
-                await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+                await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
 
                 if (Perfil.Foto != null)
                 {

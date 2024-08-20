@@ -81,11 +81,11 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+   
     @if (ActualPage == "/Account/Login")
     {
             <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
@@ -562,32 +562,31 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
     
     @if (route == "/Index")
     {
-      #warning deve ser enviado para o page correspondente
-      <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+      @* <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <div class="modal-body">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 @if (SignInManager.IsSignedIn(User)){
+                    @if (SignInManager.IsSignedIn(User)){
 
-                    @await Html.PartialAsync("Components/Room/_FormNewRoom",
-                    new _FormNewRoomModel {
-                        Room = new Room(),
-                        TagsSelected = new List<string>(),
-                        RelatioTags = DataTags.GetTags()
-                    })
+                        @await Html.PartialAsync("Components/Room/_FormNewRoom",
+                        new _FormNewRoomModel {
+                            Room = new Room(),
+                            TagsSelected = new List<string>(),
+                            RelatioTags = DataTags.GetTags()
+                        })
 
-                 }else{
-                    @await Html.PartialAsync("Components/Room/_FakeFormNewRoom")
-                 }
+                    }else{
+                        @await Html.PartialAsync("Components/Room/_FakeFormNewRoom")
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
       <div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -725,12 +724,6 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
         </script>
     }
 
-    <script>
-        function openTimePickerForHelp() {
-            $("#tipoTempoLivre").val("requestHelp");
-            $("#timePickerModal").modal("show");
-        }
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
     <script defer src="~/js/EventActions.js"></script>
     @if (SignInManager.IsSignedIn(User))

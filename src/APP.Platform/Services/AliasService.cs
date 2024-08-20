@@ -38,7 +38,7 @@ namespace APP.Platform
 
         public async Task<string> AliasGeneratorAsync(string title)
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.CancelAfter(TimeSpan.FromSeconds(7));
             var cancellationToken = cts.Token;
 

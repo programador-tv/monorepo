@@ -85,26 +85,30 @@ public sealed class CanalIndexModel : CustomPageModel
             return Redirect("../Perfil");
         }
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
-        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
+        var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
-        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
-
-        if (perfilOwner == null)
+        var perfilOwner = new Domain.Entities.Perfil
         {
-            return Redirect("../Index");
-        }
+            Id = perfilResponse.Id,
+            Nome = perfilResponse.Nome,
+            Foto = perfilResponse.Foto,
+            Token = perfilResponse.Token,
+            UserName = perfilResponse.UserName,
+            Linkedin = perfilResponse.Linkedin,
+            GitHub = perfilResponse.GitHub,
+            Bio = perfilResponse.Bio,
+            Email = perfilResponse.Email,
+            Descricao = perfilResponse.Descricao,
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+        };
+
         PerfilOwner = perfilOwner;
 
-        if (UserProfile != null)
-        {
-            IsFollowing = await _followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
-        }
+        var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
         );
-
         responseTaskFollow.EnsureSuccessStatusCode();
 
         var followInformation =
@@ -116,19 +120,31 @@ public sealed class CanalIndexModel : CustomPageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr)
+    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
     {
-        var client = _httpClientFactory.CreateClient("CoreAPI");
-        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
+        var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
-        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfilOwner = new Domain.Entities.Perfil
+        {
+            Id = perfilResponse.Id,
+            Nome = perfilResponse.Nome,
+            Foto = perfilResponse.Foto,
+            Token = perfilResponse.Token,
+            UserName = perfilResponse.UserName,
+            Linkedin = perfilResponse.Linkedin,
+            GitHub = perfilResponse.GitHub,
+            Bio = perfilResponse.Bio,
+            Email = perfilResponse.Email,
+            Descricao = perfilResponse.Descricao,
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+        };
 
         if (perfilOwner == null)
         {
             return BadRequest();
         }
 
-        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
+        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
         var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
@@ -147,7 +163,12 @@ public sealed class CanalIndexModel : CustomPageModel
         );
 
         return new JsonResult(
-            new { privateLives = savedVideosHtml, liveSchedules = liveSchedulesHtml }
+            new
+            {
+                privateLives = savedVideosHtml,
+                liveSchedules = liveSchedulesHtml,
+                isPrivateVideosChecked = isPrivate
+            }
         );
     }
 
@@ -317,15 +338,28 @@ public sealed class CanalIndexModel : CustomPageModel
 
         await GetMyEvents();
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
-        using var responseTask = await client.GetAsync("api/perfils/" + id);
+        var perfilResponse = await _perfilWebService.GetById(id);
 
-        var perfil = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfil = new Domain.Entities.Perfil
+        {
+            Id = perfilResponse.Id,
+            Nome = perfilResponse.Nome,
+            Foto = perfilResponse.Foto,
+            Token = perfilResponse.Token,
+            UserName = perfilResponse.UserName,
+            Linkedin = perfilResponse.Linkedin,
+            GitHub = perfilResponse.GitHub,
+            Bio = perfilResponse.Bio,
+            Email = perfilResponse.Email,
+            Descricao = perfilResponse.Descricao,
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+        };
 
-        if (responseTask.StatusCode != HttpStatusCode.OK || perfil == null)
+        if (perfil == null)
         {
             return BadRequest();
         }
+
         PerfilOwner = perfil;
         HashSet<TimeSelection> valueSet = new HashSet<TimeSelection>(MyEvents!.Values);
 
@@ -400,10 +434,29 @@ public sealed class CanalIndexModel : CustomPageModel
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
-        using var byIdResponse = await client.GetAsync($"api/perfils/" + timeSelection?.PerfilId);
-        var channelUserName =
-            await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfilResponse = await _perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
+
+        var perfil = new Domain.Entities.Perfil
+        {
+            Id = perfilResponse.Id,
+            Nome = perfilResponse.Nome,
+            Foto = perfilResponse.Foto,
+            Token = perfilResponse.Token,
+            UserName = perfilResponse.UserName,
+            Linkedin = perfilResponse.Linkedin,
+            GitHub = perfilResponse.GitHub,
+            Bio = perfilResponse.Bio,
+            Email = perfilResponse.Email,
+            Descricao = perfilResponse.Descricao,
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+        };
+
+        if (perfil == null)
+        {
+            return BadRequest();
+        }
+
+        var channelUserName = perfil.UserName;
 
         if (UserProfile.Id == Guid.Empty)
         {
