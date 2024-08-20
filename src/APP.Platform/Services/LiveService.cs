@@ -32,7 +32,6 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
 
     public List<PrivateLiveViewModel> RenderPrivateLives(Perfil perfilOwner, Guid perfilLogInId)
     {
-        
         var lives = context.Lives.Where(e => e.PerfilId == perfilOwner.Id).Take(9).ToList();
 
         var privateLives = new List<PrivateLiveViewModel>();
