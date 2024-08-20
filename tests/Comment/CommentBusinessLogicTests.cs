@@ -205,22 +205,26 @@ public class CommentBusinessLogicTests
 
         var comments = new List<Comment>
         {
-            Comment.Create(perfilId, liveId,  "comentário teste 1"),
+            Comment.Create(perfilId, liveId, "comentário teste 1"),
             Comment.Create(perfilId, liveId, "comentário teste 2"),
         };
 
-        mockCommentRepo.Setup(repo => repo.GetAllByLiveIdAndPerfilId(liveId, perfilId))
+        mockCommentRepo
+            .Setup(repo => repo.GetAllByLiveIdAndPerfilId(liveId, perfilId))
             .ReturnsAsync(comments);
 
         var result = await businessLogic.GetAllByLiveIdAndPerfilId(liveId, perfilId);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        Assert.All(result, comment =>
-        {
-            Assert.Equal(liveId, comment.LiveId);
-            Assert.Equal(perfilId, comment.PerfilId);
-        });
+        Assert.All(
+            result,
+            comment =>
+            {
+                Assert.Equal(liveId, comment.LiveId);
+                Assert.Equal(perfilId, comment.PerfilId);
+            }
+        );
     }
 
     [Fact]
@@ -229,7 +233,9 @@ public class CommentBusinessLogicTests
         var liveId = Guid.NewGuid();
         var perfilId = Guid.NewGuid();
 
-        mockCommentRepo.Setup(repo => repo.GetAllByLiveIdAndPerfilId(liveId, perfilId)).ReturnsAsync(new List<Comment>());
+        mockCommentRepo
+            .Setup(repo => repo.GetAllByLiveIdAndPerfilId(liveId, perfilId))
+            .ReturnsAsync(new List<Comment>());
 
         var result = await businessLogic.GetAllByLiveIdAndPerfilId(liveId, perfilId);
 

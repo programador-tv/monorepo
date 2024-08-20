@@ -24,7 +24,6 @@ public sealed class BuscaIndexModel : CustomPageModel
     public IHttpClientFactory _httpClientFactory { get; set; }
 
     public bool IsFollowing { get; set; }
-    private readonly IFollowService _followService;
     private IPerfilWebService _perfilWebService { get; set; }
 
     public BuscaIndexModel(
@@ -32,14 +31,12 @@ public sealed class BuscaIndexModel : CustomPageModel
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
         Settings settings,
-        IFollowService followService,
         IPerfilWebService perfilWebService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
         _httpClientFactory = httpClientFactory;
         _context = context;
-        _followService = followService;
         _perfilWebService = perfilWebService;
     }
 

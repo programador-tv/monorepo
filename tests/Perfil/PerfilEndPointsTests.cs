@@ -163,7 +163,12 @@ public class PerfilsEndPointsTests
             .Setup(logic => logic.UpdateFotoPerfil(id, It.IsAny<string>()))
             .Returns(Task.CompletedTask);
 
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file,mockSaveFile.Object);
+        var result = await PerfilsEndPoints.UpdateFoto(
+            mockLogic.Object,
+            id,
+            file,
+            mockSaveFile.Object
+        );
 
         Assert.IsType<Ok>(result);
     }
@@ -259,7 +264,12 @@ public class PerfilsEndPointsTests
 
         var mockSaveFile = new Mock<ISaveFile>();
         // Act
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object, mockSaveFile.Object);
+        var result = await PerfilsEndPoints.UpdateFoto(
+            mockLogic.Object,
+            id,
+            file.Object,
+            mockSaveFile.Object
+        );
 
         // Assert
         Assert.IsType<BadRequest<string>>(result);
@@ -281,11 +291,13 @@ public class PerfilsEndPointsTests
             .Setup(logic => logic.UpdateFotoPerfil(id, It.IsAny<string>()))
             .ThrowsAsync(new Exception("Erro durante a atualização da foto"));
 
-        
         // Act
-        var result = await PerfilsEndPoints.UpdateFoto(mockLogic.Object, id, file.Object, mockSaveFile.Object);
-
-
+        var result = await PerfilsEndPoints.UpdateFoto(
+            mockLogic.Object,
+            id,
+            file.Object,
+            mockSaveFile.Object
+        );
 
         // Assert
         Assert.IsType<BadRequest<string>>(result);

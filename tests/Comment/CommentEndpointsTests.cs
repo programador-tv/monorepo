@@ -28,10 +28,14 @@ public class CommentEndPointsTests
         };
 
         mockLogic
-            .Setup(logic =>logic.GetAllByLiveIdAndPerfilId(liveId, perfilId))
+            .Setup(logic => logic.GetAllByLiveIdAndPerfilId(liveId, perfilId))
             .ReturnsAsync(comments);
 
-        var result = await CommentEndPoints.GetAllByLiveIdAndPerfilId(mockLogic.Object, liveId, perfilId);
+        var result = await CommentEndPoints.GetAllByLiveIdAndPerfilId(
+            mockLogic.Object,
+            liveId,
+            perfilId
+        );
 
         Assert.IsType<Ok<List<Comment>>>(result);
     }
@@ -46,7 +50,11 @@ public class CommentEndPointsTests
             .Setup(logic => logic.GetAllByLiveIdAndPerfilId(liveId, perfilId))
             .ThrowsAsync(new Exception("Erro de teste"));
 
-        var result = await CommentEndPoints.GetAllByLiveIdAndPerfilId(mockLogic.Object, liveId, perfilId);
+        var result = await CommentEndPoints.GetAllByLiveIdAndPerfilId(
+            mockLogic.Object,
+            liveId,
+            perfilId
+        );
 
         Assert.IsType<BadRequest<string>>(result);
     }
