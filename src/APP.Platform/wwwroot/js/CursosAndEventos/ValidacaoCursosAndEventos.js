@@ -184,6 +184,8 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEndCE.addEventListener("change", validateDatesCE);
   isAmEndCE.addEventListener("change", validateDatesCE);
 
-  validateDatesCE();
-  validateFirstModalCE();
+  $("#eventModalCustosAndEventos").on("shown.bs.modal", function () {
+    validateDatesCE();
+    validateFirstModalCE();
+  });
 });

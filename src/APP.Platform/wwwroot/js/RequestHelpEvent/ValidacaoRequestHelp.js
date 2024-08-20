@@ -190,7 +190,9 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEndRH.addEventListener("change", validateDatesRH);
   isAmEndRH.addEventListener("change", validateDatesRH);
 
-  validateSecondModalRH();
-  validateDatesRH();
-  validateFirstModalRH();
+  $("#eventModalRequestHelp").on("shown.bs.modal", function () {
+    validateSecondModalRH();
+    validateDatesRH();
+    validateFirstModalRH();
+  });
 });

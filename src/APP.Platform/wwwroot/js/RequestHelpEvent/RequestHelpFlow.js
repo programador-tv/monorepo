@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-
   submitFormRh.addEventListener("submit", (event) => {
     event.preventDefault();
     const selectElementRH = document.getElementById("TagsSelectedHelp");
@@ -161,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
     inicioHorarioRH = `${
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
-
   }
 
   function updateTimeEndRH() {
@@ -177,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fimHorarioRH = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
-
   }
 
   // Passa da etapa 3 para a etapa 2
@@ -192,12 +189,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   $("#btnRequestHBack3").click(() => {
+    const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
+
     switchStep(".body-requestHelp-4", ".body-requestHelp-3");
   });
 
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalRequestHelp").on("hidden.bs.modal", () => {
     setTimeout(() => {
+      const mainTag = document.querySelector(".modal-tag-main");
+      if (mainTag) {
+        mainTag.remove();
+      }
+      const modalTags = document.querySelectorAll(".modal-tag");
+      modalTags.forEach((tag) => tag.remove());
+
       $(".modal-selectRH").removeClass("active");
       $(".body-requestHelp-1").addClass("active");
     }, 100);
