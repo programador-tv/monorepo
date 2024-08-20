@@ -387,15 +387,18 @@ function displayTotalTime() {
             finalH +
             "h" +
             (finalM > 0 ? " e " + finalM + "min" : "");
+        return;
     }
     if (totalTime < 30 && totalTime > 0) {
         showMessage("Não é possível criar um evento com menos de trinta minutos.", true);
         displayTimeAlert.innerHTML =
             finalM > 0 ? "Duração total: " + finalM + "min" : "";
+        return;
     }
     if (totalTime <= 0) {
         showMessage("Horário de início e fim inválidos.", true);
         displayTimeAlert.innerHTML = "";
+        return;
     }
     if ((totalTime <= 120 && totalTime >= 30) && finalH > 0) {
         displayTimeAlert.innerHTML =
@@ -404,11 +407,13 @@ function displayTotalTime() {
             "h" +
             (finalM > 0 ? " e " + finalM + "min" : "");
         showMessage("", false);
+        return;
     }
     if ((totalTime <= 120 && totalTime >= 30) && finalH <= 0) {
         displayTimeAlert.innerHTML =
             finalM > 0 ? "Duração total: " + finalM + "min" : "";
         showMessage("", false);
+        return;
     }
 }
 
