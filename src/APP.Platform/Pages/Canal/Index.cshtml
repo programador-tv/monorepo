@@ -363,7 +363,7 @@
            const nextVideo = () => {
                 const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
                     if(!lastVideo.isIntersecting){
-                        return console.log("Observando chegar no ultimo vídeo...")
+                        return console.log("Esperando chegar no ultimo vídeo...")
                     }
                       observe.unobserve(lastVideo.target)
                       page = page + 1;
@@ -381,8 +381,7 @@
 
                 let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
                 let videosPrivates = document.querySelector("#savedVideosCanal");
-
-                            
+          
                 //verifica se não tem vídeos adicionados
                 if (data.privateLives === CONSIDERED_EMPTY
                     && data.liveSchedules === CONSIDERED_EMPTY) {
@@ -394,14 +393,15 @@
                      // oculta msg "Sem vídeos no momento"
                      msgSemVideo.style.display = "none";
                      // mostra vídeos adicionadas
-              
-                    videosPrivates.innerHTML += data.privateLives; 
+                     videosPrivates.innerHTML += data.privateLives; 
 
+                    //chama função verificar vídeo novamente
                      nextVideo();        
 
                 }
                 })
                 })
+                    // constante que monitora ultimo elemento filho da class pai 
                     const lastVideo = document.querySelector('[class="videos-group"]').lastElementChild
                     videoObserver.observe(lastVideo)    
                 } 
@@ -418,7 +418,6 @@
 
                 let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
                 let videosPrivates = document.querySelector("#savedVideosCanal");
-
                             
                 //verifica se não tem vídeos adicionados
                 if (data.privateLives === CONSIDERED_EMPTY
@@ -431,9 +430,9 @@
                      // oculta msg "Sem vídeos no momento"
                      msgSemVideo.style.display = "none";
                      // mostra vídeos adicionadas
-              
-                    videosPrivates.innerHTML = data.liveSchedules+data.privateLives; 
-
+                     videosPrivates.innerHTML = data.liveSchedules+data.privateLives; 
+                     
+                    //chama função verificar ultimo vídeo na tela
                      nextVideo();        
 
                 }
