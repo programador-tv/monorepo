@@ -103,7 +103,7 @@ body {
 
 .count-tab-events {
   border-radius: 50%;
-  background-color: #437AE2;
+  background-color: #437ae2;
   color: white;
   font-size: 11px;
   height: 17px;
@@ -1858,12 +1858,14 @@ body {
 }
 
 .modal-select,
-.modal-selectRH {
+.modal-selectRH,
+.modal-selectCE {
   display: none;
 }
 
 .modal-select.active,
-.modal-selectRH.active {
+.modal-selectRH.active,
+.modal-selectCE.active {
   display: block;
 }
 
@@ -1944,6 +1946,11 @@ body {
   padding-right: 33px;
 }
 
+.request-help-input-div {
+  display: flex;
+  flex-direction: column;
+}
+
 
 #help-response {
     display: flex;
@@ -1956,18 +1963,17 @@ body {
     font-size: 1.4rem;
     font-weight: bold;
 }
-
 .container-profile-helpResponse {
     display: flex;
     flex-direction: row;
     margin-left: 5px;
 }
+
 .nome-profile-helpResponse {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-
 .response-text-area {
     display: flex;
     justify-content: center;
@@ -2038,4 +2044,13 @@ body {
 
 #container-description-helpResponse p {
     padding: 15px;
+}
+
+#container-msg-helpResponse {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.content-msg-helpResponse {
+    width: 90%;
 }

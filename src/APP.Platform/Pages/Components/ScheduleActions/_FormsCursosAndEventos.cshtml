@@ -3,192 +3,325 @@
 @model FormsCursosAndEventos
 
 <div class="modal fade eventModal" id="eventModalCustosAndEventos" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="eventModalLabel">Cursos & Eventos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        @* <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="time-tab" data-bs-toggle="tab" data-bs-target="#timeTab" type="button" role="tab" aria-controls="time" aria-selected="true">Tempo disponível</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="live-tab" data-bs-toggle="tab" data-bs-target="#liveTab" type="button" role="tab" aria-controls="live" aria-selected="false">Agendar Live</button>
-        </li>
-        </ul> *@
-        <!-- Tab panes -->
-        @* <div class="tab-content"> *@
-        <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
-
-            <form id="saveTimeFormEventosAndCursos" method="post">
-                <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.CursoOuEvento">
-                <br>
-                <label>
-                    <strong>Ilimitado?</strong>
-                </label>
-                    <input type="checkbox"
-                    id="ilimitadoCursoEvento"
-                    asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.Ilimitado" 
-                    value="true"
-                    style="width: 30px; heigth:30px;" >
-
-              <div class="numberMaxMentees"  style="flex-direction:row;">
-                <label for="maxParticipants" style="display: flex; align-items: center; justify-content: center; margin-right:5%;" >
-                   <strong>Selecione o número máximo de participantes:</strong></label>
-
-                <div class="numberMentees-picker">
-
-                    <div class="arrowContainer upHHContainer">
-                      <i class="material-icons mdc-button__icon numberMenteesUp">
-                          expand_less
-                      </i>
-                    </div>
-                        <input type="number" class="time-picker-inputs maxCursoEvento" id="maxParticipants" min="1"
-                            max="100"
-                            min="2"
-                            placeholder="1"
-                            value="2"
-                            asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.MaxParticipants" required />
-                            <div class="arrowContainer downHHContainer">
-                            <i class="material-icons mdc-button__icon numberMenteesDown">
-                                keyboard_arrow_down
-                            </i>
+    <div class="modal-dialog">
+        <form id="saveTimeFormEventosAndCursos" method="post">
+            <div class="modal-content">
+                <div class="modal-body event-modal">
+                    <!-- One -->
+                    <div class="modal-selectCE active body-CE-1">
+                        <div class="modalTitleHeaderDiv">
+                            <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                                Criação de Cursos e Eventos
+                            </h5>
+                        </div>
+                        <div class="progressOneToOne">
+                            <div class="progressBall">
+                                <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
                             </div>
+                            <div class="progressRectangle"></div>
+                            <div class="progressBallNext">2</div>
+                            <div class="progressRectangle"></div>
+                            <div class="progressBallNext">3</div>
+                        </div>
+                        <div class="progressOneToOneText">
+                            <div class="progressTextBox">
+                                <p class="progressText">Titulo e Descrição</p>
+                            </div>
+                            <div class="progressTextBox">
+                                <p class="progressText">Data e Hora</p>
+                            </div>
+                            <div class="progressTextBox">
+                                <p class="progressText">Concluir</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
+                            <input type="hidden" asp-for="ScheduleTimeSelection.Variacao" value="@Variacao.CursoOuEvento" />
+                            <div class="form-group form-group-modal">
+                                <strong class="oneToOneTextHeader">
+                                    Escolha seu titulo e suas tags de acordo com o assunto que deseja.
+                                </strong>
+                                <div class="modal-input-padding">
+                                    <div id="TituloMentoria">
+                                        <label  asp-for="ScheduleTimeSelection.Titulo" class="control-label oneToOneLabel">
+                                            Título da Sessão
+                                            <span style="color: firebrick">*</span>
+                                        </label>
+                                        <input id="TimeSelectionMentoriaTituloCE" asp-for="ScheduleTimeSelection.Titulo" class="form-control one-to-one-input" />
+                                    </div>
+                                    <label asp-for="ScheduleTimeSelection.TagsSelected" class="control-label oneToOneLabel">
+                                        Tags
+                                        <span style="color: firebrick">*</span>
+                                    </label>
+                                    <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" class="form-control isSelect2" required id="TagsSelectedCursosAndEventos">
+                                        @foreach (var item in Model.RelatioTags) {
+                                            <optgroup label="@item.Key">
+                                                @foreach (var subItem in Model.RelatioTags[item.Key]) {
+                                                    <option value="@subItem">@subItem</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    </select>
+                                    <div id="selected-tags-container" style="margin-bottom: 32px;"></div>
 
-                </div>
+                                    <div class="numberMaxMentees" style="flex-direction:row;">
+                                    <label class="oneToOneLabel" for="maxParticipants">
+                                        Selecione o número máximo de participantes:
+                                    </div>
+                                        <input id="maxCursoEvento" type="number" style="appearance: auto;" step="1" id="maxParticipants" min="2" max="100" placeholder="3" value="3" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.MaxParticipants" required />
 
-              </div>
+                                  <div style="display: flex; flex-direction: row;">
+                                <input type="checkbox" id="ilimitadoCursoEvento" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.Ilimitado" value="true" style="width: 16px;
+  height: 16px;
+  align-content: center;
+  align-self: center;"/>
+                                <label>
+                                    <strong class="oneToOneLabel">Vagas Ilimitadas</strong>
+                                </label>
+                             </div>
+                                 
 
-                <br>
-                <div class="form-group">
-                    <strong>
-                        Escolha quais áreas de conhecimento voce está disposto
-                        a ensinar ou falar sobre neste tempo disponível
-                    </strong><span style='color:firebrick'>*</span>
-                    <br>
-                    <select multiple="multiple"
-                    asp-for="ScheduleTimeSelection.TagsSelected"
-                    class=" form-control isSelect2"
-                    required
-                    id="TagsSelectedCursosAndEventos">
-                        @foreach (var item in Model.RelatioTags)
-                        {
-                            <optgroup label="@item.Key">
-                                @foreach (var subItem in  Model.RelatioTags[item.Key])
-                                {
-                                    <option value="@subItem">@subItem</option>
-                                }
-                            </optgroup>
-                        }
-                    </select>
-                </div>
+                                <div style="text-align: end">
+                                    <button id="btnCE1" style="margin-right: 22px;
+  margin-bottom: 30px;" type="button" class="btn btn-modal-first oneToOneButton action btn-avancar">
+                                        Definir Data e Hora
+                                    </button>
+                                </div>
 
-                
-                <div class="pt-2" id="TituloMentoria">
-                    <label asp-for="ScheduleTimeSelection.Titulo"  class="control-label">Título </strong><span style='color:firebrick'>*</span></label>
-                    <input id="TimeSelectionMentoriaTitulo" required asp-for="ScheduleTimeSelection.Titulo" class="form-control" />
-                </div>
-                <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.FreeTime" />
-                <input type="hidden" class="startLive" asp-for="ScheduleTimeSelection.StartTime" />
-                <input type="hidden" class="endLive" asp-for="ScheduleTimeSelection.EndTime" />
 
-                <br>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn button action">Salvar</button>
-                </div>
-            </form>
+                                </div> <!-- Fechando a div modal-input-padding -->
 
-        </div>
-
-        @* temp *@
-       
-            @* <div class="tab-pane" id="liveTab" role="tabpanel" aria-labelledby="profile-tab">
-                <form id="saveLiveForm" method="post">
-                    <div class="form-group">
-                        <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
-                        <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" onchange="verificarSelecaoLiveAgenda()"
-                                class="form-control"
-                                required
-                                id="TagsForLive">
-                            @foreach (var item in Model.RelatioTags)
-                            {
-                                <optgroup label="@item.Key">
-                                    @foreach (var subItem in Model.RelatioTags[item.Key])
-                                    {
-                                        <option value="@subItem">@subItem</option>
-                                    }
-                                </optgroup>
-                            }
-                        </select>
-                    </div>
-                    <br>
-                    <button id="prepararChatGPT"
-                            class="button action button-disabled"
-                            title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
-                            disabled>
-                        <i class="material-icons" aria-hidden="true">lightbulb</i>
-                        <span class="text-button-align-icon">Sugerir contúdo com GPT</span>
-                    </button>
-                    <hr>
-                    <br>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="form-group" id="TituloAgendaLive">
-                        <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título<span style='color:firebrick'>*</span></label>
-                        <input id="TimeSelectionTitulo" required asp-for="ScheduleTimeSelection.Titulo" class="form-control " placeholder="Fazendo [algo legal] com [tecnologias daora]" />
-                    </div>
-                    <br>
-                    <div class="form-group" id="TituloDescricaoAgenda">
-                        <label asp-for="ScheduleLiveForTimeSelection.Descricao" class="control-label">Descrição</label>
-                        <textarea id="TimeSelectionDescricao" asp-for="ScheduleLiveForTimeSelection.Descricao" class="form-control " placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
-                    </div>
-
-                    <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.Live" />
-                   
-
-                    <br>
-                    <div class="form-group" id="thumbnailUploadContainer">
-                        <label asp-for="ScheduleLiveForTimeSelection.Thumbnail" class="control-label">Pré-Visualização<span style='color:firebrick'>*</span></label>
-                        <br>
-                        <input type="file" asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="LiveThumb" accept="image/*" required/>
-                        <br>
-                        <br>
-                        <div style="text-align: center;">
-
-                            (350px de largura por 200px de altura)
-                            <img id="preview" style="
-                                                     width: 300px;
-                                                     height: 150px;">
+                                
+                               
+                            </div>
+                            <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.FreeTime" />
                         </div>
                     </div>
-                    <br>
 
-                    <button type="submit"
-                            class="button action button-right">
-                        <span class="text-button-align-icon">Agendar Live</span>
-                    </button>
-                </form>
+                    <!-- Two -->
+                    <div class="modal-selectCE body-CE-2">
+                        <div class="modalTitleHeaderDiv">
+                            <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                                Criação de Cursos e Eventos
+                            </h5>
+                        </div>
+                        <div class="progressOneToOne">
+                            <div class="progressBall" style="color: #fff">1</div>
+                            <div class="progressRectangle"></div>
+                            <div class="progressBall">
+                                <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
+                            </div>
+                            <div class="progressRectangle"></div>
+                            <div class="progressBallNext">3</div>
+                        </div>
+                        <div class="progressOneToOneText">
+                            <div class="progressTextBox">
+                                <p class="progressText">Titulo e Descrição</p>
+                            </div>
+                            <div class="progressTextBox">
+                                <p class="progressText">Data e Hora</p>
+                            </div>
+                            <div class="progressTextBox">
+                                <p class="progressText">Concluir</p>
+                            </div>
+                        </div>
+                        <div class="datePickerFlexDiv">
+                            <div class="datePickerFlexItem">
+                                <h2 style="font-size: 16px">Escolha o horario e a data que se encontra disponível</h2>
+                            </div>
+                            <div class="datePickerFlexTime">
+                                <div class="date-picker date-input-div">
+                                    <div class="text-container">
+                                        <p class="time-picker-text">Data 
+                                            <span style="color: firebrick">*</span>
+                                        </p>
+                                        <div style="margin-top: 28px" class="alert-below-input" id="errorMsgDateCE"></div>
+                                    </div>
+                                    <input type="date" class="dateTime-newPicker" id="dateTimeCE" />
+                                </div>
+                                <div class="date-input-div">
+                                    <label class="time-picker-text">Horário de Início
+                                        <span style="color: firebrick">*</span>
+                                    </label>
+                                    <div class="selectTime">
+                                        <select name="hoursStartCE" id="hoursStartCE" class="bg-transparent text-xl appearance-none outline-none">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">10</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                        <span class="text-xl mr-3">:</span>
+                                        <select name="minutesStartCE" id="minutesStartCE" class="bg-transparent text-xl appearance-none outline-none mr-4">
+                                            <option value="0">00</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                        </select>
+                                        <select name="ampmStartCE" id="ampmStartCE" class="bg-transparent text-xl appearance-none outline-none">
+                                            <option value="am">AM</option>
+                                            <option value="pm">PM</option>
+                                        </select>
+                                        <span class="material-symbols-outlined">schedule</span>
+                                    </div>
+                                     <div class="alert-below-input" id="errorMsgTimeCE"></div>
+
+                                </div>
+                                <div class="date-input-div">
+                                    <label class="time-picker-text">Horário Final
+                                        <span style="color: firebrick">*</span>
+                                    </label>
+                                    <div class="selectTime">
+                                        <select name="hoursEndCE" id="hoursEndCE" class="bg-transparent text-xl appearance-none outline-none">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                        <span class="text-xl mr-3">:</span>
+                                        <select name="minutesEndCE" id="minutesEndCE" class="bg-transparent text-xl appearance-none outline-none mr-4">
+                                            <option value="0">00</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                        </select>
+                                        <select name="ampmEndCE" id="ampmEndCE" class="bg-transparent text-xl appearance-none outline-none">
+                                            <option value="am">AM</option>
+                                            <option value="pm">PM</option>
+                                        </select>
+                                        <span class="material-symbols-outlined">schedule</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       <div style="
+    margin-bottom: 20px; padding-inline: 33px;" class="btn-conferir-informacao">
+                      <button
+                        id="btnCEBack2"
+                        type="button"
+                        class="btn btn-voltar action"
+                      >
+                        Voltar Etapa
+                      </button>
+                      <button
+                        id="btnCE2"
+                        type="button"
+                        class="btn btn-avancar oneToOneButton action"
+                      >
+                        Definir Data e Hora
+                      </button>
+                    </div>
+                    </div>
+
+                    <div class="modal-selectCE body-CE-3">
+              <div class="modalTitleHeaderDiv">
+                <h5 class="modal-title modalTitleHeader" id="eventModalLabel">
+                  Criação de Cursos e Eventos
+                </h5>
+              </div>
+              <div class="progressOneToOne">
+                <div class="progressBall">1</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBall">2</div>
+                <div class="progressRectangle"></div>
+                <div class="progressBall">
+                  <img src="~/Pictures/Icons/checkModalIcon.svg" alt="check icon" />
+                </div>
+              </div>
+              <div class="progressOneToOneText">
+                <div class="progressTextBox">
+                  <p class="progressText">Titulo e Descrição</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Data e Hora</p>
+                </div>
+                <div class="progressTextBox">
+                  <p class="progressText">Concluir</p>
+                </div>
+              </div>
+              <div
+                class="tab-pane active"
+                id="timeTab3"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <div class="conferir-info-header">
+                  Conferir todas as informações
+                </div>
+                <div class="conferir-info-modal">
+                  <p class="conferir-info-titulo" id="tituloResumoCE"></p>
+                  <p class="resumo-one-to-one">
+                    <span>
+                      <span class="material-symbols-outlined" style="font-size: 14px;
+    margin-right: 5px;">
+                      calendar_today
+                      </span>
+                      <span id="dia-resumoCE" class="resumo-span"></span>
+                    </span>
+                    <span>
+                      <span class="material-symbols-outlined" style="font-size: 14px;
+    margin-right: 5px;">
+                      schedule
+                      </span>
+                    <span id="horarios-resumoCE"></span>
+                    </span>
+                    
+                  </p>
+                  <div class="modal-tags" id="modal-tagsCE">
+                    
+                  </div>
+                </div>
+                <div class="btn-criar-modal">
+                  <button
+                    id="btnBackCE3"
+                    type="button"
+                    class="btn btn-voltar action"
+                  >
+                    Voltar Etapa
+                  </button>
+                  <button
+                    id="btnCE3"
+                    type="submit"
+                    class="btn oneToOneButton action btn-avancar"
+                  >
+                    Criar Sessão
+                  </button>
+                </div>
+              </div>
             </div>
-        </div> *@
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn button-close-color" data-bs-dismiss="modal">FECHAR</button>
-      </div>
+                </div>
+            </div>
+        </form>
     </div>
-  </div>
 </div>
+
+     <script src="~/js/CursosAndEventos/ValidacaoCursosAndEventos.js" asp-append-version="true"></script>
+
 
 <script>
     const ch = document.getElementById("ilimitadoCursoEvento");
-    const max = document.querySelector(".maxCursoEvento");
+    const max = document.querySelector("#maxCursoEvento");
     ch.onchange = () => {
         if(ch.checked){
             max.value = 0
             max.disabled = true
         }else{
             max.disabled = false
+            max.value= 3
         }
     }
-</script>
+</script>>

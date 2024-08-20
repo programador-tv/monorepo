@@ -297,7 +297,8 @@ function preventInvalidCharacter(input, inputLocation, maxValue, event) {
   }
   let strValue = String(input.value);
   if (strValue.length == 2) {
-    strNewValue = event.key.padStart(2, strValue.charAt(1));
+    let strNewValue = event.key.padStart(2, strValue.charAt(1))
+
     if (strValue.charAt(1) === "0") {
       strNewValue = "0" + event.key;
     }

@@ -120,7 +120,7 @@ public sealed class CanalIndexModel : CustomPageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr)
+    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
@@ -144,7 +144,7 @@ public sealed class CanalIndexModel : CustomPageModel
             return BadRequest();
         }
 
-        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
+        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
         var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
@@ -163,7 +163,12 @@ public sealed class CanalIndexModel : CustomPageModel
         );
 
         return new JsonResult(
-            new { privateLives = savedVideosHtml, liveSchedules = liveSchedulesHtml }
+            new
+            {
+                privateLives = savedVideosHtml,
+                liveSchedules = liveSchedulesHtml,
+                isPrivateVideosChecked = isPrivate
+            }
         );
     }
 
