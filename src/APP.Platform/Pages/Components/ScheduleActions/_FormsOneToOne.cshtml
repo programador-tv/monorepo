@@ -272,19 +272,5 @@ schedule
   </div>
 </div>
 
-@* <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        
-        document.getElementById('LiveThumb').addEventListener('change', function (event) {
-            var file = event.target.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function () {
-                    var previewDiv = document.getElementById('preview');
-                    previewDiv.src = reader.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-</script> *@
+     <script src="~/js/OneToOneEvent/ValidacaoOneToOne.js" asp-append-version="true"></script>
+</div>
