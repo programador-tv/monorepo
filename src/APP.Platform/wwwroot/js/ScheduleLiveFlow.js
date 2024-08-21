@@ -16,11 +16,22 @@ saveScheduleLiveForm.addEventListener("submit", (event) => {
 
       const content = document.querySelector("#savedVideos")
 
+      const contentLive = document.querySelector("#myLives")
+
       if (data.preview) {
           document.querySelectorAll(".schedule").forEach(e => e.remove())
           content.innerHTML = data.preview + content.innerHTML;
           $("#destaque-tittle").show();
       }
+
+      fetch("/ScheduleActions?handler=PartialLivePanel&timeSelectionId=" + id)
+      .then((response) => response.text())
+      .then((data) => {
+        contentLive.innerHTML += data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
       const modalContainer = document.querySelector("#eventModals");
       fetch("/ScheduleActions?handler=PartialLiveModal&timeSelectionId=" + id)
