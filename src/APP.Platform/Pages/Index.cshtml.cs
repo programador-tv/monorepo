@@ -3,15 +3,12 @@ using System.Text;
 using System.Text.Json;
 using APP.Platform.Services;
 using Background;
-using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -19,7 +16,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Platform.Services;
 using Presentation.EndPoints;
 using Queue;
@@ -39,7 +35,6 @@ public class IndexModel(
     IMessagePublisher messagePublisher,
     IAprenderService aprenderService,
     IPerfilWebService perfilWebService,
-    IHelpResponseWebService helpResponseWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -664,8 +659,7 @@ public class IndexModel(
             timeSelectionGroupByPerfilId,
             _context,
             _httpClientFactory,
-            perfilWebService,
-            helpResponseWebService
+            perfilWebService
         );
 
         return new JsonResult(new { pedidos, isLogged = IsAuth });
@@ -710,6 +704,10 @@ public class IndexModel(
             .FirstOrDefault(e => e.TimeSelectionId == timeSelection.Id);
 
         if (freeTimeBackstage?.Ilimitado ?? false)
+        {
+            JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
+        }
+        else if (freeTimeBackstage?.AutoAccept ?? false)
         {
             JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
         }
@@ -959,36 +957,5 @@ public class IndexModel(
         byte[] imageBytes = Convert.FromBase64String(base64);
 
         return File(imageBytes, "image/png");
-    }
-
-    public async Task<IActionResult> OnPostHelpResponse(string timeSelectionId, string content)
-    {
-        if (content.IsNullOrEmpty())
-            return BadRequest("Necessário preencher o conteúdo da ajuda.");
-        var perfilId = UserProfile.Id;
-        var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
-
-        var response = await helpResponseWebService.Add(request);
-        return new JsonResult(
-            new HelpResponseWithProfileData(
-                response,
-                UserProfile.UserName,
-                UserProfile.Nome,
-                UserProfile.Foto
-            )
-        );
-    }
-
-    public async Task<IActionResult> OnPostDeleteHelpResponse(string helpResponseId)
-    {
-        try
-        {
-            await helpResponseWebService.Update(Guid.Parse(helpResponseId));
-            return new EmptyResult();
-        }
-        catch (Exception err)
-        {
-            return BadRequest(err.Message);
-        }
     }
 }

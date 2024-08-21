@@ -24,7 +24,6 @@ public static class DependencyInjection
         // services.AddScoped<IChatBusinessLogic, ChatBusinessLogic>();
         services.AddScoped<IFollowBusinessLogic, FollowBusinessLogic>();
         services.AddScoped<ILikeBusinessLogic, LikeBusinessLogic>();
-        services.AddScoped<IHelpResponseBusinessLogic, HelpResponseBusinessLogic>();
         return services;
     }
 }

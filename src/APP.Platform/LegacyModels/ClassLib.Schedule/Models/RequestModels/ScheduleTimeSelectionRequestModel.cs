@@ -14,4 +14,6 @@ public sealed class ScheduleTimeSelectionRequestModel
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public List<string> TagsSelected { get; set; } = new();
+
+    public bool AutoAccept { get; set; }
 }

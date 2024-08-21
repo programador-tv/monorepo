@@ -315,7 +315,6 @@ public static class DependencyInjection
         app.AddChatEndPoints();
         app.AddFollowEndPoints();
         app.AddLikeEndPoints();
-        app.AddHelpResponseEndPoints();
 
         return app;
     }

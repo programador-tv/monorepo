@@ -1,5 +1,4 @@
-﻿using Domain.Contracts;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Enums;
 
 namespace Domain.Models.ViewModels;
@@ -16,5 +15,4 @@ public class TimeSelectionForRequestedHelpViewModel
     public string? ImagePath { get; set; }
     public int Variation { get; set; }
     public EnumTipoTimeSelection Type { get; set; } = EnumTipoTimeSelection.RequestHelp;
-    public List<HelpResponseWithProfileData> HelpResponses { get; set; } = [];
 }

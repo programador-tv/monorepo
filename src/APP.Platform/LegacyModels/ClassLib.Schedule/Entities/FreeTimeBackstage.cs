@@ -5,5 +5,6 @@
         public Guid TimeSelectionId { get; set; }
         public int MaxParticipants { get; set; }
         public bool Ilimitado { get; set; }
+        public bool AutoAccept { get; set; }
     }
 }

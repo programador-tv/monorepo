@@ -167,13 +167,8 @@
     }
 }
     function openCursosAndEventos() {
-        if(isAuthenticated){
-            $('#eventModalCustosAndEventos').modal('show')
-        } else{
-        alert("Você precisa estar logado para acessar esta funcionalidade.");
-        window.location.href = "/Identity/Account/Login";
-        loginCallbackCursosAndEventos();
-        }
+          $("#tipoTempoLivre").val("cursos");
+          openTimePicker()
     }
     function openTimePicker(){
             $("#ajudarModal").modal("hide");

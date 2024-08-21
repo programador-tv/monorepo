@@ -1,5 +1,4 @@
-﻿using Domain.Interfaces.Repositories;
-using Domain.Repositories;
+﻿using Domain.Repositories;
 using Domain.WebServices;
 using Infrastructure.Browser;
 using Infrastructure.Contexts;
@@ -216,7 +215,6 @@ public static class DependencyInjection
         services.AddScoped<IChatWebService, ChatWebService>();
         services.AddScoped<ICommentWebService, CommentWebService>();
         services.AddScoped<IJoinTimeWebService, JoinTimeWebService>();
-        services.AddScoped<IHelpResponseWebService, HelpResponseWebService>();
 
         return services;
     }
@@ -273,7 +271,6 @@ public static class DependencyInjection
         services.AddScoped<IFollowRepository, FollowRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
-        services.AddScoped<IHelpResponseRepository, HelpResponseRepository>();
         return services;
     }
 }

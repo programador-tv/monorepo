@@ -49,5 +49,8 @@ namespace Domain.Entities
 
         [NotMapped]
         public bool Ilimitado { get; set; }
+
+        [NotMapped]
+        public bool AutoAccept { get; set; }
     }
 }

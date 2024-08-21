@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240806235029_AddSchemaHelpResponse")]
-    partial class AddSchemaHelpResponse
+    [Migration("20240817223303_AddAutoAcceptField")]
+    partial class AddAutoAcceptField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,6 +224,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("AutoAccept")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Ilimitado")
                         .HasColumnType("bit");
 
@@ -268,39 +271,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HelpBackstages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.HelpResponse", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Conteudo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("PerfilId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ResponseStatus")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TimeSelectionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HelpResponses");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinTime", b =>
