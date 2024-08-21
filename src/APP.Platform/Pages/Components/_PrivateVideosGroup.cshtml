@@ -2,31 +2,29 @@
 @using Domain.Enums
 @model List<PrivateLiveViewModel>
 
-@foreach(var item in Model){
+@foreach (var item in Model)
+{
 
-     if (item.Visibility 
-        || (item.IsUsrCanal 
-        && (item.StatusLive == StatusLive.Iniciada 
-        || item.StatusLive == StatusLive.Finalizada)))
-        {        
-            @await Html.PartialAsync("Components/_PrivateVideo", 
-            new PrivateLiveViewModel{
-                CodigoLive = item.CodigoLive,
-                DataCriacao = item.DataCriacao,
-                FormatedDuration = item.FormatedDuration,
-                Titulo = item.Titulo,
-                Descricao = item.Descricao,
-                Thumbnail = item.Thumbnail,
-                NomeCriador = item.NomeCriador,
-                UserNameCriador = item.UserNameCriador,
-                FotoCriador = item.FotoCriador,
-                QuantidadeDeVisualizacoes = item.QuantidadeDeVisualizacoes,
-                Visibility = item.Visibility, 
-                LiveEstaAberta = item.LiveEstaAberta,
-                IsUsrCanal = item.IsUsrCanal,
-                StatusLive = item.StatusLive
-                })
-        }
+    if ((item.StatusLive == StatusLive.Iniciada || item.StatusLive == StatusLive.Finalizada ||
+    item.StatusLive == StatusLive.Encerrada))
+    {
+        @await Html.PartialAsync("Components/_PrivateVideo",
+            new PrivateLiveViewModel
+{
+    CodigoLive = item.CodigoLive,
+    DataCriacao = item.DataCriacao,
+    FormatedDuration = item.FormatedDuration,
+    Titulo = item.Titulo,
+    Descricao = item.Descricao,
+    Thumbnail = item.Thumbnail,
+    NomeCriador = item.NomeCriador,
+    UserNameCriador = item.UserNameCriador,
+    FotoCriador = item.FotoCriador,
+    QuantidadeDeVisualizacoes = item.QuantidadeDeVisualizacoes,
+    Visibility = item.Visibility,
+    LiveEstaAberta = item.LiveEstaAberta,
+    IsUsrCanal = item.IsUsrCanal,
+    StatusLive = item.StatusLive
+})
     }
-
-
+}

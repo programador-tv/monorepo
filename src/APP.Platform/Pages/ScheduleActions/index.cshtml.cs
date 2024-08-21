@@ -99,6 +99,7 @@ namespace APP.Platform.Pages.ScheduleActions
         private readonly IAprenderService _AprenderService;
         private readonly IHttpClientFactory _httpClientFactory;
         private IPerfilWebService _perfilWebService { get; set; }
+        private IHelpResponseWebService _helpResponseWebService { get; set; }
 
         public ScheduleActionsModel(
             IRazorViewEngine viewEngine,
@@ -112,7 +113,8 @@ namespace APP.Platform.Pages.ScheduleActions
             OpenAiService openAiService,
             Settings settings,
             IAliasService aliasService,
-            IPerfilWebService perfilWebService
+            IPerfilWebService perfilWebService,
+            IHelpResponseWebService helpResponseWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
@@ -126,6 +128,7 @@ namespace APP.Platform.Pages.ScheduleActions
             _openAiService = openAiService;
             _aliasService = aliasService;
             _perfilWebService = perfilWebService;
+            _helpResponseWebService = helpResponseWebService;
             RelatioTags = DataTags.GetTags();
             TagsSelected = new();
             TimeSelectionList = new();
@@ -1495,7 +1498,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     timeSelectionGroupByPerfilId,
                     _context,
                     _httpClientFactory,
-                    _perfilWebService
+                    _perfilWebService,
+                    _helpResponseWebService
                 );
             return new JsonResult(new { pedidos = RequestedHelp, isLogged = IsAuth });
         }
@@ -1515,7 +1519,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     timeSelectionGroupByPerfilId,
                     _context,
                     _httpClientFactory,
-                    _perfilWebService
+                    _perfilWebService,
+                    _helpResponseWebService
                 );
             return new JsonResult(new { pedidos = RequestedHelp, isLogged = IsAuth });
         }

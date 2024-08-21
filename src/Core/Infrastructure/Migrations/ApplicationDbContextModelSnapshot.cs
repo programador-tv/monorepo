@@ -267,6 +267,39 @@ namespace Infrastructure.Migrations
                     b.ToTable("HelpBackstages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.HelpResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Conteudo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PerfilId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ResponseStatus")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TimeSelectionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HelpResponses");
+                });
+
             modelBuilder.Entity("Domain.Entities.JoinTime", b =>
                 {
                     b.Property<Guid>("Id")

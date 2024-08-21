@@ -1,4 +1,4 @@
-import QueryString from '/js/Studio/Utils/QueryString.js'
+import QueryString from '../Utils/QueryString.js'
 import manageMedia from './manageMedia.js';
 import Media from './Media.js';
 
