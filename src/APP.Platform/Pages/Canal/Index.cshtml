@@ -515,6 +515,8 @@
           document.querySelector(".spinner-grow").style.display = "none";
           videosGroup.style.justifyContent = "flex-start";
           videosGroup.style.alignItems = "flex-start";
+
+           nextVideo();  
         })
         .catch(function (error) {
           loadingSpin.style.display = "none";
@@ -594,6 +596,56 @@
     checkboxPrivate.addEventListener("click", function (event) {
       getVideos(this.checked);
     });
+          //variável para contagem de páginas
+          let pageNumber = 1;
+        
+        //Função que verifica quando ultimo vídeo aparece na tela e carrega mais vídeos
+           const nextVideo = () => {
+                const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
+                    if(!lastVideo.isIntersecting){
+                        return console.log("Esperando chegar no ultimo vídeo...")
+                    }
+                      observe.unobserve(lastVideo.target)
+                      pageNumber = pageNumber + 1;
+                      console.log("Chegou no ultimo vídeo, parou de observar e incrementou página (page)=",pageNumber)
+        fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&pageNumber="+pageNumber)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao enviar a solicitação POST.");
+
+                      }
+                return response.json();
+            })
+            .then(function (data) {
+                const CONSIDERED_EMPTY = "";
+                let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
+                let videosPrivates = document.querySelector("#savedVideosCanal");
+          
+                //verifica se não tem vídeos adicionados
+                if (data.privateLives === CONSIDERED_EMPTY
+                    && data.liveSchedules === CONSIDERED_EMPTY) {
+                    // mostra msg "Sem vídeos no momento na tela"
+                    msgSemVideo.style.display = "block";
+                //caso tenha vídeos adicionados
+                } else {
+                     // oculta msg "Sem vídeos no momento"
+                     msgSemVideo.style.display = "none";
+                     // mostra vídeos adicionadas
+                     videosPrivates.innerHTML += data.privateLives; 
+                    //chama função verificar vídeo novamente
+                     nextVideo();  
+
+                       }
+                })
+                })
+                    // constante que monitora ultimo elemento filho da class pai 
+                    const lastVideo = document.querySelector('[class="videos-group"]').lastElementChild
+                    videoObserver.observe(lastVideo)    
+                } 
+   
+
+
+
   </script>
 
   <script>

@@ -120,7 +120,12 @@ public sealed class CanalIndexModel : CustomPageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
+    public async Task<ActionResult> OnGetAfterloadCanal(
+        string usr,
+        bool isPrivate,
+        int pageNumber = 1,
+        int pageSize = 9
+    )
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
