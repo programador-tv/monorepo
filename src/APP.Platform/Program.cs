@@ -71,7 +71,7 @@ var settings = new Settings()
     ENVIROMENT = environment,
     LIVESOCKET_URL = livews_url,
     MEDIASERVER_URL = mediaserver_url,
-    CHATSOCKET_URL = chatSocketUrl
+    CHATSOCKET_URL = chatSocketUrl,
 };
 
 builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
@@ -188,7 +188,7 @@ var app = builder.Build();
 var forwardedHeadersOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-    RequireHeaderSymmetry = false
+    RequireHeaderSymmetry = false,
 };
 forwardedHeadersOptions.KnownNetworks.Clear();
 forwardedHeadersOptions.KnownProxies.Clear();

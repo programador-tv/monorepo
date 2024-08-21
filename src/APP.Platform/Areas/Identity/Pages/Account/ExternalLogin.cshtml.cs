@@ -226,7 +226,7 @@ namespace APP.Platform.Areas.Identity.Pages.Account
                 {
                     area = "Identity",
                     userId = userId,
-                    code = code
+                    code = code,
                 },
                 protocol: Request.Scheme
             );

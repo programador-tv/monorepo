@@ -109,7 +109,7 @@ namespace APP.Platform.Pages.Studio
                 DataCriacao = DateTime.Now,
                 Foto = UserProfile.Foto,
                 Nome = UserProfile.Nome,
-                Data = formatedDate
+                Data = formatedDate,
             };
 
             var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(messageToProcess));

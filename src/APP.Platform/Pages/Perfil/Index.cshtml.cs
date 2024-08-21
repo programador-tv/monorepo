@@ -98,7 +98,7 @@ namespace APP.Platform.Pages
                     GitHub = Perfil.GitHub,
                     Bio = Perfil.Bio,
                     Descricao = Perfil.Descricao,
-                    Experiencia = Perfil.Experiencia
+                    Experiencia = Perfil.Experiencia,
                 };
                 UsernameExist = false;
 
@@ -121,7 +121,7 @@ namespace APP.Platform.Pages
                         agora você pode criar e participar de salas de estudo e
                         compartilhar seus conhecimentos ao vivo. Saiba mais sobre o projeto clicando em ver
                     ",
-                    ActionLink = "/Sobre"
+                    ActionLink = "/Sobre",
                 };
 
                 await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);

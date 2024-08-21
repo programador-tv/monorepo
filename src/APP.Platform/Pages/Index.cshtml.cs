@@ -482,7 +482,7 @@ public class IndexModel(
                 PerfilId = e.PerfilId.ToString() ?? Guid.Empty.ToString(),
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
-                Titulo = e.TituloTemporario
+                Titulo = e.TituloTemporario,
             })
             .ToList();
 
@@ -522,7 +522,7 @@ public class IndexModel(
                 Bio = perfil.Bio,
                 Email = perfil.Email,
                 Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
             };
             perfisLegacy.Add(perfilLegacy);
         }
@@ -549,10 +549,10 @@ public class IndexModel(
                             StartTime = perfil.StartTime,
                             EndTime = perfil.EndTime,
                             Titulo = perfil.Titulo,
-                            Variacao = perfil.Variacao
+                            Variacao = perfil.Variacao,
                         })
                         .ToList(),
-                    Perfils = mentor
+                    Perfils = mentor,
                 };
 
                 anotherTimeSelectionIDs.AddRange(
@@ -567,7 +567,7 @@ public class IndexModel(
         [
             .. _context.Tags.Where(timeSelection =>
                 anotherTimeSelectionIDs.Contains(timeSelection.FreeTimeRelacao)
-            )
+            ),
         ];
 
         var timeSelectionsDictionary = MentorsFreeTime
@@ -723,7 +723,7 @@ public class IndexModel(
         {
             Id = Guid.NewGuid(),
             JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now
+            DataTentativaMarcacao = DateTime.Now,
         };
         _context.FeedbackJoinTimes?.Add(feedback);
 
@@ -742,7 +742,7 @@ public class IndexModel(
                         em receber mentoria {timeSelection.TituloTemporario}
                         no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
@@ -760,7 +760,7 @@ public class IndexModel(
                         em oferecer orientação para: {timeSelection.TituloTemporario}
                         no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
@@ -845,7 +845,7 @@ public class IndexModel(
                     $@" marcou com você a mentoria {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + join.TimeSelectionId
+                ActionLink = "./?event=" + join.TimeSelectionId,
             };
         }
         else if (ts.Tipo == EnumTipoTimeSelection.RequestHelp)
@@ -860,7 +860,7 @@ public class IndexModel(
                     $@" marcou com você a orientação para o pedido de ajuda: {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + join.TimeSelectionId
+                ActionLink = "./?event=" + join.TimeSelectionId,
             };
         }
         if (notification != null)
@@ -939,13 +939,13 @@ public class IndexModel(
             DataCriacao = DateTime.Now,
             UltimaAtualizacao = DateTime.Now,
             TipoSala = EnumTipoSalas.Mentoria,
-            Privado = true
+            Privado = true,
         };
         _context?.Rooms?.Add(room);
 
         foreach (var t in TagsSelected)
         {
-            var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala, };
+            var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala };
             _context?.Tags?.Add(tag);
         }
         return room.Id;
