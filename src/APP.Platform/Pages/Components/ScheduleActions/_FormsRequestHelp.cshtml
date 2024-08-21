@@ -156,15 +156,23 @@
                          <span asp-for="ScheduleTimeSelection.Descricao" style="color: firebrick">*</span> <small style="font-size: 12px; color: #525252;, font-weight: 400;">(mínimo de 50 caracteres)</small></label>
                       <textarea id="descriptionRH"  rows="4" asp-for="ScheduleTimeSelection.Descricao"></textarea>
                     </div>
-                      <div class="request-help-input-div">
+                    <div class="request-help-input-div">
                         <label
                           asp-for="ScheduleTimeSelection.ImageFile"
                           style="margin-top: 20px;"
                           class="control-label oneToOneLabel">Imagem <small style="font-size: 12px; color: #525252;, font-weight: 400;">(opcional)</small></label>
                         <input type="file" asp-for="ScheduleTimeSelection.ImageFile" />
-                      </div>
-                    <div style="
-    margin-bottom: 0; padding-inline: 1.4rem;" class="btn-conferir-informacao">
+                    </div>
+                    <div style="padding: 15px 0px; font-size: 16px;" class="d-flex align-items-center">
+                        <input type="checkbox" id="autoJoinTime" /><label 
+                            asp-for="ScheduleTimeSelection.AutoAccept"
+                            value="true"
+                            style="margin-left:5px" 
+                            for="autoJoinTime">Ativar Seleção Automática de Interessados</label>
+                    </div>
+
+                    <div style="margin-bottom: 0; padding-inline: 1.4rem;" class="btn-conferir-informacao">
+                      
                       <button
                         id="btnRequestHBack1"
                         type="button"
