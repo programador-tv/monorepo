@@ -707,6 +707,10 @@ public class IndexModel(
         {
             JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
         }
+        else if (freeTimeBackstage?.AutoAccept ?? false)
+        {
+            JoinTime.StatusJoinTime = StatusJoinTime.Marcado;
+        }
         else
         {
             JoinTime.StatusJoinTime = StatusJoinTime.Pendente;

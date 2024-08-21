@@ -348,6 +348,11 @@ namespace APP.Platform.Pages.ScheduleActions
 
                 time.Key.MaxParticipants = max;
                 time.Key.Ilimitado = freeTimeBackstage?.Ilimitado ?? false;
+                time.Key.AutoAccept = freeTimeBackstage?.AutoAccept ?? false;
+                if(time.Key.Ilimitado)
+                {
+                    time.Key.RoomId = CreatePrivateRoom(time.Key, time.Key.PerfilId ?? Guid.Empty);
+                }
             }
 
             var RhListIds = requestHelpList.Keys.Select(kvp => kvp.Id).ToList();
@@ -657,6 +662,15 @@ namespace APP.Platform.Pages.ScheduleActions
 
             timeSelectionAndJoinTimes.Key.MaxParticipants = freeTimeBackstage?.MaxParticipants ?? 1;
             timeSelectionAndJoinTimes.Key.Ilimitado = freeTimeBackstage?.Ilimitado ?? false;
+            if (timeSelectionAndJoinTimes.Key.Ilimitado)
+            {
+                timeSelectionAndJoinTimes.Key.RoomId = CreatePrivateRoom(
+                    timeSelectionAndJoinTimes.Key,
+                    timeSelectionAndJoinTimes.Key.PerfilId ?? Guid.Empty
+                );
+            }
+
+            timeSelectionAndJoinTimes.Key.AutoAccept = freeTimeBackstage?.AutoAccept ?? false;
 
             _ensinarService.CheckActionNeedAndUpdateTime(timeSelectionAndJoinTimes);
 
