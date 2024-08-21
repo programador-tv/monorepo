@@ -16,11 +16,22 @@ saveScheduleLiveForm.addEventListener("submit", (event) => {
 
       const content = document.querySelector("#savedVideos")
 
+      const contentLive = document.querySelector("#myLives")
+
       if (data.preview) {
           document.querySelectorAll(".schedule").forEach(e => e.remove())
           content.innerHTML = data.preview + content.innerHTML;
           $("#destaque-tittle").show();
       }
+
+      fetch("/ScheduleActions?handler=PartialLivePanel&timeSelectionId=" + id)
+      .then((response) => response.text())
+      .then((data) => {
+        contentLive.innerHTML += data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
       const modalContainer = document.querySelector("#eventModals");
       fetch("/ScheduleActions?handler=PartialLiveModal&timeSelectionId=" + id)
@@ -66,7 +77,6 @@ function SaveTime (aspForm, _hideEventModal) {
           await createLiveModal(tsId);
 
         calendar.addEvent(content);
-        firstForm = content;
         // deve abrir um alert para pessoa decidir se quer ver o modal
         Swal.fire({
           title: 'Live criada com sucesso !',

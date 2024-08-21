@@ -47,7 +47,6 @@ public sealed class CanalIndexModel : CustomPageModel
     private readonly ITempDataProvider _tempDataProvider;
     private IPerfilWebService _perfilWebService { get; set; }
     private readonly ILiveService _liveService;
-    private readonly IFollowService _followService;
     public Dictionary<string, List<string>> RelatioTags { get; set; }
     public bool IsFollowing { get; set; }
     public int followersCount { get; set; }
@@ -63,8 +62,7 @@ public sealed class CanalIndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         Settings settings,
         IPerfilWebService perfilWebService,
-        ILiveService liveService,
-        IFollowService followService
+        ILiveService liveService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
@@ -75,7 +73,6 @@ public sealed class CanalIndexModel : CustomPageModel
         _context = context;
         _messagePublisher = messagePublisher;
         _liveService = liveService;
-        _followService = followService;
     }
 
     public async Task<IActionResult> OnGetAsync(string usr)

@@ -70,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
             createTimeModal(content.id);
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
       })
@@ -184,6 +183,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Passa da etapa 3 para a etapa 2
   $("#btnCEBack2").click(() => {
+    const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
+    
     switchStep(".body-CE-2", ".body-CE-1");
   });
 
@@ -196,6 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalCustosAndEventos").on("hidden.bs.modal", () => {
     setTimeout(() => {
+      const mainTag = document.querySelector(".modal-tag-main");
+      if (mainTag) {
+        mainTag.remove();
+      }
+      const modalTags = document.querySelectorAll(".modal-tag");
+      modalTags.forEach((tag) => tag.remove());
+
       $(".modal-selectCE").removeClass("active");
       $(".body-CE-1").addClass("active");
     }, 100);

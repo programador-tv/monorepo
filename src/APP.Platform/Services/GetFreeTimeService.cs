@@ -214,7 +214,7 @@ public static class GetFreeTimeService
                             Description = item.Description,
                             Variation = item.Variation,
                             Title = item.Title,
-                            HelpResponses = joinHelpResponseWithProfile
+                            HelpResponses = joinHelpResponseWithProfile,
                         }
                     );
                 }
