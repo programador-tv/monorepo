@@ -176,6 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEnd.addEventListener("change", validateDates);
   isAmEnd.addEventListener("change", validateDates);
 
-  validateDates();
-  validateFirstModal();
+  $("#eventModalOneToOne").on("shown.bs.modal", function () {
+    validateDates();
+    validateFirstModal();
+  });
 });
