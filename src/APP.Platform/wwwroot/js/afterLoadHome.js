@@ -259,6 +259,9 @@ function loadPedidosAjudaParaTag(data) {
     prepared =
       "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem pedidos de ajuda no momento </div>";
     $("#pedidosPanel").html(prepared);
+    activePaginationFor("groupOneToOne", 0);
+    activePaginationFor("groupCursos", 0);
+    activePaginationFor("groupHelp", 0);
   } else {
     let pedidosDeAjuda = "";
     let groupHelp = [];
