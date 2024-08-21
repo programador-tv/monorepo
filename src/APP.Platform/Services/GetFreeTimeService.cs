@@ -220,18 +220,7 @@ public static class GetFreeTimeService
                 }
                 var requestedHelp = new RequestedHelpViewModel
                 {
-                    TimeSelections = PerfilTimeSelection
-                        .Select(e => new TimeSelectionForRequestedHelpViewModel()
-                        {
-                            TimeSelectionId = e.TimeSelectionId,
-                            PerfilId = e.PerfilId.ToString(),
-                            StartTime = e.StartTime,
-                            EndTime = e.EndTime,
-                            Description = e.Description,
-                            Variation = e.Variation,
-                            Title = e.Title,
-                        })
-                        .ToList(),
+                    TimeSelections = requesteds,
                     Perfils = requesterPerfils,
                 };
                 timeSelectionIds.AddRange(
