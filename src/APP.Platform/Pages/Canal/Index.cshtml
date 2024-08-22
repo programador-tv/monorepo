@@ -603,11 +603,10 @@
            const nextVideo = () => {
                 const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
                     if(!lastVideo.isIntersecting){
-                        return console.log("Esperando chegar no ultimo vídeo...")
+                        return 
                     }
                       observe.unobserve(lastVideo.target)
                       pageNumber = pageNumber + 1;
-                      console.log("Chegou no ultimo vídeo, parou de observar e incrementou página (page)=",pageNumber)
         fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&pageNumber="+pageNumber)
             .then(function (response) {
                 if (!response.ok) {
