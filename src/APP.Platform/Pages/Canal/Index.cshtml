@@ -593,7 +593,11 @@
 
     getVideos(false);
 
+    let private = false;
+
     checkboxPrivate.addEventListener("click", function (event) {
+      private = this.checked;
+      pageNumber = 1;
       getVideos(this.checked);
     });
           //variável para contagem de páginas
@@ -607,7 +611,8 @@
                     }
                       observe.unobserve(lastVideo.target)
                       pageNumber = pageNumber + 1;
-        fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&pageNumber="+pageNumber)
+        fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&isPrivate=" +
+          private+"&pageNumber="+pageNumber)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("Erro ao enviar a solicitação POST.");
