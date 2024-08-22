@@ -17,7 +17,7 @@ public class JoinTimeWorkerTests
         var fakeHandler = new FakeHttpMessageHandler(fakeResponse);
         var fakeHttpClient = new HttpClient(fakeHandler)
         {
-            BaseAddress = new Uri("http://example.com/")
+            BaseAddress = new Uri("http://example.com/"),
         };
 
         var mockJoinTimeWebService = new Mock<IJoinTimeWebService>();

@@ -12,7 +12,9 @@ public interface ILiveService
     public List<PrivateLiveViewModel> RenderPrivateLives(
         Perfil perfilOwner,
         Guid perfilLogInId,
-        bool isPrivate
+        bool isPrivate,
+        int pageNumber,
+        int pageSize
     );
     public List<LiveSchedulePreviewViewModel> RenderPreviewLiveSchedule(
         Perfil perfilOwner,

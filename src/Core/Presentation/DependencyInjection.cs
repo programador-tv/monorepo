@@ -87,7 +87,7 @@ public static class DependencyInjection
                 TracesSampleRate = 1.0,
                 AutoSessionTracking = true,
                 IsGlobalModeEnabled = true,
-                EnableTracing = true
+                EnableTracing = true,
             };
 
         // Configura o nível mínimo de detalhamento de trilhas (breadcrumbs)

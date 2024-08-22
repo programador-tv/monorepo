@@ -20,7 +20,7 @@ namespace Infrastructure.Migrations
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Valid = table.Column<bool>(type: "bit", nullable: false)
+                    Valid = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {

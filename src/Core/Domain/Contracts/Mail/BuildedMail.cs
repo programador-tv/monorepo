@@ -30,8 +30,8 @@ public sealed class BuildedEmail
                 { MailMessage.MESSAGE, MailMessage.NovoInteressadoContent },
                 { MailMessage.NOME_INTERESSADO, gerador.Nome ?? gerador.UserName ?? string.Empty },
                 { MailMessage.FOTO_INTERESSADO, gerador.Foto ?? string.Empty },
-                { MailMessage.LINK_SALA, actionLink ?? string.Empty }
-            }
+                { MailMessage.LINK_SALA, actionLink ?? string.Empty },
+            },
         };
     }
 
@@ -53,8 +53,8 @@ public sealed class BuildedEmail
                 { MailMessage.MESSAGE, MailMessage.InteressadoAceitoContent },
                 { MailMessage.NOME_MENTOR, gerador.Nome ?? gerador.UserName ?? string.Empty },
                 { MailMessage.FOTO_MENTOR, gerador.Foto ?? string.Empty },
-                { MailMessage.LINK_SALA, actionLink ?? string.Empty }
-            }
+                { MailMessage.LINK_SALA, actionLink ?? string.Empty },
+            },
         };
     }
 }

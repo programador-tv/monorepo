@@ -81,7 +81,7 @@ public class TimeSelectionBusinessLogicTests
                 EnumTipoTimeSelection.FreeTime,
                 TipoAction.Ensinar,
                 Variacao.CursoOuEvento
-            )
+            ),
         };
         mockTimeSelectionRepo
             .Setup(repo => repo.GetFreeTimeMarcadosAntigos())
@@ -90,7 +90,7 @@ public class TimeSelectionBusinessLogicTests
         var perfilGeradorHash = new Dictionary<Guid, Guid>()
         {
             { testTimeSelections[0].Id, perfilId },
-            { testTimeSelections[1].Id, perfilId }
+            { testTimeSelections[1].Id, perfilId },
         };
         mockJoinTimeRepo
             .Setup(repo => repo.GetJoinTimePerfilIdsByTimeSelectionIds(It.IsAny<List<Guid>>()))
@@ -134,9 +134,9 @@ public class TimeSelectionBusinessLogicTests
                         StatusJoinTime.Marcado,
                         false,
                         TipoAction.Aprender
-                    )
+                    ),
                 }
-            }
+            },
         };
         mockTimeSelectionRepo
             .Setup(repo => repo.GetUpcomingTimeSelectionAndJoinTime())

@@ -5,9 +5,6 @@
 @foreach (var item in Model)
 {
 
-    if ((item.StatusLive == StatusLive.Iniciada || item.StatusLive == StatusLive.Finalizada ||
-    item.StatusLive == StatusLive.Encerrada))
-    {
         @await Html.PartialAsync("Components/_PrivateVideo",
             new PrivateLiveViewModel
 {
@@ -26,5 +23,5 @@
     IsUsrCanal = item.IsUsrCanal,
     StatusLive = item.StatusLive
 })
-    }
+
 }
