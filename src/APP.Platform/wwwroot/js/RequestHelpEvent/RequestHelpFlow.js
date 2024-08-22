@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateFormRH = document.getElementById("dateTimeRH");
-
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  dateFormRH.value = formattedDate;
   let submitFormRh = document.getElementById("saveTimeFormHelp");
 
   let hoursStartRH = document.getElementById("hoursStartRH");
+  hoursStartRH.value = new Date().getHours() + 1;
   let minutesStartRH = document.getElementById("minutesStartRH");
   let isAmStartRH = document.getElementById("ampmStartRH");
+  isAmStartRH.value = hoursStartRH.value >= 12 ? "pm" : "am";
 
   let inicioHorarioRH = `${
     hoursStartRH.value < 10 ? "0" + hoursStartRH.value : hoursStartRH.value
@@ -16,8 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }`;
 
   let hoursEndRH = document.getElementById("hoursEndRH");
+  hoursEndRH.value = new Date().getHours() + 2;
   let minutesEndRH = document.getElementById("minutesEndRH");
   let isAmEndRH = document.getElementById("ampmEndRH");
+  isAmEndRH.value = hoursEndRH.value >= 12 ? "pm" : "am";
 
   let fimHorarioRH = `${
     hoursEndRH.value < 10 ? "0" + hoursEndRH.value : hoursEndRH.value
@@ -68,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error(error);
       });
   }
-
 
   submitFormRh.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -161,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
     inicioHorarioRH = `${
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
-
   }
 
   function updateTimeEndRH() {
@@ -177,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fimHorarioRH = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
-
   }
 
   // Passa da etapa 3 para a etapa 2
