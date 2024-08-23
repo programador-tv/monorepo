@@ -29,7 +29,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
         };
     }
 
-    public List<PrivateLiveViewModel> RenderPrivateLives(
+    public async List<PrivateLiveViewModel> RenderPrivateLives(
         Perfil perfilOwner,
         Guid perfilLogInId,
         bool isPrivate,
@@ -44,7 +44,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
 
         if (perfilOwner.Id == perfilLogInId)
         {
-            lives = context
+            lives = await context
                 .Lives.Where(e =>
                     e.PerfilId == perfilOwner.Id
                     && e.Visibility == !isPrivate
@@ -54,10 +54,11 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
                         || e.StatusLive == StatusLive.Finalizada
                     )
                 )
+                .OrderByDescending(e => e.UltimaAtualizacao)
                 // Paginação das lives
                 .Skip(skip)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
         }
         else
         {
