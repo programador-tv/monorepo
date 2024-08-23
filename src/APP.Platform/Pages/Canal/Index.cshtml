@@ -610,16 +610,21 @@
                   
         //Função que verifica quando ultimo vídeo aparece na tela e carrega mais vídeos
            const nextVideo = () => {
+             console.log("entrou na função")
                 const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
-                    if(!lastVideo.isIntersecting){           
+                    if(!lastVideo.isIntersecting){  
+                      console.log("aguardando ultimo vídeo")         
                          return                        
                     }else
                       //ativa loading da paginação scroll infinito
                       loadingPaginacao.style.display = "block";
+                       console.log("loading...")
 
                       //para de observar ultimo vídeo na tela
                       observe.unobserve(lastVideo.target)
-                      pageNumber = pageNumber + 1;                  
+                      pageNumber = pageNumber + 1;   
+                       console.log("para de observar") 
+                        console.log(pageNumber)              
 
         fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&pageNumber="+pageNumber)
             .then(function (response) {
@@ -636,6 +641,7 @@
 
                 //oculta loading da paginação scroll infinito
                 loadingPaginacao.style.display = "none";
+                 console.log("para loading...")
 
                 //verifica se não tem vídeos adicionados
                 if (data.privateLives === CONSIDERED_EMPTY
@@ -649,6 +655,7 @@
                      // mostra vídeos adicionadas
                      videosPrivates.innerHTML += data.privateLives; 
                     //chama função verificar vídeo novamente
+                     console.log("fim da renderização")
                      nextVideo();  
                        }
                 })
