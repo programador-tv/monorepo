@@ -3,6 +3,6 @@
     public enum ResponseStatus
     {
         Posted = 1,
-        Deleted = 2
+        Deleted = 2,
     }
 }

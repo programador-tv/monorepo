@@ -39,7 +39,7 @@ public class HelpResponseEndPointsTests
                 newRequest.timeSelectionId,
                 newRequest.perfilId,
                 newRequest.Conteudo
-            )
+            ),
         };
 
         mockLogic.Setup(logic => logic.GetAll(timeSelectionId)).ReturnsAsync(helpResponses);

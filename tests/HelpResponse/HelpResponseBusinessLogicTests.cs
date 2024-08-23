@@ -40,7 +40,7 @@ public class HelpResponseBusinessLogicTests
                 newRequest.timeSelectionId,
                 newRequest.perfilId,
                 newRequest.Conteudo
-            )
+            ),
         };
 
         _mockRepository
