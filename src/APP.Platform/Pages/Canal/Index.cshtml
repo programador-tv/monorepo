@@ -388,6 +388,16 @@
             </div>
           </div>
         </main>
+
+             @* Loading videos durante paginação scroll infinito *@
+         <main class="videos-group" id="loadingVideos" style="display: none">
+          <div class="d-flex justify-content-center">
+            <div class="spinner-grow" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </main>
+
       </div>
       <div
         class="tab-pane fade"
@@ -485,7 +495,6 @@
       videosGroup.innerHTML = loadingSpin;
       videosGroup.style.justifyContent = "center";
       videosGroup.style.alignItems = "center";
-
       fetch(
         "?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName&isPrivate=" +
           isPrivate
@@ -514,7 +523,6 @@
           document.querySelector(".spinner-grow").style.display = "none";
           videosGroup.style.justifyContent = "flex-start";
           videosGroup.style.alignItems = "flex-start";
-
            nextVideo();  
         })
         .catch(function (error) {
@@ -597,15 +605,22 @@
     });
           //variável para contagem de páginas
           let pageNumber = 1;
-        
+          //variável para loading do scroll infinito
+          let loadingPaginacao = document.querySelector("#loadingVideos");
+                  
         //Função que verifica quando ultimo vídeo aparece na tela e carrega mais vídeos
            const nextVideo = () => {
                 const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
-                    if(!lastVideo.isIntersecting){
-                        return 
-                    }
+                    if(!lastVideo.isIntersecting){           
+                         return                        
+                    }else
+                      //ativa loading da paginação scroll infinito
+                      loadingPaginacao.style.display = "block";
+
+                      //para de observar ultimo vídeo na tela
                       observe.unobserve(lastVideo.target)
-                      pageNumber = pageNumber + 1;
+                      pageNumber = pageNumber + 1;                  
+
         fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&pageNumber="+pageNumber)
             .then(function (response) {
                 if (!response.ok) {
@@ -618,7 +633,10 @@
                 const CONSIDERED_EMPTY = "";
                 let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
                 let videosPrivates = document.querySelector("#savedVideosCanal");
-          
+
+                //oculta loading da paginação scroll infinito
+                loadingPaginacao.style.display = "none";
+
                 //verifica se não tem vídeos adicionados
                 if (data.privateLives === CONSIDERED_EMPTY
                     && data.liveSchedules === CONSIDERED_EMPTY) {
@@ -632,17 +650,13 @@
                      videosPrivates.innerHTML += data.privateLives; 
                     //chama função verificar vídeo novamente
                      nextVideo();  
-
                        }
                 })
                 })
                     // constante que monitora ultimo elemento filho da class pai 
                     const lastVideo = document.querySelector('[class="videos-group"]').lastElementChild
-                    videoObserver.observe(lastVideo)    
-                } 
-   
-
-
+                    videoObserver.observe(lastVideo) 
+                }
 
   </script>
 
