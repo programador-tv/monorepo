@@ -146,7 +146,7 @@ public sealed class CanalIndexModel : CustomPageModel
             return BadRequest();
         }
 
-        var pagedPrivateLives = _liveService.RenderPrivateLives(
+        var pagedPrivateLives = await _liveService.RenderPrivateLives(
             perfilOwner,
             UserProfile.Id,
             isPrivate,

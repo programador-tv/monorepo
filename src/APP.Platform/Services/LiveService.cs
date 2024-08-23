@@ -65,9 +65,9 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
             lives = await context
                 .Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility)
                 // Paginação das lives
+                .OrderByDescending(e => e.UltimaAtualizacao)
                 .Skip(skip)
                 .Take(pageSize)
-                .OrderByDescending(e => e.UltimaAtualizacao)
                 .ToListAsync();
         }
 
@@ -75,9 +75,9 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
         var isUsrCanal = perfilLogInId == perfilOwner.Id;
 
         var liveIds = lives.Select(e => e.Id);
-        var liveVisualizations = context
+        var liveVisualizations = await context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
-            .ToList();
+            .ToListAsync();
 
         for (int i = lives.Count - 1; i >= 0; i--)
         {
