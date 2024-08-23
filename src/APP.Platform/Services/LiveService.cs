@@ -55,9 +55,9 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
                     )
                 )
                 // Paginação das lives
+                .OrderByDescending(e => e.UltimaAtualizacao)
                 .Skip(skip)
                 .Take(pageSize)
-                .OrderByDescending(e => e.UltimaAtualizacao)
                 .ToListAsync();
         }
         else
