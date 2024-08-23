@@ -25,7 +25,7 @@ namespace Infrastructure.Migrations
                         type: "rowversion",
                         rowVersion: true,
                         nullable: false
-                    )
+                    ),
                 },
                 constraints: table =>
                 {

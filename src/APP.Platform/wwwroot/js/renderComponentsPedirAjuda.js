@@ -1,10 +1,11 @@
 function JoinTimeForRequestedHelp(time, perfil, group, index) {
-	index++
+  index++;
 
-	let prepared =
-		`<div class="${group} item-preview-ts"
-			onclick="SetItToTryRequestedHelp('${time.timeSelectionId}', '#freeTimes-${perfil.id}')"
-			style="display:${index <= 2 ? 'flex' : 'none'};" >
+  let prepared = `<div class="${group} item-preview-ts"
+			onclick="SetItToTryRequestedHelp('${time.timeSelectionId}', '#freeTimes-${
+    perfil.id
+  }')"
+			style="display:${index <= 2 ? "flex" : "none"};" >
 
 			<header class="d-flex align-items-center w-100 py-3 px-4"
 				style="background: linear-gradient(96.12deg, #AE87CF 0.79%, #995ECB 110%); height: 84px;">
@@ -22,14 +23,10 @@ function JoinTimeForRequestedHelp(time, perfil, group, index) {
 					style="color: #FEFBFB">
 					<h2 class="fs-6 fw-bold"
 						style="letter-spacing: 0.015em; margin-bottom: 2px;">
-						${perfil.nome.length > 30
-						? perfil.nome.substring(0, 30) + "..."
-						: perfil.nome}
+						${perfil.nome.length > 30 ? perfil.nome.substring(0, 30) + "..." : perfil.nome}
 					</h2>
 					<h3 style="font-size: 12px; margin-bottom: 2px;">
-						${perfil.bio.length > 35
-						? perfil.bio.substring(0, 35) + "..."
-						: perfil.bio}
+						${perfil.bio.length > 35 ? perfil.bio.substring(0, 35) + "..." : perfil.bio}
 					</h3>
 				</span>
 				<small class="tag-capacitacao tag-duvida align-self-start mt-0">
@@ -40,15 +37,15 @@ function JoinTimeForRequestedHelp(time, perfil, group, index) {
 			<div class="d-flex flex-column justify-content-between w-100"
 				style="padding: 12px 10px; height: 100px;">
 				<h2 style="color: #1C1C1C; letter-spacing: 0.015em; font-size: 18px; word-wrap: break-word;">
-					${time.title.length > 90
-					? time.title.substring(0, 90) + "..."
-					: time.title}
+					${time.title.length > 90 ? time.title.substring(0, 90) + "..." : time.title}
 				</h2>
 				<div class="d-flex flex-row-reverse w-100">
 					<small class="tag-capacitacao" style="margin-right: 14px">
-						${time.tags[0].titulo.length > 20
-						? time.tags[0].titulo.substring(0, 20) + "..."
-						: time.tags[0].titulo}
+						${
+              time.tags[0].titulo.length > 20
+                ? time.tags[0].titulo.substring(0, 20) + "..."
+                : time.tags[0].titulo
+            }
 					</small>
 				</div>
 			</div>
@@ -63,7 +60,9 @@ function JoinTimeForRequestedHelp(time, perfil, group, index) {
 						style="color: #525252;">
 						Datas
 					</span>
-					${new Date(time.startTime).getDate()} - ${mesesAbrev[new Date(time.startTime).getMonth()]}
+					${new Date(time.startTime).getDate()} - ${
+    mesesAbrev[new Date(time.startTime).getMonth()]
+  }
 				</p>
 				<p class="mb-0">
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
@@ -74,60 +73,73 @@ function JoinTimeForRequestedHelp(time, perfil, group, index) {
 						style="color: #525252;">
 						Horário
 					</span>
-					${new Date(time.startTime).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})} - ${new Date(time.endTime).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}
+					${new Date(time.startTime).toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })} - ${new Date(time.endTime).toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
 				</p>
 			</footer>
 		</div>`;
 
-    return prepared;
+  return prepared;
 }
 
 function SetItToTryRequestedHelp(freetimeId) {
-    $(".modal").modal("hide")
-    let perfil;
-    let time;
-    for (let element of result) {
-        for (let item of element.timeSelections) {
-            if (item.timeSelectionId == freetimeId) {
-                time = item
-                perfil = element.perfils
-                break;
-            }
-        }
+  $(".modal").modal("hide");
+  let perfil;
+  let time;
+  for (let element of result) {
+    for (let item of element.timeSelections) {
+      if (item.timeSelectionId == freetimeId) {
+        time = item;
+        perfil = element.perfils;
+        break;
+      }
     }
-    document.querySelector("#perfilJoinTime").value = perfil.id
-    document.querySelector("#timeSelectionJoinTime").value = freetimeId
-    setTimeout(() => {
-        renderRequestedHelpSelected(perfil, time)
-        renderRequestedHelpResponse(time.helpResponses, time.perfilId)
-        $("#eventModal").modal("hide")
-        $("#matcHelphModal").modal("show")
-    }, 300)
+  }
+  document.querySelector("#perfilJoinTime").value = perfil.id;
+  document.querySelector("#timeSelectionJoinTime").value = freetimeId;
+  setTimeout(() => {
+    renderRequestedHelpSelected(perfil, time);
+    renderRequestedHelpResponse(time.helpResponses, time.perfilId);
+    $("#eventModal").modal("hide");
+    $("#matcHelphModal").modal("show");
+  }, 300);
 }
 
 function renderRequestedHelpResponse(listHelpResponse, perfilId) {
-    const userLoggedId = document.getElementById("requestProfileId").value;
-    if (userLoggedId !== perfilId) {
-        let prepareFormHelpResponse = `
+  const userLoggedId = document.getElementById("requestProfileId").value;
+  if (userLoggedId !== perfilId) {
+    let prepareFormHelpResponse = `
             <p>Comentar</p>
-            <div class="response-text-area">
+            <div class="response-text-area" style="padding-inline:13px; padding-bottom:36px">
                 <textarea class="form-control" id="contentHelpResponse"></textarea>
             </div>
-
-            <div class="btn-add-helpResponse">
+            
+            <div class="form-button-solicitar-mentoria" style="width:100%">
+            <div class="solicitarBtnDiv">
                 <button id="btn-sendComment" onclick="sendComment()" type="button" class="button button-capacitacao">Enviar comentário</button>
             </div>
-        `
-        $("#help-response").html(prepareFormHelpResponse)
-    }
+            </div>
+        `;
+    $("#help-response").html(prepareFormHelpResponse);
+  }
 
-    let prepared = "";
-    for (let item of listHelpResponse) {
-        const qtdTempo = qtdEmMinutosCriada(item.helpResponse.createdAt);
-        let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
-        let profile = { userName: item.profileUserName, nome: item.profileNome, foto: item.profileFoto };
-        prepared +=
-            `<div class="container-helpResponse" id="helpResponse-${item.helpResponse.id}">
+  let prepared = "";
+  for (let item of listHelpResponse) {
+    const qtdTempo = qtdEmMinutosCriada(item.helpResponse.createdAt);
+    let botaoDeletar = '<div id="container-btn-deleteResponse"></div>';
+    let profile = {
+      userName: item.profileUserName,
+      nome: item.profileNome,
+      foto: item.profileFoto,
+    };
+    prepared += `<div class="container-helpResponse" id="helpResponse-${
+      item.helpResponse.id
+    }">
                 <div class="content-helpResponse">
                     <div class="container-profile-helpResponse">
                         <div class="img-profile-helpResponse">
@@ -141,16 +153,21 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
                     </div>
 
                     <div id="container-description-helpResponse">
-                        <p id="description-helpResponse">${item.helpResponse.conteudo}</p>
+                        <p id="description-helpResponse">${
+                          item.helpResponse.conteudo
+                        }</p>
                     </div>
 
                     <div id="container-time">
                         <p>${qtdTempo.valor}${qtdTempo.tag}</p>
                     </div>
                 </div>
-            `
-        if (userLoggedId === perfilId || userLoggedId === item.helpResponse.perfilId) {
-            botaoDeletar = `
+            `;
+    if (
+      userLoggedId === perfilId ||
+      userLoggedId === item.helpResponse.perfilId
+    ) {
+      botaoDeletar = `
                 <div id="container-btn-deleteResponse">
                     <span onclick=deleteHelpResponse('${item.helpResponse.id}') id="btn-deleteResponse">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -158,122 +175,126 @@ function renderRequestedHelpResponse(listHelpResponse, perfilId) {
                         </svg>
                     </span>
                 </div>
-            `
-        }
-        prepared += `
-            ${botaoDeletar}
-        </div>`
+            `;
     }
+    prepared += `
+            ${botaoDeletar}
+        </div>`;
+  }
 
-    $("#space-helpResponses").html(prepared)
+  $("#space-helpResponses").html(prepared);
 }
 
 function sendComment() {
-    const url = '?handler=HelpResponse';
-    const formData = new FormData();
-    if (!formData.has("__RequestVerificationToken")) {
-        const token = document.querySelector("#forgery input").value
-        formData.append("__RequestVerificationToken", token)
-    }
-    let timeSelectionId = document.getElementById("timeSelectionJoinTime").value;
-    let contentHelpResponse = document.getElementById("contentHelpResponse").value;
-    formData.append("timeSelectionId", timeSelectionId);
-    formData.append("content", contentHelpResponse);
+  const url = "?handler=HelpResponse";
+  const formData = new FormData();
+  if (!formData.has("__RequestVerificationToken")) {
+    const token = document.querySelector("#forgery input").value;
+    formData.append("__RequestVerificationToken", token);
+  }
+  let timeSelectionId = document.getElementById("timeSelectionJoinTime").value;
+  let contentHelpResponse = document.getElementById(
+    "contentHelpResponse"
+  ).value;
+  formData.append("timeSelectionId", timeSelectionId);
+  formData.append("content", contentHelpResponse);
 
-    const options = {
-        method: "POST",
-        body: formData,
-    };
+  const options = {
+    method: "POST",
+    body: formData,
+  };
 
-    fetch(url, options).then(function (response) {
-        if (!response.ok) {
-            throw new Error("Erro ao enviar comentário");
+  fetch(url, options)
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Erro ao enviar comentário");
+      }
+      document.getElementById("contentHelpResponse").value = "";
+      return response.json();
+    })
+    .then(function (data) {
+      let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
+      let time;
+      for (let element of result) {
+        for (let item of element.timeSelections) {
+          if (item.timeSelectionId == freetimeId) {
+            time = item;
+            break;
+          }
         }
-        document.getElementById("contentHelpResponse").value = "";
-        return response.json();
-    }).then(function (data) {
-        let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
-        let time;
-        for (let element of result) {
-            for (let item of element.timeSelections) {
-                if (item.timeSelectionId == freetimeId) {
-                    time = item
-                    break;
-                }
-            }
-        }
-        time.helpResponses.unshift(data);
-        renderRequestedHelpResponse(time.helpResponses, time.perfilId)
+      }
+      time.helpResponses.unshift(data);
+      renderRequestedHelpResponse(time.helpResponses, time.perfilId);
     });
 }
-
 
 function deleteHelpResponse(helpResponseId) {
-    const url = '?handler=DeleteHelpResponse';
-    const formData = new FormData();
+  const url = "?handler=DeleteHelpResponse";
+  const formData = new FormData();
 
-    if (!formData.has("__RequestVerificationToken")) {
-        const token = document.querySelector("#forgery input").value
-        formData.append("__RequestVerificationToken", token)
+  if (!formData.has("__RequestVerificationToken")) {
+    const token = document.querySelector("#forgery input").value;
+    formData.append("__RequestVerificationToken", token);
+  }
+  formData.append("helpResponseId", helpResponseId);
+
+  const options = {
+    method: "POST",
+    body: formData,
+  };
+
+  fetch(url, options).then(function (response) {
+    if (!response.ok) {
+      throw new Error("Erro ao deletar comentário.");
     }
-    formData.append("helpResponseId", helpResponseId);
+    document.getElementById(`helpResponse-${helpResponseId}`).remove();
+    let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
 
-    const options = {
-        method: "POST",
-        body: formData,
+    let time;
+    for (let element of result) {
+      for (let item of element.timeSelections) {
+        if (item.timeSelectionId == freetimeId) {
+          time = item;
+          break;
+        }
+      }
     }
-
-    fetch(url, options).then(function (response) {
-        if (!response.ok) {
-            throw new Error("Erro ao deletar comentário.");
-        }
-        document.getElementById(`helpResponse-${helpResponseId}`).remove();
-        let freetimeId = document.querySelector("#timeSelectionJoinTime").value;
-
-        let time;
-        for (let element of result) {
-            for (let item of element.timeSelections) {
-                if (item.timeSelectionId == freetimeId) {
-                    time = item
-                    break;
-                }
-            }
-        }
-        time.helpResponses = time.helpResponses.filter(e => e.helpResponse.id != helpResponseId);
-    });
+    time.helpResponses = time.helpResponses.filter(
+      (e) => e.helpResponse.id != helpResponseId
+    );
+  });
 }
 
-
 function qtdEmMinutosCriada(date) {
-    const datetimeAtual = Date.now();
-    const dataAtual = new Date(datetimeAtual).toISOString();
-    const createdAt = new Date(date).toISOString();
+  const datetimeAtual = Date.now();
+  const dataAtual = new Date(datetimeAtual).toISOString();
+  const createdAt = new Date(date).toISOString();
 
-    const diferencaEmMilissegundos = Date.parse(dataAtual) - Date.parse(createdAt)
-    const diferencaSegundos = Math.floor(diferencaEmMilissegundos / 1000);
-    const diferencaMinutos = Math.floor(diferencaSegundos / 60);
+  const diferencaEmMilissegundos =
+    Date.parse(dataAtual) - Date.parse(createdAt);
+  const diferencaSegundos = Math.floor(diferencaEmMilissegundos / 1000);
+  const diferencaMinutos = Math.floor(diferencaSegundos / 60);
 
-    if (diferencaMinutos < 60) {
-        return diferencaMinutos == 0
-            ? { tag: "Agora", valor: "" } : { tag: "min atrás", valor: diferencaMinutos }
-    }
-    else {
-        const diferencaHoras = Math.floor(diferencaMinutos / 60);
-        const diferencaDias = Math.floor(diferencaHoras / 24);
+  if (diferencaMinutos < 60) {
+    return diferencaMinutos == 0
+      ? { tag: "Agora", valor: "" }
+      : { tag: "min atrás", valor: diferencaMinutos };
+  } else {
+    const diferencaHoras = Math.floor(diferencaMinutos / 60);
+    const diferencaDias = Math.floor(diferencaHoras / 24);
 
-        return diferencaHoras > 48
-            ? { tag: "D atrás", valor: diferencaDias } : { tag: "h atrás", valor: diferencaHoras }
-    }
-
+    return diferencaHoras > 48
+      ? { tag: "D atrás", valor: diferencaDias }
+      : { tag: "h atrás", valor: diferencaHoras };
+  }
 }
 
 function renderRequestedHelpSelected(perfil, time) {
+  let prepared = "";
 
-    let prepared = "";
-
-    prepared += `<div class="detalhes-orientacao" >
+  prepared += `<div class="detalhes-orientacao" >
         <div style="display: flex;justify-content: space-between;align-items: center;padding: 15px;">
-            <p style="color: #9067B2;font-size: 25px;font-weight: 700;letter-spacing: 0.015em;margin: 0px;">
+            <p style="color: #525252;font-size: 25px;font-weight: 700;letter-spacing: 0.015em;margin: auto;">
                 Pedido de Ajuda
             </p>
 
@@ -281,9 +302,9 @@ function renderRequestedHelpSelected(perfil, time) {
                 <img src="/Pictures/Icons/close-icon.svg" alt="icone voltar">
             </button>
         </div>
-        <hr>`
+        <hr>`;
 
-    prepared += `<div style="display:flex;min-width: 100%;padding: 10px;">
+  prepared += `<div style="display:flex;min-width: 100%;padding: 10px;">
         <span >
         ${renderAvatar(perfil, true)}
         </span>
@@ -301,60 +322,61 @@ function renderRequestedHelpSelected(perfil, time) {
                 ${experience[perfil.experiencia]} xp
             </div>
         </span>
-    </div>`
+    </div>`;
 
-    prepared += `
-        <p style="padding-top: 15px;font-size: 18px;font-weight: 700;margin: 0px; word-break: break-word;">${time.title}</p>
+  prepared += `
+        <p style="color: #9067B2;padding-top: 15px;font-size: 20px;font-weight: 700;margin: 0px; word-break: break-word; text-align: center;">${time.title}</p>
         <div class="d-flex justify-content-center align-items-center" style="flex-direction: column; padding: 20px;">
-        `
-        const dataInicio = new Date(time.startTime)
-        const dataFim = new Date(time.endTime)
+        `;
+  const dataInicio = new Date(time.startTime);
+  const dataFim = new Date(time.endTime);
 
-        const diaSemana = dataInicio.toLocaleDateString('pt-BR', { weekday: 'long' });
+  const diaSemana = dataInicio.toLocaleDateString("pt-BR", { weekday: "long" });
 
-    prepared += `<h6 style="text-align: center;">
-            <p style="color: #525252; font-size: 20px; font-weight: 500;margin: 0px;">
+  prepared += `<h6 style="text-align: center;">
+            <p style="color: #525252; font-size: 16px; font-weight: 500;margin: 0px;">
 
-            ${diaSemana.replace(diaSemana.charAt(0),diaSemana.charAt(0).toLocaleUpperCase())}, ${dataInicio.getDate()} de
+            ${diaSemana.replace(
+              diaSemana.charAt(0),
+              diaSemana.charAt(0).toLocaleUpperCase()
+            )}, ${dataInicio.getDate()} de
             ${mesesAbrev[dataInicio.getMonth()]}
             </p>
-            <p style="color: #525252; font-size: 20px; font-weight: 500;">
-            ${dataInicio.toLocaleTimeString('pt-BR', {hour12: false})
-            .replace(":00", "")} -
+            <p style="color: #525252; font-size: 16px; font-weight: 500;">
+            ${dataInicio
+              .toLocaleTimeString("pt-BR", { hour12: false })
+              .replace(":00", "")} -
 
-            ${dataFim.toLocaleTimeString('pt-BR', {hour12: false})
-            .replace(":00", "")}
+            ${dataFim
+              .toLocaleTimeString("pt-BR", { hour12: false })
+              .replace(":00", "")}
             </p>
         </h6>
-        <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap;width: fit-content;">`
+        <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap;width: fit-content;">`;
 
+  if (time.tags.length > 0) {
+    for (let tag of time.tags) {
+      prepared += `<small class="modal-tag">${tag.titulo}</small>`;
+    }
+  }
 
-
-        if(time.tags.length > 0){
-            for (let tag of time.tags) {
-                prepared += `<small class="tag">${tag.titulo}</small>`
-            }
-        }
-
-    prepared += `<div>
+  prepared += `<div>
             </br>
-                    <div style="word-break: break-all; text-align: justify">
+                    <div class="form-control" style="word-break: break-all; text-align: justify">
                         <span>${time.description}</span>
-                    </div>`
-    if (time.imagePath && time.imagePath.length > 0) {
-        prepared += `<div style="display: flex; justify-content: center">
+                    </div>`;
+  if (time.imagePath && time.imagePath.length > 0) {
+    prepared += `<div style="display: flex; justify-content: center">
                         <div class="helpBackstageImg-container">
                             <img class="helpBackstageImg" alt="Imagem de pedido de ajuda" src="${time.imagePath}" style="height: 500px; object-fit: contain;"/>
                             <a href="./${time.imagePath}" target="_blank" class="overlay"><strong style="font-size: 30px">Abrir imagem</strong></a>
                         </div>
-                    </div>`
-    }
+                    </div>`;
+  }
 
+  prepared += `</div>`;
+  prepared += `</div>
+            </div>`;
 
-    prepared += `</div>`
-    prepared += `</div>
-            </div>`
-
-
-    $("#alunoMatch").html(prepared)
+  $("#alunoMatch").html(prepared);
 }
