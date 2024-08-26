@@ -2059,3 +2059,39 @@ body {
   position: absolute;
   right: 30px;
 }
+
+.button-novo-estilo{
+  background: #437AE2;
+  width: fit-content;
+  height: 36px;
+  padding: 5px 25px;
+  color: #f2f2f2;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.0125em;
+  margin-right: 30px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+.button-novo-estilo:hover{
+  background: #2559BB;
+}
+
+.button-novo-estilo:active{
+  background: #8DB5FF;
+}
+
+.button-novo-estilo:disabled{
+  background: #99B6EE;
+}
+
+
+
+
+
