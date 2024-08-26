@@ -217,6 +217,7 @@ public static class DependencyInjection
         services.AddScoped<ICommentWebService, CommentWebService>();
         services.AddScoped<IJoinTimeWebService, JoinTimeWebService>();
         services.AddScoped<IHelpResponseWebService, HelpResponseWebService>();
+        services.AddScoped<ILiveVisualizationWebService, LiveVisualizationWebService>();
 
         return services;
     }
@@ -274,6 +275,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IHelpResponseRepository, HelpResponseRepository>();
+        services.AddScoped<ILiveVisualizationsRepository, LiveVisualizationRepository>();
         return services;
     }
 }
