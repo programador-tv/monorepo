@@ -41,7 +41,7 @@ namespace APP.Platform.Pages.Studio
             {
                 Titulo = liveCore.Titulo,
                 Descricao = liveCore.Descricao,
-                DataCriacao = liveCore.DataCriacao,
+                DataCriacao = liveCore.CreatedAt,
                 Thumbnail = liveCore.Thumbnail,
             };
             Live = live;

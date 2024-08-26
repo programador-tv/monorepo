@@ -15,8 +15,9 @@ public sealed class Perfil(
     string? bio,
     string email,
     string? descricao,
-    ExperienceLevel experiencia
-) : Entity(id)
+    ExperienceLevel experiencia,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public string Nome { get; private set; } = nome;
     public string? Foto { get; private set; } = foto;
@@ -42,7 +43,8 @@ public sealed class Perfil(
             bio: createPerfilRequest.Bio,
             email: createPerfilRequest.Email,
             descricao: createPerfilRequest.Descricao,
-            experiencia: createPerfilRequest.Experiencia
+            experiencia: createPerfilRequest.Experiencia,
+            createdAt: DateTime.Now
         );
     }
 

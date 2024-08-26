@@ -21,7 +21,7 @@ public sealed class NotificationBusinessLogic(
                 e.GeradorPerfilId,
                 e.TipoNotificacao,
                 e.Vizualizado,
-                e.DataCriacao,
+                e.CreatedAt,
                 e.Conteudo,
                 e.ActionLink,
                 e.SecundaryLink
@@ -73,7 +73,7 @@ public sealed class NotificationBusinessLogic(
                 e.GeradorPerfilId,
                 e.TipoNotificacao,
                 e.Vizualizado,
-                e.DataCriacao,
+                e.CreatedAt,
                 e.Conteudo,
                 e.ActionLink,
                 e.SecundaryLink

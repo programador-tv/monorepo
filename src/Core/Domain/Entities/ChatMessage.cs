@@ -7,14 +7,13 @@ namespace Domain.Entities
         Guid perfilId,
         Guid liveId,
         string? content,
-        DateTime dataCriacao,
+        DateTime createdAt,
         bool valid
-    ) : Entity(id)
+    ) : Entity(id, createdAt)
     {
         public Guid PerfilId { get; private set; } = perfilId;
         public Guid LiveId { get; private set; } = liveId;
         public string? Content { get; private set; } = content;
-        public DateTime DataCriacao { get; private set; } = dataCriacao;
         public bool Valid { get; private set; } = valid;
 
         public static ChatMessage Create(Guid perfilId, Guid liveId, string? content)

@@ -310,7 +310,7 @@ public class LiveEndPointsTests
         var live1 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -330,7 +330,7 @@ public class LiveEndPointsTests
         var live2 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -350,7 +350,7 @@ public class LiveEndPointsTests
         var live3 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -370,7 +370,7 @@ public class LiveEndPointsTests
         var live4 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -390,7 +390,7 @@ public class LiveEndPointsTests
         var live5 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",

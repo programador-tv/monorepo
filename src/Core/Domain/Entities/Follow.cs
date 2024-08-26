@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public sealed class Follow(Guid id, Guid followerId, Guid followingId, bool active) : Entity(id)
+public sealed class Follow(Guid id, Guid followerId, Guid followingId, bool active, DateTime createdAt) : Entity(id, createdAt)
 {
     public Guid FollowerId { get; private set; } = followerId;
     public Guid FollowingId { get; private set; } = followingId;
@@ -10,7 +10,7 @@ public sealed class Follow(Guid id, Guid followerId, Guid followingId, bool acti
 
     public static Follow Create(Guid followerId, Guid followingId)
     {
-        return new Follow(Guid.NewGuid(), followerId, followingId, true);
+        return new Follow(Guid.NewGuid(), followerId, followingId, true, DateTime.Now);
     }
 
     public void FollowUser()

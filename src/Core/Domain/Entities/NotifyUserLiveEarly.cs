@@ -8,8 +8,9 @@ public sealed class NotifyUserLiveEarly(
     Guid liveId,
     Guid perfilId,
     bool active,
-    bool hasNotificated
-) : Entity(id)
+    bool hasNotificated,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid LiveId { get; private set; } = liveId;
     public Guid PerfilId { get; private set; } = perfilId;
@@ -23,7 +24,7 @@ public sealed class NotifyUserLiveEarly(
         bool hasNotificated
     )
     {
-        return new NotifyUserLiveEarly(Guid.NewGuid(), LiveId, PerfilId, Active, hasNotificated);
+        return new NotifyUserLiveEarly(Guid.NewGuid(), LiveId, PerfilId, Active, hasNotificated, DateTime.Now);
     }
 
     public void ActiveNotification()

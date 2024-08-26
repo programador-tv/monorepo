@@ -10,8 +10,9 @@ public sealed class Presentes(
     string? nome,
     string? foto,
     DateTime dataEntrou,
-    DateTime ultimaAtualizacao
-) : Entity(id)
+    DateTime ultimaAtualizacao,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid RoomId { get; private set; } = roomId;
     public Guid PerfilId { get; private set; } = perfilId;
@@ -30,6 +31,7 @@ public sealed class Presentes(
             true,
             nome,
             foto,
+            DateTime.Now,
             DateTime.Now,
             DateTime.Now
         );

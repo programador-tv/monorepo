@@ -10,17 +10,16 @@ public class Notification(
     Guid geradorPerfilId,
     TipoNotificacao tipoNotificacao,
     bool vizualizado,
-    DateTime dataCriacao,
+    DateTime createdAt,
     string? conteudo,
     string? actionLink,
     string? secundaryLink
-) : Entity(id)
+) : Entity(id, createdAt)
 {
     public Guid DestinoPerfilId { get; private set; } = destinoPerfilId;
     public Guid GeradorPerfilId { get; private set; } = geradorPerfilId;
     public TipoNotificacao TipoNotificacao { get; private set; } = tipoNotificacao;
     public bool Vizualizado { get; private set; } = vizualizado;
-    public DateTime DataCriacao { get; private set; } = dataCriacao;
     public string? Conteudo { get; private set; } = conteudo;
     public string? ActionLink { get; private set; } = actionLink;
     public string? SecundaryLink { get; private set; } = secundaryLink;

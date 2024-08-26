@@ -7,17 +7,16 @@ public sealed class Room(
     Guid id,
     Guid perfilId,
     string? codigoSala,
-    DateTime dataCriacao,
+    DateTime createdAt,
     DateTime? ultimaAtualizacao,
     bool estaAberto,
     TipoSalas tipoSala,
     string? titulo,
     bool privado
-) : Entity(id)
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
     public string? CodigoSala { get; private set; } = codigoSala;
-    public DateTime DataCriacao { get; private set; } = dataCriacao;
     public DateTime? UltimaAtualizacao { get; private set; } = ultimaAtualizacao;
     public bool EstaAberto { get; private set; } = estaAberto;
     public TipoSalas TipoSala { get; private set; } = tipoSala;

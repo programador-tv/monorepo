@@ -9,8 +9,9 @@ public sealed class PresentesOpenRoom(
     string? nome,
     string? foto,
     DateTime dataEntrou,
-    DateTime ultimaAtualizacao
-) : Entity(id)
+    DateTime ultimaAtualizacao,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
     public bool EstaPresente { get; private set; } = estaPresente;
@@ -27,6 +28,7 @@ public sealed class PresentesOpenRoom(
             true,
             nome,
             foto,
+            DateTime.Now,
             DateTime.Now,
             DateTime.Now
         );

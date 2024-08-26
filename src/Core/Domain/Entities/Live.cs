@@ -12,7 +12,7 @@ namespace Domain.Entities;
 public class Live(
     Guid id,
     Guid perfilId,
-    DateTime dataCriacao,
+    DateTime createdAt,
     DateTime? ultimaAtualizacao,
     string? formatedDuration,
     string? codigoLive,
@@ -27,10 +27,9 @@ public class Live(
     StatusLive statusLive,
     bool isUsingObs,
     string? urlAlias
-) : Entity(id)
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
-    public DateTime DataCriacao { get; private set; } = dataCriacao;
     public DateTime? UltimaAtualizacao { get; private set; } = ultimaAtualizacao;
     public string? FormatedDuration { get; private set; } = formatedDuration;
     public string? CodigoLive { get; private set; } = codigoLive;

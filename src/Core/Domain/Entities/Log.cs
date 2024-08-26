@@ -10,8 +10,9 @@ namespace Domain.Entities
         DateTimeOffset timestamp,
         string exception,
         string properties,
-        string logEvent
-    ) : Entity(id)
+        string logEvent,
+        DateTime createdAt
+    ) : Entity(id, createdAt)
     {
         public string Message { get; private set; } = message;
         public string MessageTemplate { get; private set; } = messageTemplate;

@@ -11,8 +11,9 @@ public sealed class JoinTime(
     Guid timeSelectionId,
     StatusJoinTime statusJoinTime,
     bool notifiedMentoriaProxima,
-    TipoAction tipoAction
-) : Entity(id)
+    TipoAction tipoAction,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
     public Guid TimeSelectionId { get; private set; } = timeSelectionId;
@@ -35,7 +36,8 @@ public sealed class JoinTime(
             timeSelectionId,
             statusJoinTime,
             notifiedMentoriaProxima,
-            tipoAction
+            tipoAction,
+            DateTime.Now
         );
     }
 

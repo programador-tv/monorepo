@@ -26,7 +26,7 @@ public sealed class CommentRepository(ApplicationDbContext context)
             .Where(comment =>
                 comment.LiveId == liveId && (comment.IsValid || comment.PerfilId == perfilId)
             )
-            .OrderByDescending(comment => comment.DataCriacao)
+            .OrderByDescending(comment => comment.CreatedAt)
             .ToListAsync();
 
         return response.Any() ? response : new List<Comment>();

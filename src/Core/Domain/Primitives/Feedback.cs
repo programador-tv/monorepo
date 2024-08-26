@@ -13,8 +13,9 @@ namespace Domain.Entities
         EstimativaSenioridade? estimativaSenioridadeAvaliado,
         decimal? estimativaSalarioAvaliado,
         bool? conheciaAvaliadoPreviamente,
-        SatisfacaoExperiencia? satisfacaoExperiencia
-    ) : Entity(id)
+        SatisfacaoExperiencia? satisfacaoExperiencia,
+        DateTime createdAt
+    ) : Entity(id, createdAt)
     {
         public bool AvaliadoCompareceu { get; private set; } = avaliadoCompareceu;
         public bool AvaliadorCompareceu { get; private set; } = avaliadorCompareceu;
@@ -51,7 +52,8 @@ namespace Domain.Entities
                 estimativaSenioridadeAvaliado,
                 estimativaSalarioAvaliado,
                 conheciaAvaliadoPreviamente,
-                satisfacaoExperiencia
+                satisfacaoExperiencia,
+                DateTime.Now
             );
         }
     }

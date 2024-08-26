@@ -8,8 +8,9 @@ public sealed class Tag(
     string? liveRelacao,
     string? roomRelacao,
     string? freeTimeRelacao,
-    string? preLiveRelacao
-) : Entity(id)
+    string? preLiveRelacao,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public string Titulo { get; private set; } = titulo;
     public string? LiveRelacao { get; private set; } = liveRelacao;
@@ -19,21 +20,21 @@ public sealed class Tag(
 
     public static Tag AddForLive(string titulo, string liveRelacao)
     {
-        return new Tag(Guid.NewGuid(), titulo, liveRelacao, null, null, null);
+        return new Tag(Guid.NewGuid(), titulo, liveRelacao, null, null, null, DateTime.Now);
     }
 
     public static Tag AddForRoom(string titulo, string roomRelacao)
     {
-        return new Tag(Guid.NewGuid(), titulo, null, roomRelacao, null, null);
+        return new Tag(Guid.NewGuid(), titulo, null, roomRelacao, null, null, DateTime.Now);
     }
 
     public static Tag AddForFreeTime(string titulo, string freeTimeRelacao)
     {
-        return new Tag(Guid.NewGuid(), titulo, null, null, freeTimeRelacao, null);
+        return new Tag(Guid.NewGuid(), titulo, null, null, freeTimeRelacao, null, DateTime.Now);
     }
 
     public static Tag AddForPreLive(string titulo, string preLiveRelacao)
     {
-        return new Tag(Guid.NewGuid(), titulo, null, null, null, preLiveRelacao);
+        return new Tag(Guid.NewGuid(), titulo, null, null, null, preLiveRelacao, DateTime.Now);
     }
 }

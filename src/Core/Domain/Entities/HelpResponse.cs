@@ -10,12 +10,11 @@ public sealed class HelpResponse(
     string conteudo,
     DateTime createdAt,
     ResponseStatus responseStatus
-) : Entity(id)
+) : Entity(id, createdAt)
 {
     public Guid TimeSelectionId { get; private set; } = timeSelectionId;
     public Guid PerfilId { get; private set; } = perfilId;
     public string Conteudo { get; private set; } = conteudo;
-    public DateTime CreatedAt { get; private set; } = createdAt;
     public ResponseStatus ResponseStatus { get; private set; } = responseStatus;
 
     public static HelpResponse Create(Guid timeSelecionId, Guid perfilId, string conteudo)

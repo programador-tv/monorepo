@@ -374,7 +374,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: expectedId,
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -406,7 +406,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -453,7 +453,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -500,7 +500,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -545,7 +545,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -613,7 +613,7 @@ public class LiveRepositoryTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: perfil.Id,
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",

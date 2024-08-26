@@ -14,7 +14,7 @@ public sealed class NotificationRepository(ApplicationDbContext context)
     {
         return await DbContext
             .Notifications.Where(e => e.DestinoPerfilId == destinationId)
-            .OrderByDescending(x => x.DataCriacao)
+            .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
     }
 

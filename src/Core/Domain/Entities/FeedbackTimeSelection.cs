@@ -15,7 +15,8 @@ public sealed class FeedbackTimeSelection(
     EstimativaSenioridade? estimativaSenioridadeAvaliado,
     decimal? estimativaSalarioAvaliado,
     bool? conheciaAvaliadoPreviamente,
-    SatisfacaoExperiencia? satisfacaoExperiencia
+    SatisfacaoExperiencia? satisfacaoExperiencia,
+    DateTime createdAt
 )
     : Feedback(
         id,
@@ -27,7 +28,8 @@ public sealed class FeedbackTimeSelection(
         estimativaSenioridadeAvaliado,
         estimativaSalarioAvaliado,
         conheciaAvaliadoPreviamente,
-        satisfacaoExperiencia
+        satisfacaoExperiencia,
+        createdAt
     )
 {
     public Guid TimeSelectionId { get; private set; } = timeSelectionId;
@@ -62,7 +64,8 @@ public sealed class FeedbackTimeSelection(
             estimativaSenioridadeAvaliado,
             estimativaSalarioAvaliado,
             conheciaAvaliadoPreviamente,
-            satisfacaoExperiencia
+            satisfacaoExperiencia,
+            DateTime.Now
         );
     }
 }

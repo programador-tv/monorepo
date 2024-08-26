@@ -9,8 +9,9 @@ public sealed class LiveBackstage(
     Guid TimeSelectionId,
     Guid LiveId,
     string? TituloTemporario,
-    string? Descricao
-) : Entity(id)
+    string? Descricao,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid TimeSelectionId { get; private set; } = TimeSelectionId;
     public Guid LiveId { get; private set; } = LiveId;
@@ -29,7 +30,8 @@ public sealed class LiveBackstage(
             TimeSelectionId,
             LiveId,
             TituloTemporario,
-            Descricao
+            Descricao,
+            DateTime.Now
         );
     }
 

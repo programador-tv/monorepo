@@ -7,14 +7,13 @@ public sealed class Comment(
     Guid perfilId,
     Guid liveId,
     string? content,
-    DateTime dataCriacao,
+    DateTime createdAt,
     bool isValid
-) : Entity(id)
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
     public Guid LiveId { get; private set; } = liveId;
     public string? Content { get; private set; } = content;
-    public DateTime DataCriacao { get; private set; } = dataCriacao;
     public bool IsValid { get; private set; } = isValid;
 
     public static Comment Create(Guid perfilId, Guid liveId, string? content)

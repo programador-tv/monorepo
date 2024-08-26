@@ -257,7 +257,7 @@ public class LiveBusinessLogicTests
         var live1 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -277,7 +277,7 @@ public class LiveBusinessLogicTests
         var live2 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -297,7 +297,7 @@ public class LiveBusinessLogicTests
         var live3 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -317,7 +317,7 @@ public class LiveBusinessLogicTests
         var live4 = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -351,7 +351,7 @@ public class LiveBusinessLogicTests
         var live5 = new Live(
             id: Guid.NewGuid(),
             perfilId: perfil.Id,
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",
@@ -441,7 +441,7 @@ public class LiveBusinessLogicTests
         var live = new Live(
             id: Guid.NewGuid(),
             perfilId: Guid.NewGuid(),
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             ultimaAtualizacao: DateTime.Now,
             formatedDuration: "",
             codigoLive: "",

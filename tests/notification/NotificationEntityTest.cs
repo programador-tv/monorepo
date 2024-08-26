@@ -38,7 +38,7 @@ public class NotificationEntityTest
             Assert.Equal(request.Vizualizado, notification.Vizualizado);
             Assert.Equal(
                 request.DataCriacao.ToString("dd/MM/yy HH:mm"),
-                notification.DataCriacao.ToString("dd/MM/yy HH:mm")
+                notification.CreatedAt.ToString("dd/MM/yy HH:mm")
             );
             Assert.Equal(request.Conteudo, notification.Conteudo);
             Assert.Equal(request.ActionLink, notification.ActionLink);

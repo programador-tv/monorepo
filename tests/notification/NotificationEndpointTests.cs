@@ -39,7 +39,7 @@ public sealed class NotificationEndpointTests
             geradorPerfilId: geradorPerfilId,
             tipoNotificacao: TipoNotificacao.AlunoAceitoNaMentoria,
             vizualizado: false,
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             conteudo: "Conteúdo",
             actionLink: "ActionLink",
             secundaryLink: "SecundaryLink"
@@ -87,7 +87,7 @@ public sealed class NotificationEndpointTests
             geradorPerfilId: geradorPerfilId,
             tipoNotificacao: TipoNotificacao.AlunoAceitoNaMentoria,
             vizualizado: false,
-            dataCriacao: DateTime.Now,
+            createdAt: DateTime.Now,
             conteudo: "Conteúdo",
             actionLink: "ActionLink",
             secundaryLink: "SecundaryLink"

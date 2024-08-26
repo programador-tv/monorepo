@@ -15,7 +15,8 @@ public sealed class FeedbackJoinTime(
     EstimativaSenioridade? estimativaSenioridadeAvaliado,
     decimal? estimativaSalarioAvaliado,
     bool? conheciaAvaliadoPreviamente,
-    SatisfacaoExperiencia? satisfacaoExperiencia
+    SatisfacaoExperiencia? satisfacaoExperiencia,
+    DateTime createdAt
 )
     : Feedback(
         id,
@@ -27,7 +28,8 @@ public sealed class FeedbackJoinTime(
         estimativaSenioridadeAvaliado,
         estimativaSalarioAvaliado,
         conheciaAvaliadoPreviamente,
-        satisfacaoExperiencia
+        satisfacaoExperiencia,
+        createdAt
     )
 {
     public Guid JoinTimeId { get; private set; } = joinTimeId;
@@ -59,7 +61,8 @@ public sealed class FeedbackJoinTime(
             estimativaSenioridadeAvaliado,
             estimativaSalarioAvaliado,
             conheciaAvaliadoPreviamente,
-            satisfacaoExperiencia
+            satisfacaoExperiencia,
+            DateTime.Now
         );
     }
 }

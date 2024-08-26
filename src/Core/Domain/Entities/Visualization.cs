@@ -7,13 +7,12 @@ namespace Domain.Entities
         Guid liveId,
         Guid perfilId,
         string? IPV4,
-        DateTime dataEntrou
-    ) : Entity(id)
+        DateTime createdAt
+    ) : Entity(id, createdAt)
     {
         public Guid LiveId { get; private set; } = liveId;
         public Guid PerfilId { get; private set; } = perfilId;
         public string? IPV4 { get; private set; } = IPV4;
-        public DateTime DataEntrou { get; private set; } = dataEntrou;
 
         public static Visualization Create(Guid liveId, Guid perfilId, string? ipv4)
         {

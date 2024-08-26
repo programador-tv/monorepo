@@ -171,8 +171,8 @@ public class TimeSelectionBusinessLogicTests
 
         List<Tag> tags =
         [
-            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test"),
-            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test"),
+            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test", DateTime.Now),
+            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test", DateTime.Now),
         ];
 
         var perfil = Perfil.Create(
@@ -224,8 +224,8 @@ public class TimeSelectionBusinessLogicTests
 
         List<Tag> tags =
         [
-            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test"),
-            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test"),
+            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test", DateTime.Now),
+            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test", DateTime.Now),
         ];
 
         var perfil = Perfil.Create(

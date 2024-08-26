@@ -19,8 +19,9 @@ public sealed class TimeSelection(
     bool notifiedMentoriaProxima,
     string? previewImage,
     TipoAction tipoAction,
-    Variacao variacao
-) : Entity(id)
+    Variacao variacao,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid PerfilId { get; private set; } = perfilId;
     public Guid? RoomId { get; private set; } = roomId;
@@ -57,7 +58,8 @@ public sealed class TimeSelection(
             false,
             string.Empty,
             tipoAction,
-            variacao
+            variacao,
+            DateTime.Now
         );
     }
 
