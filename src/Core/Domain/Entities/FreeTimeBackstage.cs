@@ -20,6 +20,12 @@ public sealed class FreeTimeBackstage(
         bool ilimitado
     )
     {
-        return new FreeTimeBackstage(Guid.NewGuid(), timeSelectionId, maxParticipants, ilimitado, DateTime.Now);
+        return new FreeTimeBackstage(
+            Guid.NewGuid(),
+            timeSelectionId,
+            maxParticipants,
+            ilimitado,
+            DateTime.Now
+        );
     }
 }

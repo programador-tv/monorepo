@@ -2,7 +2,13 @@
 
 namespace Domain.Entities;
 
-public sealed class Follow(Guid id, Guid followerId, Guid followingId, bool active, DateTime createdAt) : Entity(id, createdAt)
+public sealed class Follow(
+    Guid id,
+    Guid followerId,
+    Guid followingId,
+    bool active,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid FollowerId { get; private set; } = followerId;
     public Guid FollowingId { get; private set; } = followingId;

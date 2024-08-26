@@ -17,7 +17,13 @@ public sealed class HelpBackstage(
 
     public static HelpBackstage Create(CreateHelpBackstageRequest backstage)
     {
-        return new(Guid.NewGuid(), backstage.TimeSelectionId, backstage.Description, null, DateTime.Now);
+        return new(
+            Guid.NewGuid(),
+            backstage.TimeSelectionId,
+            backstage.Description,
+            null,
+            DateTime.Now
+        );
     }
 
     public void AddImagePath(string path)

@@ -24,7 +24,14 @@ public sealed class NotifyUserLiveEarly(
         bool hasNotificated
     )
     {
-        return new NotifyUserLiveEarly(Guid.NewGuid(), LiveId, PerfilId, Active, hasNotificated, DateTime.Now);
+        return new NotifyUserLiveEarly(
+            Guid.NewGuid(),
+            LiveId,
+            PerfilId,
+            Active,
+            hasNotificated,
+            DateTime.Now
+        );
     }
 
     public void ActiveNotification()

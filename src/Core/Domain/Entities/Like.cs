@@ -2,7 +2,13 @@
 
 namespace Domain.Entities;
 
-public sealed class Like(Guid id, Guid entityId, Guid relatedUserId, bool isLiked, DateTime createdAt) : Entity(id, createdAt)
+public sealed class Like(
+    Guid id,
+    Guid entityId,
+    Guid relatedUserId,
+    bool isLiked,
+    DateTime createdAt
+) : Entity(id, createdAt)
 {
     public Guid EntityId { get; private set; } = entityId;
     public Guid RelatedUserId { get; private set; } = relatedUserId;
