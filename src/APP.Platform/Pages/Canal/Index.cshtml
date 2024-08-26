@@ -816,8 +816,9 @@
                 }
                 if (data[0].timeSelections.length > 2) {
                     prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
-    <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
-     <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
+ <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+               <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+               <span id="groupOneToOne-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
      </div>`;
                 }
                 for (const profileWithTimeSelections of data) {
@@ -845,8 +846,8 @@
                 }
                 if (data[0].timeSelections.length > 2) {
                     prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
-     <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
-    <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
+                  <span id="groupHelp-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
+                  <span id="groupHelp-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
      </div>`
 
                 }
