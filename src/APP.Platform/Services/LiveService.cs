@@ -29,7 +29,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
         };
     }
 
-    public List<PrivateLiveViewModel> RenderPrivateLives(
+    public async Task<List<PrivateLiveViewModel>> RenderPrivateLives(
         Perfil perfilOwner,
         Guid perfilLogInId,
         bool isPrivate,
@@ -44,7 +44,7 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
 
         if (perfilOwner.Id == perfilLogInId)
         {
-            lives = context
+            lives = await context
                 .Lives.Where(e =>
                     e.PerfilId == perfilOwner.Id
                     && e.Visibility == !isPrivate
@@ -55,27 +55,29 @@ public class LiveService(ApplicationDbContext context, IPerfilWebService perfilW
                     )
                 )
                 // Paginação das lives
+                .OrderByDescending(e => e.UltimaAtualizacao)
                 .Skip(skip)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
         }
         else
         {
-            lives = context
+            lives = await context
                 .Lives.Where(e => e.PerfilId == perfilOwner.Id && e.Visibility)
                 // Paginação das lives
+                .OrderByDescending(e => e.UltimaAtualizacao)
                 .Skip(skip)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
         }
 
         var privateLives = new List<PrivateLiveViewModel>();
         var isUsrCanal = perfilLogInId == perfilOwner.Id;
 
         var liveIds = lives.Select(e => e.Id);
-        var liveVisualizations = context
+        var liveVisualizations = await context
             .Visualizations.Where(e => liveIds.Contains(e.LiveId))
-            .ToList();
+            .ToListAsync();
 
         for (int i = lives.Count - 1; i >= 0; i--)
         {

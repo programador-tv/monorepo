@@ -1,17 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateForm = document.getElementById("dateTime");
 
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  dateForm.value = formattedDate;
+
   let hoursStart = document.getElementById("hoursStart");
+  hoursStart.value = new Date().getHours() + 1;
   let minutesStart = document.getElementById("minutesStart");
   let isAmStart = document.getElementById("ampmStart");
+  isAmStart.value = hoursStart.value >= 12 ? "pm" : "am";
 
   let inicioHorario = `${
     hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
   }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
 
   let hoursEnd = document.getElementById("hoursEnd");
+  hoursEnd.value = new Date().getHours() + 2;
   let minutesEnd = document.getElementById("minutesEnd");
   let isAmEnd = document.getElementById("ampmEnd");
+  isAmEnd.value = hoursEnd.value >= 12 ? "pm" : "am";
 
   let fimHorario = `${
     hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value

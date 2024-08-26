@@ -1,20 +1,16 @@
-
 const experience = {
-    0: "< 1 ano",
-    1: "1-3 anos",
-    2: "3-5 anos",
-    3: "5-7 anos",
-    4: "> 8 anos",
-}
+  0: "< 1 ano",
+  1: "1-3 anos",
+  2: "3-5 anos",
+  3: "5-7 anos",
+  4: "> 8 anos",
+};
 
 function PrepareMentorCard(profileWithTimeSelections, alias) {
+  const perfil = profileWithTimeSelections.perfil;
+  const timeSelections = profileWithTimeSelections.ts;
 
-
-    const perfil = profileWithTimeSelections.perfil;
-    const timeSelections = profileWithTimeSelections.ts;
-
-    return JoinTimeForMentorias(timeSelections, perfil)
-
+  return JoinTimeForMentorias(timeSelections, perfil);
 }
 // function loadMentores(data) {
 //     let prepared = ""
@@ -29,23 +25,26 @@ function PrepareMentorCard(profileWithTimeSelections, alias) {
 //     $("#mentoriaBoard").html(prepared)
 // }
 const mapTipo = {
-    0 : "Sessão 1:1",
-    1 : "Sessão 1:1",
-    3 : "Evento",
-    5 : "Dúvida",
-}
+  0: "Sessão 1:1",
+  1: "Sessão 1:1",
+  3: "Evento",
+  5: "Dúvida",
+};
 function JoinTimeForMentorias(time, perfil, group, index) {
-	index++
-	let  prepared =
-		`<div class="${group} item-preview-ts"
-			onclick="SetItToTryFreeTime('${time.timeSelectionId}', '#freeTimes-${perfil.id}')"
-			style="display:${index <= 2 ? 'flex' : 'none'};" >
+  index++;
+  let prepared = `<div class="${group} item-preview-ts"
+			onclick="SetItToTryFreeTime('${time.timeSelectionId}', '#freeTimes-${
+    perfil.id
+  }')"
+			style="display:${index <= 2 ? "flex" : "none"};" >
 
 			<header class="d-flex align-items-center w-100 py-3 px-4"
 				style="height: 84px;
-				${time.variacao === 0 || time.variacao === 1
-				? "background: linear-gradient(96.12deg, #658DDA 0.79%, #446EBC 110%); color: #FEFBFB;"
-				: "background: linear-gradient(96.12deg, #FFF9E3 0.79%, #F9DCB9 110%); color: #373737"}"
+				${
+          time.variacao === 0 || time.variacao === 1
+            ? "background: linear-gradient(96.12deg, #658DDA 0.79%, #446EBC 110%); color: #FEFBFB;"
+            : "background: linear-gradient(96.12deg, #FFF9E3 0.79%, #F9DCB9 110%); color: #373737"
+        }"
 			>
 				<a href='/Canal/Index?usr=${perfil.userName}'
 					title="${perfil.userName}"
@@ -61,14 +60,10 @@ function JoinTimeForMentorias(time, perfil, group, index) {
 				<span class="d-flex flex-column flex-fill">
 					<h2 class="fs-6 fw-bold"
 						style="letter-spacing: 0.015em; margin-bottom: 2px;">
-						${perfil.nome.length > 30
-						? perfil.nome.substring(0, 30) + "..."
-						: perfil.nome}
+						${perfil.nome.length > 30 ? perfil.nome.substring(0, 30) + "..." : perfil.nome}
 					</h2>
 					<h3 style="font-size: 12px; margin-bottom: 2px;">
-						${perfil.bio.length > 35
-						? perfil.bio.substring(0, 35) + "..."
-						: perfil.bio}
+						${perfil.bio.length > 35 ? perfil.bio.substring(0, 35) + "..." : perfil.bio}
 					</h3>
 				</span>
 				<small
@@ -80,15 +75,15 @@ function JoinTimeForMentorias(time, perfil, group, index) {
 			<div class="d-flex flex-column justify-content-between w-100"
 				style="padding: 12px 10px; height: 100px;">
 				<h2 style="color: #1C1C1C; letter-spacing: 0.015em; font-size: 18px; word-wrap: break-word;">
-					${time.titulo.length > 90
-					? time.titulo.substring(0, 90) + "..."
-					: time.titulo}
+					${time.titulo.length > 90 ? time.titulo.substring(0, 90) + "..." : time.titulo}
 				</h2>
 				<div class="d-flex flex-row-reverse w-100">
 					<small class="tag-capacitacao" style="margin-right: 14px">
-						${time.tags[0].titulo.length > 20
-						? time.tags[0].titulo.substring(0, 20) + "..."
-						: time.tags[0].titulo}
+						${
+              time.tags[0].titulo.length > 20
+                ? time.tags[0].titulo.substring(0, 20) + "..."
+                : time.tags[0].titulo
+            }
 					</small>
 				</div>
 			</div>
@@ -104,7 +99,9 @@ function JoinTimeForMentorias(time, perfil, group, index) {
 						style="color: #525252;">
 						Datas
 					</span>
-					${new Date(time.startTime).getDate()} - ${mesesAbrev[new Date(time.startTime).getMonth()]}
+					${new Date(time.startTime).getDate()} - ${
+    mesesAbrev[new Date(time.startTime).getMonth()]
+  }
 				</p>
 				<p class="mb-0">
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
@@ -115,70 +112,76 @@ function JoinTimeForMentorias(time, perfil, group, index) {
 						style="color: #525252;">
 						Horário
 					</span>
-					${new Date(time.startTime).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})} - ${new Date(time.endTime).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}
+					${new Date(time.startTime).toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })} - ${new Date(time.endTime).toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
 				</p>
 			</footer>
 		</div>`;
 
-    return prepared;
+  return prepared;
 }
 
-
 function PrepareVacancy(time) {
-    let vacancyEmojis = `<div style="margin-left: 7px;color: #373737; width: 170px;margin-bottom: 10px;">Vagas:<br>`;
+  let vacancyEmojis = `<div style="margin-left: 7px;color: #373737; width: 170px;margin-bottom: 10px;">Vagas:<br>`;
 
+  if (
+    time.maxParticipantes > 1 &&
+    time.countInteressadosAceitos > 0 &&
+    time.countInteressadosAceitos != time.maxParticipantes
+  ) {
+    vacancyEmojis += `/`;
+  }
 
-    if (time.maxParticipantes > 1 && time.countInteressadosAceitos > 0 && time.countInteressadosAceitos != time.maxParticipantes) {
-        vacancyEmojis += `/`;
-    }
-
-    vacancyEmojis += ` <img alt="icone vagas" src="/Pictures/Icons/vagas.svg">
+  vacancyEmojis += ` <img alt="icone vagas" src="/Pictures/Icons/vagas.svg">
                 (${time.countInteressadosAceitos}/${time.maxParticipantes})
                 <span style="font-size: 12px">${time.countInteressados} interessados</span>
             </div>
         `;
 
-    return vacancyEmojis;
+  return vacancyEmojis;
 }
 
 function SetItToTryFreeTime(freetimeId) {
-    $(".modal").modal("hide")
-    setTimeout(() => {
-        renderFreeTimeSelected(freetimeId)
-    }, 300)
+  $(".modal").modal("hide");
+  setTimeout(() => {
+    renderFreeTimeSelected(freetimeId);
+  }, 300);
 }
 
 function renderFreeTimeSelected(freetimeId) {
-
-    let prepared = ""
-    let perfil;
-    let time;
-    for (let element of result) {
-        for (let item of element.timeSelections) {
-            if (item.timeSelectionId == freetimeId) {
-                time = item
-                perfil = element.perfils
-                break;
-            }
-        }
+  let prepared = "";
+  let perfil;
+  let time;
+  for (let element of result) {
+    for (let item of element.timeSelections) {
+      if (item.timeSelectionId == freetimeId) {
+        time = item;
+        perfil = element.perfils;
+        break;
+      }
     }
+  }
 
+  prepared += `<div class="detalhes-mentoria" >
+        <div style="display: flex;justify-content: space-between;align-items: center;padding: 15px;">`;
 
-    prepared += `<div class="detalhes-mentoria" >
-        <div style="display: flex;justify-content: space-between;align-items: center;padding: 15px;">`
-
-    prepared += `
-            <p style="color: #9067B2;font-size: 25px;font-weight: 700;letter-spacing: 0.015em;margin: 0px;">
+  prepared += `
+            <p style="color: #525252;font-size: 25px;font-weight: 700;letter-spacing: 0.015em;margin: auto;">
                 ${time.variacao == 3 ? "Evento" : "Mentoria"}
-            </p>`
-    prepared += `
+            </p>`;
+  prepared += `
             <button type="button" id="btnVoltar" data-bs-dismiss="modal" aria-label="Close" style="border: none;background-color: transparent;padding: 0px;">
                 <img src="/Pictures/Icons/close-icon.svg" alt="icone voltar">
             </button>
         </div>
-        <hr>`
+        <hr>`;
 
-    prepared += `<div style="display:flex;min-width: 100%;padding: 10px;">
+  prepared += `<div style="display:flex;min-width: 100%;padding: 10px;">
         <span >
         ${renderAvatar(perfil, true)}
         </span>
@@ -196,8 +199,8 @@ function renderFreeTimeSelected(freetimeId) {
                 ${experience[perfil.experiencia]} xp
             </div>
         </span>
-    </div>`
-    /* if (perfil.linkedin) {
+    </div>`;
+  /* if (perfil.linkedin) {
         prepared += `<a style="text-decoration:none"
                                         href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
                                         <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
@@ -211,46 +214,50 @@ function renderFreeTimeSelected(freetimeId) {
                                         </a>`
     } */
 
-    prepared += `
-        <p style="padding-top: 15px;font-size: 18px;font-weight: 700;margin: 0px; word-break: break-word;">${time.titulo}</p>
+  prepared += `
+        <p style="color: #9067B2;padding-top: 15px;font-size: 20px;font-weight: 700;margin: 0px; word-break: break-word; text-align: center;">${time.titulo}</p>
 
         <div class="d-flex justify-content-center align-items-center" style="flex-direction: column; padding: 20px;">
-        `
-        const dataInicio = new Date(time.startTime)
-        const dataFim = new Date(time.endTime)
+        `;
+  const dataInicio = new Date(time.startTime);
+  const dataFim = new Date(time.endTime);
 
-        const diaSemana = dataInicio.toLocaleDateString('pt-BR', { weekday: 'long' });
+  const diaSemana = dataInicio.toLocaleDateString("pt-BR", { weekday: "long" });
 
-    prepared += `<h6 style="text-align: center;">
-            <p style="color: #525252; font-size: 20px; font-weight: 500;margin: 0px;">
+  prepared += `<h6 style="text-align: center;">
+            <p style="color: #525252; font-size: 16px; font-weight: 500;margin: 0px;">
 
-            ${diaSemana.replace(diaSemana.charAt(0),diaSemana.charAt(0).toLocaleUpperCase())}, ${dataInicio.getDate()} de
+            ${diaSemana.replace(
+              diaSemana.charAt(0),
+              diaSemana.charAt(0).toLocaleUpperCase()
+            )}, ${dataInicio.getDate()} de
             ${mesesAbrev[dataInicio.getMonth()]}
             </p>
-            <p style="color: #525252; font-size: 20px; font-weight: 500;">
-            ${dataInicio.toLocaleTimeString('pt-BR', {hour12: false})
-            .replace(":00", "")} -
+            <p style="color: #525252; font-size: 16px; font-weight: 500;">
+            ${dataInicio
+              .toLocaleTimeString("pt-BR", { hour12: false })
+              .replace(":00", "")} -
 
-            ${dataFim.toLocaleTimeString('pt-BR', {hour12: false})
-            .replace(":00", "")}
+            ${dataFim
+              .toLocaleTimeString("pt-BR", { hour12: false })
+              .replace(":00", "")}
             </p>
         </h6>
-        <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap;width: fit-content;">`
+        <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap;width: fit-content;">`;
 
-    if(time.tags.length > 0){
-        for (let tag of time.tags) {
-            prepared += `<small class="tag">${tag.titulo}</small>`
-        }
+  if (time.tags.length > 0) {
+    for (let tag of time.tags) {
+      prepared += `<small class="modal-tag">${tag.titulo}</small>`;
     }
-    prepared += `</div>
-            </div>`
+  }
+  prepared += `</div>
+            </div>`;
 
-    document.querySelector("#ownerProfileId").value = perfil.id
-    document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId
+  document.querySelector("#ownerProfileId").value = perfil.id;
+  document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId;
 
+  $("#eventModal").modal("hide");
 
-    $("#eventModal").modal("hide")
-
-    $("#mentorMatch").html(prepared)
-    $("#matchModal").modal("show")
+  $("#mentorMatch").html(prepared);
+  $("#matchModal").modal("show");
 }
