@@ -40,7 +40,7 @@ public class IndexModel(
     IAprenderService aprenderService,
     IPerfilWebService perfilWebService,
     IHelpResponseWebService helpResponseWebService,
-    ILiveVisualizationWebService liveVisualizationWebService,
+    IVisualizationWebService liveVisualizationWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {

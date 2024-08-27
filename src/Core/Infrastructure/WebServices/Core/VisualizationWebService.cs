@@ -3,7 +3,7 @@ using Domain.WebServices;
 
 namespace Infrastructure.WebServices
 {
-	public sealed class LiveVisualizationWebService(CoreClient client) : ILiveVisualizationWebService
+	public sealed class VisualizationWebService(CoreClient client) : IVisualizationWebService
 	{
 		const string baseRoute = "api/livevisualization";
 

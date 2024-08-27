@@ -1,8 +1,8 @@
 using Domain.Entities;
 
-namespace Application.Logic
+namespace Domain.WebServices
 {
-	public interface ILiveVisualizationBusinessLogic
+	public interface IVisualizationWebService
 	{
 		Task<List<Visualization>> GetLiveVisualizations(List<Guid> liveIds);
 	}

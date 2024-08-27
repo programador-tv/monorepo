@@ -3,7 +3,7 @@ using Domain.Repositories;
 
 namespace Application.Logic
 {
-	public class LiveVisualizationBusinessLogic(ILiveVisualizationsRepository _repository) : ILiveVisualizationBusinessLogic
+	public class VisualizationBusinessLogic(IVisualizationRepository _repository) : IVisualizationBusinessLogic
 	{
 		public async Task<List<Visualization>> GetLiveVisualizations(List<Guid> liveIds)
 		{

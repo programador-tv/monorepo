@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Presentation.EndPoints
 {
-	public static class LiveVisualizationEndPoints
+	public static class VisualizationEndPoints
 	{
 		public static void AddLiveVisualizationEndPoints(this IEndpointRouteBuilder app)
 		{
@@ -16,7 +16,7 @@ namespace Presentation.EndPoints
 			group.MapPost("/", GetLiveVisualization);
 		}
 
-		public static async Task<IResult> GetLiveVisualization([FromServices] ILiveVisualizationBusinessLogic logic, [FromBody] List<Guid> liveIds)
+		public static async Task<IResult> GetLiveVisualization([FromServices] IVisualizationBusinessLogic logic, [FromBody] List<Guid> liveIds)
 		{
 			try
 			{

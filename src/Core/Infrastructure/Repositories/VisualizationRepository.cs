@@ -5,8 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-	public class LiveVisualizationRepository(ApplicationDbContext context) : GenericRepository<Visualization>(context), ILiveVisualizationsRepository
+	public class VisualizationRepository(ApplicationDbContext context) : GenericRepository<Visualization>(context), IVisualizationRepository
 	{
+		// Summary:
+		//		Searches the Visualizations table for all visualizations that contain a LiveId present in the visibleLiveIds list.
+		//	Returns:
+		//		List of Visualization entity (can be empty).
 		public async Task<List<Visualization>> GetVisualizationsByLiveIds(List<Guid> visibleLivesIds)
 		{
 			var liveVisualizations = await DbContext.Visualizations

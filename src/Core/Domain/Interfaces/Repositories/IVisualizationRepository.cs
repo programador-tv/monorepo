@@ -2,7 +2,7 @@ using Domain.Entities;
 
 namespace Domain.Repositories
 {
-	public interface ILiveVisualizationsRepository
+	public interface IVisualizationRepository
 	{
 		Task<List<Visualization>> GetVisualizationsByLiveIds(List<Guid> visibleLivesIds);
 	}
