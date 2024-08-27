@@ -100,7 +100,7 @@ public sealed class CanalIndexModel : CustomPageModel
         };
 
         PerfilOwner = perfilOwner;
-
+        #warning deve popular IsFollowing
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
