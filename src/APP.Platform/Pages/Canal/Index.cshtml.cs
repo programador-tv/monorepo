@@ -100,7 +100,7 @@ public sealed class CanalIndexModel : CustomPageModel
         };
 
         PerfilOwner = perfilOwner;
-
+        #warning deve popular IsFollowing
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
@@ -121,7 +121,7 @@ public sealed class CanalIndexModel : CustomPageModel
         string usr,
         bool isPrivate,
         int pageNumber = 1,
-        int pageSize = 9
+        int pageSize = 3
     )
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
