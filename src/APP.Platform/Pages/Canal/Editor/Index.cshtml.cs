@@ -72,9 +72,8 @@ public sealed class EditorIndexModel : CustomPageModel
                 return Redirect("../");
             }
 
-            using var byIdResponse = await client.GetAsync($"api/perfils/" + live.PerfilId);
-
-            var owner = await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+            var owner = await _perfilWebService.GetById(live.PerfilId);
+           
 
             if (owner != null && owner.Id != live.PerfilId)
             {
@@ -201,7 +200,7 @@ public sealed class EditorIndexModel : CustomPageModel
                 {
                     Titulo = t,
                     LiveRelacao = live.Id.ToString(),
-                    FreeTimeRelacao = timeSelectionId.ToString()
+                    FreeTimeRelacao = timeSelectionId.ToString(),
                 };
                 _context.Tags.Add(tag);
             }
@@ -246,7 +245,7 @@ public sealed class EditorIndexModel : CustomPageModel
                     new ResizeOptions
                     {
                         Size = new Size(targetWidth, targetHeight),
-                        Mode = ResizeMode.Pad
+                        Mode = ResizeMode.Pad,
                     }
                 )
             );

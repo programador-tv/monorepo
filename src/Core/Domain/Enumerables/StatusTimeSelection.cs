@@ -6,6 +6,6 @@
         Marcado,
         Cancelado,
         Concluído,
-        ConclusaoPendente
+        ConclusaoPendente,
     }
 }

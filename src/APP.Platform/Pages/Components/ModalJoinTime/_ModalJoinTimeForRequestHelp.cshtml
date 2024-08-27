@@ -33,6 +33,22 @@
                 <br>
                 <br>
             </form>
+
+            @if (Model.IsLogedUser)
+            {
+                <hr>
+                <div id="help-response">
+                    @* o textarea para incluir comentario de ajuda esta sendo carregado aqui *@
+                </div>
+            }
+
+            <div id="container-msg-helpResponse">
+                
+            </div>
+
+            <div id="space-helpResponses">
+                @* os comentarios de ajuda estao sendo carregados aqui *@
+            </div>
         </div>
     </div>
 </div>

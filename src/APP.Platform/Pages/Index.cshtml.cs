@@ -3,12 +3,15 @@ using System.Text;
 using System.Text.Json;
 using APP.Platform.Services;
 using Background;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -16,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Platform.Services;
 using Presentation.EndPoints;
 using Queue;
@@ -35,6 +39,7 @@ public class IndexModel(
     IMessagePublisher messagePublisher,
     IAprenderService aprenderService,
     IPerfilWebService perfilWebService,
+    IHelpResponseWebService helpResponseWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -461,7 +466,7 @@ public class IndexModel(
                 PerfilId = e.PerfilId.ToString() ?? Guid.Empty.ToString(),
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
-                Titulo = e.TituloTemporario
+                Titulo = e.TituloTemporario,
             })
             .ToList();
 
@@ -507,10 +512,10 @@ public class IndexModel(
                             StartTime = perfil.StartTime,
                             EndTime = perfil.EndTime,
                             Titulo = perfil.Titulo,
-                            Variacao = perfil.Variacao
+                            Variacao = perfil.Variacao,
                         })
                         .ToList(),
-                    Perfils = mentor
+                    Perfils = mentor,
                 };
 
                 anotherTimeSelectionIDs.AddRange(
@@ -525,7 +530,7 @@ public class IndexModel(
         [
             .. _context.Tags.Where(timeSelection =>
                 anotherTimeSelectionIDs.Contains(timeSelection.FreeTimeRelacao)
-            )
+            ),
         ];
 
         var timeSelectionsDictionary = MentorsFreeTime
@@ -622,7 +627,8 @@ public class IndexModel(
             timeSelectionGroupByPerfilId,
             _context,
             _httpClientFactory,
-            perfilWebService
+            perfilWebService,
+            helpResponseWebService
         );
 
         return new JsonResult(new { pedidos, isLogged = IsAuth });
@@ -680,7 +686,7 @@ public class IndexModel(
         {
             Id = Guid.NewGuid(),
             JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now
+            DataTentativaMarcacao = DateTime.Now,
         };
         _context.FeedbackJoinTimes?.Add(feedback);
 
@@ -699,7 +705,7 @@ public class IndexModel(
                         em receber mentoria {timeSelection.TituloTemporario}
                         no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
@@ -717,7 +723,7 @@ public class IndexModel(
                         em oferecer orientação para: {timeSelection.TituloTemporario}
                         no dia {timeSelection.StartTime:dd/MM/yyyy}
                     ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
@@ -802,7 +808,7 @@ public class IndexModel(
                     $@" marcou com você a mentoria {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + join.TimeSelectionId
+                ActionLink = "./?event=" + join.TimeSelectionId,
             };
         }
         else if (ts.Tipo == EnumTipoTimeSelection.RequestHelp)
@@ -817,7 +823,7 @@ public class IndexModel(
                     $@" marcou com você a orientação para o pedido de ajuda: {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + join.TimeSelectionId
+                ActionLink = "./?event=" + join.TimeSelectionId,
             };
         }
         if (notification != null)
@@ -896,13 +902,13 @@ public class IndexModel(
             DataCriacao = DateTime.Now,
             UltimaAtualizacao = DateTime.Now,
             TipoSala = EnumTipoSalas.Mentoria,
-            Privado = true
+            Privado = true,
         };
         _context?.Rooms?.Add(room);
 
         foreach (var t in TagsSelected)
         {
-            var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala, };
+            var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala };
             _context?.Tags?.Add(tag);
         }
         return room.Id;
@@ -916,5 +922,36 @@ public class IndexModel(
         byte[] imageBytes = Convert.FromBase64String(base64);
 
         return File(imageBytes, "image/png");
+    }
+
+    public async Task<IActionResult> OnPostHelpResponse(string timeSelectionId, string content)
+    {
+        if (content.IsNullOrEmpty())
+            return BadRequest("Necessário preencher o conteúdo da ajuda.");
+        var perfilId = UserProfile.Id;
+        var request = new CreateHelpResponse(Guid.Parse(timeSelectionId), perfilId, content);
+
+        var response = await helpResponseWebService.Add(request);
+        return new JsonResult(
+            new HelpResponseWithProfileData(
+                response,
+                UserProfile.UserName,
+                UserProfile.Nome,
+                UserProfile.Foto
+            )
+        );
+    }
+
+    public async Task<IActionResult> OnPostDeleteHelpResponse(string helpResponseId)
+    {
+        try
+        {
+            await helpResponseWebService.Update(Guid.Parse(helpResponseId));
+            return new EmptyResult();
+        }
+        catch (Exception err)
+        {
+            return BadRequest(err.Message);
+        }
     }
 }

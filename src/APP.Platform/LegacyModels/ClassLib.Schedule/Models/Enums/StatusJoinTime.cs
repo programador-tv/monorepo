@@ -8,6 +8,6 @@
         Confirmado,
         Concluído,
         Cancelado,
-        ConclusaoPendente
+        ConclusaoPendente,
     }
 }

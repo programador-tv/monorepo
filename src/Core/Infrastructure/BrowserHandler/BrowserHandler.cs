@@ -9,7 +9,7 @@ public class BrowserHandler : IBrowserHandler
     {
         var playwright = await Playwright.CreateAsync();
         var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions { Args = ["--no-sandbox", "--disable-setuid-sandbox"], }
+            new BrowserTypeLaunchOptions { Args = ["--no-sandbox", "--disable-setuid-sandbox"] }
         );
         var page = await browser.NewPageAsync();
         await page.SetContentAsync(html);

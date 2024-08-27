@@ -173,7 +173,7 @@ namespace APP.Platform.Pages
                     Perfil = associatedPerfil,
                     DataCriacao = item.DataCriacao,
                     Content = item.Content ?? string.Empty,
-                    Id = item.Id
+                    Id = item.Id,
                 };
 
                 Comments.Add(model);
@@ -279,7 +279,7 @@ namespace APP.Platform.Pages
                 PerfilId = UserProfile.Id,
                 LiveId = Guid.Parse(liveId),
                 Content = WebUtility.HtmlEncode(comment),
-                DataCriacao = DateTime.Now
+                DataCriacao = DateTime.Now,
             };
 
             await _context.Comments.AddAsync(commentModel);
@@ -301,7 +301,7 @@ namespace APP.Platform.Pages
                     comentario = commentModel.Content,
                     data = dataUsuario,
                     foto = fotoUsuario,
-                    nome = nomeUsuario
+                    nome = nomeUsuario,
                 }
             );
         }
@@ -360,7 +360,7 @@ namespace APP.Platform.Pages
                 DataCriacao = DateTime.Now,
                 Foto = UserProfile.Foto,
                 Nome = UserProfile.Nome,
-                Data = formatedDate
+                Data = formatedDate,
             };
 
             var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(messageToProcess));
@@ -394,7 +394,7 @@ namespace APP.Platform.Pages
                     LiveId = Guid.Parse(LiveId!),
                     PerfilId = UserProfile.Id,
                     Active = true,
-                    hasNotificated = false
+                    hasNotificated = false,
                 };
                 _context.NotifyUserLiveEarlies.Add(userNotify);
             }

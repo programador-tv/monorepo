@@ -67,10 +67,7 @@ public sealed class CanalIndexModel(
             return Redirect("../Perfil");
         }
 
-        var client = _httpClientFactory.CreateClient(coreApi);
-        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
-
-        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfilOwner = await _perfilWebService.GetByUsername(usr);
 
         if (perfilOwner == null)
         {
@@ -98,28 +95,37 @@ public sealed class CanalIndexModel(
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr, bool isPrivate)
+    public async Task<ActionResult> OnGetAfterloadCanal(
+        string usr,
+        bool isPrivate,
+        int pageNumber = 1,
+        int pageSize = 3
+    )
     {
-        var client = _httpClientFactory.CreateClient(coreApi);
-        using var responseTask = await client.GetAsync("api/perfils/ByUsername/" + usr);
-
-        var perfilOwner = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfilOwner = await _perfilWebService.GetByUsername(usr);
 
         if (perfilOwner == null)
         {
             return BadRequest();
         }
 
-        var privateLives = liveService.RenderPrivateLives(perfilOwner, UserProfile.Id, isPrivate);
+        var pagedPrivateLives = await liveService.RenderPrivateLives(
+            perfilOwner,
+            UserProfile.Id,
+            isPrivate,
+            pageNumber,
+            pageSize
+        );
         var liveSchedules = liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
-            privateLives,
+            pagedPrivateLives,
             viewEngine,
             PageContext,
             tempDataProvider
         );
+
         var liveSchedulesHtml = await RenderVideosService.RenderVideos(
             "Components/_LiveSchedulePreviewGroup",
             liveSchedules,
@@ -133,7 +139,7 @@ public sealed class CanalIndexModel(
             {
                 privateLives = savedVideosHtml,
                 liveSchedules = liveSchedulesHtml,
-                isPrivateVideosChecked = isPrivate
+                isPrivateVideosChecked = isPrivate,
             }
         );
     }
@@ -283,10 +289,7 @@ public sealed class CanalIndexModel(
 
         await GetMyEvents();
 
-        var client = _httpClientFactory.CreateClient(coreApi);
-        using var responseTask = await client.GetAsync("api/perfils/" + id);
-
-        var perfil = await responseTask.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfil= await _perfilWebService.GetById(id);
 
         if (responseTask.StatusCode != HttpStatusCode.OK || perfil == null)
         {
@@ -316,7 +319,7 @@ public sealed class CanalIndexModel(
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Titulo = e.TituloTemporario,
-                Variacao = (int)e.Variacao
+                Variacao = (int)e.Variacao,
             })
             .ToList();
 
@@ -366,14 +369,11 @@ public sealed class CanalIndexModel(
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var client = _httpClientFactory.CreateClient(coreApi);
-        using var byIdResponse = await client.GetAsync($"api/perfils/" + timeSelection?.PerfilId);
-        var channelUserName =
-            await byIdResponse.Content.ReadFromJsonAsync<Domain.Entities.Perfil>();
+        var perfil = await _perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
 
         if (UserProfile.Id == Guid.Empty)
         {
-            var urlToReturn = $"/Canal?usr={channelUserName}";
+            var urlToReturn = $"/Canal?usr={perfil.UserName}";
 
             return Redirect($"/Identity/Account/Login?returnUrl={urlToReturn}");
         }
@@ -399,7 +399,7 @@ public sealed class CanalIndexModel(
         {
             Id = Guid.NewGuid(),
             JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now
+            DataTentativaMarcacao = DateTime.Now,
         };
         _context.FeedbackJoinTimes?.Add(feedback);
 
@@ -418,7 +418,7 @@ public sealed class CanalIndexModel(
                     em receber mentoria {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
@@ -436,7 +436,7 @@ public sealed class CanalIndexModel(
                     em oferecer orientação para o pedido de ajuda: {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);

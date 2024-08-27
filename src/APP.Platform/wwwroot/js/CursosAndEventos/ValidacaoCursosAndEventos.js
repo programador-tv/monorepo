@@ -53,6 +53,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function validateTimeOverlap(timeSelection) {
+    for (let i = 0; i < asyncEvents.length; i++) {
+      const item = asyncEvents[i];
+      if (item.start <= timeSelection.start && item.end > timeSelection.start) {
+        return false;
+      }
+      if (item.start < timeSelection.end && item.end >= timeSelection.end) {
+        return false;
+      }
+      if (item.start >= timeSelection.start && item.end <= timeSelection.end) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function validateDateTime(date, firstTime, lastTime) {
     const currentDate = new Date();
     const eventDate = new Date(new Date(date).getTime() + TWENTY_FOUR_HOURS);
@@ -63,7 +79,29 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEndDate.setHours(lastTime.getHours());
     eventEndDate.setMinutes(lastTime.getMinutes());
 
-    if (date === "") {
+    const utcEventDate = new Date(
+      eventDate.getTime() - eventDate.getTimezoneOffset() * 60000
+    );
+    const utcEventEndDate = new Date(
+      eventEndDate.getTime() - eventEndDate.getTimezoneOffset() * 60000
+    );
+
+    const startStr = transformDateFormat(utcEventDate.toISOString());
+    const endStr = transformDateFormat(utcEventEndDate.toISOString());
+
+    let event = {
+      id: "temp",
+      title: "",
+      start: startStr,
+      end: endStr,
+      backgroundColor: "lightblue",
+      borderColor: "darkblue",
+    };
+    
+    if (!validateTimeOverlap(event)) {
+      showMessage("Já existe um evento nessa data", true);
+      return false;
+    } else if (date === "") {
       showMessage("Data inválida.", true);
       return false;
     } else if (eventDate.getTime() - currentDate.getTime() > ONE_MONTH) {
@@ -184,6 +222,8 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEndCE.addEventListener("change", validateDatesCE);
   isAmEndCE.addEventListener("change", validateDatesCE);
 
-  validateDatesCE();
-  validateFirstModalCE();
+  $("#eventModalCustosAndEventos").on("shown.bs.modal", function () {
+    validateDatesCE();
+    validateFirstModalCE();
+  });
 });

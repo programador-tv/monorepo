@@ -103,7 +103,7 @@ namespace Infrastructure.Migrations
                     "LiveEstaAberta",
                     "UltimaAtualizacao",
                     "Visibility",
-                    "PerfilId"
+                    "PerfilId",
                 }
             );
         }

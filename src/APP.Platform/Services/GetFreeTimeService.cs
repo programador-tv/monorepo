@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
@@ -63,10 +64,10 @@ public static class GetFreeTimeService
                             StartTime = e.StartTime,
                             EndTime = e.EndTime,
                             Titulo = e.Titulo,
-                            Variacao = e.Variacao
+                            Variacao = e.Variacao,
                         })
                         .ToList(),
-                    Perfils = mentor
+                    Perfils = mentor,
                 };
                 timeSelectionIds.AddRange(
                     mentorFreeTime.TimeSelections.Select(s => s.TimeSelectionId).ToList()
@@ -108,7 +109,8 @@ public static class GetFreeTimeService
         > timeSelectionGroupByPerfilId,
         ApplicationDbContext _context,
         IHttpClientFactory httpClientFactory,
-        IPerfilWebService _perfilWebService
+        IPerfilWebService _perfilWebService,
+        IHelpResponseWebService _helpResponseWebService
     )
     {
         var RequestedHelp = new List<RequestedHelpViewModel>();
@@ -133,21 +135,51 @@ public static class GetFreeTimeService
                 {
                     continue;
                 }
+                var requesteds = new List<TimeSelectionForRequestedHelpViewModel>();
+                foreach (var item in PerfilTimeSelection)
+                {
+                    var helpResponses =
+                        await _helpResponseWebService.GetAll(Guid.Parse(item.TimeSelectionId))
+                        ?? [];
+                    var groupedHelpResponse = helpResponses
+                        .GroupBy(hlpr => hlpr.PerfilId)
+                        .Select(hlpr => hlpr.Key)
+                        .ToList();
+                    var commentOwnerProfiles = await _perfilWebService.GetAllById(
+                        groupedHelpResponse
+                    );
+                    var joinHelpResponseWithProfile = helpResponses
+                        .Select(helpResponse =>
+                        {
+                            var commentOwner = commentOwnerProfiles.First(p =>
+                                p.Id == helpResponse.PerfilId
+                            );
+                            return new HelpResponseWithProfileData(
+                                helpResponse,
+                                commentOwner.UserName,
+                                commentOwner.Nome,
+                                commentOwner.Foto
+                            );
+                        })
+                        .ToList();
+                    requesteds.Add(
+                        new TimeSelectionForRequestedHelpViewModel()
+                        {
+                            TimeSelectionId = item.TimeSelectionId,
+                            PerfilId = item.PerfilId.ToString(),
+                            StartTime = item.StartTime,
+                            EndTime = item.EndTime,
+                            Description = item.Description,
+                            Variation = item.Variation,
+                            Title = item.Title,
+                            HelpResponses = joinHelpResponseWithProfile,
+                        }
+                    );
+                }
                 var requestedHelp = new RequestedHelpViewModel
                 {
-                    TimeSelections = PerfilTimeSelection
-                        .Select(e => new TimeSelectionForRequestedHelpViewModel()
-                        {
-                            TimeSelectionId = e.TimeSelectionId,
-                            PerfilId = e.PerfilId.ToString(),
-                            StartTime = e.StartTime,
-                            EndTime = e.EndTime,
-                            Description = e.Description,
-                            Variation = e.Variation,
-                            Title = e.Title,
-                        })
-                        .ToList(),
-                    Perfils = requesterPerfils
+                    TimeSelections = requesteds,
+                    Perfils = requesterPerfils,
                 };
                 timeSelectionIds.AddRange(
                     requestedHelp.TimeSelections.Select(s => s.TimeSelectionId).ToList()
@@ -242,7 +274,7 @@ public static class GetFreeTimeService
                 PerfilId = e.PerfilId.ToString() ?? Guid.Empty.ToString(),
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
-                Titulo = e.TituloTemporario
+                Titulo = e.TituloTemporario,
             })
             .ToList();
 
@@ -276,7 +308,7 @@ public static class GetFreeTimeService
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Variation = (int)e.Variacao,
-                Title = e.TituloTemporario
+                Title = e.TituloTemporario,
             })
             .ToList();
 
@@ -390,7 +422,7 @@ public static class GetFreeTimeService
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Variation = (int)e.Variacao,
-                Title = e.TituloTemporario
+                Title = e.TituloTemporario,
             })
             .ToList();
     }

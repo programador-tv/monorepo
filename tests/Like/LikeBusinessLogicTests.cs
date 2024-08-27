@@ -29,7 +29,7 @@ public class LikeBusinessLogicTests
         var likes = new List<Like>
         {
             Like.Create(liveId, relatedUserIdOne),
-            Like.Create(liveId, relatedUserIdTwo)
+            Like.Create(liveId, relatedUserIdTwo),
         };
 
         _mockRepository.Setup(repo => repo.GetAllLikesByLiveId(liveId)).ReturnsAsync(likes);

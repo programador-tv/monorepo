@@ -38,7 +38,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -61,7 +61,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -85,7 +85,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -100,7 +100,7 @@ public static class DataTags
                     "Sistemas de Tempo Real",
                     "Computação Gráfica",
                     "Aplicações de Simulação",
-                    "Aplicações Científicas"
+                    "Aplicações Científicas",
                 }
             },
             {
@@ -132,7 +132,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -158,7 +158,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -192,7 +192,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -219,7 +219,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -240,7 +240,7 @@ public static class DataTags
                     "PLN",
                     "Visão Computacional",
                     "IoT",
-                    "Desenvolvimento Blockchain"
+                    "Desenvolvimento Blockchain",
                 }
             },
             {
@@ -259,7 +259,7 @@ public static class DataTags
                     "Jogos para Android",
                     "Realidade Aumentada (ARCore)",
                     "Aprendizado de Máquina (ML Kit)",
-                    "IoT (Android Things)"
+                    "IoT (Android Things)",
                 }
             },
             {
@@ -279,7 +279,7 @@ public static class DataTags
                     "Apple TV",
                     "Jogos para iOS",
                     "Realidade Aumentada (ARKit)",
-                    "Aprendizado de Máquina (Core ML)"
+                    "Aprendizado de Máquina (Core ML)",
                 }
             },
             {
@@ -298,7 +298,7 @@ public static class DataTags
                     "Unity",
                     "Aplicações Multiplataforma",
                     "Android e iOS",
-                    "Jogos Multiplataforma"
+                    "Jogos Multiplataforma",
                 }
             },
             {
@@ -344,7 +344,7 @@ public static class DataTags
                     "IBM Watson",
                     "Azure Machine Learning",
                     "AI Platform",
-                    "Amazon SageMaker"
+                    "Amazon SageMaker",
                 }
             },
             {
@@ -381,7 +381,7 @@ public static class DataTags
                     "Provisionamento de Infraestrutura",
                     "Implantação de Aplicações",
                     "Gerenciamento de Ambientes",
-                    "Automação de Processos"
+                    "Automação de Processos",
                 }
             },
             {
@@ -408,7 +408,7 @@ public static class DataTags
                     "Contêineres",
                     "Monitoramento",
                     "Gerenciamento de Custos",
-                    "Backup e Recuperação"
+                    "Backup e Recuperação",
                 }
             },
             {
@@ -428,7 +428,7 @@ public static class DataTags
                     "FDD",
                     "DSDM",
                     "TDD",
-                    "BDD"
+                    "BDD",
                 }
             },
             {
@@ -441,7 +441,7 @@ public static class DataTags
                     "Trello",
                     "Microsoft Project",
                     "Basecamp",
-                    "Redmine"
+                    "Redmine",
                 }
             },
             {
@@ -455,7 +455,7 @@ public static class DataTags
                     "PostgreSQL",
                     "MongoDB",
                     "Oracle",
-                    "SQLite"
+                    "SQLite",
                 }
             },
             {
@@ -477,7 +477,7 @@ public static class DataTags
                     "Robot Framework",
                     "Appium",
                     "SoapUI",
-                    "JMeter"
+                    "JMeter",
                 }
             },
             {
@@ -516,7 +516,7 @@ public static class DataTags
                     "Mendix",
                     "Zoho Creator",
                     "Bubble",
-                    "Google App Maker"
+                    "Google App Maker",
                 }
             },
             {
@@ -542,7 +542,7 @@ public static class DataTags
                     "Freelancers",
                     "Empreendedores",
                 }
-            }
+            },
         };
     }
 }

@@ -39,17 +39,9 @@ namespace APP.Platform.Pages
 
         public async Task ProcessKeywordForChannels(string keyword)
         {
-            var client = _httpClientFactory.CreateClient("CoreAPI");
+            var perfilsResponse = await _perfilWebService.GetByKeyword(keyword);
 
-            using var responseTask = await client.GetAsync("api/perfils/Contains/" + keyword);
 
-            if (!responseTask.IsSuccessStatusCode)
-            {
-                return;
-            }
-            var perfils = await responseTask.Content.ReadFromJsonAsync<
-                List<Domain.Entities.Perfil>
-            >();
 
             Perfils.AddRange(perfils);
             foreach (var perfil in Perfils)

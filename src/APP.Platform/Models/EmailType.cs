@@ -5,6 +5,6 @@ namespace Models
         Empty,
         NovoInteressadoMentoria,
 
-        AlunoAceitoNaMentoria
+        AlunoAceitoNaMentoria,
     }
 }

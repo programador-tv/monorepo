@@ -231,7 +231,7 @@ public class PerfilsEndPointsTests
                     Descricao: "Teste de descrição",
                     Experiencia: ExperienceLevel.Entre1E3Anos
                 )
-            )
+            ),
         };
         mockLogic.Setup(logic => logic.GetAll()).ReturnsAsync(perfils);
 

@@ -1,17 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateForm = document.getElementById("dateTime");
 
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  dateForm.value = formattedDate;
+
   let hoursStart = document.getElementById("hoursStart");
+  hoursStart.value = new Date().getHours() + 1;
   let minutesStart = document.getElementById("minutesStart");
   let isAmStart = document.getElementById("ampmStart");
+  isAmStart.value = hoursStart.value >= 12 ? "pm" : "am";
 
   let inicioHorario = `${
     hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
   }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
 
   let hoursEnd = document.getElementById("hoursEnd");
+  hoursEnd.value = new Date().getHours() + 2;
   let minutesEnd = document.getElementById("minutesEnd");
   let isAmEnd = document.getElementById("ampmEnd");
+  isAmEnd.value = hoursEnd.value >= 12 ? "pm" : "am";
 
   let fimHorario = `${
     hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value
@@ -60,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
             createTimeModal(content.id);
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
       })
@@ -199,6 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Passa da etapa 3 para a etapa 2
   $("#btnBack1").click(() => {
+    const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
     switchStep(".body-oneToOne-2", ".body-oneToOne-1");
   });
 
@@ -211,6 +224,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalOneToOne").on("hidden.bs.modal", () => {
     setTimeout(() => {
+
+      const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
+     
       $(".modal-select").removeClass("active");
       $(".body-oneToOne-1").addClass("active");
     }, 100);

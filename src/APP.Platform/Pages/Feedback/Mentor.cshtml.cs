@@ -33,7 +33,7 @@ namespace APP.Platform.Pages
                 });
             var estimativaSenioridade = Enum.GetValues(typeof(EstimativaSenioridade))
                 .Cast<EstimativaSenioridade>()
-                .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString(), });
+                .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() });
 
             SatisfacaoPossivel = satisfacaoExperiencia.ToList();
             EstimativaSenioridade = estimativaSenioridade.ToList();

@@ -42,7 +42,7 @@ namespace APP.Platform.Pages.Studio
                 Titulo = liveCore.Titulo,
                 Descricao = liveCore.Descricao,
                 DataCriacao = liveCore.DataCriacao,
-                Thumbnail = liveCore.Thumbnail
+                Thumbnail = liveCore.Thumbnail,
             };
             Live = live;
 
@@ -103,7 +103,7 @@ namespace APP.Platform.Pages.Studio
                 DataCriacao = DateTime.Now,
                 Foto = UserProfile.Foto,
                 Nome = UserProfile.Nome,
-                Data = formatedDate
+                Data = formatedDate,
             };
 
             // var message = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(messageToProcess));

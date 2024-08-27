@@ -48,7 +48,7 @@ public sealed class EmailHandling(IConfiguration configuration) : IEmailHandling
             from = $"{sender} <{alias}>",
             to = new string[] { $"{buildedEmail.Name} <{buildedEmail.Destination}>" },
             subject = buildedEmail.Subject,
-            html = email
+            html = email,
         };
 
         var jsonPayload = JsonSerializer.Serialize(payload);

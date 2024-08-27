@@ -16,7 +16,7 @@ namespace APP.Platform.Services
                 return new LiveTitleAndDescriptionViewModel
                 {
                     Titulo = string.Empty,
-                    Descricao = string.Empty
+                    Descricao = string.Empty,
                 };
             }
 
@@ -33,7 +33,7 @@ namespace APP.Platform.Services
             var resultado = new LiveTitleAndDescriptionViewModel
             {
                 Titulo = titulo,
-                Descricao = descricao
+                Descricao = descricao,
             };
             return resultado;
         }

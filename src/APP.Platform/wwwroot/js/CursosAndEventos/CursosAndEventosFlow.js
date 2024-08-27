@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateFormCE = document.getElementById("dateTimeCE");
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  dateFormCE.value = formattedDate;
 
   let submitFormCE = document.getElementById("saveTimeFormEventosAndCursos");
 
   let hoursStartCE = document.getElementById("hoursStartCE");
+  hoursStartCE.value = new Date().getHours() + 1;
   let minutesStartCE = document.getElementById("minutesStartCE");
   let isAmStartCE = document.getElementById("ampmStartCE");
+  isAmStartCE.value = hoursStartCE.value >= 12 ? "pm" : "am";
 
   let inicioHorarioCE = `${
     hoursStartCE.value < 10 ? "0" + hoursStartCE.value : hoursStartCE.value
@@ -16,8 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }`;
 
   let hoursEndCE = document.getElementById("hoursEndCE");
+  hoursEndCE.value = new Date().getHours() + 2;
   let minutesEndCE = document.getElementById("minutesEndCE");
   let isAmEndCE = document.getElementById("ampmEndCE");
+  isAmEndCE.value = hoursEndCE.value >= 12 ? "pm" : "am";
 
   let fimHorarioCE = `${
     hoursEndCE.value < 10 ? "0" + hoursEndCE.value : hoursEndCE.value
@@ -70,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
             createTimeModal(content.id);
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
       })
@@ -184,6 +190,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Passa da etapa 3 para a etapa 2
   $("#btnCEBack2").click(() => {
+    const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
+    
     switchStep(".body-CE-2", ".body-CE-1");
   });
 
@@ -196,6 +209,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalCustosAndEventos").on("hidden.bs.modal", () => {
     setTimeout(() => {
+      const mainTag = document.querySelector(".modal-tag-main");
+      if (mainTag) {
+        mainTag.remove();
+      }
+      const modalTags = document.querySelectorAll(".modal-tag");
+      modalTags.forEach((tag) => tag.remove());
+
       $(".modal-selectCE").removeClass("active");
       $(".body-CE-1").addClass("active");
     }, 100);

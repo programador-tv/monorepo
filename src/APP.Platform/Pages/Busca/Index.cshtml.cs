@@ -110,7 +110,7 @@ public sealed class BuscaIndexModel(
                     Foto = perfil.Foto,
                     Bio = perfil.Bio,
                     Followers = followersCount,
-                    isFollowing = isFollowing
+                    isFollowing = isFollowing,
                 }
             );
         }

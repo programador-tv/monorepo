@@ -51,7 +51,7 @@ public class NotificationBusinessLogicTests
                 "Mensagem de teste numero 2",
                 "https://programador.tv/Sobre",
                 "_blank"
-            )
+            ),
         };
 
         _mockRepository
@@ -89,7 +89,7 @@ public class NotificationBusinessLogicTests
                 "Mensagem de teste numero 2",
                 "https://programador.tv/Sobre",
                 "_blank"
-            )
+            ),
         };
 
         _mockRepository

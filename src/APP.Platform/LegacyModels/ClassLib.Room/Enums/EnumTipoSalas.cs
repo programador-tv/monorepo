@@ -3,6 +3,6 @@
     public enum EnumTipoSalas
     {
         Mentoria,
-        Livre
+        Livre,
     }
 }

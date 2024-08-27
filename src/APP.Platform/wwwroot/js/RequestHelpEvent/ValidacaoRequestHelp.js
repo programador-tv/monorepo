@@ -44,6 +44,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const TWO_HOURS = 2 * 60 * 60 * 1000;
   const THIRTY_MINUTES = 30 * 60 * 1000;
 
+  function validateTimeOverlap(timeSelection) {
+    for (let i = 0; i < asyncEvents.length; i++) {
+      const item = asyncEvents[i];
+      if (item.start <= timeSelection.start && item.end > timeSelection.start) {
+        return false;
+      }
+      if (item.start < timeSelection.end && item.end >= timeSelection.end) {
+        return false;
+      }
+      if (item.start >= timeSelection.start && item.end <= timeSelection.end) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function showMessage(message, isError) {
     if (isError) {
       errorSpanTimeRH.innerText = message;
@@ -64,7 +80,29 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEndDate.setHours(lastTime.getHours());
     eventEndDate.setMinutes(lastTime.getMinutes());
 
-    if (date === "") {
+    const utcEventDate = new Date(
+      eventDate.getTime() - eventDate.getTimezoneOffset() * 60000
+    );
+    const utcEventEndDate = new Date(
+      eventEndDate.getTime() - eventEndDate.getTimezoneOffset() * 60000
+    );
+
+    const startStr = transformDateFormat(utcEventDate.toISOString());
+    const endStr = transformDateFormat(utcEventEndDate.toISOString());
+
+    let event = {
+      id: "temp",
+      title: "",
+      start: startStr,
+      end: endStr,
+      backgroundColor: "lightblue",
+      borderColor: "darkblue",
+    };
+
+    if (!validateTimeOverlap(event)) {
+      showMessage("Já existe um evento nessa data", true);
+      return false;
+    } else if (date === "") {
       showMessage("Data inválida.", true);
       return false;
     } else if (eventDate.getTime() - currentDate.getTime() > ONE_MONTH) {
@@ -190,7 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEndRH.addEventListener("change", validateDatesRH);
   isAmEndRH.addEventListener("change", validateDatesRH);
 
-  validateSecondModalRH();
-  validateDatesRH();
-  validateFirstModalRH();
+  $("#eventModalRequestHelp").on("shown.bs.modal", function () {
+    validateSecondModalRH();
+    validateDatesRH();
+    validateFirstModalRH();
+  });
 });

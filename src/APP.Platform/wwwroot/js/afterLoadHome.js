@@ -246,25 +246,28 @@ function loadMentoresParaTag(data) {
 }
 
 function loadPedidosAjudaParaTag(data) {
-
-    let prepared = ""
-    if (data.length == 0) {
-        prepared = "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem pedidos de ajuda no momento </div>"
-        $("#pedidosPanel").html(prepared)
-    } else {
-        let pedidosDeAjuda = ""
-        let groupHelp = []
-        for (const profileWithTimeSelections of data) {
-            result.push(profileWithTimeSelections)
-            groupHelp = [
-                ...groupHelp,
-                ...
-                profileWithTimeSelections.timeSelections.filter(x => x.variation == 5)
-                    .map(e => {
-                        return { ts: e, perfil: profileWithTimeSelections.perfils }
-                    })
-            ]
-        }
+  let prepared = "";
+  if (data.length == 0) {
+    prepared =
+      "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem pedidos de ajuda no momento </div>";
+    $("#pedidosPanel").html(prepared);
+    activePaginationFor("groupOneToOne", 0);
+    activePaginationFor("groupCursos", 0);
+    activePaginationFor("groupHelp", 0);
+  } else {
+    let pedidosDeAjuda = "";
+    let groupHelp = [];
+    for (const profileWithTimeSelections of data) {
+      result.push(profileWithTimeSelections);
+      groupHelp = [
+        ...groupHelp,
+        ...profileWithTimeSelections.timeSelections
+          .filter((x) => x.variation == 5)
+          .map((e) => {
+            return { ts: e, perfil: profileWithTimeSelections.perfils };
+          }),
+      ];
+    }
 
 
 
