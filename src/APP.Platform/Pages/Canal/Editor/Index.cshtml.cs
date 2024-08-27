@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
+using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,6 +19,7 @@ public sealed class EditorIndexModel : CustomPageModel
 {
     private new readonly ApplicationDbContext _context;
     private new readonly IHttpClientFactory _httpClientFactory;
+    private new readonly IPerfilWebService _perfilWebService;
     public SelectList? TagsFront { get; set; }
 
     [BindProperty]
@@ -41,12 +43,14 @@ public sealed class EditorIndexModel : CustomPageModel
         ApplicationDbContext context,
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
+        IPerfilWebService perfilWebService,
         Settings settings
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
         _httpClientFactory = httpClientFactory;
         _context = context;
+        _perfilWebService = perfilWebService;
 
         RelatioTags = DataTags.GetTags();
     }

@@ -30,8 +30,7 @@ public sealed class CanalIndexModel(
     Settings settings,
     IPerfilWebService perfilWebService,
     PerfilDbContext perfilContext,
-    ILiveService liveService,
-    IFollowService followService
+    ILiveService liveService
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     [BindProperty]
@@ -67,7 +66,7 @@ public sealed class CanalIndexModel(
             return Redirect("../Perfil");
         }
 
-        var perfilOwner = await _perfilWebService.GetByUsername(usr);
+        var perfilOwner = await perfilWebService.GetByUsername(usr);
 
         if (perfilOwner == null)
         {
@@ -75,10 +74,12 @@ public sealed class CanalIndexModel(
         }
         PerfilOwner = perfilOwner;
 
-        if (UserProfile != null)
-        {
-            IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
-        }
+        //if (UserProfile != null)
+        //{
+        //    IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
+        //}
+
+        var client = _httpClientFactory.CreateClient(coreApi);
 
         using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
@@ -102,7 +103,7 @@ public sealed class CanalIndexModel(
         int pageSize = 3
     )
     {
-        var perfilOwner = await _perfilWebService.GetByUsername(usr);
+        var perfilOwner = await perfilWebService.GetByUsername(usr);
 
         if (perfilOwner == null)
         {
@@ -289,13 +290,8 @@ public sealed class CanalIndexModel(
 
         await GetMyEvents();
 
-        var perfil= await _perfilWebService.GetById(id);
+        PerfilOwner = await perfilWebService.GetById(id);
 
-        if (responseTask.StatusCode != HttpStatusCode.OK || perfil == null)
-        {
-            return BadRequest();
-        }
-        PerfilOwner = perfil;
         HashSet<TimeSelection> valueSet = new HashSet<TimeSelection>(MyEvents!.Values);
 
         var timeSelections =
@@ -369,7 +365,7 @@ public sealed class CanalIndexModel(
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var perfil = await _perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
+        var perfil = await perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
 
         if (UserProfile.Id == Guid.Empty)
         {

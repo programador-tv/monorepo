@@ -19,7 +19,7 @@ public sealed class BuscaIndexModel(
     IHttpClientFactory httpClientFactory,
     IHttpContextAccessor httpContextAccessor,
     Settings settings,
-    IFollowService followService,
+    //IFollowService followService,
     IPerfilWebService perfilWebService
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -41,7 +41,7 @@ public sealed class BuscaIndexModel(
             return Redirect("index");
         }
 
-        var search = new Search(_context, _httpClientFactory, key);
+        var search = new Search(_context, _httpClientFactory, perfilWebService, key);
 
         var client = _httpClientFactory.CreateClient("CoreAPI");
 

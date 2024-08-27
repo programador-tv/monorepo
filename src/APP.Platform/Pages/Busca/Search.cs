@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Models.ViewModels;
+using Domain.WebServices;
 using Infrastructure.Data.Contexts;
 
 namespace APP.Platform.Pages
@@ -8,6 +9,7 @@ namespace APP.Platform.Pages
     {
         private readonly ApplicationDbContext _context;
         private readonly PerfilDbContext _perfilContext;
+        private readonly IPerfilWebService _perfilWebService;
         public List<Live> Lives = new List<Live>();
         public List<Domain.Entities.Perfil> Perfils { get; set; } = [];
 
@@ -16,11 +18,13 @@ namespace APP.Platform.Pages
         public Search(
             ApplicationDbContext context,
             IHttpClientFactory httpClientFactory,
+            IPerfilWebService perfilWebService,
             string key
         )
         {
             _httpClientFactory = httpClientFactory;
             _context = context;
+            _perfilWebService = perfilWebService;
 
             foreach (var word in key.Trim().Split(' '))
             {
@@ -39,9 +43,7 @@ namespace APP.Platform.Pages
 
         public async Task ProcessKeywordForChannels(string keyword)
         {
-            var perfilsResponse = await _perfilWebService.GetByKeyword(keyword);
-
-
+            var perfils= await _perfilWebService.GetByKeyword(keyword);
 
             Perfils.AddRange(perfils);
             foreach (var perfil in Perfils)
