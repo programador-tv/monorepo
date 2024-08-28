@@ -885,11 +885,10 @@ namespace APP.Platform.Pages.ScheduleActions
             return Redirect(url);
         }
 
-        public async Task<IActionResult> OnGetAcceptance(string id)
+        public async Task<IActionResult> OnGetAcceptance(Guid id)
         {
-#warning se vem o id(token) do front, provavelmente os dados buscados aqui ja estão disponiveis la
-
-            var perfilResponse = await _perfilWebService.GetByToken(id);
+            #warning se vem o id(token) do front, provavelmente os dados buscados aqui ja estão disponiveis la
+            var perfilResponse = await _perfilWebService.GetById(id);
 
             var perfilLegacy = new Domain.Entities.Perfil
             {
