@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("Testando 123")
-
     btnSubmit = document.getElementById("submitNewPost");
     errorSmall = document.querySelector("#newPostFromSite #error");
 
