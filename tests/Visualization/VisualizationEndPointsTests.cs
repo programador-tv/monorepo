@@ -7,27 +7,37 @@ using Presentation.EndPoints;
 
 namespace tests
 {
-	public class VisualizationEndPointsTests
-	{
-		private readonly Mock<IVisualizationBusinessLogic> mockLogic;
-		public VisualizationEndPointsTests()
-		{
-			mockLogic = new Mock<IVisualizationBusinessLogic>();
-		}
+    public class VisualizationEndPointsTests
+    {
+        private readonly Mock<IVisualizationBusinessLogic> mockLogic;
 
-		[Fact]
-		public async Task GetLiveVisualizationEndpoint_ShouldCallLogic()
-		{
-			var visualizations = new List<Visualization> {
-				Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), ""),
-				Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), "")
-			};
+        public VisualizationEndPointsTests()
+        {
+            mockLogic = new Mock<IVisualizationBusinessLogic>();
+        }
 
-			mockLogic.Setup(logic => logic.GetLiveVisualizations(It.IsAny<List<Guid>>())).ReturnsAsync(visualizations);
+        [Fact]
+        public async Task GetLiveVisualizationEndpoint_ShouldCallLogic()
+        {
+            var visualizations = new List<Visualization>
+            {
+                Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), ""),
+                Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), "")
+            };
 
-			var result = await VisualizationEndPoints.GetLiveVisualization(mockLogic.Object, [Guid.NewGuid(), Guid.NewGuid()]);
+            mockLogic
+                .Setup(logic => logic.GetLiveVisualizations(It.IsAny<List<Guid>>()))
+                .ReturnsAsync(visualizations);
 
-			mockLogic.Verify(logic => logic.GetLiveVisualizations(It.IsAny<List<Guid>>()), Times.Once());
-		}
-	}
+            var result = await VisualizationEndPoints.GetLiveVisualization(
+                mockLogic.Object,
+                [Guid.NewGuid(), Guid.NewGuid()]
+            );
+
+            mockLogic.Verify(
+                logic => logic.GetLiveVisualizations(It.IsAny<List<Guid>>()),
+                Times.Once()
+            );
+        }
+    }
 }

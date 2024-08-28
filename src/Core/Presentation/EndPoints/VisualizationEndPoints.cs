@@ -7,27 +7,28 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Presentation.EndPoints
 {
-	public static class VisualizationEndPoints
-	{
-		public static void AddLiveVisualizationEndPoints(this IEndpointRouteBuilder app)
-		{
-			var group = app.MapGroup("api/livevisualization");
+    public static class VisualizationEndPoints
+    {
+        public static void AddLiveVisualizationEndPoints(this IEndpointRouteBuilder app)
+        {
+            var group = app.MapGroup("api/livevisualization");
 
-			group.MapPost("/", GetLiveVisualization);
-		}
+            group.MapPost("/", GetLiveVisualization);
+        }
 
-		public static async Task<IResult> GetLiveVisualization([FromServices] IVisualizationBusinessLogic logic, [FromBody] List<Guid> liveIds)
-		{
-			try
-			{
-				return Results.Ok(await logic.GetLiveVisualizations(liveIds));
-			}
-			catch (System.Exception ex)
-			{
-				return Results.BadRequest(ex.Message);
-			}
-		}
-
-	}
+        public static async Task<IResult> GetLiveVisualization(
+            [FromServices] IVisualizationBusinessLogic logic,
+            [FromBody] List<Guid> liveIds
+        )
+        {
+            try
+            {
+                return Results.Ok(await logic.GetLiveVisualizations(liveIds));
+            }
+            catch (System.Exception ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        }
+    }
 }
-

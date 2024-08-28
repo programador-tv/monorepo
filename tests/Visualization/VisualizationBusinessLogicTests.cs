@@ -5,31 +5,37 @@ using Moq;
 
 namespace tests
 {
-	public class VisualizationBusinessLogicTests
-	{
-		private readonly VisualizationBusinessLogic mockLogic;
-		private readonly Mock<IVisualizationsRepository> mockRepository;
+    public class VisualizationBusinessLogicTests
+    {
+        private readonly VisualizationBusinessLogic mockLogic;
+        private readonly Mock<IVisualizationRepository> mockRepository;
 
-		public VisualizationBusinessLogicTests()
-		{
-			mockRepository = new Mock<IVisualizationsRepository>();
-			mockLogic = new VisualizationBusinessLogic(mockRepository.Object);
-		}
+        public VisualizationBusinessLogicTests()
+        {
+            mockRepository = new Mock<IVisualizationRepository>();
+            mockLogic = new VisualizationBusinessLogic(mockRepository.Object);
+        }
 
-		[Fact]
-		public async Task GetVisualizationsByLiveIds_ShouldReturnVisualizationList()
-		{
-			var visualizations = new List<Visualization> {
-				Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), ""),
-				Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), "")
-			};
+        [Fact]
+        public async Task GetVisualizationsByLiveIds_ShouldReturnVisualizationList()
+        {
+            var visualizations = new List<Visualization>
+            {
+                Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), ""),
+                Visualization.Create(Guid.NewGuid(), Guid.NewGuid(), "")
+            };
 
-			mockRepository.Setup(repo => repo.GetVisualizationsByLiveIds(It.IsAny<List<Guid>>())).ReturnsAsync(visualizations);
+            mockRepository
+                .Setup(repo => repo.GetVisualizationsByLiveIds(It.IsAny<List<Guid>>()))
+                .ReturnsAsync(visualizations);
 
-			var result = await mockLogic.GetLiveVisualizations([Guid.NewGuid(), Guid.NewGuid()]);
+            var result = await mockLogic.GetLiveVisualizations([Guid.NewGuid(), Guid.NewGuid()]);
 
-			Assert.Equal(visualizations, result);
-			mockRepository.Verify(repo => repo.GetVisualizationsByLiveIds(It.IsAny<List<Guid>>()), Times.Once());
-		}
-	}
+            Assert.Equal(visualizations, result);
+            mockRepository.Verify(
+                repo => repo.GetVisualizationsByLiveIds(It.IsAny<List<Guid>>()),
+                Times.Once()
+            );
+        }
+    }
 }
