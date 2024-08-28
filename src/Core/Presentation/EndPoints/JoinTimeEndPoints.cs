@@ -17,6 +17,7 @@ public static class JoinTimeEndPoints
         group.WithOpenApi();
 
         group.MapGet("/UpdateOldJoinTimes", UpdateOldJoinTimes);
+        group.MapGet("/JoinTimesByStatus/{timeId}", GetJoinTimesAtivos);
     }
 
     public static async Task<IResult> UpdateOldJoinTimes(
@@ -27,6 +28,26 @@ public static class JoinTimeEndPoints
         {
             await _logic.UpdateOldJoinTimes();
             return Results.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
+     public static async Task<IResult> GetJoinTimesAtivos(
+        [FromRoute] Guid timeId,
+        [FromServices] IJoinTimeBusinessLogic _logic
+    )
+    {
+        try
+        {
+            var result = await _logic.GetJoinTimesAtivos(timeId);
+            if (result == null || !result.Any())
+            {
+                return Results.NotFound();
+            }
+            return Results.Ok(result);
         }
         catch (Exception ex)
         {

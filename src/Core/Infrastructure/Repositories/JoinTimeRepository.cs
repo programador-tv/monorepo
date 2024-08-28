@@ -54,4 +54,14 @@ public sealed class JoinTimeRepository(ApplicationDbContext context)
         DbContext.JoinTimes.UpdateRange(jts);
         await DbContext.SaveChangesAsync();
     }
+
+    public async Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId)
+    {
+        return await DbContext
+            .JoinTimes
+            .Where(j => j.TimeSelectionId == timeId && 
+                        (j.StatusJoinTime == StatusJoinTime.Marcado || 
+                         j.StatusJoinTime == StatusJoinTime.Pendente))
+            .ToListAsync();
+    }
 }

@@ -13,6 +13,7 @@ public class JoinTimeRepositoryTest
 {
     private readonly JoinTimeRepository _repository;
     private readonly ApplicationDbContext _context;
+    private readonly Guid specificGuid = Guid.Parse("1cc5615c-c82f-4e5c-b2de-df5421c72a82");
 
     public JoinTimeRepositoryTest()
     {
@@ -28,23 +29,38 @@ public class JoinTimeRepositoryTest
 
     private void InitializeJoinTimes()
     {
+
         _context.JoinTimes.AddRange(
             new List<JoinTime>
             {
                 JoinTime.Create(
                     Guid.NewGuid(),
-                    Guid.NewGuid(),
+                    Guid.NewGuid(),                    
                     StatusJoinTime.Marcado,
                     false,
                     TipoAction.Aprender
                 ),
                 JoinTime.Create(
                     Guid.NewGuid(),
-                    Guid.NewGuid(),
+                    specificGuid,
                     StatusJoinTime.Marcado,
                     false,
                     TipoAction.Aprender
                 ),
+                JoinTime.Create(
+                    Guid.NewGuid(),
+                    specificGuid,
+                    StatusJoinTime.Pendente,
+                    false,
+                    TipoAction.Aprender
+                ),
+                JoinTime.Create(
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    StatusJoinTime.Confirmado,
+                    false,
+                    TipoAction.Aprender
+                )
             }
         );
         _context.SaveChanges();
@@ -118,5 +134,35 @@ public class JoinTimeRepositoryTest
             updatedJoinTimes,
             jt => Assert.Equal(StatusJoinTime.Concluído, jt.StatusJoinTime)
         );
+    }
+
+    [Fact]
+    public async Task GetJoinTimesAtivos_ReturnsCorrectJoinTimes()
+    {
+        // Arrange: 
+        InitializeJoinTimes();
+
+         // Act:
+        var result = await _repository.GetJoinTimesAtivos(specificGuid);
+
+        // Assert:
+        Assert.NotNull(result);
+        Assert.NotEmpty(result); // Verifica se há pelo menos um JoinTime retornado
+        Assert.All(result, jt => Assert.Contains(jt.StatusJoinTime, new[] { StatusJoinTime.Marcado, StatusJoinTime.Pendente }));
+    }
+
+   [Fact]
+    public async Task GetJoinTimesAtivos_ReturnsEmptyList_WhenNoMatchingJoinTimes()
+    {
+        // Arrange: 
+        InitializeJoinTimes();
+
+        // Act: 
+        var nonExistentTimeSelectionId = Guid.NewGuid();
+        var result = await _repository.GetJoinTimesAtivos(nonExistentTimeSelectionId);
+
+        // Assert: 
+        Assert.NotNull(result);
+        Assert.Empty(result);
     }
 }
