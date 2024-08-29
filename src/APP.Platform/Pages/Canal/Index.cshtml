@@ -816,7 +816,6 @@
                 }
                 if (data[0].timeSelections.length > 2) {
                     prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
- <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
                <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
                <span id="groupOneToOne-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
      </div>`;
@@ -883,8 +882,8 @@
 
 
                 function activePaginationFor(group, length) {
-                    const left = document.querySelector(`#${group} -left`);
-                    const right = document.querySelector(`#${group} -right`);
+                    const left = document.querySelector(`#${group}-left`);
+                    const right = document.querySelector(`#${group}-right`);
                     let page = 1;
                     const size = 2;
                     const lastPage = Math.ceil(length / size);
