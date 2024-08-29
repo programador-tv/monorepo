@@ -25,19 +25,19 @@ namespace APP.Platform.Migrations.PerfilDb
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Experiencia = table.Column<int>(type: "int", nullable: false)
+                    Experiencia = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Perfils", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Perfils");
+            migrationBuilder.DropTable(name: "Perfils");
         }
     }
 }

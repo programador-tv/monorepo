@@ -13,12 +13,12 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
         return new Publication(Guid.NewGuid(), perfilId, link, true);
     }
 
-    public void NotValid() 
+    public void NotValid()
     {
         IsValid = false;
     }
 
-    public void Valid() 
+    public void Valid()
     {
         IsValid = true;
     }

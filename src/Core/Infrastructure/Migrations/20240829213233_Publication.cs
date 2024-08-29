@@ -19,19 +19,23 @@ namespace Infrastructure.Migrations
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                    Version = table.Column<byte[]>(
+                        type: "rowversion",
+                        rowVersion: true,
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Publications", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Publications");
+            migrationBuilder.DropTable(name: "Publications");
         }
     }
 }

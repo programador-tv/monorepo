@@ -20,12 +20,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Valid = table.Column<bool>(type: "bit", nullable: false)
+                    Valid = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatMessages", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Comments",
@@ -36,12 +37,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "FeedbackJoinTimes",
@@ -49,21 +51,31 @@ namespace APP.Platform.Migrations.ApplicationDb
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JoinTimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DataTentativaMarcacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataTentativaMarcacao = table.Column<DateTime>(
+                        type: "datetime2",
+                        nullable: true
+                    ),
                     AvaliadoCompareceu = table.Column<bool>(type: "bit", nullable: false),
                     AvaliadorCompareceu = table.Column<bool>(type: "bit", nullable: false),
                     DataCancelamento = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DuracaoPrevista = table.Column<TimeSpan>(type: "time", nullable: true),
-                    DuracaoPrevistaFormatada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DuracaoPrevistaFormatada = table.Column<string>(
+                        type: "nvarchar(max)",
+                        nullable: true
+                    ),
                     EstimativaSenioridadeAvaliado = table.Column<int>(type: "int", nullable: true),
-                    EstimativaSalarioAvaliado = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    EstimativaSalarioAvaliado = table.Column<decimal>(
+                        type: "decimal(18,2)",
+                        nullable: true
+                    ),
                     ConheciaAvaliadoPreviamente = table.Column<bool>(type: "bit", nullable: true),
-                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true)
+                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FeedbackJoinTimes", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "FeedbackTimeSelections",
@@ -77,16 +89,23 @@ namespace APP.Platform.Migrations.ApplicationDb
                     AvaliadorCompareceu = table.Column<bool>(type: "bit", nullable: false),
                     DataCancelamento = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DuracaoPrevista = table.Column<TimeSpan>(type: "time", nullable: true),
-                    DuracaoPrevistaFormatada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DuracaoPrevistaFormatada = table.Column<string>(
+                        type: "nvarchar(max)",
+                        nullable: true
+                    ),
                     EstimativaSenioridadeAvaliado = table.Column<int>(type: "int", nullable: true),
-                    EstimativaSalarioAvaliado = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    EstimativaSalarioAvaliado = table.Column<decimal>(
+                        type: "decimal(18,2)",
+                        nullable: true
+                    ),
                     ConheciaAvaliadoPreviamente = table.Column<bool>(type: "bit", nullable: true),
-                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true)
+                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FeedbackTimeSelections", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Follows",
@@ -95,12 +114,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Follows", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "FreeTimeBackstages",
@@ -109,12 +129,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MaxParticipants = table.Column<int>(type: "int", nullable: false),
-                    Ilimitado = table.Column<bool>(type: "bit", nullable: false)
+                    Ilimitado = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FreeTimeBackstages", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "HelpBackstages",
@@ -123,12 +144,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HelpBackstages", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "JoinTimes",
@@ -139,12 +161,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StatusJoinTime = table.Column<int>(type: "int", nullable: false),
                     NotifiedMentoriaProxima = table.Column<bool>(type: "bit", nullable: false),
-                    TipoAction = table.Column<int>(type: "int", nullable: false)
+                    TipoAction = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JoinTimes", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Likes",
@@ -153,12 +176,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RelatedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsLiked = table.Column<bool>(type: "bit", nullable: false)
+                    IsLiked = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Likes", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "LiveBackstages",
@@ -168,12 +192,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TituloTemporario = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LiveBackstages", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Lives",
@@ -195,12 +220,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     TentativasDeObterUrl = table.Column<int>(type: "int", nullable: false),
                     StatusLive = table.Column<int>(type: "int", nullable: false),
                     IsUsingObs = table.Column<bool>(type: "bit", nullable: false),
-                    UrlAlias = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UrlAlias = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lives", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Notifications",
@@ -214,12 +240,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Conteudo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ActionLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecundaryLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SecundaryLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NotifyUserLiveEarlies",
@@ -229,12 +256,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    hasNotificated = table.Column<bool>(type: "bit", nullable: false)
+                    hasNotificated = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NotifyUserLiveEarlies", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Presentes",
@@ -247,12 +275,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Presentes", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "PresentesOpenRooms",
@@ -264,12 +293,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PresentesOpenRooms", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Rooms",
@@ -283,12 +313,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     EstaAberto = table.Column<bool>(type: "bit", nullable: false),
                     TipoSala = table.Column<int>(type: "int", nullable: false),
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Privado = table.Column<bool>(type: "bit", nullable: false)
+                    Privado = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rooms", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Tags",
@@ -299,12 +330,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     LiveRelacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoomRelacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FreeTimeRelacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PreLiveRelacao = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PreLiveRelacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "TimeSelections",
@@ -321,12 +353,13 @@ namespace APP.Platform.Migrations.ApplicationDb
                     NotifiedMentoriaProxima = table.Column<bool>(type: "bit", nullable: false),
                     PreviewImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TipoAction = table.Column<int>(type: "int", nullable: false),
-                    Variacao = table.Column<int>(type: "int", nullable: false)
+                    Variacao = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeSelections", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Visualizations",
@@ -336,73 +369,55 @@ namespace APP.Platform.Migrations.ApplicationDb
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IPV4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Visualizations", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ChatMessages");
+            migrationBuilder.DropTable(name: "ChatMessages");
 
-            migrationBuilder.DropTable(
-                name: "Comments");
+            migrationBuilder.DropTable(name: "Comments");
 
-            migrationBuilder.DropTable(
-                name: "FeedbackJoinTimes");
+            migrationBuilder.DropTable(name: "FeedbackJoinTimes");
 
-            migrationBuilder.DropTable(
-                name: "FeedbackTimeSelections");
+            migrationBuilder.DropTable(name: "FeedbackTimeSelections");
 
-            migrationBuilder.DropTable(
-                name: "Follows");
+            migrationBuilder.DropTable(name: "Follows");
 
-            migrationBuilder.DropTable(
-                name: "FreeTimeBackstages");
+            migrationBuilder.DropTable(name: "FreeTimeBackstages");
 
-            migrationBuilder.DropTable(
-                name: "HelpBackstages");
+            migrationBuilder.DropTable(name: "HelpBackstages");
 
-            migrationBuilder.DropTable(
-                name: "JoinTimes");
+            migrationBuilder.DropTable(name: "JoinTimes");
 
-            migrationBuilder.DropTable(
-                name: "Likes");
+            migrationBuilder.DropTable(name: "Likes");
 
-            migrationBuilder.DropTable(
-                name: "LiveBackstages");
+            migrationBuilder.DropTable(name: "LiveBackstages");
 
-            migrationBuilder.DropTable(
-                name: "Lives");
+            migrationBuilder.DropTable(name: "Lives");
 
-            migrationBuilder.DropTable(
-                name: "Notifications");
+            migrationBuilder.DropTable(name: "Notifications");
 
-            migrationBuilder.DropTable(
-                name: "NotifyUserLiveEarlies");
+            migrationBuilder.DropTable(name: "NotifyUserLiveEarlies");
 
-            migrationBuilder.DropTable(
-                name: "Presentes");
+            migrationBuilder.DropTable(name: "Presentes");
 
-            migrationBuilder.DropTable(
-                name: "PresentesOpenRooms");
+            migrationBuilder.DropTable(name: "PresentesOpenRooms");
 
-            migrationBuilder.DropTable(
-                name: "Rooms");
+            migrationBuilder.DropTable(name: "Rooms");
 
-            migrationBuilder.DropTable(
-                name: "Tags");
+            migrationBuilder.DropTable(name: "Tags");
 
-            migrationBuilder.DropTable(
-                name: "TimeSelections");
+            migrationBuilder.DropTable(name: "TimeSelections");
 
-            migrationBuilder.DropTable(
-                name: "Visualizations");
+            migrationBuilder.DropTable(name: "Visualizations");
         }
     }
 }
