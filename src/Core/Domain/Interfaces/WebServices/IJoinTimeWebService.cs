@@ -7,5 +7,5 @@ namespace Domain.WebServices;
 public interface IJoinTimeWebService
 {
     Task UpdateOldJoinTimes();
-    Task<List<JoinTime>> GetJoinTimesAtivos(Guid id);
+    Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId);
 }
