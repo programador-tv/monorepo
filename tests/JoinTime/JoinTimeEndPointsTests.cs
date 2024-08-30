@@ -127,7 +127,7 @@ public class JoinTimeEndPointsTests
 
         // Assert: 
         var okResult = Assert.IsType<Ok<List<JoinTime>>>(result);
-        Assert.Equal(3, okResult.Value.Count);
+        Assert.True(okResult.Value?.Count == 3);
     }
 
 }

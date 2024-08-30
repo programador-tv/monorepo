@@ -43,7 +43,7 @@ public static class JoinTimeEndPoints
         try
         {
             var result = await _logic.GetJoinTimesAtivos(timeId);
-            if (result == null || !result.Any())
+            if (result == null || result.Count == 0)
             {
                 return Results.NotFound();
             }
