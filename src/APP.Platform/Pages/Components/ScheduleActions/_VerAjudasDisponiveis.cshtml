@@ -9,7 +9,7 @@
                 <h4 class="tittle-newDesign">🛠️ Capacitação</h4> *@
             <section class="nav nav-tabs d-flex flex-wrap pt-3">
 
-                <div style="cursor: pointer; display: flex;
+                <div style="cursor: default; display: flex;
                     justify-content: space-between;
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                         data-bs-toggle="tab" data-bs-target="#ajuda">
@@ -19,7 +19,7 @@
                         <span >Pedidos de Ajuda</span>
                         <span id="count-help"></span>
                     </div>
-                <div  style="cursor: pointer; display: flex;
+                <div  style="cursor: default; display: flex;
 
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                     data-bs-toggle="tab" data-bs-target="#oneToOne">
@@ -30,7 +30,7 @@
                         <span id="count-one"></span>
                     </div>
 
-                    <div  style="cursor: pointer; display: flex;
+                    <div  style="cursor: default; display: flex;
                     justify-content: space-between;
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                     data-bs-toggle="tab" data-bs-target="#cursos">
@@ -43,7 +43,7 @@
 
 
 
-                    @* <div style="cursor: pointer; display: flex;
+                    @* <div style="cursor: default; display: flex;
                     justify-content: space-between;
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                         data-bs-toggle="tab" data-bs-target="#mentoria">
@@ -55,7 +55,7 @@
 
 
 
-                    @* <div style="cursor: pointer; display: flex;
+                    @* <div style="cursor: default; display: flex;
                     justify-content: space-between;
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                     data-bs-toggle="tab" data-bs-target="#entrevista">
@@ -65,7 +65,7 @@
                         <span >Simular entrevista</span>
                     </div>
 
-                    <div style="cursor: pointer; display: flex;
+                    <div style="cursor: default; display: flex;
                     justify-content: space-between;
                     align-items: center; gap: 8px" class="button button-revamp button-tab"
                     data-bs-toggle="tab" data-bs-target="#recursos">
@@ -85,7 +85,7 @@
                         <button class="button-capacitacao" onclick="openOneToOne()">
                             Criar sessão 1:1
                         </button>
-                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                        <div style="text-align: right; font-size: 32px; cursor : default">
                             <span id="groupOneToOne-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
                             <span id="groupOneToOne-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         </div>
@@ -97,7 +97,7 @@
                         <button class="button-capacitacao" onclick="openTimePickerForHelp()">
                             Tirar dúvida
                         </button>
-                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                        <div style="text-align: right; font-size: 32px; cursor : default">
                             <span id="groupHelp-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
                             <span id="groupHelp-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         </div>
@@ -118,7 +118,7 @@
                         <button class="button-capacitacao" onclick="openCursosAndEventos()">
                             Criar evento
                         </button>
-                        <div style="text-align: right; font-size: 32px; cursor : pointer">
+                        <div style="text-align: right; font-size: 32px; cursor : default">
                             <span id="groupCursos-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
                             <span id="groupCursos-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
                         </div>
@@ -169,7 +169,7 @@
       .bi-arrow-left, .bi-arrow-right {
          color: #437AE2;
         font-size: 32px;
-        cursor: pointer;
+        cursor: default;
         display: inline-block; /* Garante que as setas estejam na mesma linha */
         vertical-align: middle; /* Alinha verticalmente ao centro */
         margin: 0 5px; /* Adiciona um pequeno espaço entre as setas e outros elementos */
@@ -179,6 +179,9 @@
     .bi-arrow-left:hover, .bi-arrow-right:hover {
         color: #437AE2;
     }
+
+    .button-revamp span {
+        font-size: 28px;}
 
 
 </style>

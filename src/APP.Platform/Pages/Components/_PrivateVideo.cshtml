@@ -12,7 +12,7 @@
             <img alt="@Model.Titulo" src="@Model.Thumbnail" class="video-preview preview">
         </a>
         <a href="/Watch/@VideoUrl" style="text-decoration: none;">
-            <span style="cursor:pointer;" class="formate-duration-videos">
+            <span style="cursor:default;" class="formate-duration-videos">
                 @(Model.FormatedDuration ?? "0:00")
             </span>
         </a>
@@ -29,7 +29,7 @@
                 WithLink = false
             })
 
-            <b class="tree-points" style="width: 80%; display: initial; cursor:pointer;"
+            <b class="tree-points" style="width: 80%; display: initial; cursor:default;"
                 onclick='location.href="/Watch/@VideoUrl"'>@Html.Raw(Model.Titulo)
             </b>
         </div>
@@ -77,7 +77,7 @@
         </div>
         @if (Model.IsUsrCanal)
         {
-            <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px; cursor: pointer">
+            <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px; cursor: default">
                 <small class="material-icons mdc-button__icon" aria-hidden="true">more_vert</small>
             </a>
         }

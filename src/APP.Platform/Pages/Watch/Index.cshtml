@@ -34,7 +34,7 @@
                 <!-- Exibir recomendações de vídeos aqui -->
             </div>
             <div class="modal-footer" style="justify-content: flex-start;  padding: 0;">
-                    <i  onclick='CurrentVideo.play();' title="Clique aqui para recomeçar o vídeo" style="cursor: pointer; color: white" class="material-icons mdc-button__icon" aria-hidden="true">replay</i>
+                    <i  onclick='CurrentVideo.play();' title="Clique aqui para recomeçar o vídeo" style="cursor: default; color: white" class="material-icons mdc-button__icon" aria-hidden="true">replay</i>
             </div>
         </div>
     </div>
@@ -172,7 +172,7 @@
                         <div style="margin-top: -9px; " class="transparente-button" id='btn-delete-@item?.Id'
                             >
                             <i  onclick="deleteCommentAsync('@item?.Id')" class="material-icons mdc-button__icon" aria-hidden="true"
-                                style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+                                style="cursor: default;position: relative; top: -6px; color: firebrick;">delete</i>
 
                         </div>
                     </form>
@@ -270,7 +270,7 @@
 
                     <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${id}" >
 
-                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: default;position: relative; top: -6px; color: firebrick;">delete</i>
 
                     </div>
                     <input asp-for="IdMessageToDelete" value="${id}" type="hidden" />
@@ -474,7 +474,7 @@
                 .finally(()=>{
                     setTimeout(() => {
                         btnPublishMessage.classList.add("action");
-                        btnPublishMessage.style.cursor = "pointer";
+                        btnPublishMessage.style.cursor = "default";
                     }, 1000);
                 });;
         }
@@ -523,7 +523,7 @@
 
                     <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${data.id}"">
 
-                    <i  onclick="deleteCommentAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="position: relative; top: -6px; color: firebrick;cursor: pointer;">delete</i>
+                    <i  onclick="deleteCommentAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="position: relative; top: -6px; color: firebrick;cursor: default;">delete</i>
                     </div>
                     <input asp-for="IdCommentToDelete" value="${data.id}" type="hidden" />
                     <input asp-for="LiveId" type="hidden" />
@@ -806,7 +806,7 @@
             data.forEach(function (video) {
                 var videoCard = document.createElement('div');
                 videoCard.className = 'default-card card-medium';
-                videoCard.style.cursor = 'pointer';
+                videoCard.style.cursor = 'default';
                 videoCard.onclick = function () {
                     var link = '/Watch?key=' + video.codigoLive;
                     window.location.href = link;

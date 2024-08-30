@@ -10,8 +10,8 @@
 
     <div style="display: flex; flex-direction:column; width: 100%;">
         <img src="@Model.Thumbnail" alt="thumbnail_not_found" class="video-preview preview"
-             onclick='location.href="/Watch/@Url"' style="cursor: pointer;">
-        <span onclick='location.href="/Watch/@Url"' style="cursor: pointer;" class="formate-duration-videos">
+             onclick='location.href="/Watch/@Url"' style="cursor: default;">
+        <span onclick='location.href="/Watch/@Url"' style="cursor: default;" class="formate-duration-videos">
             Em breve
         </span>
         @await Html.PartialAsync("Components/_PerfilAvatar",
@@ -27,7 +27,7 @@
         <div class="divisao-content-card-videos">
 
             <b class="tree-points"
-               onclick='location.href="/Watch/@Url"' style="cursor: pointer;">
+               onclick='location.href="/Watch/@Url"' style="cursor: default;">
                 @Html.Raw(Model.Titulo)
             </b>
 
@@ -64,7 +64,7 @@
         <div style="margin-bottom:0px">
             @if (Model.IsUsrCanal)
             {
-                <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px;cursor: pointer">
+                <a onclick='location.href="?handler=Editor&key=@Model.CodigoLive"' style="margin-top: 3px;cursor: default">
                     <small class="material-icons mdc-button__icon" aria-hidden="true">more_vert</small>
                 </a>
             }

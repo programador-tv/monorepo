@@ -140,7 +140,7 @@ body {
   box-shadow: 1px 2px 4px 0px #57575726;
   flex-wrap: wrap;
   background: #fefbfb;
-  cursor: pointer;
+  cursor: default;
 }
 .item-preview-ts:hover {
   box-shadow: 1px 2px 10px 0px #00000030;
@@ -399,7 +399,7 @@ body {
 }
 
 .action-sample {
-  cursor: pointer;
+  cursor: default;
   text-align: center;
   margin-top: 20px;
   padding: 2px;
@@ -518,7 +518,7 @@ body {
   font-size: 16px;
   color: #ffffff;
   text-align: center;
-  cursor: pointer;
+  cursor: default;
 }
 .tittle-newDesign {
   font-family: "League Spartan", sans-serif;
@@ -599,7 +599,7 @@ body {
 }
 
 .busca-card {
-  cursor: pointer;
+  cursor: default;
   width: 32%;
   background-color: #fefbfb;
   height: 190px !important;
@@ -737,7 +737,7 @@ body {
 .video-preview {
   width: 100%;
   border-radius: 8px 8px 0 0;
-  cursor: pointer;
+  cursor: default;
 }
 
 .card-content {
@@ -929,7 +929,7 @@ body {
   align-self: center;
   color: #00b4d8;
   font-size: 5rem;
-  cursor: pointer;
+  cursor: default;
   text-decoration: none;
   margin-right: 25px;
   transition: all 1s;
@@ -976,7 +976,7 @@ body {
   text-decoration: none;
   color: white;
   font-size: 24px !important;
-  cursor: pointer;
+  cursor: default;
 }
 .member-font {
   text-align: center;
@@ -1038,7 +1038,7 @@ body {
   text-decoration: none;
 }
 #interation-context {
-  cursor: pointer;
+  cursor: default;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1050,7 +1050,7 @@ body {
   transition: 1s all;
 }
 .follow-btn {
-  cursor: pointer;
+  cursor: default;
   background-color: #1e53b7 !important;
   display: flex;
   align-items: center;
@@ -1077,7 +1077,7 @@ body {
   border-radius: 15px;
   box-shadow: 0px 0px 5px -2px rgb(145 108 145);
   gap: 6px;
-  cursor: pointer;
+  cursor: default;
   transition: all 0.3s;
 }
 .stream-chosen:hover {
@@ -1101,7 +1101,7 @@ body {
   background-color: #dee2e6;
 }
 .button-provide-time {
-  cursor: pointer;
+  cursor: default;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2019,7 +2019,7 @@ body {
   padding-right: 5px;
 }
 #container-btn-deleteResponse span {
-  cursor: pointer;
+  cursor: default;
 }
 
 #container-time {

@@ -81,7 +81,7 @@
         <div style="display:flex;gap: 5px; flex-direction: column;padding-top: 15px;">
             <li class="nav-item left-item-menu">
                 <a class="nav-link text-dark nav-link-text"
-                    style="gap:10px; padding-left: 28px; cursor:pointer; display: flex; align-items: center; flex-direction: row"
+                    style="gap:10px; padding-left: 28px; cursor:default; display: flex; align-items: center; flex-direction: row"
                     asp-area="" asp-page="/Canal/Index" asp-route-usr="@Model.UserProfile.UserName">
                      @if(route == "/Canal/Index")
                     {
@@ -98,7 +98,7 @@
 
             <li class="nav-item left-item-menu">
                 <a class="nav-link text-dark nav-link-text"
-                    style="gap:10px;padding-left: 28px; cursor:pointer; display: flex; align-items: center; flex-direction: row"
+                    style="gap:10px;padding-left: 28px; cursor:default; display: flex; align-items: center; flex-direction: row"
                     asp-area="" asp-page="/Index">
                     @if(route == "/Index")
                     {
@@ -156,7 +156,7 @@
                 <a class="nav-link text-dark nav-link-text"
                     id="openCalendar"
                     data-bs-toggle="modal" data-bs-target="#calendarModal"
-                    style="gap:10px;padding-left: 31px; cursor:pointer; display: flex; align-items: center; flex-direction: row">
+                    style="gap:10px;padding-left: 31px; cursor:default; display: flex; align-items: center; flex-direction: row">
                     <img alt="agenda" src="/Pictures/Icons/calendar.svg"></img>
                     <span>
                         Agenda

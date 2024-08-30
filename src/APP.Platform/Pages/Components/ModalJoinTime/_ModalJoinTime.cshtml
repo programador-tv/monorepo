@@ -49,7 +49,7 @@
             let isProfileMatched = profileIdFromFormRequest == requestProfileJoinTime;
             btn.attr("disabled", isProfileMatched);
             btn.attr("class", isProfileMatched ? "button disabled" : "button button-capacitacao");
-            btn.attr("style", isProfileMatched ? "cursor: not-allowed;" : "cursor: pointer;");
+            btn.attr("style", isProfileMatched ? "cursor: not-allowed;" : "cursor: default;");
             btn.attr("data-toggle", isProfileMatched ? "tooltip" : "");
             btn.attr("data-original-title", isProfileMatched ? tooltipPhrase : "");
             btn.attr("data-bs-original-title", isProfileMatched ? "true" : "");

@@ -203,14 +203,14 @@ function renderFreeTimeSelected(freetimeId) {
   /* if (perfil.linkedin) {
         prepared += `<a style="text-decoration:none"
                                         href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
-                                        <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                                        <img style="width:30px;cursor:default" src="https://eduardoworrel.com/imgs/social/linkedin.png">
                                         </a>`
     }
 
     if (perfil.gitHub) {
         prepared += `<a style="text-decoration:none"
                                         href="https://github.com/${perfil.gitHub}/" target="_blank">
-                                        <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/github (1).png">
+                                        <img style="width:30px;cursor:default" src="https://eduardoworrel.com/imgs/social/github (1).png">
                                         </a>`
     } */
 

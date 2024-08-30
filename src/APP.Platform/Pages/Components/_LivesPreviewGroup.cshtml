@@ -11,8 +11,8 @@
 
     <div style="display: flex; flex-direction:column; width: 100%;">
         <img src="@item.Thumbnail" class="video-preview preview"
-        onclick='location.href="@url"' style="cursor: pointer;">
-        <span onclick='location.href="@url"' style="cursor: pointer;" class="formate-duration-videos"> Em breve
+        onclick='location.href="@url"' style="cursor: default;">
+        <span onclick='location.href="@url"' style="cursor: default;" class="formate-duration-videos"> Em breve
         </span>
         @await Html.PartialAsync("Components/_PerfilAvatar",
             new _PerfilAvatar{
@@ -27,7 +27,7 @@
         <div class="divisao-content-card-videos">
 
             <b class="tree-points"
-            onclick='location.href="@url"' style="cursor: pointer;"
+            onclick='location.href="@url"' style="cursor: default;"
                 >@Html.Raw(item.Titulo)
             </b>
 

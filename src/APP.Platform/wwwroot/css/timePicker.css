@@ -58,7 +58,7 @@ input[type="number"] {
   border: none;
   font-size: 2em;
   font-weight: bold;
-  cursor: pointer;
+  cursor: default;
   color: #939393;
 }
 

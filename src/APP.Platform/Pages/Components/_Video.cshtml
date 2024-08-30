@@ -39,7 +39,7 @@
          @if (Model.StatusLive == StatusLive.Iniciada)
             {
                 <div onclick='location.href="/Watch/@Url"'
-                 style="cursor:pointer; margin-top: -54px; padding-bottom: 25px;">
+                 style="cursor:default; margin-top: -54px; padding-bottom: 25px;">
                     <small
                     style="margin-left: 5px;
                             float: right;
@@ -68,7 +68,7 @@
         <div class="divisao-content-card-videos">
             <b class="tree-points"
                 onclick='location.href="/Watch/@Url"'
-                style="cursor:pointer;"
+                style="cursor:default;"
                 >@Html.Raw(Model.Titulo)
             </b>
                 <small style="

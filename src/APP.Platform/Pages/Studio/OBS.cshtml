@@ -166,7 +166,7 @@
                 .finally(()=>{
                     setTimeout(() => {
                         btnPublishMessage.classList.add("action");
-                        btnPublishMessage.style.cursor = "pointer";
+                        btnPublishMessage.style.cursor = "default";
                     }, 1000);
                 });;
         }
@@ -242,7 +242,7 @@
             .finally(()=>{
                 setTimeout(() => {
                     btnPublishMessage.classList.add("action");
-                    btnPublishMessage.style.cursor = "pointer";
+                    btnPublishMessage.style.cursor = "default";
                 }, 1000);
             });;
 
@@ -280,7 +280,7 @@
 
                     <div style="margin-top: -9px; " class="transparente-button" id="btn-delete${id}" >
 
-                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: pointer;position: relative; top: -6px; color: firebrick;">delete</i>
+                    <i onclick="deleteMessageAsync('${data.id}')" class="material-icons mdc-button__icon" aria-hidden="true" style="cursor: default;position: relative; top: -6px; color: firebrick;">delete</i>
 
                     </div>
                     <input asp-for="IdMessageToDelete" value="${id}" type="hidden" />
