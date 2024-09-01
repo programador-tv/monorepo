@@ -15,4 +15,5 @@ public interface IPerfilWebService
     Task<Perfil> GetByUsername(string username);
     Task<Perfil> GetByToken(string token);
     Task<List<Perfil>> GetByKeyword(string keyword);
+    Task<CreateOrUpdatePerfilResponse> TryCreateOrUpdate(CreateOrUpdatePerfilRequest request);
 }

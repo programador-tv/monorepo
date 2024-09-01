@@ -25,6 +25,7 @@ public static class PerfilsEndPoints
         group.MapGet("All", GetAll);
         group.MapPost("AllByIds", GetAllByIds);
         group.MapGet("Contains/{keyword}", GetWhenContains);
+        group.MapPost("TryCreateOrUpdate", TryCreateOrUpdate);
     }
 
     public static async Task<IResult> Add(
@@ -75,7 +76,6 @@ public static class PerfilsEndPoints
             var uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             var filePath = saveFile.BuildPathFileSave(uniqueFileName, "profile");
             await saveFile.SaveImageFile(file, filePath);
-
             await _logic.UpdateFotoPerfil(id, filePath);
             return Results.Ok();
         }
@@ -162,6 +162,22 @@ public static class PerfilsEndPoints
         try
         {
             return Results.Ok(await _logic.GetWhenContainsAsync(keyword));
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
+    public static async Task<IResult> TryCreateOrUpdate(
+        [FromServices] IPerfilBusinessLogic _logic,
+        [FromBody] CreateOrUpdatePerfilRequest request
+    )
+    {
+        try
+        {
+            var response = await _logic.TryCreateOrUpdate(request);
+            return Results.Ok(response);
         }
         catch (Exception ex)
         {

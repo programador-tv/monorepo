@@ -15,4 +15,5 @@ public interface IPerfilBusinessLogic
     Task AddPerfil(CreatePerfilRequest createPerfilRequest);
     Task UpdatePerfil(UpdatePerfilRequest updatePerfilRequest);
     Task UpdateFotoPerfil(Guid id, string filePath);
+    Task<CreateOrUpdatePerfilResponse> TryCreateOrUpdate(CreateOrUpdatePerfilRequest request);
 }
