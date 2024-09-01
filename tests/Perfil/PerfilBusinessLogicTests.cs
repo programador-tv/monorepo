@@ -2,11 +2,9 @@ using Application.Logic;
 using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enumerables;
-using Domain.Enums;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
-using Queue;
 
 namespace tests;
 
@@ -14,16 +12,11 @@ public class PerfilBusinessLogicTests
 {
     private readonly PerfilBusinessLogic _businessLogic;
     private readonly Mock<IPerfilRepository> _mockRepository;
-    private readonly Mock<IMessagePublisher> _mockMessagePublisher;
 
     public PerfilBusinessLogicTests()
     {
         _mockRepository = new Mock<IPerfilRepository>();
-        _mockMessagePublisher = new Mock<IMessagePublisher>();
-        _businessLogic = new PerfilBusinessLogic(
-            _mockRepository.Object,
-            _mockMessagePublisher.Object
-        );
+        _businessLogic = new PerfilBusinessLogic(_mockRepository.Object);
     }
 
     [Fact]
@@ -466,118 +459,5 @@ public class PerfilBusinessLogicTests
 
         Assert.Equal("Perfil não encontrado", exception.Message);
         _mockRepository.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task TryCreateOrUpdate_ShouldReturnStatusPerfilCreated()
-    {
-        var request = new CreateOrUpdatePerfilRequest(
-            Nome: "Test",
-            Token: "12345qwerty",
-            UserName: "test",
-            Linkedin: "linkedin.com/test",
-            GitHub: "github.com/test",
-            Bio: "Teste de bio",
-            Email: "test@test.com",
-            Descricao: "Teste de descrição",
-            Experiencia: ExperienceLevel.Entre1E3Anos
-        );
-
-        _mockRepository
-            .Setup(repo => repo.GetByTokenAsync(request.Token))
-            .ReturnsAsync((Perfil)null);
-
-        _mockRepository
-            .Setup(repo => repo.GetByUsernameAsync(request.UserName))
-            .ReturnsAsync((Perfil)null);
-
-        _mockRepository
-            .Setup(repo => repo.AddAsync(It.IsAny<Perfil>()))
-            .Returns(Task.CompletedTask);
-
-        var response = await _businessLogic.TryCreateOrUpdate(request);
-
-        _mockRepository.Verify(repo => repo.AddAsync(It.IsAny<Perfil>()), Times.Once);
-
-        _mockMessagePublisher.Verify(
-            publisher => publisher.PublishAsync("NotificationsQueue", It.IsAny<Notification>()),
-            Times.Once
-        );
-
-        Assert.Equal(StatusCreateOrUpdatePerfil.PerfilCreated, response.status);
-    }
-
-    [Fact]
-    public async Task TryCreateOrUpdate_ShouldReturnStatusPerfilUpdated()
-    {
-        var request = new CreateOrUpdatePerfilRequest(
-            Nome: "Test",
-            Token: "12345qwerty",
-            UserName: "test",
-            Linkedin: "linkedin.com/test",
-            GitHub: "github.com/test",
-            Bio: "Teste de bio",
-            Email: "test@test.com",
-            Descricao: "Teste de descrição",
-            Experiencia: ExperienceLevel.Entre1E3Anos
-        );
-
-        var perfil = Perfil.Create(request);
-
-        var updateRequest = new CreateOrUpdatePerfilRequest(
-            Nome: "Novo nome",
-            Token: perfil.Token,
-            UserName: "Novo username",
-            Linkedin: perfil.Linkedin,
-            GitHub: perfil.GitHub,
-            Bio: perfil.Bio,
-            Email: perfil.Email,
-            Descricao: perfil.Descricao,
-            Experiencia: perfil.Experiencia
-        );
-
-        _mockRepository
-            .Setup(repo => repo.GetByTokenAsync(It.IsAny<string>()))
-            .ReturnsAsync(perfil);
-
-        var response = await _businessLogic.TryCreateOrUpdate(updateRequest);
-
-        _mockRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Perfil>()), Times.Once);
-
-        Assert.Equal(StatusCreateOrUpdatePerfil.PerfilUpdated, response.status);
-        Assert.Equal(perfil.Id, response.Id);
-    }
-
-    [Fact]
-    public async Task TryCreateOrUpdate_ShouldReturnStatusUsernameAlreadyInUse()
-    {
-        var request = new CreateOrUpdatePerfilRequest(
-            Nome: "Test",
-            Token: "12345qwerty",
-            UserName: "test",
-            Linkedin: "linkedin.com/test",
-            GitHub: "github.com/test",
-            Bio: "Teste de bio",
-            Email: "test@test.com",
-            Descricao: "Teste de descrição",
-            Experiencia: ExperienceLevel.Entre1E3Anos
-        );
-
-        _mockRepository
-            .Setup(repo => repo.GetByTokenAsync(request.Token))
-            .ReturnsAsync((Perfil)null);
-
-        var existingPerfil = Perfil.Create(request);
-        _mockRepository
-            .Setup(repo => repo.GetByUsernameAsync(request.UserName))
-            .ReturnsAsync(existingPerfil);
-
-        var response = await _businessLogic.TryCreateOrUpdate(request);
-
-        _mockRepository.Verify(repo => repo.AddAsync(It.IsAny<Perfil>()), Times.Never);
-        _mockRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Perfil>()), Times.Never);
-
-        Assert.Equal(StatusCreateOrUpdatePerfil.UsernameAlreadyInUse, response.status);
-        Assert.Equal(Guid.Empty, response.Id);
     }
 }

@@ -73,13 +73,4 @@ public sealed class PerfilWebService(CoreClient client) : IPerfilWebService
         var route = Path.Combine(baseRoute, $"Contains/{keyword}");
         return await client.GetAsync<List<Perfil>>(route);
     }
-
-    public async Task<CreateOrUpdatePerfilResponse> TryCreateOrUpdate(
-        CreateOrUpdatePerfilRequest request
-    )
-    {
-        var route = Path.Combine(baseRoute, "TryCreateOrUpdate");
-        var response = await client.PostAsync<CreateOrUpdatePerfilResponse>(route, request);
-        return response;
-    }
 }
