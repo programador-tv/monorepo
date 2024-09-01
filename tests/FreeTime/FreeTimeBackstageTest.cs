@@ -4,7 +4,6 @@ namespace tests;
 
 public class FreeTimeBackstageTest
 {
-    
     [Fact]
     public void CreateFreeTimeBackstage_ReturnsCorrectValues()
     {
@@ -22,6 +21,4 @@ public class FreeTimeBackstageTest
         Assert.Equal(expectedMaxParticipants,result.MaxParticipants);
         Assert.Equal(expectedIlimitado,result.Ilimitado);
     }
-
-    
 }
