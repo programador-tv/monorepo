@@ -2060,33 +2060,26 @@ body {
   right: 30px;
 }
 
-.button-novo-estilo{
-  background: #437AE2;
-  width: fit-content;
+.button-criar-evento {
+  background: #437ae2;
   height: 36px;
   padding: 5px 25px;
   color: #f2f2f2;
   border-radius: 4px;
   border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 0.0125em;
-  margin-right: 30px;
   margin-bottom: 10px;
   transition: background 0.3s ease;
 }
 
-.button-novo-estilo:hover{
-  background: #2559BB;
+.button-criar-evento:hover {
+  background: #2559bb;
 }
 
-.button-novo-estilo:active{
-  background: #8DB5FF;
+.button-criar-evento:active {
+  background: #8db5ff;
 }
 
-.button-novo-estilo:disabled{
-  background: #99B6EE;
+.button-criar-evento:disabled {
+  background: #99b6ee;
 }
