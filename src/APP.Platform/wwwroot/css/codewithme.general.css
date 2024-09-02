@@ -1861,13 +1861,17 @@ body {
 
 .modal-select,
 .modal-selectRH,
-.modal-selectCE {
+.modal-selectCE,
+#liveInstantanea,
+#liveAgendar {
   display: none;
 }
 
 .modal-select.active,
 .modal-selectRH.active,
-.modal-selectCE.active {
+.modal-selectCE.active,
+#liveInstantanea.active,
+#liveAgendar.active {
   display: block;
 }
 

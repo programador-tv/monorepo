@@ -587,16 +587,21 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
             </div>
         </div>
     </div> *@
+
+    @* PM - substituir pelo render de NewLiveModal *@
       <div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <div class="modal-body">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+                    <h4>
+                    Criar uma Live
+                </h4>
 
                     @if (SignInManager.IsSignedIn(User)){
 
+                        //é aqui entao?
                         @await Html.PartialAsync("Components/Live/_FormNewLive",
                         new _FormNewLiveModel {
                             Live = new Domain.Models.ViewModels.PreLiveViewModel(),
@@ -611,7 +616,7 @@ var ActualPage = @Context.GetRouteValue("page").ToString();
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+                    <button type="button" class="btn " data-bs-dismiss="modal">Fichar</button>
                 </div>
             </div>
         </div>
