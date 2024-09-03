@@ -71,7 +71,7 @@ var settings = new Settings()
     ENVIROMENT = environment,
     LIVESOCKET_URL = livews_url,
     MEDIASERVER_URL = mediaserver_url,
-    CHATSOCKET_URL = chatSocketUrl
+    CHATSOCKET_URL = chatSocketUrl,
 };
 
 builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
@@ -104,7 +104,6 @@ builder.Services.AddScoped<OpenAiService>();
 builder.Services.AddScoped<IEnsinarService, EnsinarService>();
 builder.Services.AddScoped<ILiveService, LiveService>();
 builder.Services.AddScoped<IAprenderService, AprenderService>();
-builder.Services.AddScoped<IFollowService, FollowService>();
 builder.Services.AddScoped<IAliasService, AliasService>();
 
 builder
@@ -189,7 +188,7 @@ var app = builder.Build();
 var forwardedHeadersOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-    RequireHeaderSymmetry = false
+    RequireHeaderSymmetry = false,
 };
 forwardedHeadersOptions.KnownNetworks.Clear();
 forwardedHeadersOptions.KnownProxies.Clear();

@@ -149,15 +149,13 @@ namespace APP.Platform.Pages
 
             DateTime agora = DateTime.Now;
 
-            var comments =
-                _context
-                    ?.Comments.AsNoTracking()
-                    .Where(e =>
-                        e.LiveId == Guid.Parse(LiveId)
-                        && (e.IsValid || e.PerfilId == UserProfile.Id)
-                    )
-                    .OrderByDescending(x => x.DataCriacao)
-                    .ToList() ?? new List<Comment>();
+            using var responseTask = await client.GetAsync(
+                $"api/comments/getAllByLiveIdAndPerfilId/{LiveId}/{UserProfile.Id}"
+            );
+
+            responseTask.EnsureSuccessStatusCode();
+
+            var comments = await responseTask.Content.ReadFromJsonAsync<List<Comment>>();
 
             var perfilCommentsId = comments.Select(e => e.PerfilId).ToList();
 
@@ -180,7 +178,7 @@ namespace APP.Platform.Pages
                     Bio = perfil.Bio,
                     Email = perfil.Email,
                     Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
                 };
 
                 commentsAssociatedPerfilsLegacy.Add(perfilLegacy);
@@ -199,7 +197,7 @@ namespace APP.Platform.Pages
                     Perfil = associatedPerfil,
                     DataCriacao = item.DataCriacao,
                     Content = item.Content ?? string.Empty,
-                    Id = item.Id
+                    Id = item.Id,
                 };
 
                 Comments.Add(model);
@@ -305,7 +303,7 @@ namespace APP.Platform.Pages
                 PerfilId = UserProfile.Id,
                 LiveId = Guid.Parse(liveId),
                 Content = WebUtility.HtmlEncode(comment),
-                DataCriacao = DateTime.Now
+                DataCriacao = DateTime.Now,
             };
 
             await _context.Comments.AddAsync(commentModel);
@@ -327,7 +325,7 @@ namespace APP.Platform.Pages
                     comentario = commentModel.Content,
                     data = dataUsuario,
                     foto = fotoUsuario,
-                    nome = nomeUsuario
+                    nome = nomeUsuario,
                 }
             );
         }
@@ -386,7 +384,7 @@ namespace APP.Platform.Pages
                 DataCriacao = DateTime.Now,
                 Foto = UserProfile.Foto,
                 Nome = UserProfile.Nome,
-                Data = formatedDate
+                Data = formatedDate,
             };
 
             var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(messageToProcess));
@@ -420,7 +418,7 @@ namespace APP.Platform.Pages
                     LiveId = Guid.Parse(LiveId!),
                     PerfilId = UserProfile.Id,
                     Active = true,
-                    hasNotificated = false
+                    hasNotificated = false,
                 };
                 _context.NotifyUserLiveEarlies.Add(userNotify);
             }
@@ -450,16 +448,16 @@ namespace APP.Platform.Pages
 
             responseTask.EnsureSuccessStatusCode();
 
-            var likes = await responseTask.Content.ReadFromJsonAsync<List<Like>>();
+            var likes = await responseTask.Content.ReadFromJsonAsync<List<Like>>() ?? [];
 
             var relation = likes.Find(e => e.RelatedUserId == userId);
+
             if (relation != null)
             {
-                var updateLike = likes.First(e => e.RelatedUserId == userId);
-                updateLike.IsLiked = !updateLike.IsLiked;
-                userAlredyLiked = updateLike.IsLiked;
+                relation.IsLiked = !relation.IsLiked;
+                userAlredyLiked = relation.IsLiked;
 
-                _context.Likes.Update(updateLike);
+                _context.Likes.Update(relation);
             }
             else
             {

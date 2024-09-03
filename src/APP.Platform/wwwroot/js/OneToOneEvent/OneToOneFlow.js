@@ -1,23 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dateForm = document.getElementById("dateTime");
 
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  dateForm.value = formattedDate;
+
   let hoursStart = document.getElementById("hoursStart");
+  hoursStart.value = new Date().getHours() + 1;
   let minutesStart = document.getElementById("minutesStart");
   let isAmStart = document.getElementById("ampmStart");
+  isAmStart.value = hoursStart.value >= 12 ? "pm" : "am";
 
   let inicioHorario = `${
     hoursStart.value < 10 ? "0" + hoursStart.value : hoursStart.value
   }:${minutesStart.value < 10 ? "0" + minutesStart.value : minutesStart.value}`;
-  console.log(inicioHorario);
 
   let hoursEnd = document.getElementById("hoursEnd");
+  hoursEnd.value = new Date().getHours() + 2;
   let minutesEnd = document.getElementById("minutesEnd");
   let isAmEnd = document.getElementById("ampmEnd");
+  isAmEnd.value = hoursEnd.value >= 12 ? "pm" : "am";
 
   let fimHorario = `${
     hoursEnd.value < 10 ? "0" + hoursEnd.value : hoursEnd.value
   }:${minutesEnd.value < 10 ? "0" + minutesEnd.value : minutesEnd.value}`;
-  console.log(inicioHorario);
 
   let tituloResumo = document.getElementById("tituloResumo");
   let horariosResumo = document.getElementById("horarios-resumo");
@@ -56,14 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const content = eventData.content;
         if (content !== undefined) {
           if (content.tipo == 0) {
-            timeSelectionIdForLive = content.id;
             content.backgroundColor = "rgba(222, 164, 156, 0.45)";
             await createLiveModal(content.id);
           } else {
             createTimeModal(content.id);
           }
           calendar.addEvent(content);
-          firstForm = content;
           alertTimeSelectionCreatedSucessfully(content.id);
         }
       })
@@ -111,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTimeStart() {
     let hoursStartInt = parseInt(hoursStart.value, 10);
-    console.log(isAmStart.value);
     if (isAmStart.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
@@ -123,13 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
     inicioHorario = `${
       hoursStartInt < 10 ? "0" + hoursStartInt : hoursStartInt
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
-
-    console.log(inicioHorario);
   }
 
   function updateTimeEnd() {
     let hoursEndInt = parseInt(hoursEnd.value, 10);
-    console.log(isAmEnd.value);
     if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
@@ -141,12 +141,9 @@ document.addEventListener("DOMContentLoaded", function () {
     fimHorario = `${hoursEndInt < 10 ? "0" + hoursEndInt : hoursEndInt}:${
       minutesEndInt < 10 ? "0" + minutesEndInt : minutesEndInt
     }`;
-
-    console.log(fimHorario);
   }
 
   saveTimeForm.addEventListener("submit", (event) => {
-    console.log("chamado");
     event.preventDefault();
     const selectElement = document.getElementById("TagsSelected");
     const selectedOptions = selectElement.selectedOptions;
@@ -209,6 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Passa da etapa 3 para a etapa 2
   $("#btnBack1").click(() => {
+    const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
     switchStep(".body-oneToOne-2", ".body-oneToOne-1");
   });
 
@@ -221,12 +224,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalOneToOne").on("hidden.bs.modal", () => {
     setTimeout(() => {
+
+      const mainTag = document.querySelector(".modal-tag-main");
+    if (mainTag) {
+      mainTag.remove();
+    }
+    const modalTags = document.querySelectorAll(".modal-tag");
+    modalTags.forEach((tag) => tag.remove());
+     
       $(".modal-select").removeClass("active");
       $(".body-oneToOne-1").addClass("active");
     }, 100);
   });
-
-  console.log(saveTimeForm);
   let dateTime = document.getElementById("dateTime");
 
   let pendentesContainer;

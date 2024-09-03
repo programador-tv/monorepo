@@ -20,7 +20,7 @@ namespace Infrastructure.Migrations
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -53,7 +53,7 @@ namespace Infrastructure.Migrations
                         nullable: true
                     ),
                     ConheciaAvaliadoPreviamente = table.Column<bool>(type: "bit", nullable: true),
-                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true)
+                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace Infrastructure.Migrations
                         nullable: true
                     ),
                     ConheciaAvaliadoPreviamente = table.Column<bool>(type: "bit", nullable: true),
-                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true)
+                    SatisfacaoExperiencia = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -99,7 +99,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -113,7 +113,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MaxParticipants = table.Column<int>(type: "int", nullable: false)
+                    MaxParticipants = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -129,7 +129,7 @@ namespace Infrastructure.Migrations
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StatusJoinTime = table.Column<int>(type: "int", nullable: false),
-                    NotifiedMentoriaProxima = table.Column<bool>(type: "bit", nullable: false)
+                    NotifiedMentoriaProxima = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -144,7 +144,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RelatedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsLiked = table.Column<bool>(type: "bit", nullable: false)
+                    IsLiked = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -160,7 +160,7 @@ namespace Infrastructure.Migrations
                     TimeSelectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TituloTemporario = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -188,7 +188,7 @@ namespace Infrastructure.Migrations
                     TentativasDeObterUrl = table.Column<int>(type: "int", nullable: false),
                     StatusLive = table.Column<int>(type: "int", nullable: false),
                     IsUsingObs = table.Column<bool>(type: "bit", nullable: false),
-                    UrlAlias = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UrlAlias = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -208,7 +208,7 @@ namespace Infrastructure.Migrations
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Conteudo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ActionLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecundaryLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SecundaryLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -224,7 +224,7 @@ namespace Infrastructure.Migrations
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    HasNotificated = table.Column<bool>(type: "bit", nullable: false)
+                    HasNotificated = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -243,7 +243,7 @@ namespace Infrastructure.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -261,7 +261,7 @@ namespace Infrastructure.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -281,7 +281,7 @@ namespace Infrastructure.Migrations
                     EstaAberto = table.Column<bool>(type: "bit", nullable: false),
                     TipoSala = table.Column<int>(type: "int", nullable: false),
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Privado = table.Column<bool>(type: "bit", nullable: false)
+                    Privado = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -298,7 +298,7 @@ namespace Infrastructure.Migrations
                     LiveRelacao = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RoomRelacao = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FreeTimeRelacao = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PreLiveRelacao = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PreLiveRelacao = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -321,7 +321,7 @@ namespace Infrastructure.Migrations
                     NotifiedMentoriaProxima = table.Column<bool>(type: "bit", nullable: false),
                     PreviewImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TipoAction = table.Column<int>(type: "int", nullable: false),
-                    Variacao = table.Column<int>(type: "int", nullable: false)
+                    Variacao = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -337,7 +337,7 @@ namespace Infrastructure.Migrations
                     LiveId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IPV4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DataEntrou = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {

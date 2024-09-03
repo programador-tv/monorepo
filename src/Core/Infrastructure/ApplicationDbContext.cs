@@ -27,4 +27,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<HelpBackstage> HelpBackstages { get; set; } = null!;
     public DbSet<ChatMessage> ChatMessages { get; set; } = null!;
     public DbSet<Log> Logs { get; set; } = null!;
+    public DbSet<HelpResponse> HelpResponses { get; set; } = null!;
+    public DbSet<Publication> Publications { get; set; } = null!;
 }

@@ -31,7 +31,7 @@ public class LikeEndPointsTests
         var likes = new List<Like>
         {
             Like.Create(liveId, relatedUserIdOne),
-            Like.Create(liveId, relatedUserIdTwo)
+            Like.Create(liveId, relatedUserIdTwo),
         };
 
         mockLogic.Setup(logic => logic.GetLikesByLiveId(liveId)).ReturnsAsync(likes);

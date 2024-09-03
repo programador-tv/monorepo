@@ -129,8 +129,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                     @{
                                         int tempoRestanteEmHoras = int.Parse(data.Value.TempoRestante);
                                         int dias = tempoRestanteEmHoras / 24;
-                                        int horas = tempoRestanteEmHoras % 24; 
-                                        #warning temos formas alternativas mais precisas de obter o tempo restante  
+                                        int horas = tempoRestanteEmHoras % 24;
                                         
                                         if(data.Value.Status != StatusTimeSelection.Marcado){
                                             if(data.Key.StatusJoinTime == StatusJoinTime.Marcado)

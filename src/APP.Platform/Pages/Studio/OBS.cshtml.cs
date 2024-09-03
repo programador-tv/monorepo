@@ -10,19 +10,28 @@ using Queue;
 
 namespace APP.Platform.Pages.Studio
 {
-    public sealed class OBSModel(
-        ApplicationDbContext context,
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor,
-        IMessagePublisher messagePublisher,
-        Settings settings,
-        RateLimit rateLimit
-    ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
+    public sealed class OBSModel : CustomPageModel
     {
+        private new readonly ApplicationDbContext _context;
+        private readonly RateLimit _rateLimit;
+
         public Live? Live { get; set; }
 
         [BindProperty]
         public List<Domain.Entities.Perfil>? Perfil { get; set; }
+
+        public OBSModel(
+            ApplicationDbContext context,
+            IHttpClientFactory httpClientFactory,
+            IHttpContextAccessor httpContextAccessor,
+            Settings settings,
+            RateLimit rateLimit
+        )
+            : base(context, httpClientFactory, httpContextAccessor, settings)
+        {
+            _context = context;
+            _rateLimit = rateLimit;
+        }
 
         public async Task<IActionResult> OnGetAsync(string mainkey)
         {
@@ -85,7 +94,7 @@ namespace APP.Platform.Pages.Studio
                 return BadRequest();
             }
 
-            if (rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
+            if (_rateLimit.IsRateLimited(UserProfile.Id.ToString(), liveId))
             {
                 return BadRequest("Você está enviando mensagens muito rápido.");
             }
@@ -100,7 +109,7 @@ namespace APP.Platform.Pages.Studio
                 DataCriacao = DateTime.Now,
                 Foto = UserProfile.Foto,
                 Nome = UserProfile.Nome,
-                Data = formatedDate
+                Data = formatedDate,
             };
 
             var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(messageToProcess));

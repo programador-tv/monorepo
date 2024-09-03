@@ -6,5 +6,5 @@ public enum ExperienceLevel
     Entre1E3Anos = 1,
     Entre3E5Anos = 2,
     Entre5E7Anos = 3,
-    MaisDe8Anos = 4
+    MaisDe8Anos = 4,
 }

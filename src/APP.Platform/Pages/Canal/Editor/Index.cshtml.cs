@@ -89,7 +89,7 @@ public sealed class EditorIndexModel : CustomPageModel
                 Bio = perfilResponse.Bio,
                 Email = perfilResponse.Email,
                 Descricao = perfilResponse.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
             };
 
             if (owner != null && owner.Id != live.PerfilId)
@@ -217,7 +217,7 @@ public sealed class EditorIndexModel : CustomPageModel
                 {
                     Titulo = t,
                     LiveRelacao = live.Id.ToString(),
-                    FreeTimeRelacao = timeSelectionId.ToString()
+                    FreeTimeRelacao = timeSelectionId.ToString(),
                 };
                 _context.Tags.Add(tag);
             }
@@ -262,7 +262,7 @@ public sealed class EditorIndexModel : CustomPageModel
                     new ResizeOptions
                     {
                         Size = new Size(targetWidth, targetHeight),
-                        Mode = ResizeMode.Pad
+                        Mode = ResizeMode.Pad,
                     }
                 )
             );

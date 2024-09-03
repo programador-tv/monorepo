@@ -7,6 +7,6 @@
         Pleno,
         Senior,
         Especialista,
-        MasterBlaster
+        MasterBlaster,
     }
 }

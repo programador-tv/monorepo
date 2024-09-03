@@ -58,7 +58,7 @@ namespace APP.Platform.Pages
                     Bio = perfil.Bio,
                     Email = perfil.Email,
                     Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
                 };
                 Perfils.Add(perfilLegacy);
             }

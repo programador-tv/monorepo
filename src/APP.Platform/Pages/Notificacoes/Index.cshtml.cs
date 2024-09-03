@@ -46,7 +46,7 @@ namespace APP.Platform.Pages
                     Bio = perfil.Bio,
                     Email = perfil.Email,
                     Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
                 };
                 profilesLegacy.Add(perfilLegacy);
             }
@@ -69,7 +69,7 @@ namespace APP.Platform.Pages
                         SecundaryLink = notification.SecundaryLink,
                         PerfilGerador = profilesLegacy?.FirstOrDefault(x =>
                             x.Id == notification.GeradorPerfilId
-                        )
+                        ),
                     }
                 );
             }

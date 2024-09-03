@@ -99,6 +99,7 @@ namespace APP.Platform.Pages.ScheduleActions
         private readonly IAprenderService _AprenderService;
         private readonly IHttpClientFactory _httpClientFactory;
         private IPerfilWebService _perfilWebService { get; set; }
+        private IHelpResponseWebService _helpResponseWebService { get; set; }
 
         public ScheduleActionsModel(
             IRazorViewEngine viewEngine,
@@ -112,7 +113,8 @@ namespace APP.Platform.Pages.ScheduleActions
             OpenAiService openAiService,
             Settings settings,
             IAliasService aliasService,
-            IPerfilWebService perfilWebService
+            IPerfilWebService perfilWebService,
+            IHelpResponseWebService helpResponseWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
@@ -126,6 +128,7 @@ namespace APP.Platform.Pages.ScheduleActions
             _openAiService = openAiService;
             _aliasService = aliasService;
             _perfilWebService = perfilWebService;
+            _helpResponseWebService = helpResponseWebService;
             RelatioTags = DataTags.GetTags();
             TagsSelected = new();
             TimeSelectionList = new();
@@ -248,7 +251,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     Bio = perfil.Bio,
                     Email = perfil.Email,
                     Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia
+                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
                 };
 
                 perfilsLegacy.Add(perfilLegacy);
@@ -260,7 +263,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     TimeSelectionId = j.TimeSelectionId,
                     JoinTimeId = j.Id,
                     StatusJoinTime = j.StatusJoinTime,
-                    Perfil = perfilsLegacy.Find(p => p.Id == j.PerfilId)
+                    Perfil = perfilsLegacy.Find(p => p.Id == j.PerfilId),
                 })
                 .Where(e => e.Perfil != null)
                 .ToList();
@@ -491,7 +494,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     JoinTimeModalsPanel = userJoinTimesHtml,
                     RequestHelpModalsPanel = userRequestHelpListHtml,
                     SolvedHelpModalsPanel = userSolvedHelpListHtml,
-                    LivesModalsPanel = userLivesPanelHtml
+                    LivesModalsPanel = userLivesPanelHtml,
                 }
             );
         }
@@ -546,7 +549,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     DataCriacao = DateTime.Now,
                     Conteudo =
                         $@" cancelou a mentoria {time.TituloTemporario} no dia {time.StartTime:dd/MM/yyyy}",
-                    ActionLink = "./"
+                    ActionLink = "./",
                 };
             }
             else if (time != null && time.Tipo == EnumTipoTimeSelection.RequestHelp)
@@ -559,7 +562,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     DataCriacao = DateTime.Now,
                     Conteudo =
                         $@" cancelou orientação para o pedido de ajuda {time.TituloTemporario} no dia {time.StartTime:dd/MM/yyyy}",
-                    ActionLink = "./"
+                    ActionLink = "./",
                 };
             }
             if (notification != null)
@@ -588,7 +591,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     new ModelStateDictionary()
                 )
                 {
-                    Model = model
+                    Model = model,
                 };
 
                 var viewContext = new ViewContext(
@@ -638,6 +641,39 @@ namespace APP.Platform.Pages.ScheduleActions
             );
         }
 
+        public IActionResult OnGetPartialLivePanel(string timeSelectionId)
+        {
+            _ensinarService.GetTimeSelectionItem(
+                Guid.Parse(timeSelectionId),
+                UserProfile,
+                _meetUrl,
+                TimeSelectionsCheckedUsers,
+                OldTimeSelectionList,
+                TimeSelectionList
+            );
+
+            if (TimeSelectionList.Count != 1)
+            {
+                return BadRequest();
+            }
+
+            var timeSelectionAndJoinTimes = TimeSelectionList.First();
+            _ensinarService.CheckActionNeedAndUpdateTime(timeSelectionAndJoinTimes);
+
+            var timeDelta = timeSelectionAndJoinTimes.Key!.StartTime - DateTime.Now;
+            string tempoRestante = TimeHelper.ReturnRemainingTimeString(timeDelta);
+
+            return Partial(
+                "Components/TimeSelections/_LivesCard",
+                new LivesCardPageModel
+                {
+                    Id = timeSelectionAndJoinTimes.Key.Id,
+                    Titulo = timeSelectionAndJoinTimes.Key.TituloTemporario ?? string.Empty,
+                    TempoRestante = tempoRestante,
+                }
+            );
+        }
+
         public IActionResult OnGetPartialFreeTimePanel(string timeSelectionId)
         {
             _ensinarService.GetTimeSelectionItem(
@@ -672,7 +708,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     TimeSelectionsCheckedUsers = TimeSelectionsCheckedUsers.ToDictionary(
                         kvp => kvp.Key,
                         kvp => kvp.Value.Where(p => p != null).ToList()
-                    )
+                    ),
                 }
             );
         }
@@ -835,7 +871,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
             foreach (var selected in TagsSelected)
             {
-                var tag = new Tag { Titulo = selected, LiveRelacao = live.Id.ToString(), };
+                var tag = new Tag { Titulo = selected, LiveRelacao = live.Id.ToString() };
                 _context.Tags.Add(tag);
             }
 
@@ -853,11 +889,10 @@ namespace APP.Platform.Pages.ScheduleActions
             return Redirect(url);
         }
 
-        public async Task<IActionResult> OnGetAcceptance(string id)
+        public async Task<IActionResult> OnGetAcceptance(Guid id)
         {
 #warning se vem o id(token) do front, provavelmente os dados buscados aqui ja estão disponiveis la
-
-            var perfilResponse = await _perfilWebService.GetByToken(id);
+            var perfilResponse = await _perfilWebService.GetById(id);
 
             var perfilLegacy = new Domain.Entities.Perfil
             {
@@ -871,7 +906,7 @@ namespace APP.Platform.Pages.ScheduleActions
                 Bio = perfilResponse.Bio,
                 Email = perfilResponse.Email,
                 Descricao = perfilResponse.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
             };
 
             return new JsonResult(perfilLegacy);
@@ -925,7 +960,7 @@ namespace APP.Platform.Pages.ScheduleActions
                         $@" marcou com você a mentoria {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                    ActionLink = "./?event=" + join.TimeSelectionId
+                    ActionLink = "./?event=" + join.TimeSelectionId,
                 };
             }
             else if (ts.Tipo == EnumTipoTimeSelection.RequestHelp)
@@ -940,7 +975,7 @@ namespace APP.Platform.Pages.ScheduleActions
                         $@" marcou uma orientação você no pedido de ajuda {ts.TituloTemporario}
                     no dia {ts.StartTime:dd/MM/yyyy}
                 ",
-                    ActionLink = "./?event=" + join.TimeSelectionId
+                    ActionLink = "./?event=" + join.TimeSelectionId,
                 };
             }
             if (notification != null)
@@ -1050,13 +1085,13 @@ namespace APP.Platform.Pages.ScheduleActions
                 DataCriacao = DateTime.Now,
                 UltimaAtualizacao = DateTime.Now,
                 TipoSala = EnumTipoSalas.Mentoria,
-                Privado = true
+                Privado = true,
             };
             _context?.Rooms?.Add(room);
 
             foreach (var t in TagsSelected)
             {
-                var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala, };
+                var tag = new Tag { Titulo = t, RoomRelacao = room.CodigoSala };
                 _context?.Tags?.Add(tag);
             }
             return room.Id;
@@ -1111,7 +1146,7 @@ namespace APP.Platform.Pages.ScheduleActions
                         DataCriacao = DateTime.Now,
                         Conteudo =
                             $@" cancelou a mentoria {time.TituloTemporario} no dia {time.StartTime:dd/MM/yyyy}",
-                        ActionLink = "./"
+                        ActionLink = "./",
                     };
                 }
                 else if (time != null && time.Tipo == EnumTipoTimeSelection.RequestHelp)
@@ -1124,7 +1159,7 @@ namespace APP.Platform.Pages.ScheduleActions
                         DataCriacao = DateTime.Now,
                         Conteudo =
                             $@" cancelou o pedido de ajuda {time.TituloTemporario} no dia {time.StartTime:dd/MM/yyyy}",
-                        ActionLink = "./"
+                        ActionLink = "./",
                     };
                 }
             }
@@ -1225,7 +1260,7 @@ namespace APP.Platform.Pages.ScheduleActions
             {
                 Id = Guid.NewGuid(),
                 TimeSelectionId = TimeSelection.Id,
-                DataDeclaracao = DateTime.Now
+                DataDeclaracao = DateTime.Now,
             };
 
             if (
@@ -1386,7 +1421,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
                 foreach (var selected in TagsSelected)
                 {
-                    var tag = new Tag { Titulo = selected, LiveRelacao = live.Id.ToString(), };
+                    var tag = new Tag { Titulo = selected, LiveRelacao = live.Id.ToString() };
                     _context?.Tags?.Add(tag);
                 }
             }
@@ -1426,7 +1461,7 @@ namespace APP.Platform.Pages.ScheduleActions
                         new ResizeOptions
                         {
                             Size = new Size(targetWidth, targetHeight),
-                            Mode = ResizeMode.Pad
+                            Mode = ResizeMode.Pad,
                         }
                     )
                 );
@@ -1463,7 +1498,7 @@ namespace APP.Platform.Pages.ScheduleActions
                     StartTime = e.StartTime,
                     EndTime = e.EndTime,
                     Titulo = e.TituloTemporario,
-                    Variacao = (int)e.Variacao
+                    Variacao = (int)e.Variacao,
                 })
                 .ToList();
 
@@ -1499,7 +1534,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     timeSelectionGroupByPerfilId,
                     _context,
                     _httpClientFactory,
-                    _perfilWebService
+                    _perfilWebService,
+                    _helpResponseWebService
                 );
             return new JsonResult(new { pedidos = RequestedHelp, isLogged = IsAuth });
         }
@@ -1519,7 +1555,8 @@ namespace APP.Platform.Pages.ScheduleActions
                     timeSelectionGroupByPerfilId,
                     _context,
                     _httpClientFactory,
-                    _perfilWebService
+                    _perfilWebService,
+                    _helpResponseWebService
                 );
             return new JsonResult(new { pedidos = RequestedHelp, isLogged = IsAuth });
         }

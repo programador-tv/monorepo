@@ -135,9 +135,6 @@ const TWENTY_FOUR_HOURS = 86400000;
 const ONE_MONTH = 2592000000;
 
 function validateDateTime(date, firstTime, lastTime, eventType = undefined) {
-  console.log(date);
-  console.log(firstTime);
-  console.log(lastTime);
   const currentDate = new Date();
   const altDate = new Date(new Date(date).getTime() + TWENTY_FOUR_HOURS);
   altDate.setHours(firstTime.getHours());
@@ -300,7 +297,8 @@ function preventInvalidCharacter(input, inputLocation, maxValue, event) {
   }
   let strValue = String(input.value);
   if (strValue.length == 2) {
-    strNewValue = event.key.padStart(2, strValue.charAt(1));
+    let strNewValue = event.key.padStart(2, strValue.charAt(1))
+
     if (strValue.charAt(1) === "0") {
       strNewValue = "0" + event.key;
     }
@@ -372,45 +370,51 @@ function valueListener() {
 }
 
 function displayTotalTime() {
-  const deltaH =
-    parseInt(lastPickerHoursInput.value) -
-    parseInt(firstPickerHoursInput.value);
-  const deltaM =
-    parseInt(lastPickerMinutesInput.value) -
-    parseInt(firstPickerMinutesInput.value);
-  const totalTime = deltaH * 60 + deltaM;
-  finalM = totalTime % 60;
-  finalH = (totalTime - finalM) / 60;
-  if (totalTime > 120) {
-    showMessage("Não é possível criar um evento com mais de duas horas.", true);
-    displayTimeAlert.innerHTML =
-      "Duração total: " +
-      finalH +
-      "h" +
-      (finalM > 0 ? " e " + finalM + "min" : "");
-  } else if (totalTime < 30 && totalTime > 0) {
-    showMessage(
-      "Não é possível criar um evento com menos de trinta minutos.",
-      true
-    );
-    displayTimeAlert.innerHTML =
-      finalM > 0 ? "Duração total: " + finalM + "min" : "";
-  } else if (totalTime <= 0) {
-    showMessage("Horário de início e fim inválidos.", true);
-    displayTimeAlert.innerHTML = "";
-  } else {
-    if (finalH > 0) {
-      displayTimeAlert.innerHTML =
-        "Duração total: " +
-        finalH +
-        "h" +
-        (finalM > 0 ? " e " + finalM + "min" : "");
-    } else {
-      displayTimeAlert.innerHTML =
-        finalM > 0 ? "Duração total: " + finalM + "min" : "";
+    const deltaH =
+        parseInt(lastPickerHoursInput.value) -
+        parseInt(firstPickerHoursInput.value);
+    const deltaM =
+        parseInt(lastPickerMinutesInput.value) -
+        parseInt(firstPickerMinutesInput.value);
+    const totalTime = deltaH * 60 + deltaM;
+    const finalM = totalTime % 60;
+    const finalH = (totalTime - finalM) / 60;
+
+    if (totalTime > 120) {
+        showMessage("Não é possível criar um evento com mais de duas horas.", true);
+        displayTimeAlert.innerHTML =
+            "Duração total: " +
+            finalH +
+            "h" +
+            (finalM > 0 ? " e " + finalM + "min" : "");
+        return;
     }
-    showMessage("", false);
-  }
+    if (totalTime < 30 && totalTime > 0) {
+        showMessage("Não é possível criar um evento com menos de trinta minutos.", true);
+        displayTimeAlert.innerHTML =
+            finalM > 0 ? "Duração total: " + finalM + "min" : "";
+        return;
+    }
+    if (totalTime <= 0) {
+        showMessage("Horário de início e fim inválidos.", true);
+        displayTimeAlert.innerHTML = "";
+        return;
+    }
+    if ((totalTime <= 120 && totalTime >= 30) && finalH > 0) {
+        displayTimeAlert.innerHTML =
+            "Duração total: " +
+            finalH +
+            "h" +
+            (finalM > 0 ? " e " + finalM + "min" : "");
+        showMessage("", false);
+        return;
+    }
+    if ((totalTime <= 120 && totalTime >= 30) && finalH <= 0) {
+        displayTimeAlert.innerHTML =
+            finalM > 0 ? "Duração total: " + finalM + "min" : "";
+        showMessage("", false);
+        return;
+    }
 }
 
 // Event listeners

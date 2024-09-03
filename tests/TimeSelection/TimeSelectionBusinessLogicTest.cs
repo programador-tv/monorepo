@@ -1,5 +1,7 @@
 using Application.Logic;
+using Domain.Contracts;
 using Domain.Entities;
+using Domain.Enumerables;
 using Domain.Enums;
 using Domain.Repositories;
 using Moq;
@@ -79,7 +81,7 @@ public class TimeSelectionBusinessLogicTests
                 EnumTipoTimeSelection.FreeTime,
                 TipoAction.Ensinar,
                 Variacao.CursoOuEvento
-            )
+            ),
         };
         mockTimeSelectionRepo
             .Setup(repo => repo.GetFreeTimeMarcadosAntigos())
@@ -88,7 +90,7 @@ public class TimeSelectionBusinessLogicTests
         var perfilGeradorHash = new Dictionary<Guid, Guid>()
         {
             { testTimeSelections[0].Id, perfilId },
-            { testTimeSelections[1].Id, perfilId }
+            { testTimeSelections[1].Id, perfilId },
         };
         mockJoinTimeRepo
             .Setup(repo => repo.GetJoinTimePerfilIdsByTimeSelectionIds(It.IsAny<List<Guid>>()))
@@ -132,9 +134,9 @@ public class TimeSelectionBusinessLogicTests
                         StatusJoinTime.Marcado,
                         false,
                         TipoAction.Aprender
-                    )
+                    ),
                 }
-            }
+            },
         };
         mockTimeSelectionRepo
             .Setup(repo => repo.GetUpcomingTimeSelectionAndJoinTime())
@@ -151,5 +153,146 @@ public class TimeSelectionBusinessLogicTests
             var jts = kvp.Value;
             Assert.True(mockMessagePublisher.Invocations.Count == 2);
         }
+    }
+
+    [Fact]
+    public async Task BuildOpenGraphImage_ReturnsABuiltGraphImage()
+    {
+        var timeSelection = TimeSelection.Create(
+            Guid.NewGuid(),
+            null,
+            DateTime.Now,
+            DateTime.Now.AddHours(1),
+            "Guid.NewGuid()",
+            EnumTipoTimeSelection.FreeTime,
+            TipoAction.Ensinar,
+            Variacao.OneToOne
+        );
+
+        List<Tag> tags =
+        [
+            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test"),
+            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test"),
+        ];
+
+        var perfil = Perfil.Create(
+            new CreatePerfilRequest(
+                Nome: "Test",
+                Token: "12345qwerty",
+                UserName: "test",
+                Linkedin: "linkedin.com/test",
+                GitHub: "github.com/test",
+                Bio: "Teste de bio",
+                Email: "test@test.com",
+                Descricao: "Teste de descrição",
+                Experiencia: ExperienceLevel.Entre1E3Anos
+            )
+        );
+
+        mockTimeSelectionRepo
+            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
+            .ReturnsAsync(timeSelection);
+        mockPerfilRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(perfil);
+        mockTagRepo
+            .Setup(repo => repo.GetAllByFreetimeIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(tags);
+
+        var result = await businessLogic.BuildOpenGraphImage(Guid.NewGuid());
+
+        Assert.NotNull(result);
+        Assert.IsType<BuildOpenGraphImage>(result);
+
+        mockTimeSelectionRepo.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);
+        mockPerfilRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        mockTagRepo.Verify(repo => repo.GetAllByFreetimeIdAsync(It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task BuildOpenGraphImage_ThrowsANotFoundException()
+    {
+        var perfilId = Guid.NewGuid();
+        var timeSelection = TimeSelection.Create(
+            perfilId,
+            null,
+            DateTime.Now,
+            DateTime.Now.AddHours(1),
+            "Guid.NewGuid()",
+            EnumTipoTimeSelection.FreeTime,
+            TipoAction.Ensinar,
+            Variacao.OneToOne
+        );
+
+        List<Tag> tags =
+        [
+            new Tag(Guid.NewGuid(), "Hi", "test", "test", "test", "test"),
+            new Tag(Guid.NewGuid(), "Hello", "test", "test", "test", "test"),
+        ];
+
+        var perfil = Perfil.Create(
+            new CreatePerfilRequest(
+                Nome: "Test",
+                Token: "12345qwerty",
+                UserName: "test",
+                Linkedin: "linkedin.com/test",
+                GitHub: "github.com/test",
+                Bio: "Teste de bio",
+                Email: "test@test.com",
+                Descricao: "Teste de descrição",
+                Experiencia: ExperienceLevel.Entre1E3Anos
+            )
+        );
+
+        mockTimeSelectionRepo
+            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
+            .ReturnsAsync(timeSelection);
+        mockPerfilRepo
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))
+            .ThrowsAsync(
+                new KeyNotFoundException(
+                    "Perfil não encontrado para o id " + timeSelection.PerfilId
+                )
+            );
+
+        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
+            async () => await businessLogic.BuildOpenGraphImage(Guid.NewGuid())
+        );
+
+        Assert.Equal("Perfil não encontrado para o id " + perfilId, exception.Message);
+        Assert.IsType<KeyNotFoundException>(exception);
+
+        mockTimeSelectionRepo.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);
+        mockPerfilRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateTimeSelectionImage_InvokesUpdateRange()
+    {
+        var timeSelectionId = Guid.NewGuid();
+        var timeSelection = TimeSelection.Create(
+            timeSelectionId,
+            null,
+            DateTime.Now,
+            DateTime.Now.AddHours(1),
+            "Guid.NewGuid()",
+            EnumTipoTimeSelection.FreeTime,
+            TipoAction.Ensinar,
+            Variacao.OneToOne
+        );
+        var update = new UpdateTimeSelectionPreviewRequest(timeSelectionId, "");
+
+        mockTimeSelectionRepo
+            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
+            .ReturnsAsync(timeSelection);
+        mockTimeSelectionRepo
+            .Setup(repo => repo.UpdateRange(It.IsAny<List<TimeSelection>>()))
+            .Returns(Task.CompletedTask);
+
+        await businessLogic.UpdateTimeSelectionImage(update);
+
+        mockTimeSelectionRepo.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);
+        mockTimeSelectionRepo.Verify(
+            repo => repo.UpdateRange(It.IsAny<List<TimeSelection>>()),
+            Times.Once
+        );
     }
 }

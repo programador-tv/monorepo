@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM totalmente carregado e analisado.");
-
   let formInicio = document.getElementById("startTime");
   let hoursStart = document.getElementById("hoursStart");
   let minutesStart = document.getElementById("minutesStart");
@@ -40,6 +38,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const TWO_HOURS = 2 * 60 * 60 * 1000;
   const THIRTY_MINUTES = 30 * 60 * 1000;
 
+  function validateTimeOverlap(timeSelection) {
+    for (let i = 0; i < asyncEvents.length; i++) {
+      const item = asyncEvents[i];
+      if (item.start <= timeSelection.start && item.end > timeSelection.start) {
+        return false;
+      }
+      if (item.start < timeSelection.end && item.end >= timeSelection.end) {
+        return false;
+      }
+      if (item.start >= timeSelection.start && item.end <= timeSelection.end) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function showMessage(message, isError) {
     if (isError) {
       errorSpanTime.innerText = message;
@@ -60,9 +74,29 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEndDate.setHours(lastTime.getHours());
     eventEndDate.setMinutes(lastTime.getMinutes());
 
-    console.log(eventDate);
+    const utcEventDate = new Date(
+      eventDate.getTime() - eventDate.getTimezoneOffset() * 60000
+    );
+    const utcEventEndDate = new Date(
+      eventEndDate.getTime() - eventEndDate.getTimezoneOffset() * 60000
+    );
 
-    if (date === "") {
+    const startStr = transformDateFormat(utcEventDate.toISOString());
+    const endStr = transformDateFormat(utcEventEndDate.toISOString());
+
+    let event = {
+      id: "temp",
+      title: "",
+      start: startStr,
+      end: endStr,
+      backgroundColor: "lightblue",
+      borderColor: "darkblue",
+    };
+
+    if (!validateTimeOverlap(event)) {
+      showMessage("Já existe um evento nessa data", true);
+      return false;
+    } else if (date === "") {
       showMessage("Data inválida.", true);
       return false;
     } else if (eventDate.getTime() - currentDate.getTime() > ONE_MONTH) {
@@ -92,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const validateDates = () => {
     let hoursStartInt = parseInt(hoursStart.value, 10);
-    console.log(isAmStart.value);
     if (isAmStart.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
     } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
@@ -106,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }:${minutesInt < 10 ? "0" + minutesInt : minutesInt}`;
 
     let hoursEndInt = parseInt(hoursEnd.value, 10);
-    console.log(isAmEnd.value);
     if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
     } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
@@ -182,6 +214,8 @@ document.addEventListener("DOMContentLoaded", function () {
   minutesEnd.addEventListener("change", validateDates);
   isAmEnd.addEventListener("change", validateDates);
 
-  validateDates();
-  validateFirstModal();
+  $("#eventModalOneToOne").on("shown.bs.modal", function () {
+    validateDates();
+    validateFirstModal();
+  });
 });

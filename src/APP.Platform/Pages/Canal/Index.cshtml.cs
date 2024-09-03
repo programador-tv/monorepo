@@ -47,7 +47,6 @@ public sealed class CanalIndexModel : CustomPageModel
     private readonly ITempDataProvider _tempDataProvider;
     private IPerfilWebService _perfilWebService { get; set; }
     private readonly ILiveService _liveService;
-    private readonly IFollowService _followService;
     public Dictionary<string, List<string>> RelatioTags { get; set; }
     public bool IsFollowing { get; set; }
     public int followersCount { get; set; }
@@ -63,8 +62,7 @@ public sealed class CanalIndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         Settings settings,
         IPerfilWebService perfilWebService,
-        ILiveService liveService,
-        IFollowService followService
+        ILiveService liveService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
@@ -75,7 +73,6 @@ public sealed class CanalIndexModel : CustomPageModel
         _context = context;
         _messagePublisher = messagePublisher;
         _liveService = liveService;
-        _followService = followService;
     }
 
     public async Task<IActionResult> OnGetAsync(string usr)
@@ -99,11 +96,11 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         PerfilOwner = perfilOwner;
-
+#warning deve popular IsFollowing
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
@@ -120,7 +117,12 @@ public sealed class CanalIndexModel : CustomPageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnGetAfterloadCanal(string usr)
+    public async Task<ActionResult> OnGetAfterloadCanal(
+        string usr,
+        bool isPrivate,
+        int pageNumber = 1,
+        int pageSize = 3
+    )
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
 
@@ -136,7 +138,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfilOwner == null)
@@ -144,16 +146,23 @@ public sealed class CanalIndexModel : CustomPageModel
             return BadRequest();
         }
 
-        var privateLives = _liveService.RenderPrivateLives(perfilOwner, UserProfile.Id);
+        var pagedPrivateLives = await _liveService.RenderPrivateLives(
+            perfilOwner,
+            UserProfile.Id,
+            isPrivate,
+            pageNumber,
+            pageSize
+        );
         var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
-            privateLives,
+            pagedPrivateLives,
             _viewEngine,
             PageContext,
             _tempDataProvider
         );
+
         var liveSchedulesHtml = await RenderVideosService.RenderVideos(
             "Components/_LiveSchedulePreviewGroup",
             liveSchedules,
@@ -163,7 +172,12 @@ public sealed class CanalIndexModel : CustomPageModel
         );
 
         return new JsonResult(
-            new { privateLives = savedVideosHtml, liveSchedules = liveSchedulesHtml }
+            new
+            {
+                privateLives = savedVideosHtml,
+                liveSchedules = liveSchedulesHtml,
+                isPrivateVideosChecked = isPrivate,
+            }
         );
     }
 
@@ -255,7 +269,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 Bio = perfilDomain.Bio,
                 Email = perfilDomain.Email,
                 Descricao = perfilDomain.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia
+                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia,
             };
             associatedPerfilLegacy.Add(perfilLegacy);
         }
@@ -347,7 +361,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfil == null)
@@ -379,7 +393,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 Titulo = e.TituloTemporario,
-                Variacao = (int)e.Variacao
+                Variacao = (int)e.Variacao,
             })
             .ToList();
 
@@ -443,7 +457,7 @@ public sealed class CanalIndexModel : CustomPageModel
             Bio = perfilResponse.Bio,
             Email = perfilResponse.Email,
             Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia
+            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
         };
 
         if (perfil == null)
@@ -481,7 +495,7 @@ public sealed class CanalIndexModel : CustomPageModel
         {
             Id = Guid.NewGuid(),
             JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now
+            DataTentativaMarcacao = DateTime.Now,
         };
         _context.FeedbackJoinTimes?.Add(feedback);
 
@@ -500,7 +514,7 @@ public sealed class CanalIndexModel : CustomPageModel
                     em receber mentoria {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
@@ -518,7 +532,7 @@ public sealed class CanalIndexModel : CustomPageModel
                     em oferecer orientação para o pedido de ajuda: {timeSelection.TituloTemporario}
                     no dia {timeSelection.StartTime:dd/MM/yyyy}
                 ",
-                ActionLink = "./?event=" + JoinTime.TimeSelectionId
+                ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
             await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);

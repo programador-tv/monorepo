@@ -1,5 +1,6 @@
 using Application.Logic;
 using Domain.Contracts;
+using Infrastructure.FileHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -61,7 +62,8 @@ public static class PerfilsEndPoints
     public static async Task<IResult> UpdateFoto(
         [FromServices] IPerfilBusinessLogic _logic,
         Guid id,
-        IFormFile file
+        IFormFile file,
+        ISaveFile saveFile
     )
     {
         if (!file.ContentType.ToLower().StartsWith("image/", StringComparison.Ordinal))
@@ -70,16 +72,9 @@ public static class PerfilsEndPoints
         }
         try
         {
-#warning esse processo deveria passar por um bl e um repository
-
-            if (!Directory.Exists(Path.Combine("shared", "profile")))
-            {
-                Directory.CreateDirectory(Path.Combine("shared", "profile"));
-            }
             var uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine("shared", "profile", uniqueFileName);
-            using var stream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(stream);
+            var filePath = saveFile.BuildPathFileSave(uniqueFileName, "profile");
+            await saveFile.SaveImageFile(file, filePath);
 
             await _logic.UpdateFotoPerfil(id, filePath);
             return Results.Ok();

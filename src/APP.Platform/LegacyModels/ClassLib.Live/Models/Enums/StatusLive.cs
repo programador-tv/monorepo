@@ -5,6 +5,6 @@
         Preparando = 0,
         Iniciada = 1,
         Encerrada = 2,
-        Finalizada = 3
+        Finalizada = 3,
     }
 }

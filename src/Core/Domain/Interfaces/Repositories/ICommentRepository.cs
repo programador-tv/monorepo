@@ -7,5 +7,7 @@ namespace Domain.Repositories
     {
         Task Update(Comment comment);
         Task<Comment> GetById(string commentId);
+
+        Task<List<Comment>> GetAllByLiveIdAndPerfilId(Guid liveId, Guid perfilId);
     }
 }
