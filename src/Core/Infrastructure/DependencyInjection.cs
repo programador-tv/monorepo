@@ -274,6 +274,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IHelpResponseRepository, HelpResponseRepository>();
+        services.AddScoped<IPublicationRepository, PublicationRepository>();
         return services;
     }
 }

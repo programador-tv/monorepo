@@ -1,4 +1,5 @@
 using Domain.Primitives;
+using Domain.Contracts;
 
 namespace Domain.Entities;
 
@@ -8,9 +9,14 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
     public string Link { get; private set; } = link;
     public bool IsValid { get; private set; } = isValid;
 
-    public static Publication Create(Guid perfilId, string link)
+    public static Publication Create(CreatePublicationRequest createPublicationRequest)
     {
-        return new Publication(Guid.NewGuid(), perfilId, link, true);
+        return new Publication(
+            Guid.NewGuid(),
+            createPublicationRequest.PerfilId,
+            createPublicationRequest.Link,
+            true
+        );
     }
 
     public void NotValid()
