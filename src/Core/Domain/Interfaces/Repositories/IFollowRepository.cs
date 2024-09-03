@@ -15,5 +15,6 @@ namespace Domain.Repositories
         Task<int> GetFollowingAsync(Guid userId);
 
         Task<List<FollowersResponse>> GetFollowersByIdsAsync(List<Guid> usersId);
+        Task<bool> IsFollowingAsync(Guid followerId, Guid followingId);
     }
 }
