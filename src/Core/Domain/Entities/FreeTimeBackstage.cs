@@ -20,9 +20,9 @@ public sealed class FreeTimeBackstage(
         Guid timeSelectionId,
         int maxParticipants,
         bool ilimitado,
-        bool AutoAccept
+        bool autoAccept
     )
     {
-        return new FreeTimeBackstage(Guid.NewGuid(), timeSelectionId, maxParticipants, ilimitado, AutoAccept);
+        return new FreeTimeBackstage(Guid.NewGuid(), timeSelectionId, maxParticipants, ilimitado, autoAccept);
     }
 }

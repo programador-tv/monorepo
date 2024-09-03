@@ -164,11 +164,9 @@
                         <input type="file" asp-for="ScheduleTimeSelection.ImageFile" />
                     </div>
                     <div style="padding: 15px 0px; font-size: 16px;" class="d-flex align-items-center">
-                        <input type="checkbox" id="autoJoinTime" /><label 
-                            asp-for="ScheduleTimeSelection.AutoAccept"
-                            value="true"
-                            style="margin-left:5px" 
-                            for="autoJoinTime">Ativar Seleção Automática de Interessados</label>
+                      <input type="checkbox" id="autoJoinTime" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept" value="true" />
+                      <input type="hidden" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept" value="false" />
+                      <label style="margin-left:5px" for="autoJoinTime">Ativar Seleção Automática de Interessados</label>
                     </div>
 
                     <div style="margin-bottom: 0; padding-inline: 1.4rem;" class="btn-conferir-informacao">

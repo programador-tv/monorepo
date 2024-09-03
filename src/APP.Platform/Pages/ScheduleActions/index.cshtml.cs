@@ -1167,6 +1167,7 @@ namespace APP.Platform.Pages.ScheduleActions
                 EndTime = ScheduleTimeSelection.EndTime,
                 Variacao = ScheduleTimeSelection.Variacao,
                 TituloTemporario = ScheduleTimeSelection.Titulo,
+                AutoAccept = ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept
             };
 
             if (TimeSelection.StartTime < DateTime.Now)
@@ -1225,6 +1226,7 @@ namespace APP.Platform.Pages.ScheduleActions
             TimeSelection.TituloTemporario = ScheduleTimeSelection.Titulo;
             TimeSelection.Tipo = ScheduleTimeSelection.Tipo;
             TimeSelection.Status = ScheduleTimeSelection.Status;
+            TimeSelection.AutoAccept = ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept;
 
             var tags = ProcessTimeSelection.ProcessingTags(
                 TimeSelection.Id.ToString(),

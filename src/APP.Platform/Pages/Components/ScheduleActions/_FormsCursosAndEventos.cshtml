@@ -90,6 +90,13 @@
                     <label asp-for="ScheduleTimeSelection.Titulo"  class="control-label">Título </strong><span style='color:firebrick'>*</span></label>
                     <input id="TimeSelectionMentoriaTitulo" required asp-for="ScheduleTimeSelection.Titulo" class="form-control" />
                 </div>
+                <div style="padding: 15px 0px; font-size: 16px;" class="d-flex align-items-center">
+                    <input type="checkbox" id="autoJoinTime" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept" 
+                        value="true" />
+                    <input type="hidden" asp-for="ScheduleFreeTimeForTimeSelection.TimeSelectionBackstage.AutoAccept" value="false" />
+                    <label style="margin-left:5px" for="autoJoinTime">Ativar Seleção Automática de Interessados</label>
+                </div>
+
                 <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.FreeTime" />
                 <input type="hidden" class="startLive" asp-for="ScheduleTimeSelection.StartTime" />
                 <input type="hidden" class="endLive" asp-for="ScheduleTimeSelection.EndTime" />

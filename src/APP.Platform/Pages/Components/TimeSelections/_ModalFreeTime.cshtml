@@ -182,7 +182,7 @@ ExperienceLevel[] valuesExperience = (ExperienceLevel[])Enum.GetValues(typeof(Ex
                                         }
 
                                     <nav>
-                                        @if(!data.Key.Ilimitado){
+                                        @if(!data.Key.Ilimitado || !data.Key.AutoAccept){
                                                 
                                             <button type="button" class='button-card button-mentoria nav-link' 
                                             style="width: fit-content; font-size: 13px; padding: 5px;" onclick="showInteressados('@data.Key.Id')"
