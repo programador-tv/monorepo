@@ -10,8 +10,8 @@ public sealed class PublicationRepository(ApplicationDbContext context)
     : GenericRepository<Publication>(context),
         IPublicationRepository
 {
-    public async Task<List<Publication>> GetPublicationPerfilById(Publication publication)
+    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId)
     {
-        return await DbContext.Publications.Where(e => e.EntityId == perfilId).ToListAsync();
+        return await DbContext.Publications.Where(e => e.PerfilId == perfilId).ToListAsync();
     }
 }
