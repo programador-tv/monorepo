@@ -535,11 +535,8 @@
                 loadingPaginacao.style.display = "none";
 
                 //verifica se não tem vídeos adicionados
-                if (data.privateLives === CONSIDERED_EMPTY
-                    && data.liveSchedules === CONSIDERED_EMPTY) {
-                    // mostra msg "Sem vídeos no momento na tela"
-                    msgSemVideo.style.display = "block";
-                //caso tenha vídeos adicionados
+                if (data.privateLives === CONSIDERED_EMPTY) {
+
                 } else {
                      // oculta msg "Sem vídeos no momento"
                      msgSemVideo.style.display = "none";
