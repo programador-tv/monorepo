@@ -1,137 +1,107 @@
 ﻿@page
 @using APP.Platform.Pages.Components.ModalJoinTime
 @using tags
-@using Domain.Enums 
+@using Domain.Enums
 @using Domain.Models.ViewModels
-@inject SignInManager<IdentityUser>  SignInManager
- @model CanalIndexModel
+@inject SignInManager<IdentityUser> SignInManager
+@model CanalIndexModel
 @{
-     ViewData["Title"] = " | " +  Model?.PerfilOwner?.Nome; var isLoggedUser = SignInManager.IsSignedIn(User);
-     var exibirBotaoMentoria = isLoggedUser && Model?.PerfilOwner?.Id !=  Model?.UserProfile.Id;
-      }
+  ViewData["Title"] = " | " + Model?.PerfilOwner?.Nome; var isLoggedUser = SignInManager.IsSignedIn(User);
+  var exibirBotaoMentoria = isLoggedUser && Model?.PerfilOwner?.Id != Model?.UserProfile.Id;
+}
 
-  <br />
+<br />
 
-  <div style="background-color: white; border-radius: 20px; padding: 35px">
-    @if (Model?.PerfilOwner != null) {
+<div style="background-color: white; border-radius: 20px; padding: 35px">
+  @if (Model?.PerfilOwner != null)
+  {
     <div class="channel-user-perfil-data">
       <div>
-        @if (Model.PerfilOwner.Foto != null) {
-        <img
-          alt="@Model.PerfilOwner.Nome"
-          onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
-          id="avatar-sm"
-          src="/@Model.PerfilOwner.Foto"
-          style="width: 112px; height: 112px; border-radius: 50%"
-        />
-        } else {
-        <img
-          id="avatar-sm"
-          alt="@Model.PerfilOwner.Nome"
-          src="/no-user.svg"
-          style="
+        @if (Model.PerfilOwner.Foto != null)
+        {
+          <img alt="@Model.PerfilOwner.Nome" onerror="if (this.src != '/no-user.svg') this.src = '/no-user.svg';"
+            id="avatar-sm" src="/@Model.PerfilOwner.Foto" style="width: 112px; height: 112px; border-radius: 50%" />
+        }
+        else
+        {
+          <img id="avatar-sm" alt="@Model.PerfilOwner.Nome" src="/no-user.svg" style="
             width: 112px;
             height: 112px;
             border-radius: 50%;
             border: 2px solid grey;
-          "
-        />
+                                                                                      " />
         }
       </div>
 
       <div class="mt-4 w-50">
-        <h1
-          style="
+        <h1 style="
             word-break: break-word;
             font-family: League Spartan;
             font-size: 32px;
             font-weight: 500;
             color: #1c1c1c;
-          "
-        >
+                                                ">
           @Model.PerfilOwner.Nome
         </h1>
-        <p
-          style="
+        <p style="
             word-wrap: break-word;
             font-family: League Spartan;
             font-size: 20px;
             font-weight: 500;
             color: #525252;
-          "
-        >
+                                                ">
           @Model.PerfilOwner.Bio
         </p>
-        <div
-          style="
+        <div style="
             display: flex;
             justify-content: space-between;
             align-items: center;
-          "
-        >
-          <div
-            class="tiny-channel-seguindo-seguidores"
-            style="
+                                                ">
+          <div class="tiny-channel-seguindo-seguidores" style="
               display: flex;
               justify-content: space-between;
               align-items: center;
               min-width: 140px;
-            "
-          >
-            <div
-              style="
+                                                  ">
+            <div style="
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 width: 100%;
                 margin-right: 1rem;
-              "
-            >
-              <span
-                id="followerCount"
-                style="font-size: 1rem; font-weight: 600; border-right: 10px"
-                >@Model.followersCount</span
-              >
-              <span
-                id="follow_tag"
-                style="
+                                                    ">
+              <span id="followerCount"
+                style="font-size: 1rem; font-weight: 600; border-right: 10px">@Model.followersCount</span>
+              <span id="follow_tag" style="
                   color: #525252;
                   font-size: 16px;
                   font-weight: 500px;
                   border-right: 10px;
                   margin-left: 10px;
-                "
-              >
+                                                      ">
                 <script>
                   if (@Model.followersCount == 1) {
-                      document.write("Seguidor")
+                    document.write("Seguidor")
                   } else {
-                      document.write("Seguidores")
+                    document.write("Seguidores")
                   }
                 </script>
               </span>
             </div>
-            <div
-              class="tiny-seguindo"
-              style="
+            <div class="tiny-seguindo" style="
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 width: 100%;
                 margin-right: 1rem;
-              "
-            >
-              <span style="font-size: 1rem; font-weight: 600; margin-left: 10px"
-                >@Model.followingCount</span
-              >
-              <span
-                style="
+                                                    ">
+              <span style="font-size: 1rem; font-weight: 600; margin-left: 10px">@Model.followingCount</span>
+              <span style="
                   color: #525252;
                   font-size: 16px;
                   font-weight: 500px;
                   margin-left: 10px;
-                "
-              >
+                                                      ">
                 Seguindo
               </span>
             </div>
@@ -140,107 +110,86 @@
       </div>
 
       <div style="width: 25%; float: left">
-        @if (isLoggedUser && Model.PerfilOwner.Id != Model.UserProfile.Id) { @if
-        (Model.IsAuth) { var followBtn = Model.IsFollowing ? "liked" :
-        "notLiked"; @if (!Model.IsFollowing) {
-        <div
-          onclick="FollowEventButton('@Model.PerfilOwner.Id')"
-          id="follow-button"
-          class="@followBtn follow-btn"
-        >
-          <span
-            id="follow_icon"
-            class="material-symbols-outlined"
-            style="
+        @if (isLoggedUser && Model.PerfilOwner.Id != Model.UserProfile.Id)
+        { @if
+      (Model.IsAuth)
+          {
+            var followBtn = Model.IsFollowing ? "liked" :
+            "notLiked"; @if (!Model.IsFollowing)
+            {
+              <div onclick="FollowEventButton('@Model.PerfilOwner.Id')" id="follow-button" class="@followBtn follow-btn">
+                <span id="follow_icon" class="material-symbols-outlined"
+                  style="
               background: none;
               border: none;
               padding-bottom: 7px;
               color: inherit;
               padding-top: 5px;
-            "
-          >
-            person_add
-          </span>
-          <span id="like-counter">Seguir</span>
-        </div>
-        } else {
-        <div
-          onclick="FollowEventButton('@Model.PerfilOwner.Id')"
-          id="follow-button"
-          class="@followBtn follow-btn"
-        >
-          <span
-            id="follow_icon"
-            class="material-symbols-outlined"
-            style="
+                                                                                                                                                                    ">
+                  person_add
+                </span>
+                <span id="like-counter">Seguir</span>
+              </div>
+            }
+            else
+            {
+              <div onclick="FollowEventButton('@Model.PerfilOwner.Id')" id="follow-button" class="@followBtn follow-btn">
+                <span id="follow_icon" class="material-symbols-outlined"
+                  style="
               background: none;
               border: none;
               padding-bottom: 7px;
               color: inherit;
               padding-top: 5px;
-            ">
-            person_remove
-          </span>
-          <span style="margin-left: 5px" id="like-counter">Seguindo</span>
-        </div>
-        } } else {
-        <div id="follow-button" class="notLiked follow-btn">
-          <span
-            id="follow_icon"
-            class="material-symbols-outlined"
-            style="
+                                                                                                                                                                    ">
+                  person_remove
+                </span>
+                <span style="margin-left: 5px" id="like-counter">Seguindo</span>
+              </div>
+            }   }
+          else
+          {
+            <div id="follow-button" class="notLiked follow-btn">
+              <span id="follow_icon" class="material-symbols-outlined"
+                style="
               background: none;
               border: none;
               padding-bottom: 7px;
               color: inherit;
               padding-top: 5px;
-            "
-          >
-            person_add
-          </span>
-          <span id="like-counter">Seguir</span>
-        </div>
-        } }
+                                                                                                                              ">
+                person_add
+              </span>
+              <span id="like-counter">Seguir</span>
+            </div>
+          } }
       </div>
     </div>
 
     <div>
-      <div
-        style="
+      <div style="
           width: 80%;
           margin: 0 auto;
           border-left: 4px solid #f2f2f2;
           padding: 10px;
-        "
-      >
+                                              ">
         <div>
-          @if (!string.IsNullOrEmpty(Model.PerfilOwner.Linkedin)) {
-          <a
-            style="text-decoration: none"
-            href="https://www.linkedin.com/in/@Model.PerfilOwner.Linkedin/"
-            target="_blank"
-          >
-            <img
-              style="width: 30px; cursor: pointer"
-              src="https://eduardoworrel.com/imgs/social/linkedin.png"
-            />
-          </a>
-          } @if (!string.IsNullOrEmpty(Model.PerfilOwner.GitHub)) {
-          <a
-            href="https://github.com/@Model.PerfilOwner.GitHub/"
-            style="text-decoration: none; margin-left: 20px"
-            target="_blank"
-          >
-            <img
-              style="width: 30px; cursor: pointer"
-              src="https://eduardoworrel.com/imgs/social/github (1).png"
-            />
-          </a>
+          @if (!string.IsNullOrEmpty(Model.PerfilOwner.Linkedin))
+          {
+            <a style="text-decoration: none" href="https://www.linkedin.com/in/@Model.PerfilOwner.Linkedin/"
+              target="_blank">
+              <img style="width: 30px; cursor: pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png" />
+            </a>
+          } @if (!string.IsNullOrEmpty(Model.PerfilOwner.GitHub))
+          {
+            <a href="https://github.com/@Model.PerfilOwner.GitHub/" style="text-decoration: none; margin-left: 20px"
+              target="_blank">
+              <img style="width: 30px; cursor: pointer" src="https://eduardoworrel.com/imgs/social/github (1).png" />
+            </a>
           }
         </div>
 
-        <div
-          style="
+        <div style="
             word-break: break-word;
             margin-top: 15px;
             text-align: justify;
@@ -248,100 +197,71 @@
             font-size: 20px;
             fpmt-weight: 400;
             color: #525252;
-          "
-        >
+                                                ">
           @Model.PerfilOwner.Descricao
         </div>
       </div>
     </div>
 
     <h1></h1>
-    } 
-    @await Html.PartialAsync("Components/Live/_NewLiveModal", new _NewLiveModalModel())
+  }
+  @await Html.PartialAsync("Components/Live/_NewLiveModal", new _NewLiveModalModel())
 
-    <h4 class="title-salas" style="display: none">Videos</h4>
-    <br />
-    <ul class="nav nav-tabs" id="navTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link active"
-          id="my-videos-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#my-videos"
-          type="button"
-          role="tab"
-          aria-controls="my-videos"
-          aria-selected="true"
-        >
-          @{ @if (Model?.PerfilOwner?.Id == Model?.UserProfile?.Id &&
-          isLoggedUser) {
-          <span>Meus Vídeos 📹</span>
-          } else {
-          <span>Vídeos 📹</span>
-          } }
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="posts-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#posts"
-          type="button"
-          role="tab"
-          aria-controls="posts"
-          aria-selected="false"
-          disabled
-        >
-          Publicações 📜
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="projects-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#projects"
-          type="button"
-          role="tab"
-          aria-controls="projects"
-          aria-selected="false"
-          disabled
-        >
-          Projetos ⚒️
-        </button>
-      </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-      <div
-        class="tab-pane fade show active"
-        id="my-videos"
-        role="tabpanel"
-        aria-labelledby="my-videos-tab"
-      >
-        @{ if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth) {
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            align-items: end;
-            justify-content: center;
-            width: 100%;
-          "
-        >
-          <div style="display: flex">
-            <label>Exibir vídeos privados</label>
-            <input
-              type="checkbox"
-              id="checkShowPrivateVideos"
-              style="margin: 0px 0 0 10px"
-            />
+  @await Html.PartialAsync("Components/Post/_NewPostModal", new _NewPostModalModel())
+
+  <h4 class="title-salas" style="display: none">Videos</h4>
+  <br />
+  <ul class="nav nav-tabs" id="navTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="my-videos-tab" data-bs-toggle="tab" data-bs-target="#my-videos" type="button"
+        role="tab" aria-controls="my-videos" aria-selected="true">
+        @{
+          @if (Model?.PerfilOwner?.Id == Model?.UserProfile?.Id &&
+        isLoggedUser)
+          {
+            <span>Meus Vídeos 📹</span>
+          }
+          else
+          {
+            <span>Vídeos 📹</span>
+          }
+        }
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab"
+        aria-controls="posts" aria-selected="false">
+        Publicações 📜
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button"
+        role="tab" aria-controls="projects" aria-selected="false" disabled>
+        Projetos ⚒️
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="my-videos" role="tabpanel" aria-labelledby="my-videos-tab">
+      @{
+        if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+        {
+          <div style="
+                                                  display: flex;
+                                                  flex-direction: column;
+                                                  align-items: end;
+                                                  justify-content: center;
+                                                  width: 100%;
+                                                                                      ">
+            <div style="display: flex">
+              <label>Exibir vídeos privados</label>
+              <input type="checkbox" id="checkShowPrivateVideos" style="margin: 0px 0 0 10px" />
+            </div>
           </div>
-        </div>
-        } } @* div inicia oculta e após verificação aparece na tela *@
-        <div id="msgSemVideoNoMomento" style="display: none">
-          <div
-            style="
+        }
+      } @* div inicia oculta e após verificação aparece na tela *@
+      <div id="msgSemVideoNoMomento" style="display: none">
+        <div style="
               justify-content: center;
               display: flex;
               flex-direction: column;
@@ -349,100 +269,107 @@
               color: grey;
               width: 100%;
               align-items: center;
-            "
-          >
-          </div>
+            ">
         </div>
+      </div>
 
-        @* div do botão adicionar nova live *@
-        <div id="botIniciarLive">
-          @{ if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+      @* div do botão adicionar nova live *@
+      <div id="botIniciarLive">
+        @{
+          if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
           {
-          <div
-            style="
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-              margin-top: 1rem;
-            "
-          >
-            <a
-              class="material-icons OpenNewButtom"
-              style="font-size: 36px; cursor: pointer; margin-right: 0px"
-              data-bs-toggle="modal"
-              data-bs-target="#liveModal"
-            >
-              add_circle
-            </a>
-            <span style="color: #aeaeae; font-size: 12px">Iniciar live</span>
+            <div style="
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    width: 100%;
+                                                    margin-top: 1rem;
+                                                                                        ">
+              <a class="material-icons OpenNewButtom" style="font-size: 36px; cursor: pointer; margin-right: 0px"
+                data-bs-toggle="modal" data-bs-target="#liveModal">
+                add_circle
+              </a>
+              <span style="color: #aeaeae; font-size: 12px">Iniciar live</span>
+            </div>
+          }
+        }
+      </div>
+
+      <main class="videos-group" id="savedVideosCanal">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-          } }
         </div>
+      </main>
 
-        <main class="videos-group" id="savedVideosCanal">
-          <div class="d-flex justify-content-center">
-            <div class="spinner-grow" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+      @* Loading videos durante paginação scroll infinito *@
+      <main class="videos-group" id="loadingVideos" style="display: none">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-        </main>
+        </div>
+      </main>
 
-             @* Loading videos durante paginação scroll infinito *@
-         <main class="videos-group" id="loadingVideos" style="display: none">
-          <div class="d-flex justify-content-center">
-            <div class="spinner-grow" role="status">
-              <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+      @* div do botão adicionar novo post *@
+      <div id="btn-novo-post">
+        @{
+          if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+          {
+            <div style="
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    width: 100%;
+                                                    margin-top: 1rem;
+                                                                                        ">
+              <a class="material-icons"
+                style="color: #00b4d8;font-size: 36px; cursor: pointer; margin-right: 0px; text-decoration:none;"
+                data-bs-toggle="modal" data-bs-target="#newPostFromSite">
+                add_circle
+              </a>
+              <span style="color: #aeaeae; font-size: 12px">Nova publicação</span>
             </div>
-          </div>
-        </main>
-
-      </div>
-      <div
-        class="tab-pane fade"
-        id="posts"
-        role="tabpanel"
-        aria-labelledby="posts-tab"
-      >
-        ...
-      </div>
-      <div
-        class="tab-pane fade"
-        id="projects"
-        role="tabpanel"
-        aria-labelledby="projects-tab"
-      >
-        ...
+          }
+        }
       </div>
     </div>
+    <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
+      ...
+    </div>
   </div>
+</div>
 
-  @await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTime",
-    new _ModalJoinTime
+@await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTime",
+  new _ModalJoinTime
 {
-    JoinTime = Model!.JoinTime,
-    IsLogedUser = Model!.IsAuth,
-    requestProfileId = Model.UserProfile.Id
+  JoinTime = Model!.JoinTime,
+  IsLogedUser = Model!.IsAuth,
+  requestProfileId = Model.UserProfile.Id
 })
 @await Html.PartialAsync("Components/ModalJoinTime/_ModalJoinTimeForRequestHelp",
-    new _ModalJoinTimeForRequestHelp
+  new _ModalJoinTimeForRequestHelp
 {
-    JoinTime = Model.JoinTime,
-    IsLogedUser = Model.IsAuth,
-    requestProfileId = Model.UserProfile.Id
+  JoinTime = Model.JoinTime,
+  IsLogedUser = Model.IsAuth,
+  requestProfileId = Model.UserProfile.Id
 })
 
 @await Html.PartialAsync("Components/TimeSelections/_ModalTimePicker")
 <link href="/css/timePicker.css" rel="stylesheet" />
 
 @await Html.PartialAsync("Components/ScheduleActions/_FormLiveSchedule",
-    new FormLiveSchedule
+  new FormLiveSchedule
 {
-    ScheduleTimeSelection = Model.ScheduleTimeSelection!,
-    ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
-    ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection!,
-    RelatioTags = Model.RelatioTags!,
+  ScheduleTimeSelection = Model.ScheduleTimeSelection!,
+  ScheduleLiveForTimeSelection = Model.ScheduleLiveForTimeSelection!,
+  ScheduleFreeTimeForTimeSelection = Model.ScheduleFreeTimeForTimeSelection!,
+  RelatioTags = Model.RelatioTags!,
 })
 
 
@@ -485,94 +412,95 @@
   <script defer src="~/js/renderComponentsCapacitacao.js"></script>
   <script defer src="~/js/renderComponentsPedirAjuda.js"></script>
 
-   <script>
-       let private = false;
-   </script>
-
- @if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth) {
   <script>
+    let private = false;
+  </script>
+
+  @if (Model.PerfilOwner?.Id == Model.UserProfile?.Id && Model.IsAuth)
+  {
+    <script>
       let checkboxPrivate = document.querySelector("#checkShowPrivateVideos");
       checkboxPrivate.addEventListener("click", function (event) {
-      private = this.checked;
-      pageNumber = 1;
-      getVideos(this.checked);
-    });
-  </script>
+        private = this.checked;
+        pageNumber = 1;
+        getVideos(this.checked);
+      });
+    </script>
   }
   <script>
-      //variável para contagem de páginas
-          let pageNumber = 1;
-          //variável para loading do scroll infinito
-          let loadingPaginacao = document.querySelector("#loadingVideos");
-                  
-        //Função que verifica quando ultimo vídeo aparece na tela e carrega mais vídeos
-           const nextVideo = () => {
-                const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
-                    if(!lastVideo.isIntersecting){     
-                         return       
-                    }else
-                      //ativa loading da paginação scroll infinito
-                      loadingPaginacao.style.display = "block";
+    //variável para contagem de páginas
+    let pageNumber = 1;
+    //variável para loading do scroll infinito
+    let loadingPaginacao = document.querySelector("#loadingVideos");
 
-                      //para de observar ultimo vídeo na tela
-                      observe.unobserve(lastVideo.target)
-                      pageNumber = pageNumber + 1;
+    //Função que verifica quando ultimo vídeo aparece na tela e carrega mais vídeos
+    const nextVideo = () => {
+      const videoObserver = new IntersectionObserver(([lastVideo], observe) => {
+        if (!lastVideo.isIntersecting) {
+          return
+        } else
+          //ativa loading da paginação scroll infinito
+          loadingPaginacao.style.display = "block";
+
+        //para de observar ultimo vídeo na tela
+        observe.unobserve(lastVideo.target)
+        pageNumber = pageNumber + 1;
 
         fetch("?handler=AfterloadCanal&usr=@(Model.PerfilOwner!.UserName)&isPrivate=" +
-          private+"&pageNumber="+pageNumber)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Erro ao enviar a solicitação POST.");
-                      }
-                return response.json();
-            })
-            .then(function (data) {
-                const CONSIDERED_EMPTY = "";
-                let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
-                let videosPrivates = document.querySelector("#savedVideosCanal");
+          private + "&pageNumber=" + pageNumber)
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("Erro ao enviar a solicitação POST.");
+            }
+            return response.json();
+          })
+          .then(function (data) {
+            const CONSIDERED_EMPTY = "";
+            let msgSemVideo = document.querySelector("#msgSemVideoNoMomento");
+            let videosPrivates = document.querySelector("#savedVideosCanal");
 
-                //oculta loading da paginação scroll infinito
-                loadingPaginacao.style.display = "none";
+            //oculta loading da paginação scroll infinito
+            loadingPaginacao.style.display = "none";
 
-                //verifica se não tem vídeos adicionados
-                if (data.privateLives === CONSIDERED_EMPTY
-                    && data.liveSchedules === CONSIDERED_EMPTY) {
-                    // mostra msg "Sem vídeos no momento na tela"
-                    msgSemVideo.style.display = "block";
-                //caso tenha vídeos adicionados
-                } else {
-                     // oculta msg "Sem vídeos no momento"
-                     msgSemVideo.style.display = "none";
-                     // mostra vídeos adicionadas
-                     videosPrivates.innerHTML += data.privateLives;
-                     
-                    //chama função verificar vídeo novamente
-                     nextVideo();  
-                       }
-                })
-                })
-                    // constante que monitora ultimo elemento filho da class pai 
-                    const lastVideo = document.querySelector('[class="videos-group"]').lastElementChild
-                    videoObserver.observe(lastVideo) 
-                }
+            //verifica se não tem vídeos adicionados
+            if (data.privateLives === CONSIDERED_EMPTY
+              && data.liveSchedules === CONSIDERED_EMPTY) {
+              // mostra msg "Sem vídeos no momento na tela"
+              msgSemVideo.style.display = "block";
+              //caso tenha vídeos adicionados
+            } else {
+              // oculta msg "Sem vídeos no momento"
+              msgSemVideo.style.display = "none";
+              // mostra vídeos adicionadas
+              videosPrivates.innerHTML += data.privateLives;
 
-   
+              //chama função verificar vídeo novamente
+              nextVideo();
+            }
+          })
+      })
+      // constante que monitora ultimo elemento filho da class pai 
+      const lastVideo = document.querySelector('[class="videos-group"]').lastElementChild
+      videoObserver.observe(lastVideo)
+    }
+
+
     function getVideos() {
       let pageNumber = 1;
       const loadingSpin = `<div class="spinner-grow" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>`;
+                                                  <span class="visually-hidden">Loading...</span>
+                                                  </div>`;
       const videosGroup = document.querySelector(".videos-group");
       videosGroup.innerHTML = loadingSpin;
       videosGroup.style.justifyContent = "center";
       videosGroup.style.alignItems = "center";
-     
-     let loadingPaginacao = document.querySelector("#loadingVideos");
-       
-       
+
+      let loadingPaginacao = document.querySelector("#loadingVideos");
+
+
       fetch(
         "?handler=AfterloadCanal&usr=@Model.PerfilOwner!.UserName&isPrivate=" +
-          private+"&pageNumber="+pageNumber
+        private + "&pageNumber=" + pageNumber
       )
         .then(function (response) {
           if (!response.ok) {
@@ -589,8 +517,8 @@
             data.liveSchedules === CONSIDERED_EMPTY
           ) {
             videosPrivates.innerHTML += `<div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
-                    <span>Sem vídeos no momento</span> 
-                    </div>`;
+                                                          <span>Sem vídeos no momento</span> 
+                                                          </div>`;
           }
 
           videosPrivates.innerHTML += data.liveSchedules + data.privateLives;
@@ -598,7 +526,7 @@
           document.querySelector(".spinner-grow").style.display = "none";
           videosGroup.style.justifyContent = "flex-start";
           videosGroup.style.alignItems = "flex-start";
-           nextVideo();  
+          nextVideo();
         })
         .catch(function (error) {
           loadingSpin.style.display = "none";
@@ -672,489 +600,404 @@
     videosGroup.style.alignItems = "center";
 
     getVideos(false);
-   
-        
+
+
 
   </script>
 
   <script>
-            const mesesAbrev = ["Janeiro", "Fevereiro", "Março", "Abril",
-                "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            function diferencaEmMinutos(data1, data2) {
-                var diferenca = Math.abs(data1.getTime() - data2.getTime());
-                var diferencaEmMinutos = Math.round(diferenca / (1000 * 60));
-                return diferencaEmMinutos;
-            }
-            function afterLoad() {
-                fetch("?handler=Mentores&id=@Model.PerfilOwner?.Id")
-                    .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error("Erro ao enviar a solicitação POST.");
-                        }
-                        return response.json();
-                    })
-                    .then(function (data) {
-                        isUserLogged = data.isLogged;
-                        loadMentoresParaTag(data.mentores)
+    const mesesAbrev = ["Janeiro", "Fevereiro", "Março", "Abril",
+      "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    function diferencaEmMinutos(data1, data2) {
+      var diferenca = Math.abs(data1.getTime() - data2.getTime());
+      var diferencaEmMinutos = Math.round(diferenca / (1000 * 60));
+      return diferencaEmMinutos;
+    }
+    function afterLoad() {
+      fetch("?handler=Mentores&id=@Model.PerfilOwner?.Id")
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Erro ao enviar a solicitação POST.");
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          isUserLogged = data.isLogged;
+          loadMentoresParaTag(data.mentores)
 
-                        const freeTimeId = GetParameterByName("freetime");
-                        if (freeTimeId == null
-                            || freeTimeId == ""
-                            || freeTimeId.length == 0) {
-                            return;
-                        }
-                        else {
-                            NeedShowFreeTime(freeTimeId)
-                        }
-                    })
-                fetch("/ScheduleActions?handler=AfterLoadRequestedHelpForChannel&id=@Model.PerfilOwner?.Id")
-                    .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error("Erro ao enviar a solicitação POST.");
-                        }
-                        return response.json();
-                    })
-                    .then(function (data) {
-                        isUserLogged = data.isLogged;
-                        loadRequestedHelpForChannel(data.pedidos)
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                    })
-            }
-            afterLoad();
-
-            function GetParameterByName(name) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
-
-            function NeedShowFreeTime(freeTimeId) {
-                fetch("?handler=FreeTimeConflictChecker&freeTimeId=" + freeTimeId)
-                    .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error("Erro ao enviar a solicitação POST.");
-                        }
-                        return response.json();
-                    })
-                    .then(function (data) {
-                        if (data) {
-                            SetItToTry(freeTimeId);
-                        } else {
-                            alert('você já possui eventos marcados nesse horário')
-                        }
-                    })
-            }
-
-            const result = []
-            function SetItToTry(freetimeId) {
-                $("#modal-horarios").modal("hide")
-                let prepared = ""
-                let perfil;
-                let time;
-
-                if (!isUserLogged) {
-                    let btn = document.querySelector("#solicitarBtn");
-                    btn.innerHTML = "REALIZAR LOGIN";
-                }
-
-                for (let element of result) {
-                    for (let item of element.timeSelections) {
-                        if (item.timeSelectionId == freetimeId) {
-                            time = item
-                            perfil = element.perfils
-                            break;
-                        }
-                    }
-                }
-                prepared += `<div class="">
-                <h5 style="word-break: break-word; display: flex;align-items: center; justify-content: space-around;">
-                ${renderAvatar(perfil, true)}
-                ${perfil.nome}`
-                if (perfil.linkedin) {
-                    prepared += `<a style="text-decoration:none"
-                href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
-                <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
-                </a>`
-                }
-                if (perfil.gitHub) {
-                    prepared += `<a style = "text-decoration:none"
-                    href = "https://github.com/${perfil.gitHub}/" target = "_blank">
-                    <img style = "width:30px;cursor:pointer" src = "https://eduardoworrel.com/imgs/social/github (1).png">
-                    </a>`
-                }
-
-                prepared += `</h5>
-                    <h6 style = "text-align: center;">
-                        ${perfil.bio ?? ""}
-                        </h6>
-                        <br>`
-                prepared += `
-                     <div style = "text-align: center">
-                     <strong>${time.titulo}
-                     </strong>
-                     </div>
-                     <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap">`
-                let match = ""
-                let notMatch = ""
-                for (let tag of time.tags) {
-                    const receive = `
-                    <small class="tag">${tag.titulo}</small>
-                    <br>`
-                    match += receive
-                }
-
-                prepared += match
-                prepared += notMatch
-                prepared += `</div>
-                     <br>`
-                prepared += `<h6 style = "text-align: center;">
-                             <strong>
-                             ${new Date(time.startTime).toLocaleString('pt-BR', {
-                    hour12: false
-                }).replace(":00", "")
-                    }
-                             a ${new Date(time.endTime).toLocaleTimeString('pt-BR', {
-                        hour12: false
-                    }).replace(":00", "")
-                    }
-                             <strong>
-                             </h6>`
-                prepared += `</div>`
-
-                document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId
-
-
-                $("#eventModal").modal("hide")
-
-                $("#mentorMatch").html(prepared)
-                $("#matchModal").modal("show")
-            }
-            function loadMentoresParaTag(data) {
-                let prepared = ""
-                let tss = [];
-
-                if (data.length == 0) {
-                    prepared = "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem mentorias no momento <div>";
-                    $("#eventos-usuario").html(prepared)
-                    return;
-                }
-                if (data[0].timeSelections.length > 2) {
-                    prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
-    <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
-     <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
-     </div>`;
-                }
-                for (const profileWithTimeSelections of data) {
-                    result.push(profileWithTimeSelections)
-                    tss = profileWithTimeSelections.timeSelections
-                    const perfil = profileWithTimeSelections.perfils
-                    tss.sort(compararPorDataDecrescente);
-                    for (ts in tss)
-                        prepared += JoinTimeForMentorias(tss[ts], perfil, "groupOneToOne canal", ts)
-                }
-                $("#eventos-usuario").html(prepared)
-                $("#eventos-usuarioBelow").html(prepared)
-
-                activePaginationFor("groupOneToOne", tss.length)
-            }
-
-            function loadRequestedHelpForChannel(data) {
-                let prepared = ""
-
-
-                if (data.length == 0) {
-                    $("#pedidos-usuario").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento </div>")
-                    $("#pedidos-usuarioBelow").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento </div>")
-                    return;
-                }
-                if (data[0].timeSelections.length > 2) {
-                    prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
-     <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
-    <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
-     </div>`
-
-                }
-                let tss = [];
-                for (const profileWithTimeSelections of data) {
-                    result.push(profileWithTimeSelections)
-                    tss = profileWithTimeSelections.timeSelections
-                    const perfil = profileWithTimeSelections.perfils
-                    tss.sort(compararPorDataDecrescente);
-                    for (ts in tss) {
-                        let t1 = ts.title
-                        let t2 = ts.titulo
-                        ts.title = t2
-                        ts.titulo = t1
-                        prepared += JoinTimeForRequestedHelp(tss[ts], perfil, "groupHelp canal", ts)
-                    }
-                }
-                $("#pedidos-usuario").html(prepared)
-                $("#pedidos-usuarioBelow").html(prepared)
-
-                activePaginationFor("groupHelp", tss.length)
-            }
-
-
-            @* let rendered = false;
-            function render() {
-            if (rendered) {
+          const freeTimeId = GetParameterByName("freetime");
+          if (freeTimeId == null
+            || freeTimeId == ""
+            || freeTimeId.length == 0) {
             return;
-            }
-            calendar.render();
-            rendered = true;
-            } *@
+          }
+          else {
+            NeedShowFreeTime(freeTimeId)
+          }
+        })
+      fetch("/ScheduleActions?handler=AfterLoadRequestedHelpForChannel&id=@Model.PerfilOwner?.Id")
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Erro ao enviar a solicitação POST.");
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          isUserLogged = data.isLogged;
+          loadRequestedHelpForChannel(data.pedidos)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+    afterLoad();
+
+    function GetParameterByName(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    function NeedShowFreeTime(freeTimeId) {
+      fetch("?handler=FreeTimeConflictChecker&freeTimeId=" + freeTimeId)
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Erro ao enviar a solicitação POST.");
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          if (data) {
+            SetItToTry(freeTimeId);
+          } else {
+            alert('você já possui eventos marcados nesse horário')
+          }
+        })
+    }
+
+    const result = []
+    function SetItToTry(freetimeId) {
+      $("#modal-horarios").modal("hide")
+      let prepared = ""
+      let perfil;
+      let time;
+
+      if (!isUserLogged) {
+        let btn = document.querySelector("#solicitarBtn");
+        btn.innerHTML = "REALIZAR LOGIN";
+      }
+
+      for (let element of result) {
+        for (let item of element.timeSelections) {
+          if (item.timeSelectionId == freetimeId) {
+            time = item
+            perfil = element.perfils
+            break;
+          }
+        }
+      }
+      prepared += `<div class="">
+                                                      <h5 style="word-break: break-word; display: flex;align-items: center; justify-content: space-around;">
+                                                      ${renderAvatar(perfil, true)}
+                                                      ${perfil.nome}`
+      if (perfil.linkedin) {
+        prepared += `<a style="text-decoration:none"
+                                                      href="https://www.linkedin.com/in/${perfil.linkedin}/" target="_blank">
+                                                      <img style="width:30px;cursor:pointer" src="https://eduardoworrel.com/imgs/social/linkedin.png">
+                                                      </a>`
+      }
+      if (perfil.gitHub) {
+        prepared += `<a style = "text-decoration:none"
+                                                          href = "https://github.com/${perfil.gitHub}/" target = "_blank">
+                                                          <img style = "width:30px;cursor:pointer" src = "https://eduardoworrel.com/imgs/social/github (1).png">
+                                                          </a>`
+      }
+
+      prepared += `</h5>
+                                                          <h6 style = "text-align: center;">
+                                                              ${perfil.bio ?? ""}
+                                                              </h6>
+                                                              <br>`
+      prepared += `
+                                                           <div style = "text-align: center">
+                                                           <strong>${time.titulo}
+                                                           </strong>
+                                                           </div>
+                                                           <div style="gap:3px;display: flex; justify-content:center; flex-wrap:wrap">`
+      let match = ""
+      let notMatch = ""
+      for (let tag of time.tags) {
+        const receive = `
+                                                          <small class="tag">${tag.titulo}</small>
+                                                          <br>`
+        match += receive
+      }
+
+      prepared += match
+      prepared += notMatch
+      prepared += `</div>
+                                                           <br>`
+      prepared += `<h6 style = "text-align: center;">
+                                                                   <strong>
+                                                                   ${new Date(time.startTime).toLocaleString('pt-BR', {
+        hour12: false
+      }).replace(":00", "")
+        }
+                                                                   a ${new Date(time.endTime).toLocaleTimeString('pt-BR', {
+          hour12: false
+        }).replace(":00", "")
+        }
+                                                                   <strong>
+                                                                   </h6>`
+      prepared += `</div>`
+
+      document.querySelector("#JoinTime_TimeSelectionId").value = freetimeId
 
 
-                function activePaginationFor(group, length) {
-                    const left = document.querySelector(`#${group} -left`);
-                    const right = document.querySelector(`#${group} -right`);
-                    let page = 1;
-                    const size = 2;
-                    const lastPage = Math.ceil(length / size);
+      $("#eventModal").modal("hide")
 
-                    if (length <= size) {
-                        return;
-                    }
+      $("#mentorMatch").html(prepared)
+      $("#matchModal").modal("show")
+    }
+    function loadMentoresParaTag(data) {
+      let prepared = ""
+      let tss = [];
 
-                    right.style.filter = "grayscale(0)";
+      if (data.length == 0) {
+        prepared = "<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Sem mentorias no momento <div>";
+        $("#eventos-usuario").html(prepared)
+        return;
+      }
+      if (data[0].timeSelections.length > 2) {
+        prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
+                                          <span id="groupOneToOne-left" style="filter: grayscale(0.8);">👈</span>
+                                           <span id="groupOneToOne-right" style="filter: grayscale(0.8);">👉</span>
+                                           </div>`;
+      }
+      for (const profileWithTimeSelections of data) {
+        result.push(profileWithTimeSelections)
+        tss = profileWithTimeSelections.timeSelections
+        const perfil = profileWithTimeSelections.perfils
+        tss.sort(compararPorDataDecrescente);
+        for (ts in tss)
+          prepared += JoinTimeForMentorias(tss[ts], perfil, "groupOneToOne canal", ts)
+      }
+      $("#eventos-usuario").html(prepared)
+      $("#eventos-usuarioBelow").html(prepared)
 
-                    function updatePagination() {
+      activePaginationFor("groupOneToOne", tss.length)
+    }
 
-                        const start = (page - 1) * size;
-                        const end = Math.min(start + size, length);
+    function loadRequestedHelpForChannel(data) {
+      let prepared = ""
 
 
-                        const items = document.querySelectorAll(`.${group}`);
-                        items.forEach(item => {
-                            item.style.display = 'none';
-                        });
+      if (data.length == 0) {
+        $("#pedidos-usuario").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento </div>")
+        $("#pedidos-usuarioBelow").html("<div style='justify-content: center; display: flex; padding: 20px; color: grey;'>Nenhum pedido de ajuda encontrada no momento </div>")
+        return;
+      }
+      if (data[0].timeSelections.length > 2) {
+        prepared += `<div style = "text-align: right; font-size: 32px; cursor : pointer">
+                                           <span id="groupHelp-left" style="filter: grayscale(0.8);">👈</span>
+                                          <span id="groupHelp-right" style="filter: grayscale(0.8);">👉</span>
+                                           </div>`
 
-                        for (let i = start; i < end; i++) {
-                            items[i].style.display = 'flex';
-                        }
+      }
+      let tss = [];
+      for (const profileWithTimeSelections of data) {
+        result.push(profileWithTimeSelections)
+        tss = profileWithTimeSelections.timeSelections
+        const perfil = profileWithTimeSelections.perfils
+        tss.sort(compararPorDataDecrescente);
+        for (ts in tss) {
+          let t1 = ts.title
+          let t2 = ts.titulo
+          ts.title = t2
+          ts.titulo = t1
+          prepared += JoinTimeForRequestedHelp(tss[ts], perfil, "groupHelp canal", ts)
+        }
+      }
+      $("#pedidos-usuario").html(prepared)
+      $("#pedidos-usuarioBelow").html(prepared)
 
-                        left.style.filter = (page === 1) ? "grayscale(0.8)" : "grayscale(0)";
-                        right.style.filter = (page === lastPage) ? "grayscale(0.8)" : "grayscale(0)";
-                    }
+      activePaginationFor("groupHelp", tss.length)
+    }
 
-                    // Evento para avançar para a próxima página
-                    right.addEventListener("click", e => {
-                        if (page < lastPage) {
-                            page++;
-                            updatePagination();
-                        }
-                    });
 
-                    // Evento para retroceder para a página anterior
-                    left.addEventListener("click", e => {
-                        if (page > 1) {
-                            page--;
-                            updatePagination();
-                        }
-                    });
+    @* let rendered = false;
+    function render() {
+    if (rendered) {
+    return;
+    }
+    calendar.render();
+    rendered = true;
+    } *@
 
-                    // Inicializa a paginação
-                    updatePagination();
-                }
+
+      function activePaginationFor(group, length) {
+        const left = document.querySelector(`#${group} -left`);
+        const right = document.querySelector(`#${group} -right`);
+        let page = 1;
+        const size = 2;
+        const lastPage = Math.ceil(length / size);
+
+        if (length <= size) {
+          return;
+        }
+
+        right.style.filter = "grayscale(0)";
+
+        function updatePagination() {
+
+          const start = (page - 1) * size;
+          const end = Math.min(start + size, length);
+
+
+          const items = document.querySelectorAll(`.${group}`);
+          items.forEach(item => {
+            item.style.display = 'none';
+          });
+
+          for (let i = start; i < end; i++) {
+            items[i].style.display = 'flex';
+          }
+
+          left.style.filter = (page === 1) ? "grayscale(0.8)" : "grayscale(0)";
+          right.style.filter = (page === lastPage) ? "grayscale(0.8)" : "grayscale(0)";
+        }
+
+        // Evento para avançar para a próxima página
+        right.addEventListener("click", e => {
+          if (page < lastPage) {
+            page++;
+            updatePagination();
+          }
+        });
+
+        // Evento para retroceder para a página anterior
+        left.addEventListener("click", e => {
+          if (page > 1) {
+            page--;
+            updatePagination();
+          }
+        });
+
+        // Inicializa a paginação
+        updatePagination();
+      }
   </script>
-  } @* Modal para agendar live *@
-  <div
-    class="modal fade eventModal"
-    id="eventModalLiveScheduleOnChannel"
-    tabindex="-1"
-    aria-labelledby="eventModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="eventModalLabel">Criar Live</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div
-            class="tab-pane active"
-            id="timeTab"
-            role="tabpanel"
-            aria-labelledby="home-tab"
-          >
-            <form
-              id="scheduleLiveFormOnChannel"
-              method="post"
-              enctype="multipart/form-data"
-            >
-              @Html.AntiForgeryToken()
-              <div class="form-group">
-                <div>
-                  <div
-                    id="alert-no-chrome-sched"
-                    class="shadow p-3 mb-3 bg-yellow rounded mt-3 alert alert-warning"
-                    role="alert"
-                  >
-                    A transmissão através do navegador só esta disponível no
-                    chrome.
-                  </div>
+} @* Modal para agendar live *@
+<div class="modal fade eventModal" id="eventModalLiveScheduleOnChannel" tabindex="-1" aria-labelledby="eventModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Criar Live</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-pane active" id="timeTab" role="tabpanel" aria-labelledby="home-tab">
+          <form id="scheduleLiveFormOnChannel" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+              <div>
+                <div id="alert-no-chrome-sched" class="shadow p-3 mb-3 bg-yellow rounded mt-3 alert alert-warning"
+                  role="alert">
+                  A transmissão através do navegador só esta disponível no
+                  chrome.
                 </div>
               </div>
-              <hr />
-              <div class="form-group">
-                <label
-                  >Áreas relacionadas<span style="color: firebrick"
-                    >*</span
-                  ></label
-                ><br/>
-                <select
-                  multiple="multiple"
-                  asp-for="ScheduleTimeSelection.TagsSelected"
-                  required
-                  onchange="verificarSelecaoLiveScheduleOnChannel()"
-                  class="form-control isSelect2"
-                  id="TagsForScheduleLiveOnChannel"
-                >
-                  @foreach (var item in Model.RelatioTags!) {
+            </div>
+            <hr />
+            <div class="form-group">
+              <label>Áreas relacionadas<span style="color: firebrick">*</span></label><br />
+              <select multiple="multiple" asp-for="ScheduleTimeSelection.TagsSelected" required
+                onchange="verificarSelecaoLiveScheduleOnChannel()" class="form-control isSelect2"
+                id="TagsForScheduleLiveOnChannel">
+                @foreach (var item in Model.RelatioTags!)
+                {
                   <optgroup label="@item.Key">
-                    @foreach (var subItem in Model.RelatioTags[item.Key]) {
-                    <option value="@subItem">@subItem</option>
+                    @foreach (var subItem in Model.RelatioTags[item.Key])
+                    {
+                      <option value="@subItem">@subItem</option>
                     }
                   </optgroup>
-                  }
-                </select>
-              </div>
+                }
+              </select>
+            </div>
+            <br />
+            <button id="btnPrepararChatGPT-SchedOnChannel" class="button action button-disabled"
+              title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
+              disabled>
+              <i class="material-icons mdc-button__icon" aria-hidden="true">lightbulb</i>
+              <span class="text-button-align-icon">Sugerir contúdo com GPT</span>
+            </button>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" id="Titulo-Sched">
+              <label asp-for="ScheduleTimeSelection.Titulo" class="control-label">Título<span
+                  style="color: firebrick">*</span>
+              </label>
+
+              <input id="LiveTitulo-SchedOnChannel" required asp-for="ScheduleTimeSelection.Titulo" class="form-control"
+                placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+              <span asp-validation-for="ScheduleTimeSelection.Titulo" id="LiveTitulospan" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group" id="TituloDescricao-Sched">
+              <label asp-for="ScheduleLiveForTimeSelection.Descricao" class="control-label">Descrição</label>
+              <textarea id="LiveDescricao-SchedOnChannel" asp-for="ScheduleLiveForTimeSelection.Descricao"
+                class="form-control"
+                placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
+              <span asp-validation-for="ScheduleLiveForTimeSelection.Descricao" id="LiveDescricaospan"
+                class="text-danger"></span>
+            </div>
+
+            <br />
+
+            <div class="form-group" id="thumbnailUploadContainer">
+              <label asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="thumb-label"
+                class="control-label">Pré-Visualização<span style="color: firebrick">*</span>
+              </label>
               <br />
-              <button
-                id="btnPrepararChatGPT-SchedOnChannel"
-                class="button action button-disabled"
-                title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
-                disabled
-              >
-                <i class="material-icons mdc-button__icon" aria-hidden="true"
-                  >lightbulb</i
-                >
-                <span class="text-button-align-icon"
-                  >Sugerir contúdo com GPT</span
-                >
-              </button>
-              <hr />
-              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-              <div class="form-group" id="Titulo-Sched">
-                <label
-                  asp-for="ScheduleTimeSelection.Titulo"
-                  class="control-label"
-                  >Título<span style="color: firebrick">*</span>
-                  </label>
-
-                <input
-                  id="LiveTitulo-SchedOnChannel"
-                  required
-                  asp-for="ScheduleTimeSelection.Titulo"
-                  class="form-control"
-                  placeholder="Fazendo [algo legal] com [tecnologias daora]"
-                />
-                <span
-                  asp-validation-for="ScheduleTimeSelection.Titulo"
-                  id="LiveTitulospan"
-                  class="text-danger"
-                ></span>
-              </div>
+              <input type="file" asp-for="ScheduleLiveForTimeSelection.Thumbnail" id="thumbnailInput" accept="image/*"
+                required />
               <br />
-              <div class="form-group" id="TituloDescricao-Sched">
-                <label
-                  asp-for="ScheduleLiveForTimeSelection.Descricao"
-                  class="control-label"
-                  >Descrição</label>
-                <textarea
-                  id="LiveDescricao-SchedOnChannel"
-                  asp-for="ScheduleLiveForTimeSelection.Descricao"
-                  class="form-control"
-                  placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"
-                ></textarea>
-                <span
-                  asp-validation-for="ScheduleLiveForTimeSelection.Descricao"
-                  id="LiveDescricaospan"
-                  class="text-danger"
-                ></span>
+              <br />
+              <div style="text-align: center">
+                (1280x720)
+                <img id="sched-preview" style="width: 300px; height: 150px" />
               </div>
-
-              <br/>
-
-              <div class="form-group" id="thumbnailUploadContainer">
-                <label
-                  asp-for="ScheduleLiveForTimeSelection.Thumbnail"
-                  id="thumb-label"
-                  class="control-label"
-                  >Pré-Visualização<span style="color: firebrick">*</span>
-                </label>
-                <br/>
-                <input
-                  type="file"
-                  asp-for="ScheduleLiveForTimeSelection.Thumbnail"
-                  id="thumbnailInput"
-                  accept="image/*"
-                  required
-                />
-                <br/>
-                <br/>
-                <div style="text-align: center">
-                  (1280x720)
-                  <img id="sched-preview" style="width: 300px; height: 150px" />
-                </div>
-              </div>
-              <input
-                type="hidden"
-                asp-for="ScheduleTimeSelection.Tipo"
-                value="@EnumTipoTimeSelection.Live"
-              />
-              <input
-                type="hidden"
-                class="startLive"
-                asp-for="ScheduleTimeSelection.StartTime"
-              />
-              <input
-                type="hidden"
-                class="endLive"
-                asp-for="ScheduleTimeSelection.EndTime"
-              />
-              <br/>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn button action">Agendar</button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <input type="hidden" asp-for="ScheduleTimeSelection.Tipo" value="@EnumTipoTimeSelection.Live" />
+            <input type="hidden" class="startLive" asp-for="ScheduleTimeSelection.StartTime" />
+            <input type="hidden" class="endLive" asp-for="ScheduleTimeSelection.EndTime" />
+            <br />
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn button action">Agendar</button>
+            </div>
+          </form>
         </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            id="backToTimePicker"
-            style="border: 1px solid #cdcdcd"
-            class="btn"
-            onclick="backToTimePicker()"
-          >
-            VOLTAR
-          </button>
-          <button
-            type="button"
-            class="btn button-close-color"
-            data-bs-dismiss="modal"
-          >
-            FECHAR
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="backToTimePicker" style="border: 1px solid #cdcdcd" class="btn"
+          onclick="backToTimePicker()">
+          VOLTAR
+        </button>
+        <button type="button" class="btn button-close-color" data-bs-dismiss="modal">
+          FECHAR
+        </button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    function backToTimePicker() {
-      $("#eventModalLiveScheduleOnChannel").modal("hide");
-      $("#timePickerModal").modal("show");
-    }
-  </script>
-  <script defer src="~/js/scheduleLivePreviewObserverOnChannel.js"></script>
-  <script defer src="~/js/ScheduleLiveSelectionTagVerifierOnChannel.js"></script
-></IdentityUser>
+<script>
+  function backToTimePicker() {
+    $("#eventModalLiveScheduleOnChannel").modal("hide");
+    $("#timePickerModal").modal("show");
+  }
+</script>
+<script defer src="~/js/scheduleLivePreviewObserverOnChannel.js"></script>
+<script defer src="~/js/ScheduleLiveSelectionTagVerifierOnChannel.js"></script>
+</IdentityUser>

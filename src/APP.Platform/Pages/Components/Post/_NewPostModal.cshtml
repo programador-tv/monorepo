@@ -1,0 +1,42 @@
+@model _NewPostModalModel
+<div class="modal fade" id="newPostFromSite" tabindex="-1" aria-labelledby="newPostFromSite" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <br>
+                <h4>
+                    Nova publicação
+                </h4>
+                <hr>
+
+                <form method="post" action="/SavePublicacao" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label for="post-link" class="control-label">Link do post</label>
+                        <input id="post-link" required class="form-control "
+                            placeholder="https://linkedin.com/meupost" />
+                    </div>
+
+                    <br>
+                    <small id="error" style="margin-bottom: 20px;color:red; font-size: 14px;"></small>
+                    <div class="form-group d-flex">
+                        <button type="button" id="submitNewPost" class="button action button-right">
+                            <span class="text-button-align-icon">Enviar</span>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script defer src="~/js/Post/newPostModal.js"></script>
