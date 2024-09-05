@@ -105,6 +105,7 @@ builder.Services.AddScoped<IEnsinarService, EnsinarService>();
 builder.Services.AddScoped<ILiveService, LiveService>();
 builder.Services.AddScoped<IAprenderService, AprenderService>();
 builder.Services.AddScoped<IAliasService, AliasService>();
+builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 builder
     .Services.AddDefaultIdentity<IdentityUser>(options =>
