@@ -94,6 +94,8 @@ namespace APP.Platform.Pages.ScheduleActions
         private readonly IRazorViewEngine _viewEngine;
         private readonly ITempDataProvider _tempDataProvider;
         private readonly IAliasService _aliasService;
+        private readonly IJoinTimeWebService _joinTimeWebService;
+
         public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; } = new();
         public Dictionary<JoinTime, TimeSelection> OldMyEvents { get; set; } = new();
         private readonly IAprenderService _AprenderService;
@@ -114,7 +116,8 @@ namespace APP.Platform.Pages.ScheduleActions
             Settings settings,
             IAliasService aliasService,
             IPerfilWebService perfilWebService,
-            IHelpResponseWebService helpResponseWebService
+            IHelpResponseWebService helpResponseWebService,
+            IJoinTimeWebService joinTimeWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
@@ -129,12 +132,14 @@ namespace APP.Platform.Pages.ScheduleActions
             _aliasService = aliasService;
             _perfilWebService = perfilWebService;
             _helpResponseWebService = helpResponseWebService;
+            _joinTimeWebService = joinTimeWebService;
             RelatioTags = DataTags.GetTags();
             TagsSelected = new();
             TimeSelectionList = new();
             OldTimeSelectionList = new();
             TimeSelectionsCheckedUsers = new();
             TimeSelectionBackstage = new();
+            
         }
 
         [BindProperty]
@@ -321,15 +326,9 @@ namespace APP.Platform.Pages.ScheduleActions
 
             foreach (var time in freeTimeList)
             {
-                var joinTimes = _context
-                    .JoinTimes.Where(j =>
-                        j.TimeSelectionId == time.Key.Id
-                        && (
-                            j.StatusJoinTime == StatusJoinTime.Marcado
-                            || j.StatusJoinTime == StatusJoinTime.Pendente
-                        )
-                    )
-                    .ToList();
+
+                var joinTimes = await _joinTimeWebService.GetJoinTimesAtivos(time.Key.Id);              
+               
 
                 var pendentJoinTimes = joinTimes
                     .Where(j => j.StatusJoinTime == StatusJoinTime.Pendente)
