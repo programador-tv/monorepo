@@ -150,7 +150,7 @@ public sealed class CanalIndexModel : CustomPageModel
         {
             return BadRequest();
         }
-    
+
         var pagedPrivateLives = await _liveService.RenderPrivateLives(
             perfilOwner,
             UserProfile.Id,
@@ -546,12 +546,15 @@ public sealed class CanalIndexModel : CustomPageModel
         return Redirect("./?event=" + JoinTime.TimeSelectionId);
     }
 
-    public async Task<ActionResult> OnPostPublication([FromBody] CreatePublicationRequest reques) 
+    public async Task<ActionResult> OnPostPublication([FromBody] CreatePublicationRequest reques)
     {
         try
         {
             await _publicationService.Add(reques);
-            return StatusCode(200, new { status = "OK", message = "Publicação adicionada com sucesso!" });
+            return StatusCode(
+                200,
+                new { status = "OK", message = "Publicação adicionada com sucesso!" }
+            );
         }
         catch (Exception ex)
         {

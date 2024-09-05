@@ -7,5 +7,4 @@ namespace Domain.WebServices;
 public interface IPublicationWebService
 {
     public Task Add(CreatePublicationRequest request);
-    
 }

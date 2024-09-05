@@ -5,9 +5,9 @@ namespace Platform.Services;
 
 public class PublicationService(IPublicationWebService _publicationWebService) : IPublicationService
 {
-     public async Task Add(CreatePublicationRequest request) {
-        
-         try
+    public async Task Add(CreatePublicationRequest request)
+    {
+        try
         {
             await _publicationWebService.Add(request);
         }
@@ -15,5 +15,5 @@ public class PublicationService(IPublicationWebService _publicationWebService) :
         {
             throw;
         }
-     }
-}   
+    }
+}

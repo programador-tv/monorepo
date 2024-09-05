@@ -10,7 +10,6 @@ public sealed class PublicationRepository(ApplicationDbContext context)
     : GenericRepository<Publication>(context),
         IPublicationRepository
 {
-
     public async Task AddAsync(Publication publication)
     {
         await DbContext.Publications.AddAsync(publication);

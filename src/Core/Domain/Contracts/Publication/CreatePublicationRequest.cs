@@ -1,6 +1,3 @@
 namespace Domain.Contracts;
 
-public record CreatePublicationRequest(
-    Guid PerfilId,
-    string Link
-);
+public record CreatePublicationRequest(Guid PerfilId, string Link);

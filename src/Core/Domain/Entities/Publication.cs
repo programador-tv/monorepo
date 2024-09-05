@@ -1,5 +1,5 @@
-using Domain.Primitives;
 using Domain.Contracts;
+using Domain.Primitives;
 
 namespace Domain.Entities;
 
@@ -32,28 +32,31 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
         IsValid = true;
     }
 
-    public static bool UrlIsValid(string url) {
+    public static bool UrlIsValid(string url)
+    {
         string[] allowedDomains = new[]
         {
             "linkedin.com",
             "x.com",
             "dev.to",
             "tabnews.com.br",
-            "medium.com"
+            "medium.com",
         };
 
         if (string.IsNullOrWhiteSpace(url))
             return false;
-        
+
         Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
-        
+
         if (
             uriResult == null
             || uriResult.Scheme != Uri.UriSchemeHttps
-            || !allowedDomains.Any(domain => uriResult.Host.EndsWith(domain, StringComparison.OrdinalIgnoreCase))
+            || !allowedDomains.Any(domain =>
+                uriResult.Host.EndsWith(domain, StringComparison.OrdinalIgnoreCase)
             )
+        )
             return false;
-            
+
         return true;
     }
 }
