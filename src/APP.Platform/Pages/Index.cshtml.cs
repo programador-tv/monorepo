@@ -40,6 +40,7 @@ public class IndexModel(
     IAprenderService aprenderService,
     IPerfilWebService perfilWebService,
     IHelpResponseWebService helpResponseWebService,
+    IVisualizationWebService liveVisualizationWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -190,9 +191,7 @@ public class IndexModel(
 
         var perfils = await perfilWebService.GetAllById(PerfilIds);
 
-        var liveVisualizations = _context
-            .Visualizations.Where(e => liveIds.Contains(e.LiveId))
-            .ToList();
+        var liveVisualizations = await liveVisualizationWebService.GetLiveVisualizations(liveIds);
 
         var lives = new List<LiveViewModel> { };
 
@@ -236,9 +235,7 @@ public class IndexModel(
 
         var perfils = await perfilWebService.GetAllById(PerfilIds);
 
-        var liveVisualizations = _context
-            .Visualizations.Where(e => liveIds.Contains(e.LiveId))
-            .ToList();
+        var liveVisualizations = await liveVisualizationWebService.GetLiveVisualizations(liveIds);
 
         var savedVideos = new List<LiveViewModel> { };
 
@@ -300,9 +297,7 @@ public class IndexModel(
 
         var perfils = await perfilWebService.GetAllById(PerfilIds);
 
-        var liveVisualizations = _context
-            .Visualizations.Where(e => liveIds.Contains(e.LiveId))
-            .ToList();
+        var liveVisualizations = await liveVisualizationWebService.GetLiveVisualizations(liveIds);
 
         var savedVideos = new List<LiveViewModel> { };
 
