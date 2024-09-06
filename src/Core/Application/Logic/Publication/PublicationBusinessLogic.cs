@@ -11,4 +11,13 @@ public sealed class PublicationBusinessLogic(IPublicationRepository _repository)
     {
         return await _repository.GetAllAsync(perfilId);
     }
+
+    public async Task AddPublication(CreatePublicationRequest createPublicationRequest)
+    {
+        var publication =
+            Publication.Create(createPublicationRequest)
+            ?? throw new UriFormatException("A URL fornecida é inválida!");
+
+        await _repository.AddAsync(publication);
+    }
 }

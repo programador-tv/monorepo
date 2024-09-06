@@ -1,4 +1,5 @@
 using Application.Logic;
+using Domain.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,8 @@ public static class PublicationEndPoints
         group.WithOpenApi();
 
         group.MapGet("all/{perfilId}", GetPublicationPerfilById);
+
+        group.MapPost(string.Empty, Add);
     }
 
     public static async Task<IResult> GetPublicationPerfilById(
@@ -25,6 +28,22 @@ public static class PublicationEndPoints
         try
         {
             return Results.Ok(await _logic.GetPublicationPerfilById(perfilId));
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
+    public static async Task<IResult> Add(
+        [FromServices] IPublicationBusinessLogic _logic,
+        [FromBody] CreatePublicationRequest _request
+    )
+    {
+        try
+        {
+            await _logic.AddPublication(_request);
+            return Results.Ok();
         }
         catch (Exception ex)
         {

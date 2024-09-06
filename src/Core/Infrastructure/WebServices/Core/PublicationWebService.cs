@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Contracts;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.WebServices;
 
@@ -17,5 +18,21 @@ public sealed class PublicationWebService(CoreClient client) : IPublicationWebSe
     {
         var route = Path.Combine(baseRoute, "all", $"{perfilId}");
         return await client.GetAsync<List<Publication>>(route);
+    }
+
+    public async Task Add(CreatePublicationRequest request)
+    {
+        var route = Path.Combine(baseRoute, string.Empty);
+
+        try
+        {
+            await client.PostAsync(route, request);
+        }
+        catch
+        {
+            throw new Exception(
+                "Erro! Não foi possível adicionar sua publicação. Verifique a URL ou se o formato do arquivo JSON está correto."
+            );
+        }
     }
 }

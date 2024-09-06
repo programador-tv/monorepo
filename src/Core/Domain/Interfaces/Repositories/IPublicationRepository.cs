@@ -11,5 +11,6 @@ namespace Domain.Repositories
     public interface IPublicationRepository
     {
         public Task<List<Publication>> GetAllAsync(Guid perfilId);
+        public Task AddAsync(Publication publication);
     }
 }

@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using System;
+using Domain.Entities;
+using Domain.Entities;
 using Domain.Enumerables;
 using Domain.Repositories;
 using Infrastructure.Contexts;
@@ -15,4 +17,10 @@ public sealed class PublicationRepository(ApplicationDbContext context)
             .Publications.Where(e => e.PerfilId == perfilId)
             .OrderByDescending(e => e.PerfilId)
             .ToListAsync();
+
+    public async Task AddAsync(Publication publication)
+    {
+        await DbContext.Publications.AddAsync(publication);
+        await DbContext.SaveChangesAsync();
+    }
 }
