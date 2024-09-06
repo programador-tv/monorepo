@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using APP.Platform.Pages.Components.ModalJoinTime;
@@ -1013,8 +1012,13 @@ namespace APP.Platform.Pages.ScheduleActions
                 var x = Math.Min(availableSlots, pendentJoinTimes.Count());
                 for (var i = 0; i < x; i++)
                 {
-                    var randomGenerator = RandomNumberGenerator.GetInt32(pendentJoinTimes.Length);
-                    var jt = pendentJoinTimes.Skip(randomGenerator - 1).Take(1).FirstOrDefault();
+                    var randomGenerator = RandomNumeberGenerator.Create();
+                    byte[] data = new byte[36];
+                    randomGenerator.NextBytes(data);
+                    var jt = pendentJoinTimes
+                        .Skip(BitConverter.ToInt32(data))
+                        .Take(1)
+                        .FirstOrDefault();
 
                     if (jt != null)
                     {
