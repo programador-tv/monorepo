@@ -7,6 +7,8 @@ namespace Application.Logic;
 public sealed class PublicationBusinessLogic(IPublicationRepository _repository)
     : IPublicationBusinessLogic
 {
-    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId) =>
-        await _repository.GetPublicationPerfilById(perfilId);
+    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId)
+    {
+        return await _repository.GetAllAsync(perfilId);
+    }
 }

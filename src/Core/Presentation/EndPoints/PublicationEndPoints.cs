@@ -24,8 +24,7 @@ public static class PublicationEndPoints
     {
         try
         {
-            var response = await _logic.GetPublicationPerfilById(perfilId);
-            return Results.Ok(response);
+            return Results.Ok(await _logic.GetPublicationPerfilById(perfilId));
         }
         catch (Exception ex)
         {
