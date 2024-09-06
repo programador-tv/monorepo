@@ -1012,9 +1012,9 @@ namespace APP.Platform.Pages.ScheduleActions
                 var x = Math.Min(availableSlots, pendentJoinTimes.Count());
                 for (var i = 0; i < x; i++)
                 {
-                    var randomIndex = new Random();
+                    var randomGenerator = RandomNumeberGenerator.Create();
                     byte[] data = new byte[36];
-                    randomIndex.NextBytes(data);
+                    randomGenerator.NextBytes(data);
                     var jt = pendentJoinTimes
                         .Skip(BitConverter.ToInt32(data))
                         .Take(1)
