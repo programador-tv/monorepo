@@ -1,13 +1,12 @@
 .fc-button-primary{
-    background-color: #B5DCF0 !important;
-    color: #2E2E2E !important;
+    background-color: #437AE2 !important;
+    color: #FEFBFB !important;
     border: none !important;
-    height: 45px !important;
-    margin-top: 0.5em !important;
-    border-radius: 8px !important;
+    height: 32px !important;
+    border-radius: 2px !important;
     padding-left: 1.6rem !important;
     padding-right: 1.6rem !important;
-    max-width: 480px !important;
+    max-width: 53px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -21,4 +20,8 @@
   color: #000;
   font-weight: 600;
   padding: 0.5;
+}
+.fc-today-button {
+	background-color: #CFDEFB !important;
+	color: #878787 !important;
 }
