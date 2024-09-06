@@ -1113,6 +1113,25 @@ body {
   display: flex;
   justify-content: center;
   gap: 19px;
+	flex-wrap: wrap;
+}
+
+.btn-tab-agenda {
+	background-color: transparent;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: 500;
+	margin: 0 8px;
+	padding: 8px 0;
+}
+.btn-tab-agenda:hover {
+	border-bottom: 3px solid #1B4BA5;
+	color: #1B4BA5;
+}
+.btn-tab-agenda.active-tab{
+	border-bottom: 3px solid #437AE2;
+	color: #437AE2;
+	font-weight: 700;
 }
 
 * {
