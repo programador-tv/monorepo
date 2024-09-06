@@ -139,7 +139,6 @@ namespace APP.Platform.Pages.ScheduleActions
             OldTimeSelectionList = new();
             TimeSelectionsCheckedUsers = new();
             TimeSelectionBackstage = new();
-            
         }
 
         [BindProperty]
@@ -326,9 +325,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
             foreach (var time in freeTimeList)
             {
-
-                var joinTimes = await _joinTimeWebService.GetJoinTimesAtivos(time.Key.Id);              
-               
+                var joinTimes = await _joinTimeWebService.GetJoinTimesAtivos(time.Key.Id);
 
                 var pendentJoinTimes = joinTimes
                     .Where(j => j.StatusJoinTime == StatusJoinTime.Pendente)
@@ -1015,8 +1012,13 @@ namespace APP.Platform.Pages.ScheduleActions
                 var x = Math.Min(availableSlots, pendentJoinTimes.Count());
                 for (var i = 0; i < x; i++)
                 {
-                    var randomIndex = new Random().Next(pendentJoinTimes.Length);
-                    var jt = pendentJoinTimes.Skip(randomIndex - 1).Take(1).FirstOrDefault();
+                    var randomIndex = new Random();
+                    byte[] data = new byte[36];
+                    randomIndex.NextBytes(data);
+                    var jt = pendentJoinTimes
+                        .Skip(BitConverter.ToInt32(data))
+                        .Take(1)
+                        .FirstOrDefault();
 
                     if (jt != null)
                     {
