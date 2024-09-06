@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Repositories;
+﻿using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
 using Domain.Repositories;
 using Domain.WebServices;
 using Infrastructure.Browser;
@@ -276,6 +277,7 @@ public static class DependencyInjection
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IHelpResponseRepository, HelpResponseRepository>();
         services.AddScoped<IVisualizationRepository, VisualizationRepository>();
+        services.AddScoped<IFeedbackJoinTimeRepository, FeedbackJoinTimeRepository>();
         return services;
     }
 }

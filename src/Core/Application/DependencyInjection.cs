@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeBusinessLogic, LikeBusinessLogic>();
         services.AddScoped<IHelpResponseBusinessLogic, HelpResponseBusinessLogic>();
         services.AddScoped<IVisualizationBusinessLogic, VisualizationBusinessLogic>();
+        services.AddScoped<IFeedbackJoinTimeBusinessLogic, FeedbackJoinTimeBusinessLogic>();
         return services;
     }
 }

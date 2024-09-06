@@ -52,6 +52,7 @@ public sealed class CanalIndexModel : CustomPageModel
     public int followersCount { get; set; }
     public int followingCount { get; set; }
     public IHttpClientFactory _httpClientFactory { get; set; }
+    public IFeedbackJoinTimeWebService _feedbackJoinTimeWebService { get; set; }
 
     public CanalIndexModel(
         IRazorViewEngine viewEngine,
@@ -62,7 +63,8 @@ public sealed class CanalIndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         Settings settings,
         IPerfilWebService perfilWebService,
-        ILiveService liveService
+        ILiveService liveService,
+        IFeedbackJoinTimeWebService feedbackJoinTimeWebService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
@@ -73,6 +75,7 @@ public sealed class CanalIndexModel : CustomPageModel
         _context = context;
         _messagePublisher = messagePublisher;
         _liveService = liveService;
+        _feedbackJoinTimeWebService = feedbackJoinTimeWebService;
     }
 
     public async Task<IActionResult> OnGetAsync(string usr)
@@ -491,15 +494,7 @@ public sealed class CanalIndexModel : CustomPageModel
 
         _context.JoinTimes.Add(JoinTime);
 
-        var feedback = new FeedbackJoinTime
-        {
-            Id = Guid.NewGuid(),
-            JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now,
-        };
-        _context.FeedbackJoinTimes?.Add(feedback);
-
-        _context.SaveChanges();
+        await _feedbackJoinTimeWebService.Add(JoinTime.Id);
 
         if (timeSelection != null && timeSelection.Tipo == EnumTipoTimeSelection.FreeTime)
         {

@@ -41,6 +41,7 @@ public class IndexModel(
     IPerfilWebService perfilWebService,
     IHelpResponseWebService helpResponseWebService,
     IVisualizationWebService liveVisualizationWebService,
+    IFeedbackJoinTimeWebService _feedbackJoinTimeWebService,
     Settings settings
 ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
@@ -714,15 +715,7 @@ public class IndexModel(
         }
         _context.JoinTimes.Add(JoinTime);
 
-        var feedback = new FeedbackJoinTime
-        {
-            Id = Guid.NewGuid(),
-            JoinTimeId = JoinTime.Id,
-            DataTentativaMarcacao = DateTime.Now,
-        };
-        _context.FeedbackJoinTimes?.Add(feedback);
-
-        _context.SaveChanges();
+        await _feedbackJoinTimeWebService.Add(JoinTime.Id);
 
         if (timeSelection.Tipo == EnumTipoTimeSelection.FreeTime)
         {
