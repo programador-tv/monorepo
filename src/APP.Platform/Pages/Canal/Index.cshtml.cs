@@ -548,12 +548,10 @@ public sealed class CanalIndexModel : CustomPageModel
 
     public async Task<ActionResult> OnPostPublication([FromBody] PublicationModel publicationModel)
     {
-        await _publicationWebService.Add(new CreatePublicationRequest(
-            UserProfile.Id,
-            publicationModel.Link
-        ));
-           
+        await _publicationWebService.Add(
+            new CreatePublicationRequest(UserProfile.Id, publicationModel.Link)
+        );
+
         return Page();
-        
     }
 }

@@ -1,6 +1,6 @@
+using System.Text.RegularExpressions;
 using Domain.Contracts;
 using Domain.Primitives;
-using System.Text.RegularExpressions;
 
 namespace Domain.Entities;
 
@@ -16,12 +16,7 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
         if (url == null || !UrlIsValid(url))
             return null;
 
-        return new Publication(
-            Guid.NewGuid(),
-            createPublicationRequest.PerfilId,
-            url,
-            true
-        );
+        return new Publication(Guid.NewGuid(), createPublicationRequest.PerfilId, url, true);
     }
 
     public void NotValid()
@@ -36,19 +31,18 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
 
     public static bool UrlIsValid(string url)
     {
-       string[] allowedDomains = {
+        string[] allowedDomains =
+        {
             @"^https:\/\/(www\.)?linkedin\.com(\/.*)?$",
             @"^https:\/\/x\.com(\/.*)?$",
             @"^https:\/\/dev\.to(\/.*)?$",
             @"^https:\/\/tabnews\.com\.br(\/.*)?$",
-            @"^https:\/\/medium\.com(\/.*)?$"
+            @"^https:\/\/medium\.com(\/.*)?$",
         };
-       
-        if (
-            !allowedDomains.Any(domain => Regex.IsMatch(url, domain, RegexOptions.IgnoreCase))
-            )
+
+        if (!allowedDomains.Any(domain => Regex.IsMatch(url, domain, RegexOptions.IgnoreCase)))
             return false;
-            
+
         return true;
     }
 }
