@@ -88,7 +88,7 @@ public class FollowEndPointsTests
     }
 
     [Fact]
-    public async Task IsFollowIng_ShouldReturnResponse_WhenException()
+    public async Task IsFollowIng_ShouldReturnResponse_WhenOK()
     {
         var expectedFollowerId = Guid.NewGuid();
         var expectedfollowingId = Guid.NewGuid();
@@ -105,7 +105,7 @@ public class FollowEndPointsTests
     }
 
     [Fact]
-    public async Task IsFollowIng_ShouldReturnResponse_Ok()
+    public async Task IsFollowIng_ShouldReturnResponse_WhenException()
     {
         var expectedFollowerId = Guid.NewGuid();
         var expectedfollowingId = Guid.NewGuid();
