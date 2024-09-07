@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.WebServices;
+﻿using Domain.Contracts;
+using Domain.Interfaces.WebServices;
 
 
 namespace Infrastructure.WebServices.Core

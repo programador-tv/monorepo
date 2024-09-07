@@ -6,6 +6,7 @@ using Domain.Repositories;
 using Infrastructure.Contexts;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NuGet.Frameworks;
 
 namespace tests;
@@ -124,5 +125,18 @@ public class FollowRepositoryTests
 
         Assert.IsType<int>(result);
         Assert.Equal(1, result);
+    }
+
+    [Fact]
+    public async Task IsFollowingAsync()
+    {
+        var expectedFollowerId = Guid.NewGuid();
+        var expectedfollowingId = Guid.NewGuid();
+
+        var result = await _repository.IsFollowingAsync(expectedFollowerId, expectedfollowingId);
+
+        Assert.NotNull(result);
+        Assert.IsType<IsFollowingResponse>(result);
+        Assert.False(result.Active);
     }
 }

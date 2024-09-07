@@ -86,4 +86,37 @@ public class FollowEndPointsTests
 
         Assert.IsType<BadRequest<string>>(result);
     }
+
+    [Fact]
+    public async Task IsFollowIng_ShouldReturnResponse_WhenException()
+    {
+        var expectedFollowerId = Guid.NewGuid();
+        var expectedfollowingId = Guid.NewGuid();
+        var expectedResponse = new IsFollowingResponse(true);
+
+
+        mockLogic
+            .Setup(logic => logic.IsFollowing(expectedFollowerId, expectedfollowingId))
+            .ReturnsAsync(expectedResponse);
+
+        var result = await FollowEndPoints.IsFollowing(mockLogic.Object,expectedFollowerId, expectedfollowingId);
+
+        Assert.IsType<Ok<IsFollowingResponse>>(result);
+    }
+
+    [Fact]
+    public async Task IsFollowIng_ShouldReturnResponse_Ok()
+    {
+        var expectedFollowerId = Guid.NewGuid();
+        var expectedfollowingId = Guid.NewGuid();
+        var expectedResponse = new Exception("teste de erro");
+
+        mockLogic
+            .Setup(logic => logic.IsFollowing(expectedFollowerId, expectedfollowingId))
+            .ThrowsAsync(expectedResponse);
+
+        var result = await FollowEndPoints.IsFollowing(mockLogic.Object, expectedFollowerId, expectedfollowingId);
+
+        Assert.IsType<BadRequest<string>>(result);
+    }
 }

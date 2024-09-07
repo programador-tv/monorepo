@@ -10,5 +10,5 @@ public interface IFollowBusinessLogic
     public Task<FollowInformationResponse> GetFollowInformation(Guid userId);
 
     Task<List<FollowersResponse>> GetFollowersCount(List<Guid> usersId);
-    public Task<bool> IsFollowing(Guid followerId, Guid followingId);
+    public Task<IsFollowingResponse> IsFollowing(Guid followerId, Guid followingId);
 }

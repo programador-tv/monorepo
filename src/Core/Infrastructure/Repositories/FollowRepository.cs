@@ -48,9 +48,11 @@ public sealed class FollowRepository(ApplicationDbContext context)
         return await DbContext.Follows.Where(f => f.FollowerId == userId && f.Active).CountAsync();
     }
 
-    public async Task<bool> IsFollowingAsync(Guid followerId, Guid followingId)
+    public async Task<IsFollowingResponse> IsFollowingAsync(Guid followerId, Guid followingId)
     {
-        return await DbContext.Follows.AnyAsync(
-            f => f.FollowerId == followerId && f.FollowingId == followingId && f.Active);
+        var response = await DbContext.Follows
+        .AnyAsync(f => f.FollowerId == followerId && f.FollowingId == followingId && f.Active);
+
+        return new IsFollowingResponse(response);
     }
 }

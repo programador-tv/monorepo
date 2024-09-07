@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Contracts;
+using Domain.Entities;
 
 namespace Domain.Interfaces.WebServices
 {
