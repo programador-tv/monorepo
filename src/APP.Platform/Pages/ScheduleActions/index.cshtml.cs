@@ -869,7 +869,7 @@ namespace APP.Platform.Pages.ScheduleActions
 
             var perfilResponse = await _perfilWebService.GetById(id);
 
-            return new JsonResult(result);
+            return new JsonResult(_perfilWebService);
         }
 
         public async Task<IActionResult> OnPostSetAluno(Guid joinId)
