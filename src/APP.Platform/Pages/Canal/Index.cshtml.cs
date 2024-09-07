@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Background;
 using ClassLib.Follow.Models.ViewModels;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
@@ -22,6 +23,8 @@ namespace APP.Platform.Pages;
 
 public sealed class CanalIndexModel : CustomPageModel
 {
+    private readonly IPublicationWebService _publicationWebService;
+
     [BindProperty]
     public JoinTime? JoinTime { get; set; }
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; }
@@ -62,7 +65,8 @@ public sealed class CanalIndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         Settings settings,
         IPerfilWebService perfilWebService,
-        ILiveService liveService
+        ILiveService liveService,
+        IPublicationWebService publicationWebService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
@@ -73,6 +77,7 @@ public sealed class CanalIndexModel : CustomPageModel
         _context = context;
         _messagePublisher = messagePublisher;
         _liveService = liveService;
+        _publicationWebService = publicationWebService;
     }
 
     public async Task<IActionResult> OnGetAsync(string usr)
@@ -539,5 +544,14 @@ public sealed class CanalIndexModel : CustomPageModel
         }
 
         return Redirect("./?event=" + JoinTime.TimeSelectionId);
+    }
+
+    public async Task<ActionResult> OnPostPublication([FromBody] PublicationModel publicationModel)
+    {
+        await _publicationWebService.Add(
+            new CreatePublicationRequest(UserProfile.Id, publicationModel.Link)
+        );
+
+        return Page();
     }
 }
