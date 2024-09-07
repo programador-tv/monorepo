@@ -3,61 +3,43 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <div class="modal-body">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h4 class="tittle-newDesign">📅 Agenda</h4>
-                <section style="display: flex;
-                        flex-wrap: wrap;
-                        gap: 20px;
-                        justify-content: space-evenly;
-                        align-items: center;"
-                        class="tab"
-                >
-                <div  style="cursor: pointer; display: flex;
-                    justify-content: space-between;
-                    align-items: center; " class="button action active hover-blue button-tab active-tab"
-                    data-bs-toggle="tab" data-bs-target="#calendarPanel">
+            <div class="modal-body" style="padding: 32px;">
 
-                        <span class="material-symbols-outlined "
-                            style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;">
-                            calendar_month
-                        </span>
+                <header style="margin-bottom: 38px;">
+									<button
+											type="button"
+											class="btn-close"
+											data-bs-dismiss="modal"
+											aria-label="Close"
+									>
+									</button>
+									<h4 class="fs-2" style="color: #373737">Agenda</h4>
+								</header>
+
+                <section
+										class="tab d-flex flex-wrap"
+										style="gap: 20px; border-bottom: 2px solid #D7D7D7"
+								>
+                    <div
+												class="btn-tab-agenda button-tab active-tab"
+												data-bs-toggle="tab"
+												data-bs-target="#calendarPanel"
+										>
                         <span>Calendário</span>
                     </div>
-                    <div style="cursor: pointer; display: flex;
-                    justify-content: space-between;
-                    align-items: center; " class="button active hover-blue button-tab active-tab"
-                         data-bs-toggle="tab" data-bs-target="#eventCards">
-
-                        <span class="material-symbols-outlined "
-                              style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;">
-                            construction
-                        </span>
-                        <span>Capacitações</span>
+                    <div
+												class="btn-tab-agenda button-tab"
+												data-bs-toggle="tab"
+												data-bs-target="#eventsPanel"
+										>
+                        <span>Eventos</span>
                     </div>
-                    <div style="cursor: pointer;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 5px;
-                    padding: 7px;" class="button active hover-blue button-tab active-tab"
-                    data-bs-toggle="tab" data-bs-target="#helpPanel">
-                        <span class="material-symbols-outlined "
-                              style=" border: none;">
-                            live_help
-                        </span>
-                        <span>Ajuda</span>
-                    </div>
-                    <div style="cursor: pointer; display: flex;
-                    justify-content: space-between;
-                    align-items: center; " class="button active hover-blue button-tab active-tab"
-                         data-bs-toggle="tab" data-bs-target="#livesPanel">
-
-                        <span class="material-symbols-outlined "
-                              style=" border: none; padding-bottom: 7px;color: inherit; padding-top: 5px;">
-                            live_tv
-                        </span>
-                        <span>Minhas Lives</span>
+                    <div
+												class="btn-tab-agenda button-tab"
+												data-bs-toggle="tab"
+												data-bs-target="#livesPanel"
+										>
+                        <span>Lives</span>
                     </div>
                 </section>
                 <br />
@@ -65,43 +47,31 @@
                     <div id='calendarPanel' class="tab-pane active">
                         <div id='calendar' style="width:100%;height:715px"></div>
                     </div>
-                    <div id="eventCards"
-                         class="tab-pane"
-                    >
+                    <div id="eventsPanel" class="tab-pane">
                         <div class="schelude-timeselection-panel">
                             <div>
-                                <h5 style="font-family: 'League Spartan', sans-serif; margin-left: 20px">🛠️ Aprendizado</h5>
-                                <div id="joinTimes">
-                                </div>
+                                <h5>🛠️ Aprendizado</h5>
+                                <div id="joinTimes"></div>
                             </div>
-                            <hr class="horizontal-line" />
                             <div class="vertical-line"></div>
                             <div>
-                                <h5 style="font-family: 'League Spartan', sans-serif; margin-left: 20px">🦾 Meus Eventos</h5>
-                                <div id="freeTimes">
-                                </div>
+                                <h5>⚠️ Meus pedidos de Ajuda</h5>
+                                <div id="askedHelp"></div>
                             </div>
-                        </div>
-                    </div>
-                    <div id='helpPanel' class="tab-pane">
-                        <div class="schelude-timeselection-panel">
                             <div>
-                                <h5 style="font-family: 'League Spartan', sans-serif; margin-left: 20px">⚠️ Meus pedidos de Ajuda</h5>
-                                <div id="askedHelp">
-                                </div>
+                                <h5>🎯 Ajudas atendidas</h5>
+                                <div id="solvedHelp"></div>
                             </div>
-                            <hr class="horizontal-line" />
                             <div class="vertical-line"></div>
                             <div>
-                                <h5 style="font-family: 'League Spartan', sans-serif; margin-left: 20px">🎯 Ajudas atentidas</h5>
-                                <div id="solvedHelp">
-                                </div>
+                                <h5>🦾 Meus Eventos</h5>
+                                <div id="freeTimes"></div>
                             </div>
                         </div>
                     </div>
                     <div id='livesPanel' class="tab-pane">
                         <div id="myLives" class="row">
-                                                                                 
+
                         </div>
                     </div>
                 </div>

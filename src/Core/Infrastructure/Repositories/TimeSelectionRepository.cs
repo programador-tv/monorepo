@@ -56,7 +56,7 @@ public sealed class TimeSelectionRepository(ApplicationDbContext context)
                 && !e.NotifiedMentoriaProxima
             )
             .ToListAsync();
-
+#warning deveria estar na busca do banco e não depois
         var tsIds = tss.Where(e => e.StartTime > DateTime.Now.AddMinutes(-30))
             .Select(e => e.Id)
             .ToList();

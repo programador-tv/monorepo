@@ -74,12 +74,8 @@ public sealed class CanalIndexModel(
         }
         PerfilOwner = perfilOwner;
 
-        //if (UserProfile != null)
-        //{
-        //    IsFollowing = await followService.IsFollowingAsync(UserProfile.Id, perfilOwner.Id);
-        //}
-
-        var client = _httpClientFactory.CreateClient(coreApi);
+        #warning deve popular IsFollowing
+        var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
@@ -100,7 +96,7 @@ public sealed class CanalIndexModel(
         string usr,
         bool isPrivate,
         int pageNumber = 1,
-        int pageSize = 3
+        int pageSize = 9
     )
     {
         var perfilOwner = await perfilWebService.GetByUsername(usr);
