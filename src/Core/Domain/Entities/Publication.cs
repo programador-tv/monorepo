@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Domain.Contracts;
 using Domain.Primitives;
 
@@ -11,15 +12,11 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
 
     public static Publication? Create(CreatePublicationRequest createPublicationRequest)
     {
-        if (!UrlIsValid(createPublicationRequest.Link))
+        string? url = createPublicationRequest.Link;
+        if (url == null || !UrlIsValid(url))
             return null;
 
-        return new Publication(
-            Guid.NewGuid(),
-            createPublicationRequest.PerfilId,
-            createPublicationRequest.Link,
-            true
-        );
+        return new Publication(Guid.NewGuid(), createPublicationRequest.PerfilId, url, true);
     }
 
     public void NotValid()
@@ -34,27 +31,16 @@ public sealed class Publication(Guid id, Guid perfilId, string link, bool isVali
 
     public static bool UrlIsValid(string url)
     {
-        string[] allowedDomains = new[]
+        string[] allowedDomains =
         {
-            "linkedin.com",
-            "x.com",
-            "dev.to",
-            "tabnews.com.br",
-            "medium.com",
+            @"^https:\/\/(www\.)?linkedin\.com(\/.*)?$",
+            @"^https:\/\/x\.com(\/.*)?$",
+            @"^https:\/\/dev\.to(\/.*)?$",
+            @"^https:\/\/tabnews\.com\.br(\/.*)?$",
+            @"^https:\/\/medium\.com(\/.*)?$",
         };
 
-        if (string.IsNullOrWhiteSpace(url))
-            return false;
-
-        Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
-
-        if (
-            uriResult == null
-            || uriResult.Scheme != Uri.UriSchemeHttps
-            || !allowedDomains.Any(domain =>
-                uriResult.Host.EndsWith(domain, StringComparison.OrdinalIgnoreCase)
-            )
-        )
+        if (!allowedDomains.Any(domain => Regex.IsMatch(url, domain, RegexOptions.IgnoreCase)))
             return false;
 
         return true;
