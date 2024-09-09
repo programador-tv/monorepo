@@ -10,7 +10,7 @@ namespace Domain.Repositories
 {
     public interface IPublicationRepository
     {
-        public Task<List<Publication>> GetAllAsync(Guid perfilId);
+        public Task<List<Publication>> GetAllAsync(Guid perfilId, int pageSize, int pageNumber);
         public Task AddAsync(Publication publication);
     }
 }

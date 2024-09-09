@@ -14,9 +14,9 @@ public sealed class PublicationWebService(CoreClient client) : IPublicationWebSe
 {
     const string baseRoute = "api/publication";
 
-    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId)
+    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId, int pageNumber)
     {
-        var route = Path.Combine(baseRoute, "all", $"{perfilId}");
+        var route = Path.Combine(baseRoute, "all", $"{perfilId}", $"{pageNumber}");
         return await client.GetAsync<List<Publication>>(route);
     }
 

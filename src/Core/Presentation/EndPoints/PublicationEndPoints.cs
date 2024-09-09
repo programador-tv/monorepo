@@ -15,19 +15,20 @@ public static class PublicationEndPoints
 
         group.WithOpenApi();
 
-        group.MapGet("all/{perfilId}", GetPublicationPerfilById);
+        group.MapGet("all/{perfilId}/{pageNumber}", GetPublicationPerfilById);
 
         group.MapPost(string.Empty, Add);
     }
 
     public static async Task<IResult> GetPublicationPerfilById(
         [FromServices] IPublicationBusinessLogic _logic,
-        Guid perfilId
+        Guid perfilId,
+        int pageNumber
     )
     {
         try
         {
-            return Results.Ok(await _logic.GetPublicationPerfilById(perfilId));
+            return Results.Ok(await _logic.GetPublicationPerfilById(perfilId, pageNumber));
         }
         catch (Exception ex)
         {

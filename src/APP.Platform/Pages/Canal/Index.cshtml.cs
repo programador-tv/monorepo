@@ -10,6 +10,7 @@ using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -546,12 +547,19 @@ public sealed class CanalIndexModel : CustomPageModel
         return Redirect("./?event=" + JoinTime.TimeSelectionId);
     }
 
-    public async Task<ActionResult> OnPostPublication([FromBody] PublicationModel publicationModel)
+    public async Task<IActionResult> OnPostPublication(PublicationModel publicationModel)
     {
         await _publicationWebService.Add(
             new CreatePublicationRequest(UserProfile.Id, publicationModel.Link)
         );
 
-        return Page();
+        return await OnGetAsync(UserProfile.UserName ?? string.Empty);
+    }
+
+    public async Task<IActionResult> OnGetPublication(Guid perfilId, int pageNumber)
+    {
+        var page = await _publicationWebService.GetPublicationPerfilById(perfilId, pageNumber);
+
+        return new JsonResult(new { page = page });
     }
 }

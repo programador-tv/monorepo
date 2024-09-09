@@ -7,9 +7,10 @@ namespace Application.Logic;
 public sealed class PublicationBusinessLogic(IPublicationRepository _repository)
     : IPublicationBusinessLogic
 {
-    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId)
+    public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId, int pageNumber)
     {
-        return await _repository.GetAllAsync(perfilId);
+        var pageSize = 3;
+        return await _repository.GetAllAsync(perfilId, pageSize, pageNumber);
     }
 
     public async Task AddPublication(CreatePublicationRequest createPublicationRequest)

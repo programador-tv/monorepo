@@ -13,6 +13,6 @@ namespace Domain.WebServices;
 
 public interface IPublicationWebService
 {
-    Task<List<Publication>> GetPublicationPerfilById(Guid perfilId);
+    Task<List<Publication>> GetPublicationPerfilById(Guid perfilId, int pageNumber);
     public Task Add(CreatePublicationRequest request);
 }

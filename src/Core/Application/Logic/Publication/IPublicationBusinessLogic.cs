@@ -8,6 +8,6 @@ namespace Application.Logic;
 
 public interface IPublicationBusinessLogic
 {
-    Task<List<Publication>> GetPublicationPerfilById(Guid perfilId);
+    Task<List<Publication>> GetPublicationPerfilById(Guid perfilId, int pageNumber);
     public Task AddPublication(CreatePublicationRequest createPublicationRequest);
 }
