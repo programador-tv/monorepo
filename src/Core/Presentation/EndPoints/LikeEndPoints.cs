@@ -1,4 +1,5 @@
 using Application.Logic;
+using Domain.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ public static class LikeEndPoints
         group.WithOpenApi();
 
         group.MapGet("getLikesByLiveId/{liveId}", GetLikesLiveById);
+        group.MapPost("createLike", CreateLike);
     }
 
     public static async Task<IResult> GetLikesLiveById(
@@ -26,6 +28,22 @@ public static class LikeEndPoints
         {
             var response = await _logic.GetLikesByLiveId(liveId);
             return Results.Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
+    public static async Task<IResult> CreateLike(
+        [FromServices] ILikeBusinessLogic _logic,
+        [FromBody] CreateLikeRequest request
+    )
+    {
+        try
+        {
+            await _logic.CreateLike(request);
+            return Results.Ok();
         }
         catch (Exception ex)
         {

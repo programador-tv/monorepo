@@ -8,4 +8,10 @@ public sealed class LikeBusinessLogic(ILikeRepository _repository) : ILikeBusine
 {
     public async Task<List<Like>> GetLikesByLiveId(Guid liveId) =>
         await _repository.GetAllLikesByLiveId(liveId);
+
+    public async Task CreateLike(CreateLikeRequest likeRequest)
+    {
+        var newLike = Like.Create(likeRequest.EntityId, likeRequest.RelatedUserId);
+        await _repository.CreateLike(newLike);
+    }
 }
