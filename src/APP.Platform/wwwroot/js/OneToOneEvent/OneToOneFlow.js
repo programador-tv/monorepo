@@ -224,14 +224,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Se qualquer modal fechar, o display deve ser do body 1
   $("#eventModalOneToOne").on("hidden.bs.modal", () => {
     setTimeout(() => {
-
       const mainTag = document.querySelector(".modal-tag-main");
-    if (mainTag) {
-      mainTag.remove();
-    }
-    const modalTags = document.querySelectorAll(".modal-tag");
-    modalTags.forEach((tag) => tag.remove());
-     
+      if (mainTag) {
+        mainTag.remove();
+      }
+      const modalTags = document.querySelectorAll(".modal-tag");
+      modalTags.forEach((tag) => tag.remove());
+
       $(".modal-select").removeClass("active");
       $(".body-oneToOne-1").addClass("active");
     }, 100);

@@ -23,8 +23,8 @@
 <div class="tab-content" id="myTabContent">
         <form method="post" action="/ScheduleActions" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            <div class="form-group">
-                <label id="platform-opt-label" class="py-2">Escolha uma plataforma<span
+            <div class="form-group" style="text-align: center;">
+                <label id="platform-opt-label" class="py-2 time-picker-text">Escolha uma plataforma<span
                         style="color:firebrick">*</span></label>
                 <div class="stream-platform">
                     <div id="browser-opt" class="stream-chosen chosen-platform  chrome">
@@ -49,8 +49,19 @@
                 </div>
             </div>
             <hr>
+
+            <div class="form-group" id="TituloTitulo">
+
+                <label asp-for="Live.Titulo" class="control-label time-picker-text">Título<span style='color:firebrick'>*</span></label>
+
+                <input id="LiveTitulo" required asp-for="Live.Titulo" class="form-control "
+                    placeholder="Fazendo [algo legal] com [tecnologias daora]" />
+                <span asp-validation-for="Live.Titulo" id="LiveTitulospan" class="text-danger time-picker-text"></span>
+            </div>
+            <br>
+
             <div class="form-group">
-                <label>Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
+                <label class="time-picker-text">Áreas relacionadas<span style='color:firebrick'>*</span></label><br>
                 <select multiple="multiple" asp-for="TagsSelected" required onchange="verificarSelecao()"
                     class="form-control" id="TagsForLive">
                     @foreach (var item in Model.RelatioTags!)
@@ -64,8 +75,7 @@
                     }
                 </select>
             </div>
-            <br>
-            <button id="btnPrepararChatGPT" class="button action button-disabled"
+            <button id="btnPrepararChatGPT" class="button action button-disabled" style="margin-top: 10px;"
                 title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
                 disabled>
                 <i class="material-icons mdc-button__icon" aria-hidden="true">lightbulb</i>
@@ -74,18 +84,10 @@
             <hr>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="Live.IsUsingObs" type="hidden" id="stream-opt">
-            <div class="form-group" id="TituloTitulo">
-
-                <label asp-for="Live.Titulo" class="control-label">Título<span style='color:firebrick'>*</span></label>
-
-                <input id="LiveTitulo" required asp-for="Live.Titulo" class="form-control "
-                    placeholder="Fazendo [algo legal] com [tecnologias daora]" />
-                <span asp-validation-for="Live.Titulo" id="LiveTitulospan" class="text-danger"></span>
-            </div>
-            <br>
+            
             <div class="form-group" id="TituloDescricao">
-                <label asp-for="Live.Descricao" class="control-label">Descrição</label>
-                <textarea id="LiveDescricao" asp-for="Live.Descricao" class="form-control "
+                <label asp-for="Live.Descricao" class="control-label time-picker-text">Descrição</label>
+                <textarea  id="LiveDescricao" asp-for="Live.Descricao" class="form-control "
                     placeholder="Vem comigo descobrir a maravilha do Javascript, criando um app que faz coisas maravilhosas"></textarea>
                 <span asp-validation-for="Live.Descricao" id="LiveDescricaospan" class="text-danger"></span>
             </div>
@@ -93,7 +95,7 @@
             <br>
 
             <div class="form-group" id="thumbnailUploadContainer">
-                <label asp-for="Live.Thumbnail" id="thumb-label" class="control-label">
+                <label asp-for="Live.Thumbnail" id="thumb-label" class="control-label time-picker-text">
                     Pré-Vizualização<span id="thumb-span"  style='color:firebrick'>*</span>
                 </label>
                 <br>
@@ -110,8 +112,8 @@
             </div>
             <br>
             <div class="form-group d-flex">
-                <button type="submit" class="button action button-right" onclick="return validarFormulario();">
-                    <span class="text-button-align-icon">Ir para o Estúdio</span>
+                <button type="submit" class="button action button-right" style="width: 100%; padding: 6px !important;" onclick="return validarFormulario();">
+                    <span class="text-button-align-icon" style="margin: 0;">Ir para o Estúdio</span>
                 </button>
             </div>
         </form>
@@ -122,73 +124,42 @@
 
     <div id="liveAgendar">
          <div class="tab-pane fade" id="scheduleLive" role="tabpanel" aria-labelledby="scheduleLive-tab">
-            <form
+          <form
               id="scheduleLiveFormOnChannel"
               method="post"
               enctype="multipart/form-data"
             >
-              @Html.AntiForgeryToken()
+          <div id="live-schedule-step-1" class="active">
+ @Html.AntiForgeryToken()
               <div class="form-group">
-                <div>
-                  <div
-                    id="alert-no-chrome-sched"
-                    class="shadow p-3 mb-3 bg-yellow rounded mt-3 alert alert-warning"
-                    role="alert"
-                  >
-                    A transmissão através do navegador só esta disponível no
-                    chrome.
-                  </div>
-                </div>
               </div>
               <hr />
-              <div class="form-group">
-                <label
-                  >Áreas relacionadas<span style="color: firebrick"
-                    >*</span
-                  ></label
-                ><br/>
-                <select
-                  multiple="multiple"
-                  asp-for="ScheduleTimeSelection.TagsSelected"
-                  required
-                  onchange="verificarSelecaoLiveScheduleOnChannel()"
-                  class="form-control isSelect2"
-                  id="TagsForScheduleLiveOnChannel"
-                >
-                  @foreach (var item in Model.RelatioTags!) {
-                  <optgroup label="@item.Key">
-                    @foreach (var subItem in Model.RelatioTags[item.Key]) {
-                    <option value="@subItem">@subItem</option>
-                    }
-                  </optgroup>
-                  }
-                </select>
-              </div>
-              <br />
-              <button
-                id="btnPrepararChatGPT-SchedOnChannel"
-                class="button action button-disabled"
-                title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
-                disabled
-              >
-                <i class="material-icons mdc-button__icon" aria-hidden="true"
-                  >lightbulb</i
-                >
-                <span class="text-button-align-icon"
-                  >Sugerir contúdo com GPT</span
-                >
-              </button>
-              <hr />
-            @* Oi *@
 
-            <div class="datePickerFlexDiv">
-              <div class="datePickerFlexItem">
-                <h2 style="font-size: 16px">
-                  Escolha o horario e a data que se encontra disponível
-                </h2>
+              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              <div class="form-group" id="Titulo-Sched">
+                <label
+                  asp-for="ScheduleTimeSelection.Titulo"
+                  class="time-picker-text"
+                  >Título<span style="color: firebrick">*</span>
+                  </label>
+
+                <input
+                  id="LiveTitulo-SchedOnChannel"
+                  required
+                  asp-for="ScheduleTimeSelection.Titulo"
+                  class="form-control"
+                  placeholder="Fazendo [algo legal] com [tecnologias daora]"
+                />
+                <span
+                  asp-validation-for="ScheduleTimeSelection.Titulo"
+                  id="LiveTitulospan"
+                  class="text-danger"
+                ></span>
               </div>
-              <div class="datePickerFlexTime">
-                <div class="date-picker date-input-div">
+              <br/>
+            <div class="datePickerGrid">
+                <div>
+                  <div class="date-picker date-input-div">
                   <div class="text-container">
                     <p class="time-picker-text">Data 
                       <span style="color: firebrick">*</span>
@@ -202,10 +173,14 @@
                   <input
                     type="date"
                     class="dateTime-newPicker"
-                    id="dateTime"
+                    id="dateTimeSL"
                   />
                 </div>
-                <div class="date-input-div">
+                </div>
+                <div></div>
+                
+              <div>
+<div class="date-input-div">
                   <label class="time-picker-text">Horário de Início
                       <span style="color: firebrick">*</span>
                   </label>
@@ -231,7 +206,7 @@
       <option value="30">30</option>
       <option value="45">45</option>
     </select>
-    <select name="ampmStart" id="ampmStart" class="bg-transparent text-xl appearance-none outline-none">
+    <select name="ampmStartSL" id="ampmStartSL" class="bg-transparent text-xl appearance-none outline-none">
       <option value="am">AM</option>
       <option value="pm">PM</option>
     </select>
@@ -241,6 +216,10 @@ schedule
                   </div>
                   <div class="alert-below-input" id="errorMsgTime"></div>
                 </div>
+              </div>
+
+              <div>
+                
                 <div class="date-input-div">
                   <label class="time-picker-text">Horário de Término
                       <span style="color: firebrick">*</span>
@@ -281,39 +260,58 @@ schedule
                 <div class="alert-below-input" id="errorMsg"></div>
               </div>
             </div>
-            @* Oiii *@
-
-
-
-
-              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-              <div class="form-group" id="Titulo-Sched">
-                <label
-                  asp-for="ScheduleTimeSelection.Titulo"
-                  class="control-label"
-                  >Título<span style="color: firebrick">*</span>
-                  </label>
-
-                <input
-                  id="LiveTitulo-SchedOnChannel"
+            <div class="form-group">
+                <label class="time-picker-text"
+                  >Áreas relacionadas<span style="color: firebrick"
+                    >*</span
+                  ></label
+                ><br/>
+                <select
+                  multiple="multiple"
+                  asp-for="ScheduleTimeSelection.TagsSelected"
                   required
-                  asp-for="ScheduleTimeSelection.Titulo"
-                  class="form-control"
-                  placeholder="Fazendo [algo legal] com [tecnologias daora]"
-                />
-                <span
-                  asp-validation-for="ScheduleTimeSelection.Titulo"
-                  id="LiveTitulospan"
-                  class="text-danger"
-                ></span>
+                  onchange="verificarSelecaoLiveScheduleOnChannel()"
+                  class="form-control isSelect2"
+                  id="TagsForScheduleLiveOnChannel"
+                >
+                  @foreach (var item in Model.RelatioTags!) {
+                  <optgroup label="@item.Key">
+                    @foreach (var subItem in Model.RelatioTags[item.Key]) {
+                    <option value="@subItem">@subItem</option>
+                    }
+                  </optgroup>
+                  }
+                </select>
               </div>
               <br />
+              <button
+                id="btnPrepararChatGPT-SchedOnChannel"
+                class="button action button-disabled"
+                title="Clique aqui para ver sugestões de título e descrição para live a partir das áreas relacionadas."
+                disabled
+              >
+                <i class="material-icons mdc-button__icon" aria-hidden="true"
+                  >lightbulb</i
+                >
+                <span class="text-button-align-icon"
+                  >Sugerir contúdo com GPT</span
+                >
+              </button>
+              <hr />
+          <div class="d-grid gap-2">
+                <button type="button" id="next-step-live" onclick="switchSteps()" class="btn button action">Próximo</button>
+                <small id="errorLS" style="color: rgb(189, 31, 31); text-align: center;"></span>
+              </div>
+          </div>
+          <div id="live-schedule-step-2" class="">
+            <br />
               <div class="form-group" id="TituloDescricao-Sched">
                 <label
                   asp-for="ScheduleLiveForTimeSelection.Descricao"
-                  class="control-label"
+                  class="time-picker-text"
                   >Descrição</label>
                 <textarea
+                rows="8"
                   id="LiveDescricao-SchedOnChannel"
                   asp-for="ScheduleLiveForTimeSelection.Descricao"
                   class="form-control"
@@ -332,8 +330,8 @@ schedule
                 <label
                   asp-for="ScheduleLiveForTimeSelection.Thumbnail"
                   id="thumb-label"
-                  class="control-label"
-                  >Pré-Visualização<span style="color: firebrick">*</span>
+                  class="time-picker-text"
+                  >Imagem<span style="color: firebrick">*</span>
                 </label>
                 <br/>
                 <input
@@ -345,10 +343,10 @@ schedule
                 />
                 <br/>
                 <br/>
-                <div style="text-align: center">
+                @* <div style="text-align: center">
                   (1280x720)
                   <img id="sched-preview" style="width: 300px; height: 150px" />
-                </div>
+                </div> *@
               </div>
               <input
                 type="hidden"
@@ -366,9 +364,11 @@ schedule
                 asp-for="ScheduleTimeSelection.EndTime"
               />
               <br/>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn button action">Agendar</button>
+              <div style="display: flex; justify-content: space-around; gap: 1rem;">
+                <button type="button" style="width: 50%;" onclick="switchStepsBack()" class="btn button action">Voltar</button>
+                <button type="submit" style="width: 50%;" class="btn button action">Agendar</button>
               </div>
+          </div>
             </form>
          </div>
     </div>
@@ -390,6 +390,19 @@ schedule
          $("#liveAgendar").removeClass("active")
         $("#liveInstantanea").addClass("active")
     }
+
+    function switchSteps() {
+        $('#live-schedule-step-1').removeClass('active');
+
+        $('#live-schedule-step-2').addClass('active');
+}
+
+function switchStepsBack() {
+        $('#live-schedule-step-2').removeClass('active');
+
+        $('#live-schedule-step-1').addClass('active');
+}
+
 
     function openTimePickerForLiveSchedule () {
        
@@ -487,11 +500,20 @@ schedule
             reader.readAsDataURL(file);
         }
     });
+
+    
+</script>
+<script>
+  
 </script>
 <script defer src="~/js/liveFlow.js"></script>
 <script defer src="~/js/liveOriginVerification.js"></script>
 <script defer src="~/js/timePickerFlow.js"></script>
 <script defer src="~/js/ScheduleLiveFlowOnChannel.js"></script>
+<script defer src="~/js/ScheduleLiveSelectionTagVerifierOnChannel.js"></script>
+<script src="~/js/Live/ValidacaoLive.js"></script>
+
+@* On channel é o agendar? *@
 
 
 

@@ -2063,3 +2063,24 @@ body {
   position: absolute;
   right: 30px;
 }
+
+.datePickerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Define duas colunas */
+  grid-template-rows: auto; /* Define o número de linhas automaticamente */
+  gap: 10px; /* Espaçamento entre os itens */
+}
+
+.datePickerFlexDiv > div:first-child {
+  grid-column: span 2; /* Faz o primeiro item ocupar as duas colunas */
+}
+
+#live-schedule-step-1,
+#live-schedule-step-2 {
+  display: none; /* Esconder os elementos por padrão */
+}
+
+#live-schedule-step-1.active,
+#live-schedule-step-2.active {
+  display: block; /* Exibir o elemento quando a classe 'active' estiver presente */
+}
