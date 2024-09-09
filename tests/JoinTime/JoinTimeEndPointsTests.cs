@@ -43,20 +43,32 @@ public class JoinTimeEndPointsTests
     [Fact]
     public async Task GetJoinTimesAtivos_ReturnsOk_WithValidData()
     {
-        // Arrange: 
+        // Arrange:
         var mockLogic = new Mock<IJoinTimeBusinessLogic>();
         var validGuid = Guid.NewGuid();
         var joinTimes = new List<JoinTime>
         {
-            JoinTime.Create(validGuid, validGuid, StatusJoinTime.Marcado, false, TipoAction.Aprender),
-            JoinTime.Create(validGuid, validGuid, StatusJoinTime.Pendente, false, TipoAction.Aprender)
+            JoinTime.Create(
+                validGuid,
+                validGuid,
+                StatusJoinTime.Marcado,
+                false,
+                TipoAction.Aprender
+            ),
+            JoinTime.Create(
+                validGuid,
+                validGuid,
+                StatusJoinTime.Pendente,
+                false,
+                TipoAction.Aprender
+            )
         };
         mockLogic.Setup(logic => logic.GetJoinTimesAtivos(validGuid)).ReturnsAsync(joinTimes);
 
-        // Act: 
+        // Act:
         var result = await JoinTimeEndPoints.GetJoinTimesAtivos(validGuid, mockLogic.Object);
 
-        // Assert: 
+        // Assert:
         var okResult = Assert.IsType<Ok<List<JoinTime>>>(result);
         Assert.Equal(joinTimes, okResult.Value);
     }
@@ -64,30 +76,34 @@ public class JoinTimeEndPointsTests
     [Fact]
     public async Task GetJoinTimesAtivos_ReturnsNotFound_WithValidDataButNoResults()
     {
-        // Arrange: 
+        // Arrange:
         var mockLogic = new Mock<IJoinTimeBusinessLogic>();
         var validGuid = Guid.NewGuid();
-        mockLogic.Setup(logic => logic.GetJoinTimesAtivos(validGuid)).ReturnsAsync(new List<JoinTime>());
+        mockLogic
+            .Setup(logic => logic.GetJoinTimesAtivos(validGuid))
+            .ReturnsAsync(new List<JoinTime>());
 
-        // Act: 
+        // Act:
         var result = await JoinTimeEndPoints.GetJoinTimesAtivos(validGuid, mockLogic.Object);
 
-        // Assert: 
+        // Assert:
         Assert.IsType<NotFound>(result);
     }
 
     [Fact]
     public async Task GetJoinTimesAtivos_ReturnsBadRequest_OnException()
     {
-        // Arrange: 
+        // Arrange:
         var mockLogic = new Mock<IJoinTimeBusinessLogic>();
         var invalidGuid = Guid.NewGuid();
-        mockLogic.Setup(logic => logic.GetJoinTimesAtivos(invalidGuid)).ThrowsAsync(new Exception("Test error"));
+        mockLogic
+            .Setup(logic => logic.GetJoinTimesAtivos(invalidGuid))
+            .ThrowsAsync(new Exception("Test error"));
 
-        // Act: 
+        // Act:
         var result = await JoinTimeEndPoints.GetJoinTimesAtivos(invalidGuid, mockLogic.Object);
 
-        // Assert: 
+        // Assert:
         var badRequestResult = Assert.IsType<BadRequest<string>>(result);
         Assert.Equal("Test error", badRequestResult.Value);
     }
@@ -95,15 +111,17 @@ public class JoinTimeEndPointsTests
     [Fact]
     public async Task GetJoinTimesAtivos_ReturnsBadRequest_WithInvalidGuid()
     {
-        // Arrange: 
+        // Arrange:
         var mockLogic = new Mock<IJoinTimeBusinessLogic>();
-        var invalidGuid = Guid.Empty; 
-        mockLogic.Setup(logic => logic.GetJoinTimesAtivos(invalidGuid)).ThrowsAsync(new ArgumentException("Invalid GUID"));
+        var invalidGuid = Guid.Empty;
+        mockLogic
+            .Setup(logic => logic.GetJoinTimesAtivos(invalidGuid))
+            .ThrowsAsync(new ArgumentException("Invalid GUID"));
 
-        // Act: 
+        // Act:
         var result = await JoinTimeEndPoints.GetJoinTimesAtivos(invalidGuid, mockLogic.Object);
 
-        // Assert: 
+        // Assert:
         var badRequestResult = Assert.IsType<BadRequest<string>>(result);
         Assert.Equal("Invalid GUID", badRequestResult.Value);
     }
@@ -116,8 +134,20 @@ public class JoinTimeEndPointsTests
         var validGuid = Guid.NewGuid();
         var joinTimes = new List<JoinTime>
         {
-            JoinTime.Create(validGuid, validGuid, StatusJoinTime.Marcado, false, TipoAction.Aprender),
-            JoinTime.Create(validGuid, validGuid, StatusJoinTime.Pendente, false, TipoAction.Aprender),
+            JoinTime.Create(
+                validGuid,
+                validGuid,
+                StatusJoinTime.Marcado,
+                false,
+                TipoAction.Aprender
+            ),
+            JoinTime.Create(
+                validGuid,
+                validGuid,
+                StatusJoinTime.Pendente,
+                false,
+                TipoAction.Aprender
+            ),
             JoinTime.Create(validGuid, validGuid, StatusJoinTime.Marcado, false, TipoAction.Ensinar)
         };
         mockLogic.Setup(logic => logic.GetJoinTimesAtivos(validGuid)).ReturnsAsync(joinTimes);
@@ -125,9 +155,8 @@ public class JoinTimeEndPointsTests
         // Act:
         var result = await JoinTimeEndPoints.GetJoinTimesAtivos(validGuid, mockLogic.Object);
 
-        // Assert: 
+        // Assert:
         var okResult = Assert.IsType<Ok<List<JoinTime>>>(result);
         Assert.True(okResult.Value?.Count == 3);
     }
-
 }
