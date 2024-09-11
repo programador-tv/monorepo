@@ -161,7 +161,6 @@ public class JoinTimeBusinessLogicTest
         );
         var timeId = Guid.NewGuid();
 
-
         mockJoinTimeRepository
             .Setup(repo => repo.GetJoinTimesAtivos(timeId))
             .ReturnsAsync(new List<JoinTime>());
@@ -188,7 +187,13 @@ public class JoinTimeBusinessLogicTest
 
         var joinTimes = new List<JoinTime>
         {
-            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Marcado, false, TipoAction.Aprender)
+            JoinTime.Create(
+                Guid.NewGuid(),
+                timeId,
+                StatusJoinTime.Marcado,
+                false,
+                TipoAction.Aprender
+            )
         };
 
         mockJoinTimeRepository
@@ -238,8 +243,20 @@ public class JoinTimeBusinessLogicTest
 
         var joinTimes = new List<JoinTime>
         {
-            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Marcado, false, TipoAction.Aprender),
-            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Pendente, false, TipoAction.Aprender)
+            JoinTime.Create(
+                Guid.NewGuid(),
+                timeId,
+                StatusJoinTime.Marcado,
+                false,
+                TipoAction.Aprender
+            ),
+            JoinTime.Create(
+                Guid.NewGuid(),
+                timeId,
+                StatusJoinTime.Pendente,
+                false,
+                TipoAction.Aprender
+            )
         };
 
         mockJoinTimeRepository
@@ -252,9 +269,14 @@ public class JoinTimeBusinessLogicTest
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        Assert.All(result, jt => Assert.Contains(jt.StatusJoinTime, new[] { StatusJoinTime.Marcado, StatusJoinTime.Pendente }));
+        Assert.All(
+            result,
+            jt =>
+                Assert.Contains(
+                    jt.StatusJoinTime,
+                    new[] { StatusJoinTime.Marcado, StatusJoinTime.Pendente }
+                )
+        );
         mockJoinTimeRepository.Verify(repo => repo.GetJoinTimesAtivos(timeId), Times.Once);
     }
-
-
 }

@@ -58,10 +58,13 @@ public sealed class JoinTimeRepository(ApplicationDbContext context)
     public async Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId)
     {
         return await DbContext
-            .JoinTimes
-            .Where(j => j.TimeSelectionId == timeId && 
-                        (j.StatusJoinTime == StatusJoinTime.Marcado || 
-                         j.StatusJoinTime == StatusJoinTime.Pendente))
+            .JoinTimes.Where(j =>
+                j.TimeSelectionId == timeId
+                && (
+                    j.StatusJoinTime == StatusJoinTime.Marcado
+                    || j.StatusJoinTime == StatusJoinTime.Pendente
+                )
+            )
             .ToListAsync();
     }
 }
