@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let hoursStartInt = parseInt(hoursStart.value, 10);
     if (isAmStart.value === "pm" && hoursStartInt !== 12) {
       hoursStartInt += 12;
-    } else if (isAmStart.value === "AM" && hoursStartInt === 12) {
+    } else if (isAmStart.value === "am" && hoursStartInt === 12) {
       hoursStartInt = 0; // Ajuste para 12 AM ser 00
     }
 
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let hoursEndInt = parseInt(hoursEnd.value, 10);
     if (isAmEnd.value === "pm" && hoursEndInt !== 12) {
       hoursEndInt += 12;
-    } else if (isAmEnd.value === "AM" && hoursEndInt === 12) {
+    } else if (isAmEnd.value === "am" && hoursEndInt === 12) {
       hoursEndInt = 0; // Ajuste para 12 AM ser 00
     }
 

@@ -1880,13 +1880,17 @@ body {
 
 .modal-select,
 .modal-selectRH,
-.modal-selectCE {
+.modal-selectCE,
+#liveInstantanea,
+#liveAgendar {
   display: none;
 }
 
 .modal-select.active,
 .modal-selectRH.active,
-.modal-selectCE.active {
+.modal-selectCE.active,
+#liveInstantanea.active,
+#liveAgendar.active {
   display: block;
 }
 
@@ -2079,6 +2083,27 @@ body {
   right: 30px;
 }
 
+
+.datePickerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Define duas colunas */
+  grid-template-rows: auto; /* Define o número de linhas automaticamente */
+  gap: 10px; /* Espaçamento entre os itens */
+}
+
+.datePickerFlexDiv > div:first-child {
+  grid-column: span 2; /* Faz o primeiro item ocupar as duas colunas */
+}
+
+#live-schedule-step-1,
+#live-schedule-step-2 {
+  display: none; /* Esconder os elementos por padrão */
+}
+
+#live-schedule-step-1.active,
+#live-schedule-step-2.active {
+  display: block; /* Exibir o elemento quando a classe 'active' estiver presente */
+
 .button-criar-evento {
   background: #437ae2;
   height: 36px;
@@ -2101,4 +2126,5 @@ body {
 
 .button-criar-evento:disabled {
   background: #99b6ee;
+
 }

@@ -5,6 +5,7 @@
         <div class="modal-content">
 
             <div class="modal-body">
+                <h4 style="text-align: center;">Agendamento de live</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 @await Html.PartialAsync("Components/Live/_FormNewLive",
                          new _FormNewLiveModel
@@ -17,12 +18,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn " data-bs-dismiss="modal">FECHAR</button>
+                <button type="button" class="btn " data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>
 </div>
-<script defer src="~/js/liveFlow.js"></script>
-<script defer src="~/js/liveOriginVerification.js"></script>
-<script defer src="~/js/timePickerFlow.js"></script>
-<script defer src="~/js/ScheduleLiveFlowOnChannel.js"></script>
