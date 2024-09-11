@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using NetTopologySuite.Algorithm;
 
 namespace Presentation.EndPoints;
 
@@ -17,7 +18,7 @@ public static class JoinTimeEndPoints
         group.WithOpenApi();
 
         group.MapGet("/UpdateOldJoinTimes", UpdateOldJoinTimes);
-        group.MapGet("/JoinTimesByStatus/{timeId}", GetJoinTimesAtivos);
+        group.MapGet("/GetJoinTimesAtivos/{timeId}", GetJoinTimesAtivos);
     }
 
     public static async Task<IResult> UpdateOldJoinTimes(
@@ -43,10 +44,7 @@ public static class JoinTimeEndPoints
         try
         {
             var result = await _logic.GetJoinTimesAtivos(timeId);
-            if (result == null || result.Count == 0)
-            {
-                return Results.NotFound();
-            }
+            
             return Results.Ok(result);
         }
         catch (Exception ex)
