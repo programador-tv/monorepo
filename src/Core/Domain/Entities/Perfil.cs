@@ -1,3 +1,4 @@
+using System.Globalization;
 using Domain.Contracts;
 using Domain.Enumerables;
 using Domain.Primitives;
@@ -46,6 +47,23 @@ public sealed class Perfil(
         );
     }
 
+    public static Perfil Create(CreateOrUpdatePerfilRequest createOrUpdatePerfilRequest)
+    {
+        return new Perfil(
+            id: Guid.NewGuid(),
+            foto: string.Empty,
+            nome: createOrUpdatePerfilRequest.Nome,
+            token: createOrUpdatePerfilRequest.Token,
+            userName: createOrUpdatePerfilRequest.UserName,
+            linkedin: createOrUpdatePerfilRequest.Linkedin,
+            gitHub: createOrUpdatePerfilRequest.GitHub,
+            bio: createOrUpdatePerfilRequest.Bio,
+            email: createOrUpdatePerfilRequest.Email,
+            descricao: createOrUpdatePerfilRequest.Descricao,
+            experiencia: createOrUpdatePerfilRequest.Experiencia
+        );
+    }
+
     public void Update(UpdatePerfilRequest updatePerfilRequest)
     {
         Nome = updatePerfilRequest.Nome;
@@ -57,8 +75,39 @@ public sealed class Perfil(
         Experiencia = updatePerfilRequest.Experiencia;
     }
 
+    public void Update(CreateOrUpdatePerfilRequest createOrUpdatePerfilRequest)
+    {
+        Nome = createOrUpdatePerfilRequest.Nome;
+        UserName = createOrUpdatePerfilRequest.UserName;
+        Linkedin = createOrUpdatePerfilRequest.Linkedin;
+        GitHub = createOrUpdatePerfilRequest.GitHub;
+        Bio = createOrUpdatePerfilRequest.Bio;
+        Descricao = createOrUpdatePerfilRequest.Descricao;
+        Experiencia = createOrUpdatePerfilRequest.Experiencia;
+    }
+
     public void UpdateFoto(string foto)
     {
         Foto = foto;
+    }
+
+    public Notification BuildNotificationProfileCreatedSuccessfuly()
+    {
+        var conteudo =
+            $@"
+                    Obrigado por finalizar seu cadastro,
+                    agora você pode criar e participar de salas de estudo e
+                    compartilhar seus conhecimentos ao vivo. Saiba mais sobre o projeto clicando em ver
+                    ";
+        var notification = Notification.Create(
+            Id,
+            Id,
+            TipoNotificacao.FinalizouCadastro,
+            conteudo,
+            "/Sobre",
+            string.Empty
+        );
+
+        return notification;
     }
 }
