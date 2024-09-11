@@ -30,27 +30,6 @@ namespace APP.Platform.Pages
 
             var profiles = await _perfilWebService.GetAllById(profileIds) ?? [];
 
-            var profilesLegacy = new List<Domain.Entities.Perfil>();
-
-            foreach (var perfil in profiles)
-            {
-                var perfilLegacy = new Domain.Entities.Perfil
-                {
-                    Id = perfil.Id,
-                    Nome = perfil.Nome,
-                    Foto = perfil.Foto,
-                    Token = perfil.Token,
-                    UserName = perfil.UserName,
-                    Linkedin = perfil.Linkedin,
-                    GitHub = perfil.GitHub,
-                    Bio = perfil.Bio,
-                    Email = perfil.Email,
-                    Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
-                };
-                profilesLegacy.Add(perfilLegacy);
-            }
-
             Notifications = new();
             foreach (
                 var notification in notifications ?? Enumerable.Empty<NotificationItemResponse>()
@@ -67,9 +46,7 @@ namespace APP.Platform.Pages
                         Conteudo = notification.Conteudo,
                         ActionLink = notification.ActionLink,
                         SecundaryLink = notification.SecundaryLink,
-                        PerfilGerador = profilesLegacy?.FirstOrDefault(x =>
-                            x.Id == notification.GeradorPerfilId
-                        ),
+                        PerfilGerador = profiles?.Find(x => x.Id == notification.GeradorPerfilId)
                     }
                 );
             }

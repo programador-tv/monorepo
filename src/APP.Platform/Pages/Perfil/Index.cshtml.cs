@@ -9,6 +9,7 @@ using Domain.Models.Request;
 using Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using Queue;
 
 namespace APP.Platform.Pages
@@ -23,28 +24,27 @@ namespace APP.Platform.Pages
     ) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
     {
         [BindProperty]
-        public bool HasPefil { get; set; }
+        public bool hasPefil { get; set; }
 
         [BindProperty]
         public bool UsernameExist { get; set; }
 
         [BindProperty]
         public PerfilViewModel? Perfil { get; set; }
-        public IWebHostEnvironment Environment { get; } = environment;
 
         public IActionResult OnGet()
         {
             Perfil = new();
             if (UserProfile != null)
             {
-                HasPefil = true;
+                hasPefil = true;
                 Perfil.Nome = UserProfile.Nome;
                 Perfil.UserName = UserProfile.UserName;
                 Perfil.Linkedin = UserProfile.Linkedin;
                 Perfil.GitHub = UserProfile.GitHub;
                 Perfil.Bio = UserProfile.Bio;
                 Perfil.Descricao = UserProfile.Descricao;
-                Perfil.Experiencia = UserProfile.Experiencia;
+                Perfil.Experiencia = (ExperienceLevel)UserProfile.Experiencia;
             }
             return Page();
         }
@@ -87,19 +87,19 @@ namespace APP.Platform.Pages
                     // foto = SaveFoto(Perfil.Foto);
                 }
 
-                var _perfil = new Domain.Entities.Perfil()
-                {
-                    Nome = Perfil.Nome,
-                    UserName = Perfil.UserName,
-                    Foto = string.Empty,
-                    Token = User.Claims.ToArray()[0].Value,
-                    Email = User.Claims.ToArray()[1].Value,
-                    Linkedin = Perfil.Linkedin,
-                    GitHub = Perfil.GitHub,
-                    Bio = Perfil.Bio,
-                    Descricao = Perfil.Descricao,
-                    Experiencia = Perfil.Experiencia,
-                };
+                var _perfil = Domain.Entities.Perfil.Create(
+                    new Domain.Contracts.CreatePerfilRequest(
+                        Perfil.Nome,
+                        User.Claims.ToArray()[0].Value,
+                        Perfil.UserName,
+                        Perfil.Linkedin,
+                        Perfil.GitHub,
+                        Perfil.Bio,
+                        User.Claims.ToArray()[1].Value,
+                        Perfil.Descricao,
+                        (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
+                    )
+                );
                 UsernameExist = false;
 
                 var json = JsonSerializer.Serialize(_perfil);
@@ -169,14 +169,18 @@ namespace APP.Platform.Pages
                             return OnGet();
                         }
                     }
-
-                    _perfil.Nome = Perfil.Nome;
-                    _perfil.UserName = Perfil.UserName;
-                    _perfil.Linkedin = Perfil.Linkedin;
-                    _perfil.GitHub = Perfil.GitHub;
-                    _perfil.Bio = Perfil.Bio;
-                    _perfil.Descricao = Perfil.Descricao;
-                    _perfil.Experiencia = Perfil.Experiencia;
+                    _perfil.Update(
+                        new Domain.Contracts.UpdatePerfilRequest(
+                            Perfil.Id,
+                            Perfil.Nome,
+                            Perfil.UserName,
+                            Perfil.Linkedin,
+                            Perfil.GitHub,
+                            Perfil.Bio,
+                            Perfil.Descricao,
+                            (Domain.Enumerables.ExperienceLevel)Perfil.Experiencia
+                        )
+                    );
 
                     var json = JsonSerializer.Serialize(_perfil);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");

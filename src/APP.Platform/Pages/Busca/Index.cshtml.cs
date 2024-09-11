@@ -14,31 +14,21 @@ using Platform.Services;
 
 namespace APP.Platform.Pages;
 
-public sealed class BuscaIndexModel : CustomPageModel
+public sealed class BuscaIndexModel(
+    ApplicationDbContext context,
+    IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor,
+    Settings settings,
+    //IFollowService followService,
+    IPerfilWebService perfilWebService
+) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
-    private new readonly ApplicationDbContext _context;
     public List<LiveViewModel> Lives { get; set; } = new();
 
     [BindProperty]
     public List<PerfilBuscarViewModel> Perfil { get; set; } = new();
-    public IHttpClientFactory _httpClientFactory { get; set; }
 
     public bool IsFollowing { get; set; }
-    private IPerfilWebService _perfilWebService { get; set; }
-
-    public BuscaIndexModel(
-        ApplicationDbContext context,
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor,
-        Settings settings,
-        IPerfilWebService perfilWebService
-    )
-        : base(context, httpClientFactory, httpContextAccessor, settings)
-    {
-        _httpClientFactory = httpClientFactory;
-        _context = context;
-        _perfilWebService = perfilWebService;
-    }
 
     public async Task<ActionResult> OnGetAsync(string key)
     {
@@ -51,7 +41,7 @@ public sealed class BuscaIndexModel : CustomPageModel
             return Redirect("index");
         }
 
-        var search = new Search(_context, _httpClientFactory, _perfilWebService, key);
+        var search = new Search(_context, _httpClientFactory, perfilWebService, key);
 
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
@@ -67,31 +57,9 @@ public sealed class BuscaIndexModel : CustomPageModel
             .Select(e => e.PerfilId)
             .ToList();
 
-        var perfilsResponse = await _perfilWebService.GetAllById(remainProfileIds) ?? new();
+        var perfilsResponse = await perfilWebService.GetAllById(remainProfileIds) ?? [];
 
-        var perfilsResponseLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfil in perfilsResponse)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfil.Id,
-                Nome = perfil.Nome,
-                Foto = perfil.Foto,
-                Token = perfil.Token,
-                UserName = perfil.UserName,
-                Linkedin = perfil.Linkedin,
-                GitHub = perfil.GitHub,
-                Bio = perfil.Bio,
-                Email = perfil.Email,
-                Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
-            };
-
-            perfilsResponseLegacy.Add(perfilLegacy);
-        }
-
-        perfils.AddRange(perfilsResponseLegacy);
+        perfils.AddRange(perfilsResponse);
 
         var previewModel = perfils.Select(e => e.Id).ToList();
 

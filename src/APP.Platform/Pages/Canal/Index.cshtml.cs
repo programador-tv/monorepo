@@ -20,14 +20,24 @@ using tags;
 
 namespace APP.Platform.Pages;
 
-public sealed class CanalIndexModel : CustomPageModel
+public sealed class CanalIndexModel(
+    IRazorViewEngine viewEngine,
+    ITempDataProvider tempDataProvider,
+    ApplicationDbContext context,
+    IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor,
+    IMessagePublisher messagePublisher,
+    Settings settings,
+    IPerfilWebService perfilWebService,
+    PerfilDbContext perfilContext,
+    ILiveService liveService
+) : CustomPageModel(context, httpClientFactory, httpContextAccessor, settings)
 {
     [BindProperty]
     public JoinTime? JoinTime { get; set; }
     public Dictionary<JoinTime, TimeSelection>? MyEvents { get; set; }
     public Dictionary<JoinTime, TimeSelection>? OldMyEvents { get; set; }
-    private new readonly ApplicationDbContext _context;
-    private new readonly PerfilDbContext _perfilContext;
+
     public List<PrivateLiveViewModel>? Lives { get; set; }
 
     [BindProperty]
@@ -42,38 +52,12 @@ public sealed class CanalIndexModel : CustomPageModel
     [BindProperty]
     public ScheduleFreeTimeForTimeSelectionRequestModel? ScheduleFreeTimeForTimeSelection { get; set; }
     public Domain.Entities.Perfil? PerfilOwner { get; set; }
-    private readonly IMessagePublisher _messagePublisher;
-    private readonly IRazorViewEngine _viewEngine;
-    private readonly ITempDataProvider _tempDataProvider;
-    private IPerfilWebService _perfilWebService { get; set; }
-    private readonly ILiveService _liveService;
     public Dictionary<string, List<string>> RelatioTags { get; set; }
     public bool IsFollowing { get; set; }
     public int followersCount { get; set; }
     public int followingCount { get; set; }
-    public IHttpClientFactory _httpClientFactory { get; set; }
 
-    public CanalIndexModel(
-        IRazorViewEngine viewEngine,
-        ITempDataProvider tempDataProvider,
-        ApplicationDbContext context,
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor,
-        IMessagePublisher messagePublisher,
-        Settings settings,
-        IPerfilWebService perfilWebService,
-        ILiveService liveService
-    )
-        : base(context, httpClientFactory, httpContextAccessor, settings)
-    {
-        _httpClientFactory = httpClientFactory;
-        _viewEngine = viewEngine;
-        _tempDataProvider = tempDataProvider;
-        _perfilWebService = perfilWebService;
-        _context = context;
-        _messagePublisher = messagePublisher;
-        _liveService = liveService;
-    }
+    private const string coreApi = "CoreAPI";
 
     public async Task<IActionResult> OnGetAsync(string usr)
     {
@@ -82,30 +66,21 @@ public sealed class CanalIndexModel : CustomPageModel
             return Redirect("../Perfil");
         }
 
-        var perfilResponse = await _perfilWebService.GetByUsername(usr);
+        var perfilOwner = await perfilWebService.GetByUsername(usr);
 
-        var perfilOwner = new Domain.Entities.Perfil
+        if (perfilOwner == null)
         {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
-        };
-
+            return Redirect("../Index");
+        }
         PerfilOwner = perfilOwner;
-#warning deve popular IsFollowing
+
+        #warning deve popular IsFollowing
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
         using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
         );
+
         responseTaskFollow.EnsureSuccessStatusCode();
 
         var followInformation =
@@ -124,51 +99,36 @@ public sealed class CanalIndexModel : CustomPageModel
         int pageSize = 9
     )
     {
-        var perfilResponse = await _perfilWebService.GetByUsername(usr);
-
-        var perfilOwner = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
-        };
+        var perfilOwner = await perfilWebService.GetByUsername(usr);
 
         if (perfilOwner == null)
         {
             return BadRequest();
         }
 
-        var pagedPrivateLives = await _liveService.RenderPrivateLives(
+        var pagedPrivateLives = await liveService.RenderPrivateLives(
             perfilOwner,
             UserProfile.Id,
             isPrivate,
             pageNumber,
             pageSize
         );
-        var liveSchedules = _liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
+        var liveSchedules = liveService.RenderPreviewLiveSchedule(perfilOwner, UserProfile.Id);
 
         var savedVideosHtml = await RenderVideosService.RenderVideos(
             "Components/_PrivateVideosGroup",
             pagedPrivateLives,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
 
         var liveSchedulesHtml = await RenderVideosService.RenderVideos(
             "Components/_LiveSchedulePreviewGroup",
             liveSchedules,
-            _viewEngine,
+            viewEngine,
             PageContext,
-            _tempDataProvider
+            tempDataProvider
         );
 
         return new JsonResult(
@@ -197,7 +157,7 @@ public sealed class CanalIndexModel : CustomPageModel
             return new JsonResult(new { });
         }
 
-        var client = _httpClientFactory.CreateClient("CoreAPI");
+        var client = _httpClientFactory.CreateClient(coreApi);
         using var responseTask = await client.GetAsync(
             $"api/follow/toggleFollow/{UserProfile.Id}/{entityKey}"
         );
@@ -251,34 +211,13 @@ public sealed class CanalIndexModel : CustomPageModel
             .Select(id => id.Value)
             .ToList();
 
-        var associatedPerfil = await _perfilWebService.GetAllById(perfilTimeSelectionIds) ?? new();
-
-        var associatedPerfilLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfilDomain in associatedPerfil)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfilDomain.Id,
-                Nome = perfilDomain.Nome,
-                Foto = perfilDomain.Foto,
-                Token = perfilDomain.Token,
-                UserName = perfilDomain.UserName,
-                Linkedin = perfilDomain.Linkedin,
-                GitHub = perfilDomain.GitHub,
-                Bio = perfilDomain.Bio,
-                Email = perfilDomain.Email,
-                Descricao = perfilDomain.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilDomain.Experiencia,
-            };
-            associatedPerfilLegacy.Add(perfilLegacy);
-        }
+        var associatedPerfil = await perfilWebService.GetAllById(perfilTimeSelectionIds) ?? [];
 
         foreach (var item in associatedTimeSelections)
         {
             var tags = associatedTags.Where(e => e.FreeTimeRelacao == item.Id.ToString()).ToList();
             item.Tags?.AddRange(tags);
-            var perfil = associatedPerfilLegacy.Find(e => e.Id == item.PerfilId);
+            var perfil = associatedPerfil.Find(e => e.Id == item.PerfilId);
             item.Perfil = perfil;
             var code = associatedRooms.Find(e => e.Id == item.RoomId)?.CodigoSala;
             code ??= "";
@@ -347,29 +286,8 @@ public sealed class CanalIndexModel : CustomPageModel
 
         await GetMyEvents();
 
-        var perfilResponse = await _perfilWebService.GetById(id);
+        PerfilOwner = await perfilWebService.GetById(id);
 
-        var perfil = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
-        };
-
-        if (perfil == null)
-        {
-            return BadRequest();
-        }
-
-        PerfilOwner = perfil;
         HashSet<TimeSelection> valueSet = new HashSet<TimeSelection>(MyEvents!.Values);
 
         var timeSelections =
@@ -402,7 +320,7 @@ public sealed class CanalIndexModel : CustomPageModel
         var MentorsFreeTime = await GetFreeTimeService.ObtemPerfisRelacionados(
             timeSelectionGroupByPerfilId,
             _context,
-            _perfilWebService
+            perfilWebService
         );
 
         bool isLoggedUsr = true;
@@ -443,33 +361,11 @@ public sealed class CanalIndexModel : CustomPageModel
             .TimeSelections.Where(e => e.Id == JoinTime.TimeSelectionId)
             .FirstOrDefault();
 
-        var perfilResponse = await _perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
-
-        var perfil = new Domain.Entities.Perfil
-        {
-            Id = perfilResponse.Id,
-            Nome = perfilResponse.Nome,
-            Foto = perfilResponse.Foto,
-            Token = perfilResponse.Token,
-            UserName = perfilResponse.UserName,
-            Linkedin = perfilResponse.Linkedin,
-            GitHub = perfilResponse.GitHub,
-            Bio = perfilResponse.Bio,
-            Email = perfilResponse.Email,
-            Descricao = perfilResponse.Descricao,
-            Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
-        };
-
-        if (perfil == null)
-        {
-            return BadRequest();
-        }
-
-        var channelUserName = perfil.UserName;
+        var perfil = await perfilWebService.GetById((Guid)(timeSelection?.PerfilId));
 
         if (UserProfile.Id == Guid.Empty)
         {
-            var urlToReturn = $"/Canal?usr={channelUserName}";
+            var urlToReturn = $"/Canal?usr={perfil.UserName}";
 
             return Redirect($"/Identity/Account/Login?returnUrl={urlToReturn}");
         }
@@ -517,7 +413,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
         else if (timeSelection != null && timeSelection.Tipo == EnumTipoTimeSelection.RequestHelp)
         {
@@ -535,7 +431,7 @@ public sealed class CanalIndexModel : CustomPageModel
                 ActionLink = "./?event=" + JoinTime.TimeSelectionId,
             };
 
-            await _messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
+            await messagePublisher.PublishAsync(typeof(NotificationsQueue).Name, notification);
         }
 
         return Redirect("./?event=" + JoinTime.TimeSelectionId);

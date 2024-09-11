@@ -58,7 +58,9 @@
             <div>
                 @await Html.PartialAsync("Components/_PerfilAvatar",
             new _PerfilAvatar{
-            Perfil = Model.PerfilOwner,
+            Nome = Model.PerfilOwner.Nome,
+            Foto = Model.PerfilOwner.Foto,
+                    UserName = Model.PerfilOwner.UserName,
             WithLink = true
             })
                 @Model.PerfilOwner.Nome
@@ -159,7 +161,9 @@
 
                      @await Html.PartialAsync("Components/_PerfilAvatar",
                         new _PerfilAvatar{
-                            Perfil = item.Perfil ?? new(),
+                            Nome = item.Perfil.Nome,
+                            Foto = item.Perfil.Foto,
+                            UserName = item.Perfil.UserName,
                             WithLink = true
                         })
                     @item?.Perfil?.Nome

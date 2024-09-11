@@ -25,10 +25,8 @@
 
                         @await Html.PartialAsync("Components/_PerfilAvatar",
                             new _PerfilAvatar{
-                                Perfil = new Domain.Entities.Perfil{
-                                    Nome = Model.LivePreview.NomeCriador,
-                                    Foto = Model.LivePreview.FotoCriador
-                                    },
+                                Nome = Model.LivePreview.NomeCriador,
+                                Foto = Model.LivePreview.FotoCriador,
                                 WithLink = false
                             })
 

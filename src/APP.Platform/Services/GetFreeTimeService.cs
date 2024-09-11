@@ -44,33 +44,12 @@ public static class GetFreeTimeService
 
         var perfis = await _perfilWebService.GetAllById(perfilIds) ?? new();
 
-        var perfisLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfil in perfis)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfil.Id,
-                Nome = perfil.Nome,
-                Foto = perfil.Foto,
-                Token = perfil.Token,
-                UserName = perfil.UserName,
-                Linkedin = perfil.Linkedin,
-                GitHub = perfil.GitHub,
-                Bio = perfil.Bio,
-                Email = perfil.Email,
-                Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
-            };
-            perfisLegacy.Add(perfilLegacy);
-        }
-
         foreach (var PerfilTimeSelection in timeSelectionGroupByPerfilId)
         {
             var key = PerfilTimeSelection.Key ?? Guid.Empty.ToString();
             if (key != Guid.Empty.ToString())
             {
-                var mentor = perfisLegacy.First(p => p.Id.ToString() == key);
+                var mentor = perfis.First(p => p.Id.ToString() == key);
                 if (mentor == null)
                 {
                     continue;
@@ -146,33 +125,12 @@ public static class GetFreeTimeService
 
         var perfis = await _perfilWebService.GetAllById(perfilIds) ?? [];
 
-        var perfisLegacy = new List<Domain.Entities.Perfil>();
-
-        foreach (var perfil in perfis)
-        {
-            var perfilLegacy = new Domain.Entities.Perfil
-            {
-                Id = perfil.Id,
-                Nome = perfil.Nome,
-                Foto = perfil.Foto,
-                Token = perfil.Token,
-                UserName = perfil.UserName,
-                Linkedin = perfil.Linkedin,
-                GitHub = perfil.GitHub,
-                Bio = perfil.Bio,
-                Email = perfil.Email,
-                Descricao = perfil.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
-            };
-            perfisLegacy.Add(perfilLegacy);
-        }
-
         foreach (var PerfilTimeSelection in timeSelectionGroupByPerfilId)
         {
             var key = PerfilTimeSelection.Key ?? Guid.Empty.ToString();
             if (key != Guid.Empty.ToString())
             {
-                var requesterPerfils = perfisLegacy.First(p => p.Id.ToString() == key);
+                var requesterPerfils = perfis.First(p => p.Id.ToString() == key);
                 if (requesterPerfils == null)
                 {
                     continue;

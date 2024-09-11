@@ -17,8 +17,8 @@ function enviarTagsParaAPI (tags) {
         })
 }
 function verificarSelecao () {
-    const selectedTags = [];
-    for (let i = 0; i < selectElement.options.length; i++) {
+    var selectedTags = [];
+    for (var i = 0; i < selectElement.options.length; i++) {
         if (selectElement.options[i].selected) {
             selectedTags.push(selectElement.options[i].value);
         }
@@ -34,9 +34,9 @@ function verificarSelecao () {
 document.getElementById('btnPrepararChatGPT').addEventListener('click', function (event) {
     event.preventDefault();
 
-    const selectedTags = [];
-    for (let i = 0; i < selectElement.options.length; i++) {
-        const option = selectElement.options[i];
+    var selectedTags = [];
+    for (var i = 0; i < selectElement.options.length; i++) {
+        var option = selectElement.options[i];
         if (option.selected) {
             selectedTags.push(option.value);
         }

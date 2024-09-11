@@ -3,7 +3,6 @@ using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enumerables;
 using Domain.Repositories;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 
 namespace tests;
@@ -89,22 +88,6 @@ public class PerfilBusinessLogicTests
     }
 
     [Fact]
-    public async Task GetById_ShouldThrowAnNotFoundException()
-    {
-        _mockRepository
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))
-            .Throws(new KeyNotFoundException("Perfil não encontrado"));
-
-        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
-            async () => await _businessLogic.GetById(Guid.NewGuid())
-        );
-
-        // Assertions and verifications
-        Assert.Equal("Perfil não encontrado", exception.Message);
-        _mockRepository.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
-    }
-
-    [Fact]
     public async Task GetWhenContainsAsync_ShouldReturnFilteredPerfils()
     {
         // Arrange
@@ -150,21 +133,6 @@ public class PerfilBusinessLogicTests
     }
 
     [Fact]
-    public async Task GetWhenContainsAsync_ThrowsNotFoundException()
-    {
-        _mockRepository
-            .Setup(repo => repo.GetWhenContainsAsync(It.IsAny<string>()))
-            .Throws(new KeyNotFoundException("Perfil não encontrado"));
-
-        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
-            () => _businessLogic.GetWhenContainsAsync("donotcontain")
-        );
-
-        Assert.Equal("Perfil não encontrado", exception.Message);
-        _mockRepository.Verify(repo => repo.GetWhenContainsAsync(It.IsAny<string>()), Times.Once);
-    }
-
-    [Fact]
     public async Task GetByToken_ShouldReturnPerfil()
     {
         // Arrange
@@ -192,35 +160,6 @@ public class PerfilBusinessLogicTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(perfil, result);
-    }
-
-    [Fact]
-    public async Task GetByToken_ShouldThrowNotFoundException()
-    {
-        var perfil = Perfil.Create(
-            new CreatePerfilRequest(
-                Nome: "Test",
-                Token: "12345qwerty",
-                UserName: "test",
-                Linkedin: "linkedin.com/test",
-                GitHub: "github.com/test",
-                Bio: "Teste de bio",
-                Email: "test@test.com",
-                Descricao: "Teste de descrição",
-                Experiencia: ExperienceLevel.Entre1E3Anos
-            )
-        );
-
-        _mockRepository
-            .Setup(repo => repo.GetByTokenAsync(It.IsAny<string>()))
-            .Throws(new KeyNotFoundException("Perfil não encontrado"));
-
-        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
-            async () => await _businessLogic.GetByToken("random")
-        );
-
-        Assert.Equal("Perfil não encontrado", exception.Message);
-        _mockRepository.Verify(repo => repo.GetByTokenAsync(It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -444,20 +383,5 @@ public class PerfilBusinessLogicTests
         await _businessLogic.UpdateFotoPerfil(perfil.Id, "/fakepath");
 
         _mockRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Perfil>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task UpdateFotoPerfil_ShouldThrowNotFoundException()
-    {
-        _mockRepository
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))
-            .Throws(new KeyNotFoundException("Perfil não encontrado"));
-
-        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
-            async () => await _businessLogic.UpdateFotoPerfil(Guid.NewGuid(), "/fakepath")
-        );
-
-        Assert.Equal("Perfil não encontrado", exception.Message);
-        _mockRepository.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
     }
 }

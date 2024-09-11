@@ -1,5 +1,4 @@
 ﻿@*
-    <div @*
     <div class="modal fade timeSelection-x" id="capacitacaoModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 955px;">
         <div class="modal-content" style="background-color: #FEFBFB;">
@@ -119,8 +118,8 @@
                             Criar evento
                         </button>
                         <div style="text-align: right; font-size: 32px; cursor : pointer">
-                            <span id="groupCursos-left" class="arrow-icon"><i class="bi bi-arrow-left"></i></span>
-                            <span id="groupCursos-right" class="arrow-icon"><i class="bi bi-arrow-right"></i></span>
+                            <span id="groupCursos-left" style="filter: grayscale(0.8);">👈</span>
+                            <span id="groupCursos-right" style="filter: grayscale(0.8);">👉</span>
                         </div>
                        <div id="CursosMatch" style="display: flex;justify-content: space-between; flex-wrap:wrap"></div>
                 </section>
@@ -156,6 +155,8 @@
         border-bottom: 3px solid navy;
         color: navy;
     }
+    .button-revamp:hover {
+
 
     .button-revamp:hover {
         color: #1e53b7;
@@ -165,21 +166,21 @@
     }
 		.button-revamp:hover .count-tab-events{
         background-color: #1e53b7;
+
     }
-      .bi-arrow-left, .bi-arrow-right {
-         color: #437AE2;
-        font-size: 32px;
-        cursor: pointer;
-        display: inline-block; /* Garante que as setas estejam na mesma linha */
-        vertical-align: middle; /* Alinha verticalmente ao centro */
-        margin: 0 5px; /* Adiciona um pequeno espaço entre as setas e outros elementos */
+    #groupOneToOne-left, #groupOneToOne-right,
+    #groupCursos-left, #groupCursos-right,
+    #groupHelp-left, #groupHelp-right
+    {
+
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     /* Cor para hover */
     .bi-arrow-left:hover, .bi-arrow-right:hover {
         color: #437AE2;
     }
-
 
 </style>
 

@@ -9,12 +9,10 @@ class="list-item box-shaddow-side-cards" style="display: flex; flex-direction: c
       <div class="name-photo-card-events" >
          @await Html.PartialAsync("Components/_PerfilAvatar",
             new _PerfilAvatar{
-                Perfil = new Domain.Entities.Perfil{
                     Nome = Model.NomeEnvolvido,
                     Foto = Model.FotoEnvolvido,
-                    UserName = Model.UserName
-                    },
-                WithLink = true
+                    UserName = Model.UserName,
+                    WithLink = true
             })
           <p class="list-item-category" style="font-size: 1em; font-weight: bold; margin: 0;">@Model.NomeEnvolvido</p>
       </div>

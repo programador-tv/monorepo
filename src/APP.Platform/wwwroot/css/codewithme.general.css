@@ -136,8 +136,8 @@ body {
   width: 49%;
   height: 240px;
   border-radius: 4px;
-  border: 1px solid #d7d7d7;
-  box-shadow: 1px 2px 4px 0px #57575726;
+  border: 1px solid #cacaca;
+  box-shadow: 0px 2px 6px 0px #00000030;
   flex-wrap: wrap;
   background: #fefbfb;
   cursor: pointer;
@@ -168,6 +168,7 @@ body {
   color: #373737;
   height: 24px;
   width: fit-content;
+  margin: 5px;
   padding: 4px 12px;
 }
 
@@ -1748,12 +1749,12 @@ body {
 }
 
 .form-group {
-  max-height: 300px; /* Defina a altura m√°xima para o container rol√°vel */
+  max-height: 300px; /* Defina a altura m·xima para o container rol·vel */
   overflow-y: auto; /* Habilita a rolagem vertical */
 }
 
 .form-control.isSelect2 {
-  width: 100%; /* Garante que o select ocupe 100% da largura dispon√≠vel */
+  width: 100%; /* Garante que o select ocupe 100% da largura disponÌvel */
 }
 
 .form-group-modal {

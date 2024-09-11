@@ -9,9 +9,10 @@ namespace APP.Platform.Pages
     {
         private readonly ApplicationDbContext _context;
         private readonly PerfilDbContext _perfilContext;
-        private IPerfilWebService _perfilWebService { get; set; }
+        private readonly IPerfilWebService _perfilWebService;
         public List<Live> Lives = new List<Live>();
-        public List<Domain.Entities.Perfil> Perfils = new();
+        public List<Domain.Entities.Perfil> Perfils { get; set; } = [];
+
         public IHttpClientFactory _httpClientFactory { get; set; }
 
         public Search(
@@ -42,27 +43,9 @@ namespace APP.Platform.Pages
 
         public async Task ProcessKeywordForChannels(string keyword)
         {
-            var perfilsResponse = await _perfilWebService.GetByKeyword(keyword);
+            var perfils= await _perfilWebService.GetByKeyword(keyword);
 
-            foreach (var perfil in perfilsResponse)
-            {
-                var perfilLegacy = new Domain.Entities.Perfil
-                {
-                    Id = perfil.Id,
-                    Nome = perfil.Nome,
-                    Foto = perfil.Foto,
-                    Token = perfil.Token,
-                    UserName = perfil.UserName,
-                    Linkedin = perfil.Linkedin,
-                    GitHub = perfil.GitHub,
-                    Bio = perfil.Bio,
-                    Email = perfil.Email,
-                    Descricao = perfil.Descricao,
-                    Experiencia = (Domain.Entities.ExperienceLevel)perfil.Experiencia,
-                };
-                Perfils.Add(perfilLegacy);
-            }
-
+            Perfils.AddRange(perfils);
             foreach (var perfil in Perfils)
             {
                 Lives.AddRange(SearchByUserId(perfil.Id));

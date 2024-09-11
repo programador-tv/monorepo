@@ -71,7 +71,9 @@
                         <h4>
                             @await Html.PartialAsync("Components/_PerfilAvatar",
                                 new _PerfilAvatar{
-                                    Perfil = data.Value?.Perfil ?? new(),
+                                    Nome = data.Value?.Perfil.Nome,
+                                    Foto = data.Value?.Perfil.Foto,
+                                    UserName = data.Value?.Perfil.UserName,
                                     WithLink = true
                                 })
 

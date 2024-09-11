@@ -19,6 +19,7 @@ public sealed class EditorIndexModel : CustomPageModel
 {
     private new readonly ApplicationDbContext _context;
     private new readonly IHttpClientFactory _httpClientFactory;
+    private new readonly IPerfilWebService _perfilWebService;
     public SelectList? TagsFront { get; set; }
 
     [BindProperty]
@@ -35,7 +36,6 @@ public sealed class EditorIndexModel : CustomPageModel
     public bool IsUsrCanal { get; set; }
 
     public Domain.Entities.Perfil? Perfil { get; set; }
-    private IPerfilWebService _perfilWebService { get; set; }
 
     public Dictionary<string, List<string>> RelatioTags { get; set; }
 
@@ -76,21 +76,8 @@ public sealed class EditorIndexModel : CustomPageModel
                 return Redirect("../");
             }
 
-            var perfilResponse = await _perfilWebService.GetById(live.PerfilId);
-            var owner = new Domain.Entities.Perfil
-            {
-                Id = perfilResponse.Id,
-                Nome = perfilResponse.Nome,
-                Foto = perfilResponse.Foto,
-                Token = perfilResponse.Token,
-                UserName = perfilResponse.UserName,
-                Linkedin = perfilResponse.Linkedin,
-                GitHub = perfilResponse.GitHub,
-                Bio = perfilResponse.Bio,
-                Email = perfilResponse.Email,
-                Descricao = perfilResponse.Descricao,
-                Experiencia = (Domain.Entities.ExperienceLevel)perfilResponse.Experiencia,
-            };
+            var owner = await _perfilWebService.GetById(live.PerfilId);
+           
 
             if (owner != null && owner.Id != live.PerfilId)
             {
