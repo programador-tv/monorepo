@@ -29,4 +29,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Log> Logs { get; set; } = null!;
     public DbSet<HelpResponse> HelpResponses { get; set; } = null!;
     public DbSet<Publication> Publications { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
 }
