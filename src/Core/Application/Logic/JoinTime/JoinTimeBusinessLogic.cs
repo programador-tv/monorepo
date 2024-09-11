@@ -49,4 +49,9 @@ public sealed class JoinTimeBusinessLogic(
             await _messagePublisher.PublishAsync("NotificationsQueue", notification);
         }
     }
+
+    public async Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId)
+    {
+        return await joinTimeRepository.GetJoinTimesAtivos(timeId);
+    }
 }

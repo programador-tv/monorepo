@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Text.Json;
 using Domain.Contracts;
 using Domain.Entities;
 using Domain.WebServices;
@@ -15,5 +16,12 @@ public sealed class JoinTimeWebService(CoreClient client) : IJoinTimeWebService
     {
         var route = Path.Combine(baseRoute, "UpdateOldJoinTimes");
         await client.GetAsync(route);
+    }
+
+    public async Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId)
+    {
+        var route = Path.Combine(baseRoute, $"GetJoinTimesAtivos/{timeId}");
+        Console.WriteLine(route);
+        return await client.GetAsync<List<JoinTime>>(route);        
     }
 }

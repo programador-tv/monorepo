@@ -149,4 +149,112 @@ public class JoinTimeBusinessLogicTest
             Times.Never
         );
     }
+
+    [Fact]
+    public async Task GetJoinTimesAtivos_ShouldReturnEmptyList_WhenNoMatchingJoinTimes()
+    {
+        // Arrange
+        var joinTimeBusinessLogic = new JoinTimeBusinessLogic(
+            mockTimeSelectionRepository.Object,
+            mockJoinTimeRepository.Object,
+            mockMessagePublisher.Object
+        );
+        var timeId = Guid.NewGuid();
+
+
+        mockJoinTimeRepository
+            .Setup(repo => repo.GetJoinTimesAtivos(timeId))
+            .ReturnsAsync(new List<JoinTime>());
+
+        // Act
+        var result = await joinTimeBusinessLogic.GetJoinTimesAtivos(timeId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Empty(result);
+        mockJoinTimeRepository.Verify(repo => repo.GetJoinTimesAtivos(timeId), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetJoinTimesAtivos_ShouldReturnOnlyMarcadoJoinTimes()
+    {
+        // Arrange
+        var joinTimeBusinessLogic = new JoinTimeBusinessLogic(
+            mockTimeSelectionRepository.Object,
+            mockJoinTimeRepository.Object,
+            mockMessagePublisher.Object
+        );
+        var timeId = Guid.NewGuid();
+
+        var joinTimes = new List<JoinTime>
+        {
+            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Marcado, false, TipoAction.Aprender)
+        };
+
+        mockJoinTimeRepository
+            .Setup(repo => repo.GetJoinTimesAtivos(timeId))
+            .ReturnsAsync(joinTimes);
+
+        // Act
+        var result = await joinTimeBusinessLogic.GetJoinTimesAtivos(timeId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Single(result);
+        Assert.All(result, jt => Assert.Equal(StatusJoinTime.Marcado, jt.StatusJoinTime));
+        mockJoinTimeRepository.Verify(repo => repo.GetJoinTimesAtivos(timeId), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetJoinTimesAtivos_ShouldThrowException_WhenRepositoryFails()
+    {
+        // Arrange
+        var joinTimeBusinessLogic = new JoinTimeBusinessLogic(
+            mockTimeSelectionRepository.Object,
+            mockJoinTimeRepository.Object,
+            mockMessagePublisher.Object
+        );
+        var timeId = Guid.NewGuid();
+
+        mockJoinTimeRepository
+            .Setup(repo => repo.GetJoinTimesAtivos(timeId))
+            .ThrowsAsync(new Exception("Repository failure"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => joinTimeBusinessLogic.GetJoinTimesAtivos(timeId));
+        mockJoinTimeRepository.Verify(repo => repo.GetJoinTimesAtivos(timeId), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetJoinTimesAtivos_ShouldReturnMarcadoAndPendenteJoinTimes()
+    {
+        // Arrange
+        var joinTimeBusinessLogic = new JoinTimeBusinessLogic(
+            mockTimeSelectionRepository.Object,
+            mockJoinTimeRepository.Object,
+            mockMessagePublisher.Object
+        );
+        var timeId = Guid.NewGuid();
+
+        var joinTimes = new List<JoinTime>
+        {
+            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Marcado, false, TipoAction.Aprender),
+            JoinTime.Create(Guid.NewGuid(), timeId, StatusJoinTime.Pendente, false, TipoAction.Aprender)
+        };
+
+        mockJoinTimeRepository
+            .Setup(repo => repo.GetJoinTimesAtivos(timeId))
+            .ReturnsAsync(joinTimes);
+
+        // Act
+        var result = await joinTimeBusinessLogic.GetJoinTimesAtivos(timeId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Count);
+        Assert.All(result, jt => Assert.Contains(jt.StatusJoinTime, new[] { StatusJoinTime.Marcado, StatusJoinTime.Pendente }));
+        mockJoinTimeRepository.Verify(repo => repo.GetJoinTimesAtivos(timeId), Times.Once);
+    }
+
+
 }

@@ -121,7 +121,7 @@ public sealed class CanalIndexModel : CustomPageModel
         string usr,
         bool isPrivate,
         int pageNumber = 1,
-        int pageSize = 3
+        int pageSize = 9
     )
     {
         var perfilResponse = await _perfilWebService.GetByUsername(usr);
