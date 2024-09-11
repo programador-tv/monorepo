@@ -62,4 +62,22 @@ public sealed class FeedbackJoinTime(
             satisfacaoExperiencia
         );
     }
+
+    public static FeedbackJoinTime Create(Guid joinTimeId, DateTime? dataTentativaMarcacao)
+    {
+        return new FeedbackJoinTime(
+            Guid.NewGuid(),
+            joinTimeId,
+            dataTentativaMarcacao,
+            false,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+    }
 }

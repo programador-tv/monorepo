@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Domain.Repositories;
 using Infrastructure;
 using Infrastructure.Contexts;
@@ -100,6 +101,7 @@ public class DependencyInjectionTest
         Assert.NotNull(serviceProvider.GetRequiredService<ISaveFile>());
         Assert.NotNull(serviceProvider.GetRequiredService<IFollowRepository>());
         Assert.NotNull(serviceProvider.GetRequiredService<ILikeRepository>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IFeedbackJoinTimeRepository>());
         // Add more assertions as needed
     }
 }
