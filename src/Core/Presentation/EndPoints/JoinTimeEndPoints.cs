@@ -35,7 +35,7 @@ public static class JoinTimeEndPoints
         }
     }
 
-     public static async Task<IResult> GetJoinTimesAtivos(
+    public static async Task<IResult> GetJoinTimesAtivos(
         [FromRoute] Guid timeId,
         [FromServices] IJoinTimeBusinessLogic _logic
     )
