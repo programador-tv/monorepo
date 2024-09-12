@@ -5,10 +5,12 @@ using Background;
 using ClassLib.Follow.Models.ViewModels;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Interfaces.WebServices;
 using Domain.Models.ViewModels;
 using Domain.RequestModels;
 using Domain.WebServices;
 using Infrastructure.Data.Contexts;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -47,6 +49,7 @@ public sealed class CanalIndexModel : CustomPageModel
     private readonly ITempDataProvider _tempDataProvider;
     private IPerfilWebService _perfilWebService { get; set; }
     private readonly ILiveService _liveService;
+    private readonly IFollowWebService _followWebService;
     public Dictionary<string, List<string>> RelatioTags { get; set; }
     public bool IsFollowing { get; set; }
     public int followersCount { get; set; }
@@ -62,7 +65,8 @@ public sealed class CanalIndexModel : CustomPageModel
         IMessagePublisher messagePublisher,
         Settings settings,
         IPerfilWebService perfilWebService,
-        ILiveService liveService
+        ILiveService liveService,
+        IFollowWebService followWebService
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
     {
@@ -73,6 +77,7 @@ public sealed class CanalIndexModel : CustomPageModel
         _context = context;
         _messagePublisher = messagePublisher;
         _liveService = liveService;
+        _followWebService = followWebService;
     }
 
     public async Task<IActionResult> OnGetAsync(string usr)
@@ -100,10 +105,16 @@ public sealed class CanalIndexModel : CustomPageModel
         };
 
         PerfilOwner = perfilOwner;
-#warning deve popular IsFollowing
+
+        if(UserProfile != null)
+        {
+           IsFollowing =  await _followWebService.IsFollowing(UserProfile.Id, perfilOwner.Id);
+        };
+       
+
         var client = _httpClientFactory.CreateClient("CoreAPI");
 
-        using var responseTaskFollow = await client.GetAsync(
+           using var responseTaskFollow = await client.GetAsync(
             $"api/follow/getFollowInformation/{perfilOwner.Id}"
         );
         responseTaskFollow.EnsureSuccessStatusCode();
@@ -111,7 +122,7 @@ public sealed class CanalIndexModel : CustomPageModel
         var followInformation =
             await responseTaskFollow.Content.ReadFromJsonAsync<FollowInformationViewModel>();
         followersCount = followInformation.Followers;
-        followingCount = followInformation.Following;
+        followingCount = followInformation.Following; 
 
         RelatioTags = DataTags.GetTags();
         return Page();

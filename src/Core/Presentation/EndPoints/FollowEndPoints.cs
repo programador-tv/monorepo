@@ -19,6 +19,7 @@ public static class FollowEndPoints
         group.MapGet("toggleFollow/{followerId}/{followingId}", ToggleFollow);
         group.MapGet("getFollowInformation/{userId}", GetFollowInformation);
         group.MapPost("getFollowersCount", GetFollowersCount);
+        group.MapGet("isFollowing/{followerId}/{followingId}", IsFollowing);
     }
 
     public static async Task<IResult> ToggleFollow(
@@ -69,4 +70,22 @@ public static class FollowEndPoints
             return Results.BadRequest(ex.Message);
         }
     }
+
+    public static async Task<IResult> IsFollowing(
+        [FromServices] IFollowBusinessLogic _logic,
+        Guid followerId,
+        Guid followingId
+    )
+    {
+        try
+        {
+            var response = await _logic.IsFollowing(followerId, followingId);
+            return Results.Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(ex.Message);
+        }
+    }
+
 }

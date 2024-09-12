@@ -41,4 +41,9 @@ public sealed class FollowBusinessLogic(IFollowRepository _repository) : IFollow
     {
         return await _repository.GetFollowersByIdsAsync(usersId);
     }
+
+    public async Task<IsFollowingResponse> IsFollowing(Guid followerId, Guid followingId)
+    {
+        return await _repository.IsFollowingAsync(followerId, followingId);
+    }
 }

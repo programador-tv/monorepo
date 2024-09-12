@@ -3,7 +3,9 @@ using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enumerables;
 using Domain.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
+using Presentation.EndPoints;
 
 namespace tests;
 
@@ -140,5 +142,23 @@ public class FollowBusinessLogicTests
         Assert.IsType<FollowInformationResponse>(result);
         Assert.Equal(2, result.Followers);
         Assert.Equal(2, result.Following);
+    }
+
+    [Fact]
+    public async Task IsFollow_ShouldReturnResponse_True()
+    {
+        var expectedFollowerId = Guid.NewGuid();
+        var expectedfollowingId = Guid.NewGuid();
+        var expectedResponse = new IsFollowingResponse(true);
+
+        _mockRepository
+            .Setup(repo => repo.IsFollowingAsync(expectedFollowerId, expectedfollowingId))
+            .ReturnsAsync(expectedResponse);
+
+        var result = await _businessLogic.IsFollowing(expectedFollowerId, expectedfollowingId);
+
+        Assert.NotNull(result);
+        Assert.IsType<IsFollowingResponse>(result);
+        Assert.Equal(expectedResponse, result); 
     }
 }

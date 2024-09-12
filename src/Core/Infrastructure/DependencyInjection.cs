@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.WebServices;
 using Domain.Repositories;
 using Domain.WebServices;
 using Infrastructure.Browser;
@@ -7,6 +8,7 @@ using Infrastructure.FileHandling;
 // using Infrastructure.Redis;
 using Infrastructure.Repositories;
 using Infrastructure.WebServices;
+using Infrastructure.WebServices.Core;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -217,6 +219,7 @@ public static class DependencyInjection
         services.AddScoped<ICommentWebService, CommentWebService>();
         services.AddScoped<IJoinTimeWebService, JoinTimeWebService>();
         services.AddScoped<IHelpResponseWebService, HelpResponseWebService>();
+        services.AddScoped<IFollowWebService, FollowWebService>();
 
         return services;
     }
