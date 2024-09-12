@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
 using Background;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models;
@@ -44,6 +45,7 @@ namespace APP.Platform.Pages
         public bool IsUserLiked { get; set; }
         public IHttpClientFactory _httpClientFactory { get; set; }
         private IPerfilWebService _perfilWebService { get; set; }
+        private ILikeWebService _likeWebService { get; set; }
 
         public WatchIndexModel(
             ApplicationDbContext context,
@@ -53,7 +55,8 @@ namespace APP.Platform.Pages
             Settings settings,
             RateLimit rateLimit,
             IAliasService aliasService,
-            IPerfilWebService perfilWebService
+            IPerfilWebService perfilWebService,
+            ILikeWebService likeWebService
         )
             : base(context, httpClientFactory, httpContextAccessor, settings)
         {
@@ -63,6 +66,7 @@ namespace APP.Platform.Pages
             _messagePublisher = messagePublisher;
             _rateLimit = rateLimit;
             _aliasService = aliasService;
+            _likeWebService = likeWebService;
         }
 
         public string GetTempoQuePassouFormatado(DateTime DataCriacao)
@@ -434,18 +438,17 @@ namespace APP.Platform.Pages
         public async Task<IActionResult> OnGetLikeInteration(string entityKey)
         {
             var entityId = Guid.Parse(entityKey);
+
             if (!IsAuth)
             {
                 return new JsonResult(new { });
             }
-            Guid userId = UserProfile.Id;
 
+            Guid userId = UserProfile.Id;
             bool userAlredyLiked = false;
 
             var client = _httpClientFactory.CreateClient("CoreAPI");
-
             using var responseTask = await client.GetAsync($"api/like/getLikesByLiveId/{entityId}");
-
             responseTask.EnsureSuccessStatusCode();
 
             var likes = await responseTask.Content.ReadFromJsonAsync<List<Like>>() ?? [];
@@ -456,28 +459,14 @@ namespace APP.Platform.Pages
             {
                 relation.IsLiked = !relation.IsLiked;
                 userAlredyLiked = relation.IsLiked;
-
                 _context.Likes.Update(relation);
             }
             else
             {
-                var newLike = new Like
-                {
-                    EntityId = entityId,
-                    RelatedUserId = userId,
-                    IsLiked = true,
-                };
+                var newLike = new CreateLikeRequest(entityId, userId);
                 userAlredyLiked = true;
-
-                if (_context == null)
-                {
-                    return BadRequest();
-                }
-
-                _context.Likes.Add(newLike);
+                await _likeWebService.CreateLike(newLike);
             }
-
-            await _context.SaveChangesAsync();
 
             var newCount = _context
                 ?.Likes.AsNoTracking()

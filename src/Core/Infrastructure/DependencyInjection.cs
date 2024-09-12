@@ -217,6 +217,7 @@ public static class DependencyInjection
         services.AddScoped<ICommentWebService, CommentWebService>();
         services.AddScoped<IJoinTimeWebService, JoinTimeWebService>();
         services.AddScoped<IHelpResponseWebService, HelpResponseWebService>();
+        services.AddScoped<ILikeWebService, LikeWebService>();
 
         return services;
     }

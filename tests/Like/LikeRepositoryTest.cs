@@ -52,4 +52,21 @@ public class LikeRepositoryTests
             );
         }
     }
+
+    [Fact]
+    public async Task CreateLike_ShouldAddLike()
+    {
+        var entityId = Guid.NewGuid();
+        var relatedUserId = Guid.NewGuid();
+        var newLike = Like.Create(entityId, relatedUserId);
+
+        await _repository.CreateLike(newLike);
+
+        var result = await _context.Likes.FindAsync(newLike.Id);
+
+        Assert.NotNull(result);
+        Assert.Equal(newLike.Id, result.Id);
+        Assert.Equal(newLike.EntityId, result.EntityId);
+        Assert.Equal(newLike.RelatedUserId, result.RelatedUserId);
+    }
 }

@@ -54,4 +54,34 @@ public class LikeEndPointsTests
 
         Assert.IsType<BadRequest<string>>(result);
     }
+
+    [Fact]
+    public async Task CreateLike_ShouldReturnResponseOk_WhenSuccessfulyCreated()
+    {
+        var entityId = Guid.NewGuid();
+        var relatedUserId = Guid.NewGuid();
+        var liveRequest = new CreateLikeRequest(entityId, relatedUserId);
+
+        mockLogic.Setup(logic => logic.CreateLike(liveRequest)).Returns(Task.CompletedTask);
+
+        var result = await LikeEndPoints.CreateLike(mockLogic.Object, liveRequest);
+
+        Assert.IsType<Ok>(result);
+    }
+
+    [Fact]
+    public async Task CreateLike_ShouldReturnResponseBadRequest_WhenException()
+    {
+        var entityId = Guid.NewGuid();
+        var relatedUserId = Guid.NewGuid();
+        var liveRequest = new CreateLikeRequest(entityId, relatedUserId);
+
+        mockLogic
+            .Setup(logic => logic.CreateLike(liveRequest))
+            .ThrowsAsync(new Exception("Erro de teste"));
+
+        var result = await LikeEndPoints.CreateLike(mockLogic.Object, liveRequest);
+
+        Assert.IsType<BadRequest<string>>(result);
+    }
 }

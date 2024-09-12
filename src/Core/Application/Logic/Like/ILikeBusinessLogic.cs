@@ -7,4 +7,5 @@ namespace Application.Logic;
 public interface ILikeBusinessLogic
 {
     public Task<List<Like>> GetLikesByLiveId(Guid liveId);
+    public Task CreateLike(CreateLikeRequest likeRequest);
 }

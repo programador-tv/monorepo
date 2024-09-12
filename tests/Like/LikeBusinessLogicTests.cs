@@ -61,4 +61,20 @@ public class LikeBusinessLogicTests
         Assert.NotNull(result);
         Assert.Empty(result);
     }
+
+    [Fact]
+    public async Task CreateLike_ShouldInvokeAddAsync()
+    {
+        var entityId = Guid.NewGuid();
+        var relatedUserId = Guid.NewGuid();
+        var liveRequest = new CreateLikeRequest(entityId, relatedUserId);
+
+        _mockRepository
+            .Setup(repo => repo.CreateLike(It.IsAny<Like>()))
+            .Returns(Task.CompletedTask);
+
+        await _businessLogic.CreateLike(liveRequest);
+
+        _mockRepository.Verify(repo => repo.CreateLike(It.IsAny<Like>()), Times.Once());
+    }
 }
