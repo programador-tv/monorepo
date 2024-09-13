@@ -1,6 +1,7 @@
 using Application.Logic;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Presentation.EndPoints;
 
@@ -55,6 +56,38 @@ public class CommentEndPointsTests
             liveId,
             perfilId
         );
+
+        Assert.IsType<BadRequest<string>>(result);
+    }
+
+    [Fact]
+    public async Task ValidateComment_ShouldReturnResponse_WhenOk()
+    {
+        var expectedId = "validId";
+
+        var mockLogic = new Mock<ICommentBusinessLogic>();
+
+        mockLogic.Setup(logic => logic.ValidateComment(It.IsAny<string>()))
+            .Returns(Task.CompletedTask); 
+
+        var result = await CommentEndPoints.ValidateComment(mockLogic.Object, expectedId);
+
+
+        Assert.IsType<Ok>(result); 
+    }
+
+    [Fact]
+    public async Task ValidateComment_ShouldReturnResponse_WhenException()
+    {
+        var expectedId = "validId";
+
+        var mockLogic = new Mock<ICommentBusinessLogic>();
+
+        mockLogic.Setup(logic => logic.ValidateComment(It.IsAny<string>()))
+            .Throws(new Exception("Erro de teste"));
+
+        var result = await CommentEndPoints.ValidateComment(mockLogic.Object, expectedId);
+
 
         Assert.IsType<BadRequest<string>>(result);
     }
