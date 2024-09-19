@@ -233,6 +233,8 @@ public static class DependencyInjection
                 cfg.ConcurrentMessageLimit = 5;
             });
             x.AddConsumer<LiveCloseQueue>();
+            x.AddConsumer<LiveConversionQueue>();
+
 
             x.UsingRabbitMq(
                 (context, cfg) =>
