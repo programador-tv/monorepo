@@ -7,6 +7,9 @@ public sealed class VideoHandlingSingleton : IVideoHandling
 {
     private readonly List<HLSProcessManager> processManagers = [];
 
+    private readonly List<MP4ProcessManager> mp4ProcessManagers = [];
+
+
     public async Task ProcessChunkAsync(Guid id, byte[] chunk, int tentative)
     {
         var process = processManagers.FirstOrDefault(e => e.Id == id);
@@ -76,5 +79,45 @@ public sealed class VideoHandlingSingleton : IVideoHandling
 
         var formatedTime = TimeUtils.FormatTimeToDuration(totalDuration);
         return formatedTime;
+    }
+
+    public async Task ProcessMP4Async(Guid id, int tentative)
+    {
+        var process = mp4ProcessManagers.FirstOrDefault(e => e.Id == id);
+
+        if (process == null)
+        {
+            process = new MP4ProcessManager(id);
+            mp4ProcessManagers.Add(process);
+
+            try
+            {
+                 process.Run();
+
+                Console.WriteLine($"Processo para ID {id} concluído com sucesso");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao processar MP4 para ID {id}: {ex.Message}");
+
+                mp4ProcessManagers.Remove(process);
+
+                if (tentative < 3)
+                {
+                    await ProcessMP4Async(id, tentative + 1);
+                    return;
+                }
+
+                throw new Exception($"Falha ao processar MP4 para ID {id} após {tentative} tentativas", ex);
+            }
+            finally
+            {
+                mp4ProcessManagers.Remove(process);
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Processo já existe para o ID: {id}");
+        }
     }
 }
