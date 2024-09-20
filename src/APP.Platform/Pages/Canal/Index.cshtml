@@ -414,6 +414,17 @@
       flex-wrap: wrap;
       min-height: 120px;
     }
+
+    #savedPublicationsCanal a {
+            text-align: center;
+            display: block; /* Faz cada link ocupar uma linha completa */
+            margin: 10px 0; /* Espaçamento entre os links */
+            color: #007BFF; /* Cor do texto do link */
+            text-decoration: none; /* Remove o sublinhado */
+        }
+    #savedPublicationsCanal a:hover {
+            text-decoration: underline; /* Sublinha ao passar o mouse */
+        }
   </style>
 
   @* <script defer src="/js/renderComponents.js"></script>*@
@@ -576,6 +587,10 @@
      function GetPublications(perfilId) {
       let pageNumber = 1
 
+      function removeAspas(str) {
+        return str.replace(/["']/g, '');
+    }
+
       const publications = document.querySelector("#savedPublicationsCanal");
      
       fetch("?handler=Publication&usr=@(Model.PerfilOwner!.UserName)&perfilId=" + perfilId + "&pageNumber=" + pageNumber)
@@ -591,9 +606,15 @@
 
         for (var i = 0; i < tamanho; i++){
         const dadosCategoria = JSON.stringify(data.page[i].link)  
-         const p = document.createElement('p');  
-        
-        publications.appendChild(p).innerHTML += dadosCategoria;
+
+        const str = removeAspas(dadosCategoria);       
+         
+        const linkElement = document.createElement('a'); 
+        linkElement.href = dadosCategoria;
+        linkElement.target = '_blank';
+  
+        publications.appendChild(linkElement).innerHTML += str;
+
         }
 
       })
