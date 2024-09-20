@@ -556,8 +556,9 @@ public sealed class CanalIndexModel : CustomPageModel
         return await OnGetAsync(UserProfile.UserName ?? string.Empty);
     }
 
-    public async Task<IActionResult> OnGetPublication(Guid perfilId, int pageNumber)
+    public async Task<IActionResult> OnGetPublication(int pageNumber)
     {
+        Guid perfilId = UserProfile.Id;
         var page = await _publicationWebService.GetPublicationPerfilById(perfilId, pageNumber);
 
         return new JsonResult(new { page = page });

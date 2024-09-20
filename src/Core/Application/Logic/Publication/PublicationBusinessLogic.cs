@@ -9,7 +9,7 @@ public sealed class PublicationBusinessLogic(IPublicationRepository _repository)
 {
     public async Task<List<Publication>> GetPublicationPerfilById(Guid perfilId, int pageNumber)
     {
-        var pageSize = 3;
+        var pageSize = 2;
         return await _repository.GetAllAsync(perfilId, pageSize, pageNumber);
     }
 

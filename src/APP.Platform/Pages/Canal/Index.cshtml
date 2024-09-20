@@ -342,6 +342,11 @@
           }
         }
       </div>
+       <main class="publications-group" id="savedPublicationsCanal">
+        <div class="d-flex justify-content-center">
+         
+        </div>
+      </main>
     </div>
     <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
       ...
@@ -567,6 +572,36 @@
         });
     }
 
+// Função buscar publicações
+     function GetPublications(perfilId) {
+      let pageNumber = 1
+
+      const publications = document.querySelector("#savedPublicationsCanal");
+     
+      fetch("?handler=Publication&usr=@(Model.PerfilOwner!.UserName)&perfilId=" + perfilId + "&pageNumber=" + pageNumber)
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Erro ao enviar a solicitação POST.");
+          }
+          return response.json();
+        })
+       .then(function (data) {
+
+        let tamanho = data.page.length
+
+        for (var i = 0; i < tamanho; i++){
+        const dadosCategoria = JSON.stringify(data.page[i].link)  
+         const p = document.createElement('p');  
+        
+        publications.appendChild(p).innerHTML += dadosCategoria;
+        }
+
+      })
+            .catch(function (error) {
+            console.log("erro")
+            });
+    }
+
     function compararPorDataDecrescente(a, b) {
       return new Date(a.startTime) - new Date(b.startTime);
     }
@@ -633,9 +668,10 @@
     videosGroup.style.alignItems = "center";
 
     getVideos(false);
+  </script>
 
-
-
+  <script>
+    GetPublications();
   </script>
 
   <script>
