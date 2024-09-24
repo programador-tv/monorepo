@@ -18,11 +18,23 @@ namespace Infrastructure.Tests
 
         public MP4ProcessManagerTests()
         {
-            _baseDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Lives");
+             string currentDirectory = Directory.GetCurrentDirectory();
+
+             string projectRoot = Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", "..", ".."));
+
+             _baseDirectory = Path.Combine(projectRoot, "src", "Background.Live");
 
 
-            _inputFile = Path.Combine(_baseDirectory, $"{_testId}.m3u8");
-            _outputFile = Path.Combine(_baseDirectory, $"{_testId}.mp4");
+             Environment.CurrentDirectory = _baseDirectory;
+
+
+            _inputFile = Path.Combine(_baseDirectory, "Assets", "Lives", $"{_testId}.m3u8");
+            _outputFile = Path.Combine(_baseDirectory, "Assets", "Lives", $"{_testId}.mp4");
+
+            if (File.Exists(_outputFile))
+            {
+                File.Delete(_outputFile);
+            }
 
             _processManager = new MP4ProcessManager(_testId);
             _processManager.ProgressUpdated += (sender, message) =>
@@ -30,6 +42,7 @@ namespace Infrastructure.Tests
                 Console.WriteLine($"Progress: {message}");
                 _progressReceived = true;
             };
+
         }
 
 
@@ -39,7 +52,10 @@ namespace Infrastructure.Tests
             Assert.True(IsFFmpegInstalled(), "FFmpeg is not installed or not accessible in the system PATH");
             Assert.True(File.Exists(_inputFile), $"The .m3u8 file should exist at {_inputFile}");
 
-            Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Lives", $"{_testId}.m3u8"));
+             //Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), $"{_testId}.m3u8"));
+
+             Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Lives", $"{_testId}.m3u8"));
+
 
             _processManager.Run();
 
