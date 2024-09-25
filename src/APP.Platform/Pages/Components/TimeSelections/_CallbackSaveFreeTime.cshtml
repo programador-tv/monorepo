@@ -177,19 +177,6 @@
                                             style="width: fit-content; font-size: 13px; padding: 5px;" onclick="showInteressados('@Model.TimeSelectionAndJoinTimes.Key.Id')"
                                             id="select-interested"> Selecionar Interessados
                                             </button>
-                                        }else{
-                                            @if(Model.TimeSelectionAndJoinTimes.Value.Count > 0 && Model.TimeSelectionAndJoinTimes.Key?.Status == StatusTimeSelection.Pendente && Model.TimeSelectionAndJoinTimes.Value.Any(joinTime => joinTime.StatusJoinTime == StatusJoinTime.Marcado))
-                                            {
-                                              <form  asp-page-handler="TimeSelectionStatusMarcado" style="margin-left: auto;justify-content: end;display: flex;" >
-                                                <input type="hidden" name="id" value="@Model.TimeSelectionAndJoinTimes.Key?.Id">
-                                                <button
-                                                    type="submit"
-                                                    class="button-capacitacao"
-                                                    style="width: fit-content;margin: 20px;">
-                                                    Encerrar inscrições e confirmar sala
-                                                </button>
-                                                </form>
-                                            }
                                         }
                                     </nav>
                                     }
@@ -265,34 +252,31 @@
                                         Cancelar Orientação
                                     </div>
                                 </form>
-                                
-                                @if(Model.TimeSelectionAndJoinTimes.Key?.Status == StatusTimeSelection.Marcado || Model.TimeSelectionAndJoinTimes.Key?.Status == StatusTimeSelection.ConclusaoPendente) {
-                                    if(tempoRestanteEmHoras == 0 
-                                    || tempoRestanteEmHoras == 1)
+
+                                @if (tempoRestanteEmHoras <= 1)
+                                {
+                                    @if (Model.TimeSelectionAndJoinTimes.Key.Ilimitado || Model.TimeSelectionAndJoinTimes.Key?.Status == StatusTimeSelection.Marcado || Model.TimeSelectionAndJoinTimes.Key?.Status == StatusTimeSelection.ConclusaoPendente)
                                     {
-                                        <button
-                                        id="entrar-sala"
-                                        class="button botao-entrar-active button-right"
-                                        onclick="window.open('@Model.TimeSelectionAndJoinTimes.Key?.LinkSala', '_blank');"
-                                        >
+                                        <button id="entrar-sala"
+                                                class="button botao-entrar-active button-right"
+                                                onclick="window.open('@Model.TimeSelectionAndJoinTimes.Key?.LinkSala', '_blank');">
                                             Entrar na Sala
                                         </button>
-                                    } else {
-                                    <button
-                                        id="entrar-sala"
-                                        class="button botao-entrar button-right"
-                                        desabled
-                                    >
-                                        Entrar na Sala
-                                    </button>
-                                    }   
-                                    
-                                } else {
-                                    <button
-                                        id="entrar-sala"
-                                        class="button botao-entrar button-right"
-                                        desabled
-                                    >
+                                    }else
+                                    {
+                                        <button id="entrar-sala"
+                                                class="button botao-entrar button-right"
+                                                desabled>
+                                            Entrar na Sala
+                                        </button>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <button id="entrar-sala"
+                                            class="button botao-entrar button-right"
+                                            desabled>
                                         Entrar na Sala
                                     </button>
                                 }   
