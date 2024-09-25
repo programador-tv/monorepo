@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Platform.Services;
 using Queue;
 using tags;
@@ -558,7 +559,7 @@ public sealed class CanalIndexModel : CustomPageModel
 
     public async Task<IActionResult> OnGetPublication(int pageNumber)
     {
-        Guid perfilId = UserProfile.Id;
+        var perfilId = UserProfile.Id;
         var page = await _publicationWebService.GetPublicationPerfilById(perfilId, pageNumber);
 
         return new JsonResult(new { page = page });

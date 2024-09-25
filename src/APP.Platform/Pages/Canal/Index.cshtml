@@ -232,18 +232,18 @@
 
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" 
-      type="button" role="tab" aria-controls="posts" aria-selected="false">
-        @{
-          @if (Model?.PerfilOwner?.Id == Model?.UserProfile?.Id &&
-        isLoggedUser)
-          {
-            <span>Minhas Publicações 📜</span>
+        type="button" role="tab" aria-controls="posts" aria-selected="false">
+          @{
+            @if (Model?.PerfilOwner?.Id == Model?.UserProfile?.Id && isLoggedUser)
+            {
+              <span>Minhas Publicações 📜</span>
+            }
+            else
+            {
+              <span>Publicações 📜</span>
+            }
           }
-          else
-          {
-            <span>Publicações 📜</span>
-          }
-        }
+      </button>
     </li>
 
     <li class="nav-item" role="presentation">
@@ -356,9 +356,7 @@
       </div>
      
        <main class="publications-group" id="savedPublicationsCanal">
-        <div class="d-flex justify-content-center">
-          
-        </div>
+        <div class="d-flex justify-content-center"></div>
       </main>
 
     </div>
@@ -599,17 +597,16 @@
 
 // Função buscar publicações
      function GetPublications(perfilId) {
+  
       let pageNumber = 1
+      const publications = document.querySelector("#savedPublicationsCanal");
 
       // função que remove aspas dos links
       function removeAspas(str) {
         return str.replace(/["']/g, '');
-      }
-
-      const publications = document.querySelector("#savedPublicationsCanal");
-      
-     
-      fetch("?handler=Publication&usr=@(Model.PerfilOwner!.UserName)&perfilId=" + perfilId + "&pageNumber=" + pageNumber)
+      }    
+               
+      fetch("?handler=Publication&usr=@Model.PerfilOwner!.UserName&perfilId=" + perfilId + "&pageNumber=" + pageNumber)
         .then(function (response) {
           if (!response.ok) {
             throw new Error("Erro ao enviar a solicitação POST.");
@@ -617,12 +614,12 @@
           return response.json();
         })
        .then(function (data) {
-        
+               
         //armazena o tamanho do array
         let tamanho = data.page.length
  
         // verifica se o array esta vazio e mostra msg "Sem publicações no momento"
-        if(tamanho === 0){
+        if(tamanho == 0){
           publications.innerHTML = 
           `<div style="justify-content: center; display: flex; flex-direction: column; padding: 20px; color: grey; width: 100%; align-items: center;">
                                                                                                         <span>Sem publicações no momento</span> 
@@ -643,7 +640,6 @@
 
         //mostra na tela os links
         publications.appendChild(linkElement).innerHTML += str;
-
         }
       })
             .catch(function (error) {
@@ -718,11 +714,11 @@
 
     getVideos(false);
   </script>
-
-  <script>
-    GetPublications();
-  </script>
-
+   
+   <script>
+        GetPublications();
+   </script>
+ 
   <script>
     const mesesAbrev = ["Janeiro", "Fevereiro", "Março", "Abril",
       "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
