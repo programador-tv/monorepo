@@ -8,6 +8,5 @@ namespace Domain.Repositories
         Task<Dictionary<JoinTime, TimeSelection>> GetFreeTimeMarcadosAntigos();
         Task UpdateRange(List<JoinTime> jts);
         Task<List<JoinTime>> GetJoinTimesAtivos(Guid timeId);
-
     }
 }
