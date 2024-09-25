@@ -13,12 +13,16 @@ public class FreeTimeBackstageTest
         bool expectedIlimitado = true;
 
         // Act
-        var result = FreeTimeBackstage.Create(expectedTimeSelectionId, expectedMaxParticipants, expectedIlimitado);
+        var result = FreeTimeBackstage.Create(
+            expectedTimeSelectionId,
+            expectedMaxParticipants,
+            expectedIlimitado
+        );
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(expectedTimeSelectionId,result.TimeSelectionId);
-        Assert.Equal(expectedMaxParticipants,result.MaxParticipants);
-        Assert.Equal(expectedIlimitado,result.Ilimitado);
+        Assert.Equal(expectedTimeSelectionId, result.TimeSelectionId);
+        Assert.Equal(expectedMaxParticipants, result.MaxParticipants);
+        Assert.Equal(expectedIlimitado, result.Ilimitado);
     }
 }
