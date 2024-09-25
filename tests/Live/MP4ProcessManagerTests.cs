@@ -16,13 +16,16 @@ namespace Infrastructure.Tests
         private MP4ProcessManager _processManager;
         private bool _progressReceived = false;
 
+        
+
         public MP4ProcessManagerTests()
         {
              string currentDirectory = Directory.GetCurrentDirectory();
 
              string projectRoot = Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", "..", ".."));
 
-             _baseDirectory = Path.Combine(projectRoot, "src", "Background.Live");
+             _baseDirectory = Path.Combine(projectRoot,"tests","Live");
+
 
 
              Environment.CurrentDirectory = _baseDirectory;
@@ -49,45 +52,62 @@ namespace Infrastructure.Tests
         [Fact]
         public async Task Run_ShouldStartProcessAndCreateMP4File()
         {
-            Assert.True(IsFFmpegInstalled(), "FFmpeg is not installed or not accessible in the system PATH");
-            Assert.True(File.Exists(_inputFile), $"The .m3u8 file should exist at {_inputFile}");
-
-             //Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), $"{_testId}.m3u8"));
-
-             Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Lives", $"{_testId}.m3u8"));
-
-
-            _processManager.Run();
-
-            Assert.False(_processManager.IsDied());
-
-            var timeoutTask = Task.Delay(TimeSpan.FromSeconds(120));
-            var completionTask = Task.Run(async () =>
+            try
             {
-                while (!_processManager.IsDied() && !File.Exists(_outputFile))
+                Assert.True(IsFFmpegInstalled(), "FFmpeg is not installed or not accessible in the system PATH");
+                Assert.True(File.Exists(_inputFile), $"The .m3u8 file should exist at {_inputFile}");
+
+
+                Assert.Equal(_inputFile, Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Lives", $"{_testId}.m3u8"));
+
+
+                _processManager.Run();
+
+                Assert.False(_processManager.IsDied());
+
+                var timeoutTask = Task.Delay(TimeSpan.FromSeconds(120));
+                var completionTask = Task.Run(async () =>
                 {
-                    await Task.Delay(1000);
-                    Console.WriteLine($"Waiting for MP4 file... Exists: {File.Exists(_outputFile)}");
+                    while (!_processManager.IsDied() && !File.Exists(_outputFile))
+                    {
+                        await Task.Delay(1000);
+                        Console.WriteLine($"Waiting for MP4 file... Exists: {File.Exists(_outputFile)}");
+                    }
+                });
+
+                var completedTask = await Task.WhenAny(completionTask, timeoutTask);
+
+                if (completedTask == timeoutTask)
+                {
+                    Console.WriteLine("Process timed out. Dumping diagnostic information:");
+                    Console.WriteLine($"Input file exists: {File.Exists(_inputFile)}");
+                    Console.WriteLine($"Output file exists: {File.Exists(_outputFile)}");
+                    Console.WriteLine($"Process is dead: {_processManager.IsDied()}");
+                    Console.WriteLine($"Progress received: {_progressReceived}");
+                    throw new TimeoutException("The process did not complete within the expected time.");
                 }
-            });
 
-            var completedTask = await Task.WhenAny(completionTask, timeoutTask);
+                Assert.True(_progressReceived, "No progress updates were received from the process");
+                Assert.True(File.Exists(_outputFile), $"The MP4 file should have been created at {_outputFile}");
 
-            if (completedTask == timeoutTask)
-            {
-                Console.WriteLine("Process timed out. Dumping diagnostic information:");
-                Console.WriteLine($"Input file exists: {File.Exists(_inputFile)}");
-                Console.WriteLine($"Output file exists: {File.Exists(_outputFile)}");
-                Console.WriteLine($"Process is dead: {_processManager.IsDied()}");
-                Console.WriteLine($"Progress received: {_progressReceived}");
-                throw new TimeoutException("The process did not complete within the expected time.");
+                var fileInfo = new FileInfo(_outputFile);
+                Assert.True(fileInfo.Length > 0, "The MP4 file should not be empty.");
             }
-
-            Assert.True(_progressReceived, "No progress updates were received from the process");
-            Assert.True(File.Exists(_outputFile), $"The MP4 file should have been created at {_outputFile}");
-
-            var fileInfo = new FileInfo(_outputFile);
-            Assert.True(fileInfo.Length > 0, "The MP4 file should not be empty.");
+            finally
+            {
+                // Delete the output MP4 file after the test is complete
+                
+                    try
+                    {
+                        File.Delete(_outputFile);
+                        Console.WriteLine($"Deleted output MP4 file: {_outputFile}");
+                    }
+                    catch (IOException ex)
+                    {
+                        Console.WriteLine($"Warning: Could not delete output MP4 file. {ex.Message}");
+                    }
+                
+            }
         }
 
         private static bool IsFFmpegInstalled()
@@ -124,18 +144,7 @@ namespace Infrastructure.Tests
         {
             _processManager.StopAsync().Wait();
 
-            try
-            {
-                if (File.Exists(_outputFile))
-                {
-                    File.Delete(_outputFile);
-                    Console.WriteLine($"Deleted output MP4 file: {_outputFile}");
-                }
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine($"Warning: Could not delete output MP4 file. {ex.Message}");
-            }
+            // The deletion of the output file is now handled in the test method
         }
     }
 }

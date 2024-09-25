@@ -76,6 +76,9 @@ public sealed class LiveBusinessLogic(
         live.Finaliza();
         live.AtualizaDuracao(duration);
         await _repository.UpdateAsync(live);
+
+        var messageMP4 = new LiveConversionMessage(id);
+        await _messagePublisher.PublishAsync("LiveConversionQueue", messageMP4);
     }
 
     public async Task Close()
@@ -86,9 +89,6 @@ public sealed class LiveBusinessLogic(
         {
             var message = new StopLiveProcessMessage(id);
             await _messagePublisher.PublishAsync("LiveCloseQueue", message);
-
-            var messageMP4 = new LiveConversionMessage(id);
-            await _messagePublisher.PublishAsync("LiveConversionQueue", messageMP4);
         }
     }
 
