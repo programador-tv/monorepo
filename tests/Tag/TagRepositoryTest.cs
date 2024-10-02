@@ -62,4 +62,21 @@ public class TagRepositoryTests
         Assert.Empty(result);
         Assert.Equal(0, result.Count);
     }
+
+    [Fact]
+    public async Task CreateTagForLiveAndFreeTime_ShouldAddTag()
+    {
+        var titulo = "Teste";
+        var liveRelacao = Guid.NewGuid().ToString();
+        var freeTimeRelacao = Guid.NewGuid().ToString();
+
+        var tag = Tag.AddForLiveAndFreeTime(titulo, liveRelacao, freeTimeRelacao);
+
+        await _repository.CreateTagForLiveAndFreeTime(tag);
+        var result = await _context.Tags.FindAsync(tag.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(tag.Id, result.Id);
+    }
 }

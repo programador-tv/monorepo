@@ -22,6 +22,6 @@ public sealed class JoinTimeWebService(CoreClient client) : IJoinTimeWebService
     {
         var route = Path.Combine(baseRoute, $"GetJoinTimesAtivos/{timeId}");
         Console.WriteLine(route);
-        return await client.GetAsync<List<JoinTime>>(route);        
+        return await client.GetAsync<List<JoinTime>>(route);
     }
 }

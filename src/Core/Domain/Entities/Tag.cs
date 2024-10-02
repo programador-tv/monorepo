@@ -36,4 +36,13 @@ public sealed class Tag(
     {
         return new Tag(Guid.NewGuid(), titulo, null, null, null, preLiveRelacao);
     }
+
+    public static Tag AddForLiveAndFreeTime(
+        string titulo,
+        string liveRelacao,
+        string freeTimeRelacao
+    )
+    {
+        return new Tag(Guid.NewGuid(), titulo, liveRelacao, null, freeTimeRelacao, null);
+    }
 }
