@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Models.ViewModels;
@@ -36,6 +37,7 @@ public sealed class EditorIndexModel : CustomPageModel
 
     public Domain.Entities.Perfil? Perfil { get; set; }
     private IPerfilWebService _perfilWebService { get; set; }
+    private ITagWebService _tagWebService { get; set; }
 
     public Dictionary<string, List<string>> RelatioTags { get; set; }
 
@@ -44,6 +46,7 @@ public sealed class EditorIndexModel : CustomPageModel
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
         IPerfilWebService perfilWebService,
+        ITagWebService tagWebService,
         Settings settings
     )
         : base(context, httpClientFactory, httpContextAccessor, settings)
@@ -51,7 +54,7 @@ public sealed class EditorIndexModel : CustomPageModel
         _httpClientFactory = httpClientFactory;
         _context = context;
         _perfilWebService = perfilWebService;
-
+        _tagWebService = tagWebService;
         RelatioTags = DataTags.GetTags();
     }
 
@@ -211,16 +214,22 @@ public sealed class EditorIndexModel : CustomPageModel
             live.Descricao = Live.Descricao;
             live.Visibility = Live.Visibility;
             live.Thumbnail = Thumbnail;
+
+            var tagsToBeCreatedForLiveAndFreeTimeRequest =
+                new List<CreateTagForLiveAndFreeTimeRequest>();
             foreach (var t in TagsSelected!)
             {
-                var tag = new Tag
-                {
-                    Titulo = t,
-                    LiveRelacao = live.Id.ToString(),
-                    FreeTimeRelacao = timeSelectionId.ToString(),
-                };
-                _context.Tags.Add(tag);
+                var tag = new CreateTagForLiveAndFreeTimeRequest(
+                    t,
+                    live.Id.ToString(),
+                    timeSelectionId.ToString()
+                );
+                tagsToBeCreatedForLiveAndFreeTimeRequest.Add(tag);
             }
+            await _tagWebService.CreateTagsForLiveAndFreeTime(
+                tagsToBeCreatedForLiveAndFreeTimeRequest
+            );
+
             _context.Lives.Update(live);
 
             var liveBackstage = _context.LiveBackstages.FirstOrDefault(e =>

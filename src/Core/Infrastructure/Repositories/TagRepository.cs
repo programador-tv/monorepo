@@ -23,4 +23,10 @@ public sealed class TagRepository(ApplicationDbContext context)
 
         return tags;
     }
+
+    public async Task CreateTagForLiveAndFreeTime(Tag tag)
+    {
+        await DbContext.Tags.AddAsync(tag);
+        await DbContext.SaveChangesAsync();
+    }
 }
