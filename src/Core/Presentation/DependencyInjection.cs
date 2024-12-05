@@ -316,6 +316,7 @@ public static class DependencyInjection
         app.AddFollowEndPoints();
         app.AddLikeEndPoints();
         app.AddHelpResponseEndPoints();
+        app.AddPublicationEndPoints();
 
         return app;
     }
